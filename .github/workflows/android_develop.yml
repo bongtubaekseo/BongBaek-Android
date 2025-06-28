@@ -1,0 +1,38 @@
+name: BongBaek Develop CI
+
+# Every new pull request to develop branch must fire CI check
+on:
+  pull_request:
+    branches: [ "develop" ]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+
+      - name: set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: gradle
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x ./gradlew
+
+      - name: Create local.properties
+        run: echo '${{ secrets.LOCAL_PROPERTIES }}' > ./local.properties
+
+      - name: Build with Gradle
+        run: ./gradlew :app:assembleDebug
+
+      - name: Run unit test
+        run: ./gradlew testDebugUnitTest

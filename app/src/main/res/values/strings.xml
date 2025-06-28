@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BongBaek-Android</string>
+
+    <!--Home    -->
+    <string name="home">홈</string>
+    <!--Recommendation    -->
+    <string name="recommendation">금액 추천</string>
+    <!--Record    -->
+    <string name="record">기록하기</string>
+
+</resources>
