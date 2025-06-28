@@ -66,7 +66,7 @@ fun MainBottomBar(
                         selectedTextColor = Black,
                         unselectedIconColor = Gray,
                         unselectedTextColor = Gray,
-                        indicatorColor = White
+                        indicatorColor = White,
                     )
                 )
             }
@@ -81,5 +81,6 @@ private fun MainBottomBarPreview() {
         isVisible = true,
         tabs = MainTab.entries.toImmutableList(),
         currentTab = MainTab.DUMMY,
-        onTabSelected = {})
+        onTabSelected = {},
+    )
 }

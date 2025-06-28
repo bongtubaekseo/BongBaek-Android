@@ -12,11 +12,11 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToDummy(navOptions: NavOptions? = null) = navigate(Dummy, navOptions)
 
 fun NavGraphBuilder.dummyGraph(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     composable<Dummy> {
         DummyRoute(
-            modifier = modifier
+            modifier = modifier,
         )
     }
 }
