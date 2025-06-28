@@ -1,8 +1,19 @@
 package com.bongtu.baekseo.core.designsystem.theme
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme.colors
 
 // Primary
 val primaryNormal = Color(0xFF0070F0)
@@ -71,3 +82,42 @@ val defaultBongBaekColors = BongBaekColors(
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
+
+@Preview(showBackground = true)
+@Composable
+private fun BongBaekColorsPreview() {
+    Column {
+        BongBaekTheme {
+            Column {
+                listOf(
+                    colors.primaryNormal,
+                    colors.primaryStrong,
+                    colors.primaryLight,
+                    colors.secondaryRed,
+                    colors.gray900,
+                    colors.gray800,
+                    colors.gray750,
+                    colors.gray700,
+                    colors.gray600,
+                    colors.gray500,
+                    colors.gray400,
+                    colors.gray300,
+                    colors.gray200,
+                    colors.gray100,
+                    colors.lineNormal,
+                    colors.white,
+                    colors.black,
+                ).forEach { color ->
+                    Row(modifier = Modifier.padding(vertical = 4.dp)) {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .background(color)
+                                .padding(end = 8.dp)
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
