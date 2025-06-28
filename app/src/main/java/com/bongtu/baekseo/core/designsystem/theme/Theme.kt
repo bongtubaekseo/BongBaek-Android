@@ -44,12 +44,14 @@ fun BongBaekTheme(
     ) {
         val view = LocalView.current
         if (!view.isInEditMode) {
-             SideEffect {
-                 (view.context as Activity).window.run{
-                     WindowCompat.getInsetsController(this,
-                         view).isAppearanceLightStatusBars = false
-                 }
-             }
+            SideEffect {
+                (view.context as Activity).window.run {
+                    WindowCompat.getInsetsController(
+                        this,
+                        view
+                    ).isAppearanceLightStatusBars = false
+                }
+            }
         }
         MaterialTheme(
             content = content,
