@@ -8,7 +8,9 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.style.LineHeightStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import com.bongtu.baekseo.R.font.pretendard_bold
@@ -41,62 +43,78 @@ data class BongBaekTypography(
     val captionRegular12: TextStyle,
 )
 
+private fun BongBaekTextStyle(
+    fontFamily: FontFamily,
+    fontSize: TextUnit,
+    lineHeight: TextUnit,
+    letterSpacing: TextUnit,
+): TextStyle = TextStyle(
+    fontFamily = fontFamily,
+    fontSize = fontSize,
+    lineHeight = lineHeight,
+    letterSpacing = letterSpacing,
+    lineHeightStyle = LineHeightStyle(
+        alignment = LineHeightStyle.Alignment.Center,
+        trim = LineHeightStyle.Trim.None
+    ),
+)
+
 val defaultBongBaekTypography = BongBaekTypography(
-    headBold26 = TextStyle(
+    headBold26 = BongBaekTextStyle(
         fontFamily = PretendardBold,
         fontSize = 26.sp,
         lineHeight = 1.3.em,
         letterSpacing = (-0.02).em,
     ),
-    headBold24 = TextStyle(
+    headBold24 = BongBaekTextStyle(
         fontFamily = PretendardBold,
         fontSize = 24.sp,
         lineHeight = 1.3.em,
         letterSpacing = (-0.03).em,
     ),
-    titleSemiBold20 = TextStyle(
+    titleSemiBold20 = BongBaekTextStyle(
         fontFamily = PretendardSemiBold,
         fontSize = 20.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.03).em,
     ),
-    titleSemiBold18 = TextStyle(
+    titleSemiBold18 = BongBaekTextStyle(
         fontFamily = PretendardSemiBold,
         fontSize = 18.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.02).em,
     ),
-    titleSemiBold16 = TextStyle(
+    titleSemiBold16 = BongBaekTextStyle(
         fontFamily = PretendardSemiBold,
         fontSize = 16.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.02).em,
     ),
-    body1Medium16 = TextStyle(
+    body1Medium16 = BongBaekTextStyle(
         fontFamily = PretendardMedium,
         fontSize = 16.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.01).em,
     ),
-    body1Medium14 = TextStyle(
+    body1Medium14 = BongBaekTextStyle(
         fontFamily = PretendardMedium,
         fontSize = 14.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.01).em,
     ),
-    body2Regular16 = TextStyle(
+    body2Regular16 = BongBaekTextStyle(
         fontFamily = PretendardRegular,
         fontSize = 16.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.01).em,
     ),
-    body2Regular14 = TextStyle(
+    body2Regular14 = BongBaekTextStyle(
         fontFamily = PretendardRegular,
         fontSize = 14.sp,
         lineHeight = 1.5.em,
         letterSpacing = (-0.01).em,
     ),
-    captionRegular12 = TextStyle(
+    captionRegular12 = BongBaekTextStyle(
         fontFamily = PretendardRegular,
         fontSize = 12.sp,
         lineHeight = 1.3.em,
