@@ -11,14 +11,14 @@ class BongBaekApplication : Application() {
         super.onCreate()
 
         initTimber()
-        setDayMode()
+        setNightMode()
     }
 
     private fun initTimber() {
         if (BuildConfig.DEBUG) Timber.Forest.plant(Timber.DebugTree())
     }
 
-    private fun setDayMode() {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+    private fun setNightMode() {
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 }
