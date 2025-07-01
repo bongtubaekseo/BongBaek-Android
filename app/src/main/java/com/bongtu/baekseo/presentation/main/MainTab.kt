@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.main
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
-import com.bongtu.baekseo.R
 import com.bongtu.baekseo.R.drawable.ic_home
 import com.bongtu.baekseo.R.drawable.ic_recommendation
 import com.bongtu.baekseo.R.drawable.ic_record
@@ -19,11 +18,6 @@ enum class MainTab(
     @StringRes val title: Int,
     val route: MainTabRoute,
 ) {
-    DUMMY(
-        iconRes = ic_home,
-        title = home,
-        route = Dummy,
-    ),
     HOME(
         iconRes = ic_home,
         title = home,
@@ -31,12 +25,12 @@ enum class MainTab(
     ),
     RECOMMEND(
         iconRes = ic_recommendation,
-        title = record,
+        title = recommendation,
         route = Dummy,
     ),
     RECORD(
         iconRes = ic_record,
-        title = recommendation,
+        title = record,
         route = Dummy,
     );
 
