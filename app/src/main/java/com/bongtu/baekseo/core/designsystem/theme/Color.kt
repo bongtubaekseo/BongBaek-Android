@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme.colors
 
 // Primary
-val primaryNormal = Color(0xFF0070F0)
+val primaryNormal = Color(0xFF6E7FFF)
 val primaryStrong = Color(0xFF502EFF)
 val primaryLight = Color(0xFFDFDCFB)
 val primaryGradient = Color(0xFF807FFF)
