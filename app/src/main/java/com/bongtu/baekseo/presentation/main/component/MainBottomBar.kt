@@ -87,6 +87,7 @@ fun MainBottomBar(
                     },
                     iconColor = iconColor,
                     textColor = textColor,
+                    modifier = Modifier.weight(1f),
                 )
             }
         }
@@ -112,8 +113,6 @@ private fun MainNavigationBarItem(
             imageVector = ImageVector.vectorResource(tab.iconRes),
             contentDescription = stringResource(tab.title),
             tint = iconColor,
-            modifier = Modifier
-                .padding(horizontal = 8.dp),
         )
 
         Text(
@@ -131,7 +130,7 @@ private fun MainBottomBarPreview() {
         MainBottomBar(
             isVisible = true,
             tabs = MainTab.entries.toImmutableList(),
-            currentTab = MainTab.DUMMY,
+            currentTab = MainTab.HOME,
             onTabSelected = {},
         )
     }
