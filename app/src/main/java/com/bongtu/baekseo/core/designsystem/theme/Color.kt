@@ -19,12 +19,14 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme.colors
 val primaryNormal = Color(0xFF0070F0)
 val primaryStrong = Color(0xFF502EFF)
 val primaryLight = Color(0xFFDFDCFB)
+val primaryGradient = Color(0xFF807FFF)
 
 // Secondary
 val secondaryRed = Color(0xFFFF9AA7)
 
 // Gray Scale
 val gray900 = Color(0xFF141516)
+val gray850 = Color(0xFF171922)
 val gray800 = Color(0xFF1B1C1D)
 val gray750 = Color(0xFF262835)
 val gray700 = Color(0xFF28292A)
@@ -39,14 +41,17 @@ val gray100 = Color(0xFFDADBDB)
 val lineNormal = Color(0xFF3A3F4A)
 val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
+val transparent = Color(0x00000000)
 
 @Immutable
 data class BongBaekColors(
     val primaryNormal: Color,
     val primaryStrong: Color,
     val primaryLight: Color,
+    val primaryGradient: Color,
     val secondaryRed: Color,
     val gray900: Color,
+    val gray850: Color,
     val gray800: Color,
     val gray750: Color,
     val gray700: Color,
@@ -59,14 +64,17 @@ data class BongBaekColors(
     val lineNormal: Color,
     val white: Color,
     val black: Color,
+    val transparent: Color,
 )
 
 val defaultBongBaekColors = BongBaekColors(
     primaryNormal = primaryNormal,
     primaryStrong = primaryStrong,
     primaryLight = primaryLight,
+    primaryGradient = primaryGradient,
     secondaryRed = secondaryRed,
     gray900 = gray900,
+    gray850 = gray850,
     gray800 = gray800,
     gray750 = gray750,
     gray700 = gray700,
@@ -79,6 +87,7 @@ val defaultBongBaekColors = BongBaekColors(
     lineNormal = lineNormal,
     white = white,
     black = black,
+    transparent = transparent,
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
@@ -86,36 +95,39 @@ val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
 @Preview(showBackground = true)
 @Composable
 private fun BongBaekColorsPreview() {
-    Column {
-        BongBaekTheme {
-            Column {
-                listOf(
-                    colors.primaryNormal,
-                    colors.primaryStrong,
-                    colors.primaryLight,
-                    colors.secondaryRed,
-                    colors.gray900,
-                    colors.gray800,
-                    colors.gray750,
-                    colors.gray700,
-                    colors.gray600,
-                    colors.gray500,
-                    colors.gray400,
-                    colors.gray300,
-                    colors.gray200,
-                    colors.gray100,
-                    colors.lineNormal,
-                    colors.white,
-                    colors.black,
-                ).forEach { color ->
-                    Row(modifier = Modifier.padding(vertical = 4.dp)) {
-                        Box(
-                            modifier = Modifier
-                                .size(24.dp)
-                                .background(color)
-                                .padding(end = 8.dp)
-                        )
-                    }
+    BongBaekTheme {
+        Column {
+            listOf(
+                colors.primaryNormal,
+                colors.primaryStrong,
+                colors.primaryLight,
+                colors.primaryGradient,
+                colors.secondaryRed,
+                colors.gray900,
+                colors.gray850,
+                colors.gray800,
+                colors.gray750,
+                colors.gray700,
+                colors.gray600,
+                colors.gray500,
+                colors.gray400,
+                colors.gray300,
+                colors.gray200,
+                colors.gray100,
+                colors.lineNormal,
+                colors.white,
+                colors.black,
+                colors.transparent,
+            ).forEach { color ->
+                Row(
+                    modifier = Modifier.padding(vertical = 4.dp),
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(24.dp)
+                            .background(color)
+                            .padding(end = 8.dp),
+                    )
                 }
             }
         }
