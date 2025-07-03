@@ -73,9 +73,9 @@ fun BongBaekMediumBadge(
             )
             .padding(
                 start = 10.dp,
-                top = 5.dp,
+                top = 6.dp,
                 end = 8.dp,
-                bottom = 5.dp,
+                bottom = 6.dp,
             )
             .noRippleClickable(onClick),
         horizontalArrangement = Arrangement.spacedBy(2.dp),
