@@ -50,12 +50,12 @@ fun BongBaekCheckBox(
         AnimatedVisibility(
             visible = isChecked,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(),
         ) {
             Image(
                 imageVector = ImageVector.vectorResource(id = checkedIconResId),
                 contentDescription = null,
-                modifier = Modifier.size(checkBoxSize)
+                modifier = Modifier.size(checkBoxSize),
             )
         }
         AnimatedVisibility(
@@ -66,7 +66,7 @@ fun BongBaekCheckBox(
             Image(
                 imageVector = ImageVector.vectorResource(id = btn_checkbox_unselected),
                 contentDescription = null,
-                modifier = Modifier.size(checkBoxSize)
+                modifier = Modifier.size(checkBoxSize),
             )
         }
     }
