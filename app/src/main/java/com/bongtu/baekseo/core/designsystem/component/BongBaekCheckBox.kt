@@ -19,8 +19,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_checkbox_unselected
-import com.bongtu.baekseo.R.drawable.ic_gray_checkbox
-import com.bongtu.baekseo.R.drawable.ic_primary_checkbox
+import com.bongtu.baekseo.R.drawable.ic_checkbox_gray
+import com.bongtu.baekseo.R.drawable.ic_checkbox_primary
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
@@ -40,7 +40,7 @@ fun BongBaekCheckBox(
     isPrimary: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val checkedIconResId = if (isPrimary) ic_primary_checkbox else ic_gray_checkbox
+    val checkedIconResId = if (isPrimary) ic_checkbox_primary else ic_checkbox_gray
     val checkBoxSize = if (isPrimary) 24.dp else 30.dp
 
     Box(
