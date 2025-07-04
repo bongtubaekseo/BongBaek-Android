@@ -68,7 +68,7 @@ fun BongBaekMediumBadge(
     Row(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.black.copy(alpha = .3f),
+                color = BongBaekTheme.colors.gray900,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(
