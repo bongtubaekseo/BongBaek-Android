@@ -66,9 +66,7 @@ fun BongBaekDatePickerDialog(
     onOkClick: () -> Unit = {},
 ) {
     Dialog(
-        onDismissRequest = {
-            onDismissRequest()
-        },
+        onDismissRequest = onDismissRequest,
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = true,
