@@ -14,6 +14,6 @@
     <string name="date_picker_placeholder">mm/dd/yyyy</string>
     <string name="date_picker_cancel">cancel</string>
     <string name="date_picker_ok">ok</string>
-
+    <string name="date_picker_error">유효한 날짜 형식이 아닙니다</string>
 
 </resources>
