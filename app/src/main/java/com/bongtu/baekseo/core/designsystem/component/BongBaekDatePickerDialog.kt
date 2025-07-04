@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
@@ -78,8 +79,7 @@ fun BongBaekDatePickerDialog(
         ) {
             Column(
                 modifier = modifier
-                    .width(320.dp)
-                    .wrapContentHeight()
+                    .wrapContentSize()
                     .background(color = BongBaekTheme.colors.gray750)
                     .padding(20.dp)
             ) {
@@ -110,12 +110,13 @@ fun BongBaekDatePickerDialog(
 
                 Row(
                     modifier = Modifier
+                        .wrapContentSize()
                         .align(Alignment.End)
-                        .padding(top = 12.dp),
+                        .padding(top = 4.dp),
                 ) {
                     Box(
                         modifier = Modifier
-                            .width(60.dp)
+                            .padding(horizontal = 7.5.dp, vertical = 8.dp)
                             .noRippleClickable {
                                 onDismissRequest()
                             },
@@ -130,7 +131,7 @@ fun BongBaekDatePickerDialog(
 
                     Box(
                         modifier = Modifier
-                            .width(60.dp)
+                            .padding(horizontal = 21.5.dp, vertical = 8.dp)
                             .noRippleClickable {
                                 onDismissRequest()
                                 // TODO: 완료 클릭 시 이벤트 구현
