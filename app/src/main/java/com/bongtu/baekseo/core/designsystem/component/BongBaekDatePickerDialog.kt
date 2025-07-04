@@ -63,6 +63,7 @@ fun BongBaekDatePickerDialog(
     value: String,
     onValueChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
+    modifier: Modifier = Modifier,
     onOkClick: () -> Unit = {},
 ) {
     Dialog(
@@ -76,7 +77,7 @@ fun BongBaekDatePickerDialog(
             shape = RoundedCornerShape(10.dp),
         ) {
             Column(
-                modifier = Modifier
+                modifier = modifier
                     .width(320.dp)
                     .wrapContentHeight()
                     .background(color = BongBaekTheme.colors.gray750)
@@ -153,6 +154,7 @@ fun BongBaekDatePickerDialog(
 private fun BongBaekDatePickerTextField(
     value: String,
     onValueChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
 ) {
     OutlinedTextField(
         value = value,
@@ -161,7 +163,7 @@ private fun BongBaekDatePickerTextField(
                 onValueChange(it)
             }
         },
-        modifier = Modifier
+        modifier = modifier
             .clip(shape = RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,

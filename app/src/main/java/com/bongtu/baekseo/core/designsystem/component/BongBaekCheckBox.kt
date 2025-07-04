@@ -38,12 +38,13 @@ fun BongBaekCheckBox(
     isChecked: Boolean,
     onClick: (Boolean) -> Unit,
     isPrimary: Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val checkedIconResId = if (isPrimary) ic_primary_checkbox else ic_gray_checkbox
     val checkBoxSize = if (isPrimary) 24.dp else 30.dp
 
     Box(
-        modifier = Modifier.noRippleClickable {
+        modifier = modifier.noRippleClickable {
             onClick(!isChecked)
         }
     ) {
