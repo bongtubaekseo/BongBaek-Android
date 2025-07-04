@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.core.designsystem.component.topbar
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -49,7 +48,6 @@ fun BongBaekTopBar(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(BongBaekTheme.colors.gray900)
             .padding(topBarType.padding),
         horizontalArrangement = topBarType.arrangement,
         verticalAlignment = Alignment.CenterVertically,
