@@ -65,13 +65,18 @@ fun RoundedBoxTextField(
     val isFilled = text.isNotEmpty()
     val isError = validateResult is TextFieldValidateResult.Error
 
-    val borderColor = when {
-        isError -> BongBaekTheme.colors.secondaryRed
-        isFocused -> BongBaekTheme.colors.primaryNormal
-        else -> BongBaekTheme.colors.lineNormal
+    val bongBaekColors = BongBaekTheme.colors
+    val borderColor = remember(isError, isFocused) {
+        when {
+            isError -> bongBaekColors.secondaryRed
+            isFocused -> bongBaekColors.primaryNormal
+            else -> bongBaekColors.lineNormal
+        }
     }
 
-    val textColor = if (isError) BongBaekTheme.colors.secondaryRed else BongBaekTheme.colors.white
+    val textColor = remember(isError) {
+        if (isError) bongBaekColors.secondaryRed else bongBaekColors.white
+    }
 
     Column(
         modifier = modifier
@@ -122,28 +127,26 @@ fun RoundedBoxTextField(
             enter = EnterTransition.None,
             exit = ExitTransition.None,
         ) {
-            if (isError) {
-                Row(
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = ic_caution),
+                    contentDescription = null,
+                    tint = BongBaekTheme.colors.secondaryRed,
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 4.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = ic_caution),
-                        contentDescription = null,
-                        tint = BongBaekTheme.colors.secondaryRed,
-                        modifier = Modifier
-                            .size(14.dp),
-                    )
-                    Text(
-                        text = validateResult.message,
-                        modifier = Modifier
-                            .padding(start = 4.dp),
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.secondaryRed,
-                    )
-                }
+                        .size(14.dp),
+                )
+                Text(
+                    text = validateResult.message.orEmpty(),
+                    modifier = Modifier
+                        .padding(start = 4.dp),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.secondaryRed,
+                )
             }
         }
     }
