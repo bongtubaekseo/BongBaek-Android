@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.core.designsystem.component
+package com.bongtu.baekseo.core.designsystem.component.dialog
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.background
