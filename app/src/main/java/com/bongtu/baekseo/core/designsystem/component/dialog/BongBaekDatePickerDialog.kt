@@ -1,6 +1,9 @@
 package com.bongtu.baekseo.core.designsystem.component.dialog
 
 import androidx.annotation.StringRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -13,6 +16,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
+import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -25,21 +29,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.string.date_picker_cancel
 import com.bongtu.baekseo.R.string.date_picker_description_birth
 import com.bongtu.baekseo.R.string.date_picker_description_date
+import com.bongtu.baekseo.R.string.date_picker_error
 import com.bongtu.baekseo.R.string.date_picker_ok
 import com.bongtu.baekseo.R.string.date_picker_placeholder
 import com.bongtu.baekseo.R.string.date_picker_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
+import com.bongtu.baekseo.core.util.isValidDate
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
@@ -65,6 +74,9 @@ fun BongBaekDatePickerDialog(
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val hasInput = value.isNotEmpty()
+    val isValid = isValidDate(value)
+
     Dialog(
         onDismissRequest = onDismissRequest,
         properties = DialogProperties(
@@ -106,6 +118,33 @@ fun BongBaekDatePickerDialog(
                     )
                 }
 
+                Spacer(modifier = Modifier.size(10.dp))
+
+                AnimatedVisibility(
+                    visible = hasInput && !isValid,
+                    enter = fadeIn(),
+                    exit = fadeOut(),
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = ic_caution),
+                            contentDescription = null,
+                            modifier = Modifier.size(14.dp),
+                            tint = BongBaekTheme.colors.secondaryRed,
+                        )
+
+                        Spacer(modifier = Modifier.size(2.dp))
+
+                        Text(
+                            text = stringResource(id = date_picker_error),
+                            style = BongBaekTheme.typography.captionRegular12,
+                            color = BongBaekTheme.colors.secondaryRed,
+                        )
+                    }
+                }
+
                 Row(
                     modifier = Modifier
                         .wrapContentSize()
@@ -129,16 +168,18 @@ fun BongBaekDatePickerDialog(
                         modifier = Modifier
                             .padding(horizontal = 21.5.dp, vertical = 8.dp)
                             .noRippleClickable {
-                                onDismissRequest()
-                                // TODO: ok 클릭 시 이벤트 구현
-                                onConfirmClick()
+                                if (isValid) {
+                                    onDismissRequest()
+                                    // TODO: ok 클릭 시 이벤트 구현
+                                    onConfirmClick()
+                                }
                             },
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
                             text = stringResource(id = date_picker_ok),
                             style = BongBaekTheme.typography.body2Regular16,
-                            color = if (value.length < DATE_INPUT_MAX_LENGTH) BongBaekTheme.colors.gray300 else BongBaekTheme.colors.white,
+                            color = if (isValid) BongBaekTheme.colors.white else BongBaekTheme.colors.gray300,
                         )
                     }
                 }
