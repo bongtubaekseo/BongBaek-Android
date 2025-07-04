@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -45,28 +44,30 @@ fun BongBaekInnerTextField(
     placeholder: String,
     placeholderColor: Color,
     modifier: Modifier = Modifier,
-    cursorColor: Color = BongBaekTheme.colors.white,
+    isEnabled: Boolean = true,
+    isReadOnly: Boolean = false,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isSingleLine: Boolean = true,
-    isReadOnly: Boolean = false,
-    isEnabled: Boolean = true,
+    cursorColor: Color = BongBaekTheme.colors.white,
     suffix: (@Composable (() -> Unit))? = null,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-    keyboardActions: KeyboardActions = KeyboardActions.Default,
+
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     BasicTextField(
         value = text,
         onValueChange = onTextChange,
         modifier = modifier,
-        singleLine = isSingleLine,
-        readOnly = isReadOnly,
         enabled = isEnabled,
+        readOnly = isReadOnly,
         textStyle = textStyle.copy(color = textColor),
-        cursorBrush = SolidColor(cursorColor),
-        interactionSource = interactionSource,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
+        singleLine = isSingleLine,
+        cursorBrush = SolidColor(cursorColor),
+        interactionSource = interactionSource,
+
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Row(
