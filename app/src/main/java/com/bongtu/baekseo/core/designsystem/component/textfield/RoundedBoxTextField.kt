@@ -1,5 +1,8 @@
 package com.bongtu.baekseo.core.designsystem.component.textfield
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -11,7 +14,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -115,14 +117,16 @@ fun RoundedBoxTextField(
             )
         }
 
-        Box(
-            modifier = Modifier
-                .padding(top = 4.dp)
-                .fillMaxWidth()
-                .height(18.dp),
+        AnimatedVisibility(
+            visible = isError,
+            enter = EnterTransition.None,
+            exit = ExitTransition.None,
         ) {
             if (isError) {
                 Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 4.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Icon(

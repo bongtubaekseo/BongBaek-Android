@@ -1,11 +1,13 @@
 package com.bongtu.baekseo.core.designsystem.component.textfield
 
 import androidx.annotation.DrawableRes
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -138,34 +140,35 @@ fun LabelTextField(
             color = dividerColor,
         )
 
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(18.dp),
+        AnimatedVisibility(
+            visible = isError,
+            enter = EnterTransition.None,
+            exit = ExitTransition.None,
         ) {
-            if (isError) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = ic_caution),
-                        contentDescription = null,
-                        tint = BongBaekTheme.colors.secondaryRed,
-                        modifier = Modifier
-                            .size(14.dp),
-                    )
-                    Text(
-                        text = validateResult.message,
-                        modifier = Modifier
-                            .padding(start = 4.dp),
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.secondaryRed,
-                    )
-                }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(id = ic_caution),
+                    contentDescription = null,
+                    tint = BongBaekTheme.colors.secondaryRed,
+                    modifier = Modifier
+                        .size(14.dp),
+                )
+                Text(
+                    text = validateResult.message.orEmpty(),
+                    modifier = Modifier
+                        .padding(start = 4.dp),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.secondaryRed,
+                )
             }
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable
