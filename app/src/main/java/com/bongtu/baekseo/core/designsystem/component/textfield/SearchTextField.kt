@@ -87,7 +87,7 @@ fun SearchTextField(
             placeholderColor = BongBaekTheme.colors.gray500,
             textStyle = BongBaekTheme.typography.body2Regular16,
             interactionSource = interactionSource,
-            cursorColor = Color.Transparent,
+            cursorColor = BongBaekTheme.colors.transparent,
         )
     }
 }
