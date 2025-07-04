@@ -80,20 +80,20 @@ fun RoundedBoxTextField(
 
     Column(
         modifier = modifier
-            .padding(paddingValues)
+            .padding(paddingValues),
     ) {
         Box(
             modifier = Modifier
                 .background(
                     color = BongBaekTheme.colors.gray800,
-                    shape = roundedCornerShape
+                    shape = roundedCornerShape,
                 )
                 .border(
                     width = 1.dp,
                     color = borderColor,
-                    shape = roundedCornerShape
+                    shape = roundedCornerShape,
                 )
-                .padding(horizontal = 16.dp, vertical = 12.dp)
+                .padding(horizontal = 16.dp, vertical = 12.dp),
         ) {
             BongBaekInnerTextField(
                 text = text,
