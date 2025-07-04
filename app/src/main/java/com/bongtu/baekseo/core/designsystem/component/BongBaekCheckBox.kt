@@ -14,13 +14,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_checkbox_unselected
-import com.bongtu.baekseo.R.drawable.ic_checkbox_gray
-import com.bongtu.baekseo.R.drawable.ic_checkbox_primary
+import com.bongtu.baekseo.core.common.type.CheckBoxType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
@@ -31,17 +31,16 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *
  * @param isChecked - 선택 여부
  * @param onClick - click event
- * @param isPrimary - primary 여부
+ * @param checkBoxType - check box 타입 (CheckBoxType.PRIMARY, CheckBoxType.GRAY)
  */
 @Composable
 fun BongBaekCheckBox(
     isChecked: Boolean,
     onClick: (Boolean) -> Unit,
-    isPrimary: Boolean,
+    checkBoxType: CheckBoxType,
     modifier: Modifier = Modifier,
 ) {
-    val checkedIconResId = if (isPrimary) ic_checkbox_primary else ic_checkbox_gray
-    val checkBoxSize = if (isPrimary) 24.dp else 30.dp
+    val checkBoxSize = checkBoxType.size.dp
 
     Box(
         modifier = modifier.noRippleClickable {
@@ -54,9 +53,10 @@ fun BongBaekCheckBox(
             exit = fadeOut(),
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = checkedIconResId),
+                imageVector = ImageVector.vectorResource(id = checkBoxType.checkedIcon),
                 contentDescription = null,
                 modifier = Modifier.size(checkBoxSize),
+                tint = Color.Unspecified,
             )
         }
         AnimatedVisibility(
@@ -68,6 +68,7 @@ fun BongBaekCheckBox(
                 imageVector = ImageVector.vectorResource(id = ic_checkbox_unselected),
                 contentDescription = null,
                 modifier = Modifier.size(checkBoxSize),
+                tint = Color.Unspecified,
             )
         }
     }
@@ -87,14 +88,14 @@ private fun BongBaekCheckBoxPreview() {
                 onClick = {
                     isChecked = it
                 },
-                isPrimary = true,
+                checkBoxType = CheckBoxType.PRIMARY,
             )
             BongBaekCheckBox(
                 isChecked = isChecked,
                 onClick = {
                     isChecked = it
                 },
-                isPrimary = false,
+                checkBoxType = CheckBoxType.GRAY,
             )
         }
     }
