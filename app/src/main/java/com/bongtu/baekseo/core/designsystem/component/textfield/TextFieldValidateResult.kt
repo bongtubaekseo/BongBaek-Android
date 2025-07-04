@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.core.designsystem.component.textfield.model
+package com.bongtu.baekseo.core.designsystem.component.textfield
 
 import androidx.compose.runtime.Immutable
 
@@ -11,7 +11,8 @@ sealed class TextFieldValidateResult {
             get() = null
     }
 
-    data class Error(private val errorMessage: String
+    data class Error(
+        private val errorMessage: String
     ) : TextFieldValidateResult() {
         override val message: String
             get() = errorMessage
