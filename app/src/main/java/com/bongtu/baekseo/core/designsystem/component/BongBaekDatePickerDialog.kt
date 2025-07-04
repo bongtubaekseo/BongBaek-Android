@@ -54,6 +54,9 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  * @param onDismissRequest - dialog 닫기
  * @param onOkClick - 완료 버튼 클릭 이벤트
  */
+
+private const val DATE_INPUT_MAX_LENGTH = 8
+
 @Composable
 fun BongBaekDatePickerDialog(
     @StringRes descriptionId: Int,
@@ -139,7 +142,7 @@ fun BongBaekDatePickerDialog(
                         Text(
                             text = stringResource(id = date_picker_ok),
                             style = BongBaekTheme.typography.body2Regular16,
-                            color = if (value.length < 8) BongBaekTheme.colors.gray300 else BongBaekTheme.colors.white,
+                            color = if (value.length < DATE_INPUT_MAX_LENGTH) BongBaekTheme.colors.gray300 else BongBaekTheme.colors.white,
                         )
                     }
                 }
@@ -153,12 +156,10 @@ private fun BongBaekDatePickerTextField(
     value: String,
     onValueChange: (String) -> Unit,
 ) {
-    val maxLength = 8
-
     OutlinedTextField(
         value = value,
         onValueChange = {
-            if (it.length <= maxLength) {
+            if (it.length <= DATE_INPUT_MAX_LENGTH) {
                 onValueChange(it)
             }
         },
