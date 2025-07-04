@@ -24,7 +24,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R
+import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -151,7 +151,7 @@ private fun BongBaekButtonPreview() {
                 paddingValues = PaddingValues(16.5.dp),
                 leadingIcon = {
                     Icon(
-                        imageVector = ImageVector.vectorResource(R.drawable.ic_kakao),
+                        imageVector = ImageVector.vectorResource(ic_kakao),
                         contentDescription = null,
                     )
                 },
