@@ -42,8 +42,8 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  Rounded Text Field
  *
  *  @param text 입력값
- *  @param placeholder 힌트
  *  @param onTextChange 입력값 변경
+ *  @param placeholder 힌트
  *  @param onInputDone 입력 완료
  *  @param validateResult TextFieldValidateResult.Default / TextFieldValidateResult.Error
  */
@@ -51,8 +51,8 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun RoundedBoxTextField(
     text: String,
     placeholder: String,
-    modifier: Modifier = Modifier,
     onTextChange: (String) -> Unit,
+    modifier: Modifier = Modifier,
     onInputDone: (() -> Unit)? = null,
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     paddingValues: PaddingValues = PaddingValues(horizontal = 20.dp),
