@@ -51,7 +51,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  * @param value - date textfield 입력값
  * @param onValueChange - date textfield 입력값 변경
  * @param onDismissRequest - dialog 닫기
- * @param onOkClick - 완료 버튼 클릭 이벤트
+ * @param onConfirmClick - ok 버튼 클릭 이벤트
  */
 
 private const val DATE_INPUT_MAX_LENGTH = 8
@@ -62,7 +62,7 @@ fun BongBaekDatePickerDialog(
     value: String,
     onValueChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
-    onOkClick: () -> Unit,
+    onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Dialog(
@@ -130,8 +130,8 @@ fun BongBaekDatePickerDialog(
                             .padding(horizontal = 21.5.dp, vertical = 8.dp)
                             .noRippleClickable {
                                 onDismissRequest()
-                                // TODO: 완료 클릭 시 이벤트 구현
-                                onOkClick()
+                                // TODO: ok 클릭 시 이벤트 구현
+                                onConfirmClick()
                             },
                         contentAlignment = Alignment.Center,
                     ) {
@@ -212,7 +212,7 @@ private fun BongBaekDatePickerDialogBirthPreview() {
                 date = it
             },
             onDismissRequest = {},
-            onOkClick = {},
+            onConfirmClick = {},
         )
     }
 }
@@ -230,7 +230,7 @@ private fun BongBaekDatePickerDialogDatePreview() {
                 date = it
             },
             onDismissRequest = {},
-            onOkClick = {},
+            onConfirmClick = {},
         )
     }
 }
