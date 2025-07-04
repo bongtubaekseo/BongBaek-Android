@@ -217,10 +217,10 @@ private fun BongBaekDatePickerTextField(
         colors = TextFieldDefaults.colors(
             focusedContainerColor = BongBaekTheme.colors.gray800,
             unfocusedContainerColor = BongBaekTheme.colors.gray800,
-            focusedIndicatorColor = Color.Transparent,
-            unfocusedIndicatorColor = Color.Transparent,
-            disabledIndicatorColor = Color.Transparent,
-            cursorColor = Color.Transparent,
+            focusedIndicatorColor = BongBaekTheme.colors.transparent,
+            unfocusedIndicatorColor = BongBaekTheme.colors.transparent,
+            disabledIndicatorColor = BongBaekTheme.colors.transparent,
+            cursorColor = BongBaekTheme.colors.transparent,
             focusedPlaceholderColor = BongBaekTheme.colors.gray500,
         ),
         textStyle = TextStyle(
