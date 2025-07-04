@@ -63,7 +63,6 @@ fun BongBaekFilterChip(
     }
 }
 
-
 /**
  * Bong baek label chip
  *
