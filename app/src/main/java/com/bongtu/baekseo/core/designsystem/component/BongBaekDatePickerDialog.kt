@@ -60,7 +60,7 @@ fun BongBaekDatePickerDialog(
     value: String,
     onValueChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
-    onOkClick: () -> Unit,
+    onOkClick: () -> Unit = {},
 ) {
     Dialog(
         onDismissRequest = {
