@@ -73,14 +73,19 @@ fun LabelTextField(
     val isFilled = text.isNotEmpty()
     val isError = validateResult is TextFieldValidateResult.Error
 
-    val dividerColor = when {
-        isError -> BongBaekTheme.colors.secondaryRed
-        isFocused -> BongBaekTheme.colors.primaryNormal
-        isFilled -> BongBaekTheme.colors.white
-        else -> BongBaekTheme.colors.gray500
+    val bongBaekColors = BongBaekTheme.colors
+    val dividerColor = remember(isError, isFocused, isFilled){
+        when {
+            isError -> bongBaekColors.secondaryRed
+            isFocused -> bongBaekColors.primaryNormal
+            isFilled -> bongBaekColors.white
+            else -> bongBaekColors.gray500
+        }
     }
 
-    val textColor = if (isError) BongBaekTheme.colors.secondaryRed else BongBaekTheme.colors.white
+    val textColor = remember(isError) {
+        if (isError) bongBaekColors.secondaryRed else bongBaekColors.white
+    }
 
     Column(
         modifier = modifier
