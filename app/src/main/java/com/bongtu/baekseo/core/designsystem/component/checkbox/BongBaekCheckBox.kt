@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.core.designsystem.component
+package com.bongtu.baekseo.core.designsystem.component.checkbox
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
