@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -46,7 +47,7 @@ fun BongBaekInnerTextField(
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
-    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    imeAction: ImeAction = ImeAction.Done,
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isSingleLine: Boolean = true,
@@ -62,7 +63,7 @@ fun BongBaekInnerTextField(
         enabled = isEnabled,
         readOnly = isReadOnly,
         textStyle = textStyle.copy(color = textColor),
-        keyboardOptions = keyboardOptions,
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = imeAction),
         keyboardActions = keyboardActions,
         singleLine = isSingleLine,
         cursorBrush = SolidColor(cursorColor),
