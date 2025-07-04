@@ -36,7 +36,6 @@ class MainNavigator(
         }
 
         when (tab) {
-            MainTab.DUMMY -> { } //TODO: 더미 추가 예정
             MainTab.HOME -> { }
             MainTab.RECOMMEND -> { }
             MainTab.RECORD -> { }
