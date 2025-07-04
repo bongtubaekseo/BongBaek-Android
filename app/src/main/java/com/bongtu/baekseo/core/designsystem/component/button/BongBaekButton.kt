@@ -28,6 +28,18 @@ import com.bongtu.baekseo.R
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
+/**
+ * Bong baek button
+ *
+ * @param title - 버튼의 title
+ * @param onClick - click event
+ * @param buttonType - Design System에 정의된 button type
+ * @param enabled - 활성화 여부
+ * @param textStyle
+ * @param shape
+ * @param paddingValues
+ * @param leadingIcon
+ */
 @Composable
 fun BongBaekButton(
     title: String,
