@@ -58,8 +58,10 @@ fun SearchTextField(
         }
     }
 
-    val textColor =
-        if (isFocused) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.white
+    val bongBaekColors = BongBaekTheme.colors
+    val textColor = remember(isFocused) {
+        if (isFocused) bongBaekColors.primaryNormal else bongBaekColors.white
+    }
 
     Row(
         modifier = modifier

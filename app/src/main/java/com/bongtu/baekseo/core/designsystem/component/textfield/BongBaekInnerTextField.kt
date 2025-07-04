@@ -53,7 +53,6 @@ fun BongBaekInnerTextField(
     isSingleLine: Boolean = true,
     cursorColor: Color = BongBaekTheme.colors.white,
     suffix: (@Composable (() -> Unit))? = null,
-
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     BasicTextField(
@@ -68,7 +67,6 @@ fun BongBaekInnerTextField(
         singleLine = isSingleLine,
         cursorBrush = SolidColor(cursorColor),
         interactionSource = interactionSource,
-
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Row(

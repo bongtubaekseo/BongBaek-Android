@@ -35,7 +35,6 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_nickname
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
@@ -74,7 +73,7 @@ fun LabelTextField(
     val isError = validateResult is TextFieldValidateResult.Error
 
     val bongBaekColors = BongBaekTheme.colors
-    val dividerColor = remember(isError, isFocused, isFilled){
+    val dividerColor = remember(isError, isFocused, isFilled) {
         when {
             isError -> bongBaekColors.secondaryRed
             isFocused -> bongBaekColors.primaryNormal
