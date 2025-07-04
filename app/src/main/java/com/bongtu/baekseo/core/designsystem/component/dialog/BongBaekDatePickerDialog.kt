@@ -2,6 +2,8 @@ package com.bongtu.baekseo.core.designsystem.component.dialog
 
 import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
@@ -122,8 +124,8 @@ fun BongBaekDatePickerDialog(
 
                 AnimatedVisibility(
                     visible = hasInput && !isValid,
-                    enter = fadeIn(),
-                    exit = fadeOut(),
+                    enter = EnterTransition.None,
+                    exit = ExitTransition.None,
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
