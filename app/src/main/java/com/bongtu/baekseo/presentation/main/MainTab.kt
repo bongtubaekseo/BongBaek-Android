@@ -18,11 +18,6 @@ enum class MainTab(
     @StringRes val title: Int,
     val route: MainTabRoute,
 ) {
-    DUMMY(
-        iconRes = ic_home,
-        title = home,
-        route = Dummy,
-    ),
     HOME(
         iconRes = ic_home,
         title = home,

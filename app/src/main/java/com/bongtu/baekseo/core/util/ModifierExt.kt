@@ -20,8 +20,10 @@ import kotlinx.coroutines.launch
  */
 @SuppressLint("ModifierFactoryUnreferencedReceiver")
 inline fun Modifier.noRippleClickable(crossinline onClick: () -> Unit): Modifier = composed {
-    clickable(indication = null,
-        interactionSource = remember { MutableInteractionSource() }) {
+    clickable(
+        indication = null,
+        interactionSource = remember { MutableInteractionSource() }
+    ) {
         onClick()
     }
 }
@@ -36,8 +38,8 @@ inline fun Modifier.noRippleCombineClickable(
     crossinline onLongClick: () -> Unit,
 ): Modifier = composed {
     combinedClickable(
-        interactionSource = remember { MutableInteractionSource() },
         indication = null,
+        interactionSource = remember { MutableInteractionSource() },
         onClick = { onClick() },
         onLongClick = { onLongClick() },
     )
