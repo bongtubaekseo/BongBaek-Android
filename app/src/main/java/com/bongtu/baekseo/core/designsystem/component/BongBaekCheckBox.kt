@@ -3,11 +3,11 @@ package com.bongtu.baekseo.core.designsystem.component
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +53,7 @@ fun BongBaekCheckBox(
             enter = fadeIn(),
             exit = fadeOut(),
         ) {
-            Image(
+            Icon(
                 imageVector = ImageVector.vectorResource(id = checkedIconResId),
                 contentDescription = null,
                 modifier = Modifier.size(checkBoxSize),
@@ -64,7 +64,7 @@ fun BongBaekCheckBox(
             enter = fadeIn(),
             exit = fadeOut()
         ) {
-            Image(
+            Icon(
                 imageVector = ImageVector.vectorResource(id = ic_checkbox_unselected),
                 contentDescription = null,
                 modifier = Modifier.size(checkBoxSize),
