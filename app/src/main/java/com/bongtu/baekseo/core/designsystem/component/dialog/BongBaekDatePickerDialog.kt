@@ -116,12 +116,11 @@ fun BongBaekDatePickerDialog(
                     )
                 }
 
-                Spacer(modifier = Modifier.size(10.dp))
-
                 AnimatedVisibility(
                     visible = hasInput && !isValid,
                     enter = EnterTransition.None,
                     exit = ExitTransition.None,
+                    modifier = Modifier.padding(top = 6.dp)
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -133,7 +132,7 @@ fun BongBaekDatePickerDialog(
                             tint = BongBaekTheme.colors.secondaryRed,
                         )
 
-                        Spacer(modifier = Modifier.size(2.dp))
+                        Spacer(modifier = Modifier.size(4.dp))
 
                         Text(
                             text = stringResource(id = date_picker_error),
