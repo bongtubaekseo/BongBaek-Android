@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
@@ -17,9 +18,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,11 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +43,7 @@ import com.bongtu.baekseo.R.string.date_picker_error
 import com.bongtu.baekseo.R.string.date_picker_ok
 import com.bongtu.baekseo.R.string.date_picker_placeholder
 import com.bongtu.baekseo.R.string.date_picker_title
+import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
 import com.bongtu.baekseo.core.util.isValidDate
@@ -153,7 +151,10 @@ fun BongBaekDatePickerDialog(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 7.5.dp, vertical = 8.dp)
+                            .padding(
+                                horizontal = 8.dp,
+                                vertical = 8.dp
+                            )
                             .noRippleClickable(onDismissRequest),
                         contentAlignment = Alignment.Center,
                     ) {
@@ -166,7 +167,10 @@ fun BongBaekDatePickerDialog(
 
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 21.5.dp, vertical = 8.dp)
+                            .padding(
+                                horizontal = 22.dp,
+                                vertical = 8.dp
+                            )
                             .noRippleClickable {
                                 if (isValid) {
                                     onDismissRequest()
@@ -194,40 +198,35 @@ private fun BongBaekDatePickerTextField(
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    OutlinedTextField(
-        value = value,
-        onValueChange = {
+    BongBaekInnerTextField(
+        text = value,
+        onTextChange = {
             if (it.length <= DATE_INPUT_MAX_LENGTH) {
                 onValueChange(it)
             }
         },
+        textColor = BongBaekTheme.colors.white,
+        textStyle = BongBaekTheme.typography.body1Medium16,
+        placeholder = stringResource(id = date_picker_placeholder),
+        placeholderColor = BongBaekTheme.colors.gray500,
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = DatePickerFormat(),
         modifier = modifier
-            .clip(shape = RoundedCornerShape(10.dp))
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
                 color = BongBaekTheme.colors.lineNormal,
                 shape = RoundedCornerShape(10.dp),
-            ),
-        placeholder = {
-            Text(
-                text = stringResource(id = date_picker_placeholder),
-                style = BongBaekTheme.typography.body1Medium16,
             )
-        },
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = BongBaekTheme.colors.gray800,
-            unfocusedContainerColor = BongBaekTheme.colors.gray800,
-            focusedIndicatorColor = BongBaekTheme.colors.transparent,
-            unfocusedIndicatorColor = BongBaekTheme.colors.transparent,
-            disabledIndicatorColor = BongBaekTheme.colors.transparent,
-            cursorColor = BongBaekTheme.colors.transparent,
-            focusedPlaceholderColor = BongBaekTheme.colors.gray500,
-        ),
-        textStyle = TextStyle(
-            color = BongBaekTheme.colors.white,
-        ),
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = DatePickerFormat(),
+            .background(
+                color = BongBaekTheme.colors.gray800,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .padding(
+                horizontal = 14.dp,
+                vertical = 10.dp,
+            ),
     )
 }
 
