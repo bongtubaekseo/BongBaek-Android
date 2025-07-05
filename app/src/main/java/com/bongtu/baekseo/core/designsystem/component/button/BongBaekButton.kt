@@ -49,7 +49,7 @@ fun BongBaekButton(
     enabled: Boolean = true,
     textStyle: TextStyle = BongBaekTheme.typography.titleSemiBold20,
     shape: Shape = RoundedCornerShape(10.dp),
-    paddingValues: PaddingValues = PaddingValues(15.dp),
+    paddingValues: PaddingValues = PaddingValues(14.dp),
     leadingIcon: @Composable (() -> Unit)? = null,
 ) {
     val bongBaekColors = BongBaekTheme.colors
@@ -148,7 +148,6 @@ private fun BongBaekButtonPreview() {
                 modifier = Modifier
                     .fillMaxWidth(),
                 textStyle = BongBaekTheme.typography.titleSemiBold18,
-                paddingValues = PaddingValues(16.5.dp),
                 leadingIcon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(ic_kakao),
