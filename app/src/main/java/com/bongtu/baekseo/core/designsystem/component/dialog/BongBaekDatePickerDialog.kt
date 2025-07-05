@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.core.designsystem.component.dialog
 
-import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -37,12 +36,11 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.string.date_picker_cancel
-import com.bongtu.baekseo.R.string.date_picker_description_birth
-import com.bongtu.baekseo.R.string.date_picker_description_date
 import com.bongtu.baekseo.R.string.date_picker_error
 import com.bongtu.baekseo.R.string.date_picker_ok
 import com.bongtu.baekseo.R.string.date_picker_placeholder
 import com.bongtu.baekseo.R.string.date_picker_title
+import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
@@ -54,7 +52,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *
  * 날짜를 선택할 때 사용하는 dialog
  *
- * @param descriptionId - dialog 설명
+ * @param datePickerDialogType - date picker 타입 (DatePickerDialogType.BIRTH, DatePickerDialogType.DATE)
  * @param value - date textfield 입력값
  * @param onValueChange - date textfield 입력값 변경
  * @param onDismissRequest - dialog 닫기
@@ -65,7 +63,7 @@ private const val DATE_INPUT_MAX_LENGTH = 8
 
 @Composable
 fun BongBaekDatePickerDialog(
-    @StringRes descriptionId: Int,
+    datePickerDialogType: DatePickerDialogType,
     value: String,
     onValueChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
@@ -73,7 +71,10 @@ fun BongBaekDatePickerDialog(
     modifier: Modifier = Modifier,
 ) {
     val hasInput = value.isNotEmpty()
-    val isValid = isValidDate(value)
+    val isValid = isValidDate(
+        input = value,
+        type = datePickerDialogType,
+    )
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -89,13 +90,13 @@ fun BongBaekDatePickerDialog(
                 modifier = modifier
                     .wrapContentSize()
                     .background(color = BongBaekTheme.colors.gray750)
-                    .padding(20.dp)
+                    .padding(20.dp),
             ) {
                 Column(
-                    horizontalAlignment = Alignment.Start
+                    horizontalAlignment = Alignment.Start,
                 ) {
                     Text(
-                        text = stringResource(id = descriptionId),
+                        text = stringResource(id = datePickerDialogType.descriptionId),
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray300,
                     )
@@ -120,7 +121,7 @@ fun BongBaekDatePickerDialog(
                     visible = hasInput && !isValid,
                     enter = EnterTransition.None,
                     exit = ExitTransition.None,
-                    modifier = Modifier.padding(top = 6.dp)
+                    modifier = Modifier.padding(top = 6.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically
@@ -168,7 +169,7 @@ fun BongBaekDatePickerDialog(
                         modifier = Modifier
                             .padding(
                                 horizontal = 22.dp,
-                                vertical = 8.dp
+                                vertical = 8.dp,
                             )
                             .noRippleClickable {
                                 if (isValid) {
@@ -245,7 +246,7 @@ private fun BongBaekDatePickerDialogBirthPreview() {
 
     BongBaekTheme {
         BongBaekDatePickerDialog(
-            descriptionId = date_picker_description_birth,
+            datePickerDialogType = DatePickerDialogType.BIRTH,
             value = date,
             onValueChange = {
                 date = it
@@ -263,7 +264,7 @@ private fun BongBaekDatePickerDialogDatePreview() {
 
     BongBaekTheme {
         BongBaekDatePickerDialog(
-            descriptionId = date_picker_description_date,
+            datePickerDialogType = DatePickerDialogType.DATE,
             value = date,
             onValueChange = {
                 date = it

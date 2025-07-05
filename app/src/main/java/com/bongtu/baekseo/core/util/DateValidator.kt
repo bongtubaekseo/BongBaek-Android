@@ -1,6 +1,8 @@
 package com.bongtu.baekseo.core.util
 
-fun isValidDate(input: String): Boolean {
+import com.bongtu.baekseo.core.common.type.DatePickerDialogType
+
+fun isValidDate(input: String, type: DatePickerDialogType): Boolean {
     if (input.length != 8) return false
 
     val month = input.substring(0, 2).toIntOrNull() ?: return false
@@ -11,7 +13,7 @@ fun isValidDate(input: String): Boolean {
     if (month !in 1..12 || day !in 1..31) return false
 
     // 만 14세 이상 (2025년 기준 2011년까지)
-    if (year > 2011) return false
+    if (type == DatePickerDialogType.BIRTH && year > 2011) return false
 
     // 실제 날짜 유효성 확인
     return try {
