@@ -7,5 +7,6 @@
     <string name="recommendation">금액 추천</string>
     <!--Record    -->
     <string name="record">기록하기</string>
-
+    <!--TextField    -->
+    <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
 </resources>
