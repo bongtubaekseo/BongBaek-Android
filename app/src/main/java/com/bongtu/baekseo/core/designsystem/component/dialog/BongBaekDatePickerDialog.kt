@@ -124,7 +124,7 @@ fun BongBaekDatePickerDialog(
                     modifier = Modifier.padding(top = 6.dp),
                 ) {
                     Row(
-                        verticalAlignment = Alignment.CenterVertically
+                        verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Icon(
                             imageVector = ImageVector.vectorResource(id = ic_caution),
@@ -153,7 +153,7 @@ fun BongBaekDatePickerDialog(
                         modifier = Modifier
                             .padding(
                                 horizontal = 8.dp,
-                                vertical = 8.dp
+                                vertical = 8.dp,
                             )
                             .noRippleClickable(onDismissRequest),
                         contentAlignment = Alignment.Center,
