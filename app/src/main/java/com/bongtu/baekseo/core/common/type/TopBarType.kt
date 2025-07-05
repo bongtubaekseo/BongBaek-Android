@@ -10,22 +10,22 @@ enum class TopBarType(
 ) {
     TEXT_ONLY_START(
         arrangement = Arrangement.Start,
-        padding = PaddingValues(16.dp),
+        padding = PaddingValues(18.dp),
     ),
     TEXT_ONLY_CENTER(
         arrangement = Arrangement.Center,
-        padding = PaddingValues(10.dp),
+        padding = PaddingValues(20.dp),
     ),
     LEADING_ICON(
         arrangement = Arrangement.Start,
-        padding = PaddingValues(start = 4.dp, top = 8.dp, bottom = 8.dp),
+        padding = PaddingValues(vertical = 8.dp),
     ),
     TRAILING_ICON(
         arrangement = Arrangement.Start,
-        padding = PaddingValues(start = 16.dp, end = 4.dp, top = 8.dp, bottom = 8.dp),
+        padding = PaddingValues(start = 20.dp, top = 8.dp, bottom = 8.dp),
     ),
     BOTH_ICONS(
         arrangement = Arrangement.Start,
-        padding = PaddingValues(horizontal = 4.dp, vertical = 8.dp),
+        padding = PaddingValues(vertical = 8.dp),
     );
 }
