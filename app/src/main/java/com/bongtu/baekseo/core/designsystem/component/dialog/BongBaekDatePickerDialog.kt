@@ -151,10 +151,7 @@ fun BongBaekDatePickerDialog(
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(
-                                horizontal = 8.dp,
-                                vertical = 8.dp,
-                            )
+                            .padding(8.dp)
                             .noRippleClickable(onDismissRequest),
                         contentAlignment = Alignment.Center,
                     ) {
