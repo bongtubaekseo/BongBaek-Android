@@ -45,7 +45,7 @@ fun BongBaekCheckBox(
     Box(
         modifier = modifier.noRippleClickable {
             onClick(!isChecked)
-        }
+        },
     ) {
         AnimatedVisibility(
             visible = isChecked,
@@ -62,7 +62,7 @@ fun BongBaekCheckBox(
         AnimatedVisibility(
             visible = !isChecked,
             enter = fadeIn(),
-            exit = fadeOut()
+            exit = fadeOut(),
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_checkbox_unselected),
