@@ -70,7 +70,7 @@ fun SearchTextField(
                 color = BongBaekTheme.colors.gray750,
                 shape = roundedCornerShape,
             )
-            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp),
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_search),

@@ -128,7 +128,7 @@ fun LabelTextField(
                 onDone = {
                     focusManager.clearFocus()
                     onInputDone?.invoke()
-                }
+                },
             ),
             suffix = {
                 if (isFilled && isFocused && isClearButtonEnabled) {
@@ -139,7 +139,7 @@ fun LabelTextField(
                         modifier = Modifier.noRippleClickable { onTextChange("") },
                     )
                 }
-            }
+            },
         )
 
         HorizontalDivider(

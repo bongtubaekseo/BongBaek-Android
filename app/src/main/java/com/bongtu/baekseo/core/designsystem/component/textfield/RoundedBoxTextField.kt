@@ -111,7 +111,7 @@ fun RoundedBoxTextField(
                     onDone = {
                         focusManager.clearFocus()
                         onInputDone?.invoke()
-                    }
+                    },
                 ),
                 suffix = {
                     if (isFilled && isFocused) {
@@ -122,7 +122,7 @@ fun RoundedBoxTextField(
                             modifier = Modifier.noRippleClickable { onTextChange("") },
                         )
                     }
-                }
+                },
             )
         }
 

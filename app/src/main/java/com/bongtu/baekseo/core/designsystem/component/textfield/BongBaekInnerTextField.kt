@@ -85,7 +85,7 @@ fun BongBaekInnerTextField(
 
                 suffix?.invoke()
             }
-        }
+        },
     )
 }
 
