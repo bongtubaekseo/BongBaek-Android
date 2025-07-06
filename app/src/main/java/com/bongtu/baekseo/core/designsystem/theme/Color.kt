@@ -43,6 +43,7 @@ val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
 val transparent = Color(0x00000000)
 val kakaoYellow = Color(0xFFFEE500)
+val gradientSlider = Color(0xFF8B5CF6)
 
 @Immutable
 data class BongBaekColors(
@@ -67,6 +68,7 @@ data class BongBaekColors(
     val black: Color,
     val transparent: Color,
     val kakaoYellow: Color,
+    val gradientSlider: Color,
 )
 
 val defaultBongBaekColors = BongBaekColors(
@@ -91,6 +93,7 @@ val defaultBongBaekColors = BongBaekColors(
     black = black,
     transparent = transparent,
     kakaoYellow = kakaoYellow,
+    gradientSlider = gradientSlider,
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
@@ -122,6 +125,7 @@ private fun BongBaekColorsPreview() {
                 colors.black,
                 colors.transparent,
                 colors.kakaoYellow,
+                colors.gradientSlider,
             ).forEach { color ->
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp),
