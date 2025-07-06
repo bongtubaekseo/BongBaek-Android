@@ -56,7 +56,9 @@ fun OnBoardingSettingScreen(
     }
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
-    val buttonEnabled by remember { mutableStateOf(false) }
+    val buttonEnabled = remember(name, validateResult, birth) {
+        validateResult == TextFieldValidateResult.Default && birth.isNotEmpty()
+    }
     var incomeSelected by remember { mutableStateOf(true) }
 
     Column(
