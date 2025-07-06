@@ -5,21 +5,26 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.SheetState
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,6 +46,7 @@ import com.bongtu.baekseo.core.designsystem.component.checkbox.BongBaekCheckBox
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.OnBoardingAgree
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,6 +57,7 @@ fun OnBoardingBottomSheet(
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
     onNextClick: () -> Unit,
     onDismissRequest: () -> Unit,
+    sheetState: SheetState,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
@@ -64,6 +71,7 @@ fun OnBoardingBottomSheet(
             )
             .background(color = BongBaekTheme.colors.gray750),
         dragHandle = null,
+        sheetState = sheetState,
     ) {
         OnBoardingBottomSheetAgreeContent(
             items = items,
@@ -230,6 +238,7 @@ private fun OnBoardingBottomSheetAgreeContentPreview() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
 private fun OnBoardingBottomSheetPreview() {
@@ -253,6 +262,10 @@ private fun OnBoardingBottomSheetPreview() {
             ),
         )
     }
+
+    val sheetState = rememberModalBottomSheetState()
+    val scope = rememberCoroutineScope()
+
     BongBaekTheme {
         OnBoardingBottomSheet(
             items = items,
@@ -268,7 +281,12 @@ private fun OnBoardingBottomSheetPreview() {
                 allChecked = items.all { it.isChecked }
             },
             onNextClick = {},
-            onDismissRequest = {},
+            onDismissRequest = {
+                scope.launch {
+                    sheetState.hide()
+                }
+            },
+            sheetState = sheetState,
         )
     }
 }
