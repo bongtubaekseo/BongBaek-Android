@@ -89,7 +89,7 @@ fun OnBoardingBottomSheetAgreeContent(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray750)
             .padding(horizontal = 20.dp),
-        ) {
+    ) {
         Text(
             text = stringResource(id = onboarding_bottom_sheet_description),
             modifier = Modifier.padding(top = 40.dp),
@@ -97,10 +97,7 @@ fun OnBoardingBottomSheetAgreeContent(
             color = BongBaekTheme.colors.white,
         )
 
-        Spacer(
-            modifier = Modifier
-                .size(30.dp),
-        )
+        Spacer(modifier = Modifier.size(30.dp))
 
         OnBoardingAgreeItem(
             item = OnBoardingAgree(
