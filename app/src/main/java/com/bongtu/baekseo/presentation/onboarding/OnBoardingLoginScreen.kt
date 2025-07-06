@@ -40,6 +40,7 @@ import com.bongtu.baekseo.R.string.onboarding_personal_privacy
 import com.bongtu.baekseo.R.string.onboarding_term_of_use
 import com.bongtu.baekseo.R.string.onboarding_title
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.OnBoardingType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.OnBoardingAgree
@@ -50,14 +51,29 @@ import kotlinx.coroutines.launch
 fun OnBoardingRoute(
     modifier: Modifier = Modifier,
 ) {
-    OnBoardingScreen(
-        modifier = modifier,
-    )
+    var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
+
+    when (screenState) {
+        OnBoardingType.LOGIN -> {
+            OnBoardingLoginScreen(
+                modifier = modifier,
+                onNext = {
+                    screenState = OnBoardingType.SETTING
+                }
+            )
+        }
+        OnBoardingType.SETTING -> {
+            OnBoardingSettingScreen(
+                modifier = modifier,
+            )
+        }
+    }
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardingScreen(
+fun OnBoardingLoginScreen(
+    onNext : () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val underlineColor = BongBaekTheme.colors.gray400
@@ -202,6 +218,7 @@ fun OnBoardingScreen(
                     scope.launch { sheetState.hide() }.invokeOnCompletion {
                         if (!sheetState.isVisible) {
                             isBottomSheetVisible = false
+                            onNext()
                         }
                     }
                 },
@@ -219,6 +236,8 @@ fun OnBoardingScreen(
 @Composable
 private fun OnBoardingScreenPreview() {
     BongBaekTheme {
-        OnBoardingScreen()
+        OnBoardingLoginScreen(
+            onNext = {}
+        )
     }
 }

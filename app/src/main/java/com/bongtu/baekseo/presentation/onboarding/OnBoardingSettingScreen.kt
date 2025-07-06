@@ -43,7 +43,9 @@ import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
 
 @Composable
-fun OnBoardingContent(modifier: Modifier = Modifier) {
+fun OnBoardingSettingScreen(
+    modifier: Modifier = Modifier,
+) {
     var name by remember { mutableStateOf("") }
     var birth by remember { mutableStateOf("") }
     var dialogBirth by remember { mutableStateOf("") }
@@ -216,6 +218,6 @@ fun OnBoardingContent(modifier: Modifier = Modifier) {
 @Composable
 private fun OnBoardingContentPreview() {
     BongBaekTheme {
-        OnBoardingContent()
+        OnBoardingSettingScreen()
     }
 }
