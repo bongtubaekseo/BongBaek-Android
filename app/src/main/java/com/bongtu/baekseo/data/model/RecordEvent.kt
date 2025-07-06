@@ -2,7 +2,7 @@ package com.bongtu.baekseo.data.model
 
 import java.time.LocalDate
 
-data class RecordEventItem(
+data class RecordEvent(
     val eventId: String,
     val hostName: String,
     val hostNickName: String,
