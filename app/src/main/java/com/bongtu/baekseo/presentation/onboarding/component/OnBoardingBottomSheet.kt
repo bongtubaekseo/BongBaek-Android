@@ -77,7 +77,7 @@ fun OnBoardingBottomSheet(
 }
 
 @Composable
-fun OnBoardingBottomSheetAgreeContent(
+private fun OnBoardingBottomSheetAgreeContent(
     items: List<OnBoardingAgree>,
     allChecked: Boolean,
     onAllCheckedChange: (Boolean) -> Unit,
