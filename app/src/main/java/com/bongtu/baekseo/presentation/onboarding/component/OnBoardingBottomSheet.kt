@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.onboarding.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +27,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,24 +61,24 @@ fun OnBoardingBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier
-            .clip(
-                RoundedCornerShape(
-                    topStart = 10.dp,
-                    topEnd = 10.dp,
-                )
-            )
             .background(color = BongBaekTheme.colors.gray750),
         dragHandle = null,
         sheetState = sheetState,
+        shape = RoundedCornerShape(
+            topStart = 10.dp,
+            topEnd = 10.dp,
+        ),
     ) {
-        OnBoardingBottomSheetAgreeContent(
-            items = items,
-            allChecked = allChecked,
-            onAllCheckedChange = onAllCheckedChange,
-            onItemCheckedChange = onItemCheckedChange,
-            onNextClick = onNextClick,
-            modifier = Modifier,
-        )
+        Box{
+            OnBoardingBottomSheetAgreeContent(
+                items = items,
+                allChecked = allChecked,
+                onAllCheckedChange = onAllCheckedChange,
+                onItemCheckedChange = onItemCheckedChange,
+                onNextClick = onNextClick,
+                modifier = Modifier,
+            )
+        }
     }
 }
 
