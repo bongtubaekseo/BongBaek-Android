@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
@@ -66,6 +67,7 @@ fun LabelTextField(
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     isClearButtonEnabled: Boolean = true,
     paddingValues: PaddingValues = PaddingValues(horizontal = 20.dp),
+    visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -140,6 +142,7 @@ fun LabelTextField(
                     )
                 }
             },
+            visualTransformation = visualTransformation,
         )
 
         HorizontalDivider(
