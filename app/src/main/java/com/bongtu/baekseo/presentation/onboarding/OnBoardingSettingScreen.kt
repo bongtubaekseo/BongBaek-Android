@@ -131,7 +131,7 @@ fun OnBoardingSettingScreen(
                         onConfirmClick = {
                             showDatePickerDialog = false
                             birth = dialogBirth
-                        }
+                        },
                     )
                 }
 
