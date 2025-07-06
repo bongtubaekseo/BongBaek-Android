@@ -218,7 +218,7 @@ fun OnBoardingSettingScreen(
 
 @Preview
 @Composable
-private fun OnBoardingContentPreview() {
+private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen()
     }

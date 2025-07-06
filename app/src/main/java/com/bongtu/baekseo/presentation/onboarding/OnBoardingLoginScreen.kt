@@ -242,7 +242,7 @@ fun OnBoardingLoginScreen(
 
 @Preview
 @Composable
-private fun OnBoardingScreenPreview() {
+private fun OnBoardingScreenLoginPreview() {
     BongBaekTheme {
         OnBoardingLoginScreen(
             onNext = {}
