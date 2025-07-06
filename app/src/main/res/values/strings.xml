@@ -28,4 +28,7 @@
     <string name="onboarding_login_information">로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.</string>
     <string name="onboarding_personal_privacy">개인정보 처리방침</string>
     <string name="onboarding_term_of_use">이용약관</string>
+    <string name="onboarding_profile_setting">프로필 설정</string>
+    <string name="onboarding_income">현재 수입 있음</string>
+    <string name="onboarding_income_question">현재 수입은 어느 정도인가요?</string>
 </resources>
