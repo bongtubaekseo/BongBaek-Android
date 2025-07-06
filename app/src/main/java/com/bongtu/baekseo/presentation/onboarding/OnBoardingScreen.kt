@@ -85,6 +85,7 @@ fun OnBoardingScreen(
 
     val sheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
+    var isBottomSheetVisible by remember { mutableStateOf(false) }
 
     Box(
         modifier = modifier
@@ -120,9 +121,7 @@ fun OnBoardingScreen(
                 BongBaekButton(
                     title = "카카오 로그인",
                     onClick = {
-                        scope.launch {
-                            sheetState.show()
-                        }
+                        isBottomSheetVisible = true
                     },
                     buttonType = ButtonType.KAKAO,
                     modifier = Modifier
@@ -185,32 +184,34 @@ fun OnBoardingScreen(
                 }
             }
         }
-
-        OnBoardingBottomSheet(
-            items = items,
-            allChecked = allChecked,
-            onAllCheckedChange = { checked ->
-                allChecked = checked
-                items.forEachIndexed { index, _ ->
+        if (isBottomSheetVisible) {
+            OnBoardingBottomSheet(
+                items = items,
+                allChecked = allChecked,
+                onAllCheckedChange = { checked ->
+                    allChecked = checked
+                    items.forEachIndexed { index, _ ->
+                        items[index] = items[index].copy(isChecked = checked)
+                    }
+                },
+                onItemCheckedChange = { index, checked ->
                     items[index] = items[index].copy(isChecked = checked)
-                }
-            },
-            onItemCheckedChange = { index, checked ->
-                items[index] = items[index].copy(isChecked = checked)
-                allChecked = items.all { it.isChecked }
-            },
-            onNextClick = {
-
-            },
-            onDismissRequest = {
-                scope.launch {
-                    sheetState.hide()
-                }
-            },
-            modifier = Modifier.align(Alignment.BottomCenter),
-            sheetState = sheetState
-        )
-
+                    allChecked = items.all { it.isChecked }
+                },
+                onNextClick = {
+                    scope.launch { sheetState.hide() }.invokeOnCompletion {
+                        if (!sheetState.isVisible) {
+                            isBottomSheetVisible = false
+                        }
+                    }
+                },
+                onDismissRequest = {
+                    isBottomSheetVisible = false
+                },
+                modifier = Modifier.align(Alignment.BottomCenter),
+                sheetState = sheetState
+            )
+        }
     }
 }
 
