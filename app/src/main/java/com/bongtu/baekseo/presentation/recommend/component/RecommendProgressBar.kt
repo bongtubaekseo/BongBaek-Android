@@ -40,7 +40,6 @@ fun RecommendProgressBar(
 
         BongBaekProgressBar(
             progress = currentPage,
-            modifier = Modifier,
         )
     }
 }
