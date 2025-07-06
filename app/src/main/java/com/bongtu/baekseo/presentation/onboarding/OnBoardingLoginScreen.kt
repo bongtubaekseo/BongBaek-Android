@@ -28,6 +28,9 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_kakao
@@ -118,7 +121,12 @@ fun OnBoardingLoginScreen(
                 modifier = Modifier.padding(top = 120.dp),
             ) {
                 Text(
-                    text = stringResource(id = onboarding_title),
+                    text =  buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
+                            append("경조사비")
+                        }
+                        append(" 고민 끝,\n봉투백서에 오신 것을\n환영합니다!")
+                    },
                     style = BongBaekTheme.typography.headBold26,
                     color = BongBaekTheme.colors.white,
                 )
@@ -127,7 +135,7 @@ fun OnBoardingLoginScreen(
                     text = stringResource(id = onboarding_description),
                     modifier = Modifier.padding(top = 30.dp),
                     style = BongBaekTheme.typography.body2Regular16,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.gray300,
                 )
             }
 
@@ -226,7 +234,7 @@ fun OnBoardingLoginScreen(
                     isBottomSheetVisible = false
                 },
                 modifier = Modifier.align(Alignment.BottomCenter),
-                sheetState = sheetState
+                sheetState = sheetState,
             )
         }
     }
