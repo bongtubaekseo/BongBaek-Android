@@ -6,13 +6,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -23,15 +31,30 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_all
+import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
+import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_service
+import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_description
+import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.CheckBoxType
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.checkbox.BongBaekCheckBox
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.OnBoardingAgree
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingBottomSheet(
+    items: List<OnBoardingAgree>,
+    allChecked: Boolean,
+    onAllCheckedChange: (Boolean) -> Unit,
+    onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
+    onNextClick: () -> Unit,
+    onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     ModalBottomSheet(
-        onDismissRequest = {},
+        onDismissRequest = onDismissRequest,
         modifier = modifier
             .clip(
                 RoundedCornerShape(
@@ -42,41 +65,125 @@ fun OnBoardingBottomSheet(
             .background(color = BongBaekTheme.colors.gray750),
         dragHandle = null,
     ) {
-        Column {
-            Text(
-                text = stringResource(id = onboarding_bottom_sheet_check_all),
-                style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.white
-            )
-        }
+        OnBoardingBottomSheetAgreeContent(
+            items = items,
+            allChecked = allChecked,
+            onAllCheckedChange = onAllCheckedChange,
+            onItemCheckedChange = onItemCheckedChange,
+            onNextClick = onNextClick,
+            modifier = Modifier,
+        )
     }
 }
 
 @Composable
-private fun OnBoardingBottomSheetItem(
+fun OnBoardingBottomSheetAgreeContent(
+    items: List<OnBoardingAgree>,
+    allChecked: Boolean,
+    onAllCheckedChange: (Boolean) -> Unit,
+    onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
+    onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
-    isArrowVisible: Boolean = false,
 ) {
+    Column(
+        modifier = modifier
+            .background(color = BongBaekTheme.colors.gray750)
+            .padding(horizontal = 20.dp),
+        ) {
+        Text(
+            text = stringResource(id = onboarding_bottom_sheet_description),
+            modifier = Modifier.padding(top = 40.dp),
+            style = BongBaekTheme.typography.titleSemiBold18,
+            color = BongBaekTheme.colors.white,
+        )
+
+        Spacer(
+            modifier = Modifier
+                .size(30.dp),
+        )
+
+        OnBoardingAgreeItem(
+            item = OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_all,
+                isDescription = true,
+                isArrowVisible = false,
+                isChecked = allChecked,
+            ),
+            onCheckedChange = onAllCheckedChange,
+        )
+
+        HorizontalDivider(
+            modifier = Modifier
+                .fillMaxWidth()
+                .width(1.dp)
+                .padding(vertical = 18.dp),
+            color = BongBaekTheme.colors.lineNormal,
+        )
+
+        items.forEachIndexed { index, item ->
+            OnBoardingAgreeItem(
+                item = item,
+                onCheckedChange = { checked ->
+                    onItemCheckedChange(index, checked)
+                },
+            )
+            if (index < items.lastIndex) {
+                Spacer(modifier = Modifier.size(14.dp))
+            }
+        }
+
+        BongBaekButton(
+            title = "다음",
+            onClick = onNextClick,
+            buttonType = ButtonType.PRIMARY,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 40.dp),
+        )
+    }
+}
+
+@Composable
+private fun OnBoardingAgreeItem(
+    item: OnBoardingAgree,
+    onCheckedChange: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+    onIconClick: (() -> Unit)? = null,
+) {
+    val (textStyle, textColor) = if (item.isDescription) {
+        BongBaekTheme.typography.titleSemiBold16 to BongBaekTheme.colors.gray200
+    } else {
+        BongBaekTheme.typography.body2Regular16 to BongBaekTheme.colors.gray300
+    }
+
     Row(
         modifier = modifier
             .fillMaxWidth()
             .wrapContentHeight(),
-        verticalAlignment = Alignment.CenterVertically
+        verticalAlignment = Alignment.CenterVertically,
     ) {
-        // TODO: checkbox
+        BongBaekCheckBox(
+            checked = item.isChecked,
+            onCheckedChange = onCheckedChange,
+            checkBoxType = CheckBoxType.PRIMARY,
+        )
+
         Text(
-            text = stringResource(id = onboarding_bottom_sheet_check_age),
+            text = stringResource(id = item.titleRes),
             modifier = Modifier.padding(start = 8.dp),
-            style = BongBaekTheme.typography.body2Regular16,
-            color = BongBaekTheme.colors.gray300,
+            style = textStyle,
+            color = textColor,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (isArrowVisible) {
+        if (item.isArrowVisible) {
             Icon(
                 painter = painterResource(id = ic_arrow_right),
                 contentDescription = null,
+                modifier = Modifier.noRippleClickable {
+                    onIconClick?.invoke()
+                },
                 tint = BongBaekTheme.colors.gray400,
             )
         }
@@ -85,16 +192,86 @@ private fun OnBoardingBottomSheetItem(
 
 @Preview
 @Composable
-private fun OnBoardingBottomSheetItemPreview() {
+private fun OnBoardingBottomSheetAgreeContentPreview() {
+    var allChecked by remember { mutableStateOf(false) }
+    val items = remember {
+        mutableStateListOf(
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_age,
+                isDescription = false,
+                isArrowVisible = false,
+            ),
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_service,
+                isDescription = false,
+                isArrowVisible = true,
+            ),
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_privacy,
+                isDescription = false,
+                isArrowVisible = true,
+            ),
+        )
+    }
+
     BongBaekTheme {
-        OnBoardingBottomSheetItem()
+        OnBoardingBottomSheetAgreeContent(
+            items = items,
+            allChecked = allChecked,
+            onAllCheckedChange = { checked ->
+                allChecked = checked
+                items.forEachIndexed { index, _ ->
+                    items[index] = items[index].copy(isChecked = checked)
+                }
+            },
+            onItemCheckedChange = { index, checked ->
+                items[index] = items[index].copy(isChecked = checked)
+                allChecked = items.all { it.isChecked }
+            },
+            onNextClick = {},
+        )
     }
 }
 
 @Preview
 @Composable
 private fun OnBoardingBottomSheetPreview() {
+    var allChecked by remember { mutableStateOf(false) }
+    val items = remember {
+        mutableStateListOf(
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_age,
+                isDescription = false,
+                isArrowVisible = false,
+            ),
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_service,
+                isDescription = false,
+                isArrowVisible = true,
+            ),
+            OnBoardingAgree(
+                titleRes = onboarding_bottom_sheet_check_privacy,
+                isDescription = false,
+                isArrowVisible = true,
+            ),
+        )
+    }
     BongBaekTheme {
-        OnBoardingBottomSheet()
+        OnBoardingBottomSheet(
+            items = items,
+            allChecked = allChecked,
+            onAllCheckedChange = { checked ->
+                allChecked = checked
+                items.forEachIndexed { index, _ ->
+                    items[index] = items[index].copy(isChecked = checked)
+                }
+            },
+            onItemCheckedChange = { index, checked ->
+                items[index] = items[index].copy(isChecked = checked)
+                allChecked = items.all { it.isChecked }
+            },
+            onNextClick = {},
+            onDismissRequest = {},
+        )
     }
 }
