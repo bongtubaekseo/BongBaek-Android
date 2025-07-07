@@ -84,8 +84,6 @@ fun OnBoardingLoginScreen(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val underlineColor = BongBaekTheme.colors.gray400
-
     var allChecked by remember { mutableStateOf(false) }
     val items = remember {
         mutableStateListOf(
