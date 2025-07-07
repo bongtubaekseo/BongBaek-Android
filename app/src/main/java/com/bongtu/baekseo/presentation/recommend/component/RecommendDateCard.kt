@@ -95,7 +95,7 @@ fun RecommendDateCard(
 
 @Preview
 @Composable
-private fun RecommendTextFieldCardPreview() {
+private fun RecommendDateCardPreview() {
     BongBaekTheme {
         RecommendDateCard(
             date = "",

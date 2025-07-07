@@ -34,7 +34,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun ParticipationSelector(
+fun RecommendParticipationCard(
     isEventParticipated: Boolean?,
     onParticipationSelect: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -132,11 +132,11 @@ private fun SelectorItem(
 
 @Preview
 @Composable
-private fun ParticipationSelectorPreview() {
+private fun RecommendParticipationCardPreview() {
     BongBaekTheme {
         var isEventParticipated by remember { mutableStateOf<Boolean?>(null) }
 
-        ParticipationSelector(
+        RecommendParticipationCard(
             isEventParticipated = isEventParticipated,
             onParticipationSelect = { isEventParticipated = it },
         )
