@@ -139,6 +139,7 @@ fun LabelTextField(
                     )
                 }
             },
+            visualTransformation = visualTransformation,
         )
 
         HorizontalDivider(
