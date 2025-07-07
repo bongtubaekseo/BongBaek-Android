@@ -20,6 +20,10 @@
     <string name="recommendation_participation_title">참석 여부</string>
     <string name="recommendation_participation_yes">예</string>
     <string name="recommendation_participation_no">아니오</string>
+    <string name="recommendation_slider_title_contact">얼마나 자주 연락하나요?</string>
+    <string name="recommendation_slider_title_meet">얼마나 자주 만나나요?</string>
+    <string name="recommendation_slider_rarely">가끔</string>
+    <string name="recommendation_slider_frequently">매일</string>
     <!--Record    -->
     <string name="record">기록하기</string>
     <string name="record_top_bar_title">경조사 전체 기록</string>
