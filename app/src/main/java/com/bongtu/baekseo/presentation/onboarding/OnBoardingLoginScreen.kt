@@ -41,6 +41,8 @@ import com.bongtu.baekseo.R.string.onboarding_description
 import com.bongtu.baekseo.R.string.onboarding_login_information
 import com.bongtu.baekseo.R.string.onboarding_personal_privacy
 import com.bongtu.baekseo.R.string.onboarding_term_of_use
+import com.bongtu.baekseo.R.string.onboarding_title_primary
+import com.bongtu.baekseo.R.string.onboarding_title_white
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -123,9 +125,9 @@ fun OnBoardingLoginScreen(
                 Text(
                     text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
-                            append("경조사비")
+                            append(stringResource(id = onboarding_title_primary))
                         }
-                        append(" 고민 끝,\n봉투백서에 오신 것을\n환영합니다!")
+                        append(stringResource(id = onboarding_title_white))
                     },
                     style = BongBaekTheme.typography.headBold26,
                     color = BongBaekTheme.colors.white,
