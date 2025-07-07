@@ -191,7 +191,7 @@ fun OnBoardingLoginScreen(
                         color = BongBaekTheme.colors.gray300,
                     )
 
-                    Spacer(modifier = Modifier.width(29.dp))
+                    Spacer(modifier = Modifier.width(30.dp))
 
                     Text(
                         text = stringResource(id = onboarding_term_of_use),
