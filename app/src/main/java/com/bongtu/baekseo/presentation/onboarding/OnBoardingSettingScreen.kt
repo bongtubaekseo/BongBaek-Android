@@ -21,11 +21,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
+import com.bongtu.baekseo.R.string.name_text_field_error_length
+import com.bongtu.baekseo.R.string.name_text_field_error_special_character
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -60,6 +63,7 @@ fun OnBoardingSettingScreen(
         validateResult == TextFieldValidateResult.Default && birth.isNotEmpty()
     }
     var incomeSelected by remember { mutableStateOf(true) }
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -91,9 +95,17 @@ fun OnBoardingSettingScreen(
                     },
                     onInputDone = {
                         validateResult = if (name.length < 2 || name.length >= 10)
-                            TextFieldValidateResult.Error("2자 이상 10자 이내로 입력해주세요")
+                            TextFieldValidateResult.Error(
+                                errorMessage = context.getString(
+                                    name_text_field_error_length
+                                )
+                            )
                         else if (name.contains(Regex("[^a-zA-Z0-9가-힣]")))
-                            TextFieldValidateResult.Error("특수문자는 기입할 수 없어요")
+                            TextFieldValidateResult.Error(
+                                errorMessage = context.getString(
+                                    name_text_field_error_special_character
+                                )
+                            )
                         else
                             TextFieldValidateResult.Default
                     },
