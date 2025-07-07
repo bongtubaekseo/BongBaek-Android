@@ -89,7 +89,7 @@ private fun RecordScreen(
                 }
             },
             modifier = Modifier
-                .padding(vertical = 8.dp)
+                .padding(vertical = 8.dp),
         )
 
         AttendTypeTab(

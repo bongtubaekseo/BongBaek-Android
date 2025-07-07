@@ -182,7 +182,7 @@ private fun RecordCard(
             BongBaekSmallBadge(
                 title = category,
                 modifier = Modifier
-                    .padding(end = 8.dp)
+                    .padding(end = 8.dp),
             )
 
             BongBaekSmallBadge(
