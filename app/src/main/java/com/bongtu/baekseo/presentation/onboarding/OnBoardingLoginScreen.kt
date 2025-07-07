@@ -58,10 +58,10 @@ fun OnBoardingRoute(
     when (screenState) {
         OnBoardingType.LOGIN -> {
             OnBoardingLoginScreen(
-                modifier = modifier,
                 onNext = {
                     screenState = OnBoardingType.SETTING
-                }
+                },
+                modifier = modifier,
             )
         }
 
