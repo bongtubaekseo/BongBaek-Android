@@ -39,12 +39,15 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import java.time.LocalDate
 
 
 @Composable
@@ -62,6 +65,7 @@ fun RecordRoute(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
+        onDeleteButtonClick = viewModel::updateIsDeleting,
         modifier = modifier,
     )
 }
@@ -71,6 +75,7 @@ private fun RecordScreen(
     uiState: RecordState,
     onTabClick: (AttendType) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
+    onDeleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -97,10 +102,15 @@ private fun RecordScreen(
                     Icon(
                         imageVector = ImageVector.vectorResource(ic_delete),
                         contentDescription = null,
+                        tint = BongBaekTheme.colors.gray400,
                         modifier = Modifier
                             .padding(14.dp)
-                            .size(20.dp),
-                        tint = BongBaekTheme.colors.gray400,
+                            .size(20.dp)
+                            .noRippleClickable {
+                                if (uiState.recordLoadState is UiState.Success) {
+                                    onDeleteButtonClick()
+                                }
+                            },
                     )
                 }
             },
@@ -135,6 +145,7 @@ private fun RecordScreen(
                 RecordListContent(
                     recordEventList = uiState.recordLoadState.data,
                     onCardClick = {},
+                    isDeleting = uiState.isDeleting,
                 )
             }
         }
@@ -206,10 +217,79 @@ private fun RecordScreenPreview() {
     BongBaekTheme {
         RecordScreen(
             uiState = RecordState(
-                recordLoadState = UiState.Empty,
+                recordLoadState = UiState.Success(
+                    listOf(
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2025, 5, 4),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2025, 5, 2),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2025, 4, 10),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2025, 2, 23),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2024, 6, 8),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2024, 5, 24),
+                        ),
+                        RecordEvent(
+                            eventId = "eventId",
+                            hostName = "username",
+                            hostNickName = "nickname",
+                            category = "경조사 유형",
+                            relationship = "관계",
+                            cost = 10000,
+                            eventDate = LocalDate.of(2023, 2, 4),
+                        ),
+                    ),
+                ),
+                isDeleting = true,
             ),
             onTabClick = {},
             onCategoryClick = {},
+            onDeleteButtonClick = {},
+            modifier = Modifier,
         )
     }
 }

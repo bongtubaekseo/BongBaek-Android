@@ -37,6 +37,7 @@ import java.time.LocalDate
 @Composable
 fun RecordListContent(
     recordEventList: List<RecordEvent>,
+    isDeleting: Boolean,
     onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -277,6 +278,7 @@ private fun RecordContentPreview() {
                 ),
             ),
             onCardClick = {},
+            isDeleting = false,
         )
     }
 }
