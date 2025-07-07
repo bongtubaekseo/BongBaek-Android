@@ -65,7 +65,7 @@ fun OnBoardingSettingScreen(
             TextFieldValidateResult.Default
         )
     }
-    var showDatePickerDialog by remember { mutableStateOf(false) }
+    var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
     val buttonEnabled = remember(name, validateResult, birth) {
         validateResult == TextFieldValidateResult.Default && birth.isNotEmpty() && name.isNotEmpty()
@@ -129,7 +129,7 @@ fun OnBoardingSettingScreen(
                         .padding(top = 30.dp)
                         .noRippleClickable {
                             dialogBirth = birth
-                            showDatePickerDialog = true
+                            isDatePickerDialogVisible = true
                         },
                     isEditable = false,
                     isClearButtonEnabled = false,
@@ -217,7 +217,7 @@ fun OnBoardingSettingScreen(
             )
         }
 
-        if (showDatePickerDialog) {
+        if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
                 value = dialogBirth,
@@ -225,10 +225,10 @@ fun OnBoardingSettingScreen(
                     dialogBirth = it
                 },
                 onDismissRequest = {
-                    showDatePickerDialog = false
+                    isDatePickerDialogVisible = false
                 },
                 onConfirmClick = {
-                    showDatePickerDialog = false
+                    isDatePickerDialogVisible = false
                     birth = dialogBirth
                 },
             )
