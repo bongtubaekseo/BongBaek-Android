@@ -41,13 +41,12 @@ import com.bongtu.baekseo.R.string.onboarding_description
 import com.bongtu.baekseo.R.string.onboarding_login_information
 import com.bongtu.baekseo.R.string.onboarding_personal_privacy
 import com.bongtu.baekseo.R.string.onboarding_term_of_use
-import com.bongtu.baekseo.R.string.onboarding_title
 import com.bongtu.baekseo.core.common.type.ButtonType
-import com.bongtu.baekseo.core.common.type.OnBoardingType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.OnBoardingAgree
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
+import com.bongtu.baekseo.presentation.onboarding.type.OnBoardingType
 import kotlinx.coroutines.launch
 
 @Composable
@@ -65,6 +64,7 @@ fun OnBoardingRoute(
                 }
             )
         }
+
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
                 modifier = modifier,
@@ -76,7 +76,7 @@ fun OnBoardingRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingLoginScreen(
-    onNext : () -> Unit,
+    onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val underlineColor = BongBaekTheme.colors.gray400
@@ -121,7 +121,7 @@ fun OnBoardingLoginScreen(
                 modifier = Modifier.padding(top = 120.dp),
             ) {
                 Text(
-                    text =  buildAnnotatedString {
+                    text = buildAnnotatedString {
                         withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
                             append("경조사비")
                         }
