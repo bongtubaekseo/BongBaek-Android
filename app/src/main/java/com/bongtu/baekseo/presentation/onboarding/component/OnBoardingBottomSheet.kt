@@ -152,7 +152,7 @@ private fun OnBoardingAgreeItem(
     item: OnBoardingAgree,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    onIconClick: (() -> Unit)? = null,
+    onIconClick: () -> Unit = {},
 ) {
     val (textStyle, textColor) = if (item.isDescription) {
         BongBaekTheme.typography.titleSemiBold16 to BongBaekTheme.colors.gray200
@@ -186,7 +186,7 @@ private fun OnBoardingAgreeItem(
                 imageVector = ImageVector.vectorResource(id = ic_arrow_right),
                 contentDescription = null,
                 modifier = Modifier.noRippleClickable {
-                    onIconClick?.invoke()
+                    onIconClick()
                 },
                 tint = BongBaekTheme.colors.gray400,
             )
