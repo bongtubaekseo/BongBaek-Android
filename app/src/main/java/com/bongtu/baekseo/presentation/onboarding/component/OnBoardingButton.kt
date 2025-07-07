@@ -36,7 +36,7 @@ fun OnBoardingButton(
     modifier: Modifier = Modifier,
 ) {
     val backgroundColor =
-        if (selected) Color(0x1A6E7FFF) else BongBaekTheme.colors.gray750
+        if (selected) BongBaekTheme.colors.primaryBackground else BongBaekTheme.colors.gray750
     val borderColor =
         if (selected) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.gray100
 
