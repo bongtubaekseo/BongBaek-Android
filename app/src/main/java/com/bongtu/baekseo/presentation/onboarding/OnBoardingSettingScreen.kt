@@ -67,7 +67,7 @@ fun OnBoardingSettingScreen(
     var showDatePickerDialog by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
     val buttonEnabled = remember(name, validateResult, birth) {
-        validateResult == TextFieldValidateResult.Default && birth.isNotEmpty()
+        validateResult == TextFieldValidateResult.Default && birth.isNotEmpty() && name.isNotEmpty()
     }
     var incomeSelected by remember { mutableStateOf(true) }
     val context = LocalContext.current
@@ -94,7 +94,7 @@ fun OnBoardingSettingScreen(
                     labelName = stringResource(id = name_text_field_label),
                     text = name,
                     placeholder = stringResource(id = name_text_field_placeholder),
-                    modifier = modifier,
+                    modifier = Modifier,
                     validateResult = validateResult,
                     onTextChange = {
                         name = it
