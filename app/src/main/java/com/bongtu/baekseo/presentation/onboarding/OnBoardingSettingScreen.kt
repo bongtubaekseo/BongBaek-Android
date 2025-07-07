@@ -110,7 +110,6 @@ fun OnBoardingSettingScreen(
                             TextFieldValidateResult.Default
                     },
                     isClearButtonEnabled = false,
-                    paddingValues = PaddingValues(0.dp),
                 )
 
                 LabelTextField(
@@ -126,7 +125,6 @@ fun OnBoardingSettingScreen(
                         },
                     isEditable = false,
                     isClearButtonEnabled = false,
-                    paddingValues = PaddingValues(0.dp),
                     visualTransformation = DateTextFieldFormat(),
                 )
 
