@@ -14,9 +14,11 @@
     <string name="record_card_list_year">%d년</string>
     <string name="record_card_list_month">%d월</string>
     <string name="record_card_cost">%,d원</string>
+    <string name="record_card_weekday">(%s)</string>
     <string name="record_empty_title">기록한 경조사가 없어요!</string>
     <string name="record_empty_description">지금 경조사를 기록하고\n상황에 어울리는 경조사비까지 추천받으세요</string>
     <string name="record_empty_button">지금 기록하기</string>
+    <string name="record_top_bar_delete_title">경조사 기록 삭제</string>
     <!--TextField    -->
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
     <!--BongBaekDatePicker    -->
