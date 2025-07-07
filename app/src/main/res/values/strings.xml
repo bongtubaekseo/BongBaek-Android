@@ -23,7 +23,8 @@
     <string name="onboarding_bottom_sheet_check_age">[필수] 만 14세 이상입니다</string>
     <string name="onboarding_bottom_sheet_check_service">[필수] 서비스 이용 약관 동의</string>
     <string name="onboarding_bottom_sheet_check_privacy">[필수] 개인정보 처리 방침 동의</string>
-    <string name="onboarding_title">경조사비 고민 끝,\n봉투백서에 오신 것을\n환영합니다!</string>
+    <string name="onboarding_title_primary">경조사비</string>
+    <string name="onboarding_title_white">&#160;고민 끝,\n봉투백서에 오신 것을\n환영합니다!</string>
     <string name="onboarding_description">3초 가입으로 바로 시작해보세요</string>
     <string name="onboarding_login_information">로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.</string>
     <string name="onboarding_personal_privacy">개인정보 처리방침</string>
