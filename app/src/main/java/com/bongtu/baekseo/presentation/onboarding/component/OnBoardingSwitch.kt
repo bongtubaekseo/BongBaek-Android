@@ -36,7 +36,7 @@ fun OnBoardingSwitch(
     val switchPadding = 1.dp
     val switchWidth = 54.dp
     val switchHeight = 28.dp
-    val switchSize = switchHeight - switchPadding * 2
+    val switchSize = remember { switchHeight - switchPadding * 2 }
 
     val targetOffset = if (checked) switchWidth - switchSize - switchPadding * 2 else 0.dp
 
