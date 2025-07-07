@@ -52,6 +52,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun OnBoardingRoute(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
@@ -68,6 +69,9 @@ fun OnBoardingRoute(
 
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
+                navigateToHome = {
+                    navigateToHome()
+                },
                 modifier = modifier,
             )
         }

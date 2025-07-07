@@ -13,10 +13,14 @@ fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) =
     navigate(OnBoarding, navOptions)
 
 fun NavGraphBuilder.onBoardingGraph(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<OnBoarding> {
         OnBoardingRoute(
+            navigateToHome = {
+                // TODO: 홈 화면으로 이동
+            },
             modifier = modifier,
         )
     }

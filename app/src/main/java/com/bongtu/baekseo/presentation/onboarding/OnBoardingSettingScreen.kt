@@ -54,6 +54,7 @@ import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
 
 @Composable
 fun OnBoardingSettingScreen(
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var name by remember { mutableStateOf("") }
@@ -220,7 +221,9 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = { },
+                onClick = {
+                    navigateToHome()
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -237,6 +240,8 @@ fun OnBoardingSettingScreen(
 @Composable
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
-        OnBoardingSettingScreen()
+        OnBoardingSettingScreen(
+            navigateToHome = {}
+        )
     }
 }
