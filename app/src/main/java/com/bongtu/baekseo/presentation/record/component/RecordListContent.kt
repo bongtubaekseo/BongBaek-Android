@@ -22,12 +22,12 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.string.record_card_list_cost
+import com.bongtu.baekseo.R.string.record_card_cost
+import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedCost
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.model.YearMonthEventItem
@@ -87,11 +87,10 @@ fun RecordListContent(
                         verticalAlignment = Alignment.CenterVertically,
                     ) {
                         Text(
-                            text = stringResource(record_card_list_cost, item.month),
+                            text = stringResource(record_card_list_month, item.month),
                             color = BongBaekTheme.colors.white,
                             style = BongBaekTheme.typography.titleSemiBold16,
-                            modifier = Modifier
-                                .padding(end = 12.dp),
+                            modifier = Modifier.padding(end = 12.dp),
                         )
                         HorizontalDivider(
                             thickness = 1.dp,
@@ -110,8 +109,7 @@ fun RecordListContent(
                             relationship = relationship,
                             eventDate = eventDate,
                             onCardClick = { onCardClick(eventId) },
-                            modifier = Modifier
-                                .padding(top = topPadding),
+                            modifier = Modifier.padding(top = topPadding),
                         )
                     }
                 }
@@ -171,21 +169,19 @@ private fun RecordCard(
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
             Text(
-                text = "${cost.toFormattedCost()}원",
+                text = stringResource(record_card_cost, cost),
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
         }
 
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BongBaekSmallBadge(
                 title = category,
-                modifier = Modifier
-                    .padding(end = 8.dp),
+                modifier = Modifier.padding(end = 8.dp),
             )
 
             BongBaekSmallBadge(
@@ -214,8 +210,7 @@ private fun RecordCard(
 private fun RecordContentPreview() {
     BongBaekTheme {
         RecordListContent(
-            modifier = Modifier
-                .background(color = BongBaekTheme.colors.gray900),
+            modifier = Modifier.background(color = BongBaekTheme.colors.gray900),
             recordEventList = listOf(
                 RecordEvent(
                     eventId = "eventId",
