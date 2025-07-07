@@ -94,27 +94,24 @@ class RecordViewModel @Inject constructor(
         )
     }
 
-    private fun updateRecordUiState(value: UiState<List<RecordEvent>>) {
+    private fun updateRecordUiState(value: UiState<List<RecordEvent>>) =
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
             )
         }
-    }
 
-    fun updateAttendType(attendType: AttendType) {
+    fun updateAttendType(attendType: AttendType) =
         _uiState.update { currentState ->
             currentState.copy(
                 attendType = attendType,
             )
         }
-    }
 
-    fun updateEventType(eventCategoryType: EventCategoryType) {
+    fun updateEventType(eventCategoryType: EventCategoryType) =
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
             )
         }
-    }
 }
