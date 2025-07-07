@@ -47,13 +47,15 @@ fun OnBoardingSwitch(
             easing = LinearOutSlowInEasing,
         ),
     )
+    val backgroundColor =
+        if (checked) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.gray400
 
     Box(
         modifier = modifier
             .width(switchWidth)
             .height(switchHeight)
             .clip(shape = CircleShape)
-            .background(if (checked) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.gray400)
+            .background(color = backgroundColor)
             .noRippleClickable {
                 onCheckedChange(!checked)
             },
