@@ -108,7 +108,7 @@ fun OnBoardingSettingScreen(
                                     name_text_field_error_length
                                 )
                             )
-                        else if (name.contains(Regex("[^a-zA-Z0-9가-힣]")))
+                        else if (name.contains(Regex("[^a-zA-Z0-9가-힣]"))) // TODO: Regex 객체 관리
                             TextFieldValidateResult.Error(
                                 errorMessage = context.getString(
                                     name_text_field_error_special_character
