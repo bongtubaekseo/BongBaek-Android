@@ -5,6 +5,11 @@
     <string name="home">홈</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
+    <string name="recommendation_intro_topbar">금액 추천 가이드</string>
+    <string name="recommendation_intro_title">경조사비,\n얼마가 적당할까요?</string>
+    <string name="recommendation_intro_description">내 상황에 딱 맞는 경조사비,\n지금 바로 알아보세요!</string>
+    <string name="recommendation_intro_privacy">개인정보 보호모드 작동 중</string>
+    <string name="recommendation_intro_start">금액추천 시작하기</string>
     <string name="recommendation_select">선택</string>
     <string name="recommendation_select_title">더 정확한 추천을 받고 싶다면?</string>
     <string name="recommendation_select_description">관계의 친밀도를 알려주시면\n더 정확한 정보를 받을 수 있어요</string>
