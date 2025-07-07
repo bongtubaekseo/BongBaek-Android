@@ -34,9 +34,7 @@ fun EventCategoryBar(
             val isSelected = type == selectedCategory
 
             if (index == 0) {
-                Spacer(
-                    modifier = Modifier.width(20.dp),
-                )
+                Spacer(modifier = Modifier.width(20.dp))
             }
 
             BongBaekFilterChip(
@@ -46,9 +44,7 @@ fun EventCategoryBar(
             )
 
             if (index == EventCategoryType.entries.lastIndex) {
-                Spacer(
-                    modifier = Modifier.width(20.dp),
-                )
+                Spacer(modifier = Modifier.width(20.dp))
             }
         }
     }
