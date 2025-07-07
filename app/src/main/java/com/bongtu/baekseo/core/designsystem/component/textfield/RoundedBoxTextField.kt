@@ -10,7 +10,6 @@ import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -43,8 +42,10 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  Rounded Text Field
  *
  *  @param text 입력값
- *  @param onTextChange 입력값 변경
  *  @param placeholder 힌트
+ *  @param isEditable write / read
+ *  @param onClick TextField 영역 전체 클릭
+ *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
  *  @param validateResult TextFieldValidateResult.Default / TextFieldValidateResult.Error
  */
@@ -52,11 +53,12 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun RoundedBoxTextField(
     text: String,
     placeholder: String,
-    onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isEditable: Boolean = true,
+    onClick: () -> Unit = {},
+    onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
-    paddingValues: PaddingValues = PaddingValues(horizontal = 20.dp),
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -81,7 +83,7 @@ fun RoundedBoxTextField(
 
     Column(
         modifier = modifier
-            .padding(paddingValues),
+            .noRippleClickable(onClick = onClick),
     ) {
         Box(
             modifier = Modifier
@@ -100,9 +102,11 @@ fun RoundedBoxTextField(
                 text = text,
                 onTextChange = onTextChange,
                 textColor = textColor,
+                textStyle = BongBaekTheme.typography.body1Medium16,
                 placeholder = placeholder,
                 placeholderColor = BongBaekTheme.colors.gray500,
-                textStyle = BongBaekTheme.typography.body1Medium16,
+                isReadOnly = !isEditable,
+                isEnabled = isEditable,
                 interactionSource = interactionSource,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
@@ -185,7 +189,8 @@ private fun RoundedBoxTextFieldPreview() {
                     TextFieldValidateResult.Error("2자 이상 입력해주세요.")
                 else
                     TextFieldValidateResult.Default
-            }
+            },
+            isEditable = false,
         )
     }
 }
