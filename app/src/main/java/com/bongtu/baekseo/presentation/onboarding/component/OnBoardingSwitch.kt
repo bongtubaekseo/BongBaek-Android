@@ -38,7 +38,9 @@ fun OnBoardingSwitch(
     val switchHeight = 28.dp
     val switchSize = remember { switchHeight - switchPadding * 2 }
 
-    val targetOffset = if (checked) switchWidth - switchSize - switchPadding * 2 else 0.dp
+    val targetOffset = remember(checked) {
+        if (checked) switchWidth - switchSize - switchPadding * 2 else 0.dp
+    }
 
     val animateSize by animateDpAsState(
         targetValue = targetOffset,
