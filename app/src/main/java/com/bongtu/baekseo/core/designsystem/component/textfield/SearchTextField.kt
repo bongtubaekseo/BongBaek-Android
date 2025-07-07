@@ -5,7 +5,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -44,7 +43,6 @@ fun SearchTextField(
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     onItemSelected: (() -> Unit)? = null,
-    paddingValues: PaddingValues = PaddingValues(horizontal = 20.dp),
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
@@ -65,7 +63,6 @@ fun SearchTextField(
 
     Row(
         modifier = modifier
-            .padding(paddingValues)
             .background(
                 color = BongBaekTheme.colors.gray750,
                 shape = roundedCornerShape,
@@ -114,7 +111,6 @@ private fun SearchTextFieldPreview() {
             text = "드롭다운 선택: 테스트 입력",
             color = Color.White,
             modifier = Modifier
-                .padding(horizontal = 20.dp)
                 .background(Color.DarkGray)
                 .padding(8.dp)
                 .noRippleClickable {
