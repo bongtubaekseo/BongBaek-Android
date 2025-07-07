@@ -43,7 +43,7 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.checkbox.BongBaekCheckBox
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.data.model.OnBoardingAgree
+import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,7 +69,7 @@ fun OnBoardingBottomSheet(
             topEnd = 10.dp,
         ),
     ) {
-        Box{
+        Box {
             OnBoardingBottomSheetAgreeContent(
                 items = items,
                 allChecked = allChecked,
@@ -166,7 +166,7 @@ private fun OnBoardingAgreeItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BongBaekCheckBox(
-            checked = item.isChecked,
+            isChecked = item.isChecked,
             onCheckedChange = onCheckedChange,
             checkBoxType = CheckBoxType.PRIMARY,
         )
