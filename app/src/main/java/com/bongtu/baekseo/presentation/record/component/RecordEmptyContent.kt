@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_record_empty
+import com.bongtu.baekseo.R.drawable.img_record_empty
 import com.bongtu.baekseo.R.string.record_empty_button
 import com.bongtu.baekseo.R.string.record_empty_description
 import com.bongtu.baekseo.R.string.record_empty_title
@@ -54,7 +54,7 @@ fun RecordEmptyContent(
         )
 
         Image(
-            painter = painterResource(ic_record_empty),
+            painter = painterResource(img_record_empty),
             contentDescription = null,
         )
 
