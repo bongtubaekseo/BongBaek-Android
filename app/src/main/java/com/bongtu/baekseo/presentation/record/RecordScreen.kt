@@ -1,50 +1,24 @@
 package com.bongtu.baekseo.presentation.record
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bongtu.baekseo.R.drawable.ic_delete
-import com.bongtu.baekseo.R.drawable.ic_plus
-import com.bongtu.baekseo.R.drawable.ic_record_empty
-import com.bongtu.baekseo.R.string.record_empty_button
-import com.bongtu.baekseo.R.string.record_empty_description
-import com.bongtu.baekseo.R.string.record_empty_title
-import com.bongtu.baekseo.R.string.record_top_bar_title
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.TopBarType
-import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
+import com.bongtu.baekseo.presentation.record.component.RecordEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
+import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import com.bongtu.baekseo.presentation.record.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import java.time.LocalDate
@@ -65,7 +39,8 @@ fun RecordRoute(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = viewModel::updateIsDeleting,
+        onDeleteButtonClick = viewModel::updateToDeletingMode,
+        onBackButtonClick = viewModel::updateToDefaultMode,
         modifier = modifier,
     )
 }
@@ -76,6 +51,7 @@ private fun RecordScreen(
     onTabClick: (AttendType) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
     onDeleteButtonClick: () -> Unit,
+    onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -83,39 +59,10 @@ private fun RecordScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900),
     ) {
-        BongBaekTopBar(
-            title = stringResource(record_top_bar_title),
-            topBarType = TopBarType.TRAILING_ICON,
-            trailingIcon = {
-                Row(
-                    modifier = Modifier,
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(ic_plus),
-                        contentDescription = null,
-                        modifier = Modifier
-                            .padding(14.dp)
-                            .size(20.dp),
-                        tint = BongBaekTheme.colors.gray400,
-                    )
-                    Icon(
-                        imageVector = ImageVector.vectorResource(ic_delete),
-                        contentDescription = null,
-                        tint = BongBaekTheme.colors.gray400,
-                        modifier = Modifier
-                            .padding(14.dp)
-                            .size(20.dp)
-                            .noRippleClickable {
-                                if (uiState.recordLoadState is UiState.Success) {
-                                    onDeleteButtonClick()
-                                }
-                            },
-                    )
-                }
-            },
-            modifier = Modifier
-                .padding(vertical = 8.dp),
+        RecordTopBar(
+            isDeleting = uiState.isDeleting,
+            onDeleteButtonClick = onDeleteButtonClick,
+            onBackButtonClick = onBackButtonClick,
         )
 
         AttendTypeTab(
@@ -130,7 +77,7 @@ private fun RecordScreen(
 
         when (uiState.recordLoadState) {
             is UiState.Empty -> {
-                RecordEmptyContent(modifier = Modifier.padding(top = 5.dp))
+                RecordEmptyContent()
             }
 
             is UiState.Failure -> {
@@ -146,65 +93,6 @@ private fun RecordScreen(
                     recordEventList = uiState.recordLoadState.data,
                     onCardClick = {},
                     isDeleting = uiState.isDeleting,
-                )
-            }
-        }
-    }
-}
-
-@Composable
-private fun RecordEmptyContent(
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = 60.dp, horizontal = 20.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-    ) {
-        Text(
-            text = stringResource(record_empty_title),
-            color = BongBaekTheme.colors.white,
-            style = BongBaekTheme.typography.headBold24,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 16.dp),
-        )
-        Text(
-            text = stringResource(record_empty_description),
-            color = BongBaekTheme.colors.gray400,
-            style = BongBaekTheme.typography.body2Regular14,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 32.dp),
-        )
-
-        Image(
-            painter = painterResource(ic_record_empty),
-            contentDescription = null,
-        )
-
-        Button(
-            modifier = Modifier.padding(top = 32.dp),
-            onClick = { },
-            shape = RoundedCornerShape(6.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BongBaekTheme.colors.primaryNormal,
-                contentColor = BongBaekTheme.colors.white,
-            ),
-            contentPadding = PaddingValues(
-                horizontal = 30.dp,
-                vertical = 8.dp,
-            ),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(record_empty_button),
-                    style = BongBaekTheme.typography.titleSemiBold16,
                 )
             }
         }
@@ -284,11 +172,12 @@ private fun RecordScreenPreview() {
                         ),
                     ),
                 ),
-                isDeleting = true,
+                isDeleting = false,
             ),
             onTabClick = {},
             onCategoryClick = {},
             onDeleteButtonClick = {},
+            onBackButtonClick = {},
             modifier = Modifier,
         )
     }

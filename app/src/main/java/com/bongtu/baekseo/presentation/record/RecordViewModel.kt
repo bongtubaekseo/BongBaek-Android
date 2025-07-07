@@ -115,10 +115,21 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateIsDeleting() =
-        _uiState.update { currentState ->
-            currentState.copy(
-                isDeleting = !currentState.isDeleting
+    fun updateToDeletingMode() {
+        if (_uiState.value.recordLoadState !is UiState.Success) return
+
+        _uiState.update {
+            it.copy(
+                isDeleting = true,
+            )
+        }
+    }
+
+    fun updateToDefaultMode() =
+        _uiState.update {
+            it.copy(
+                isDeleting = false,
+                selectedEventIds = emptySet()
             )
         }
 }
