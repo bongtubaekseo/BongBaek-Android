@@ -81,14 +81,16 @@ fun BongBaekDatePickerDialog(
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = true,
+            usePlatformDefaultWidth = false
         ),
     ) {
         Card(
+            modifier = Modifier.padding(horizontal = 20.dp),
             shape = RoundedCornerShape(10.dp),
         ) {
             Column(
                 modifier = modifier
-                    .wrapContentSize()
+                    .fillMaxWidth()
                     .background(color = BongBaekTheme.colors.gray750)
                     .padding(20.dp),
             ) {

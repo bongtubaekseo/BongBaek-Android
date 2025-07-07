@@ -136,23 +136,6 @@ fun OnBoardingSettingScreen(
                     visualTransformation = DateTextFieldFormat(),
                 )
 
-                if (showDatePickerDialog) {
-                    BongBaekDatePickerDialog(
-                        datePickerDialogType = DatePickerDialogType.BIRTH,
-                        value = dialogBirth,
-                        onValueChange = {
-                            dialogBirth = it
-                        },
-                        onDismissRequest = {
-                            showDatePickerDialog = false
-                        },
-                        onConfirmClick = {
-                            showDatePickerDialog = false
-                            birth = dialogBirth
-                        },
-                    )
-                }
-
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -231,6 +214,23 @@ fun OnBoardingSettingScreen(
                         bottom = 38.dp,
                     ),
                 enabled = buttonEnabled,
+            )
+        }
+
+        if (showDatePickerDialog) {
+            BongBaekDatePickerDialog(
+                datePickerDialogType = DatePickerDialogType.BIRTH,
+                value = dialogBirth,
+                onValueChange = {
+                    dialogBirth = it
+                },
+                onDismissRequest = {
+                    showDatePickerDialog = false
+                },
+                onConfirmClick = {
+                    showDatePickerDialog = false
+                    birth = dialogBirth
+                },
             )
         }
     }
