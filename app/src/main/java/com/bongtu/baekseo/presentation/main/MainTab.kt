@@ -12,6 +12,7 @@ import com.bongtu.baekseo.R.string.record
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.dummy.navigation.Dummy
+import com.bongtu.baekseo.presentation.record.navigation.Record
 
 enum class MainTab(
     @DrawableRes val iconRes: Int,
@@ -31,7 +32,7 @@ enum class MainTab(
     RECORD(
         iconRes = ic_pen,
         title = record,
-        route = Dummy,
+        route = Record,
     );
 
     companion object {

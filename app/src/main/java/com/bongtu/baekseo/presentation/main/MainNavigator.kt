@@ -9,6 +9,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.dummy.navigation.Dummy
+import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 
 class MainNavigator(
     val navController: NavHostController,
@@ -27,7 +28,7 @@ class MainNavigator(
     fun navigate(tab: MainTab) {
         val navOptions = navOptions {
             navController.currentDestination?.route?.let {
-                popUpTo(it){
+                popUpTo(it) {
                     saveState = true
                 }
             }
@@ -36,9 +37,9 @@ class MainNavigator(
         }
 
         when (tab) {
-            MainTab.HOME -> { }
-            MainTab.RECOMMEND -> { }
-            MainTab.RECORD -> { }
+            MainTab.HOME -> {}
+            MainTab.RECOMMEND -> {}
+            MainTab.RECORD -> navController.navigateToRecord(navOptions = navOptions)
         }
     }
 

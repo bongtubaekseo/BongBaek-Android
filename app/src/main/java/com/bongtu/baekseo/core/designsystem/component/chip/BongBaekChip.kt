@@ -23,13 +23,13 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *
  * 경조사 filtering 하기 위한 component
  *
- * @param event - 경조사 종류
+ * @param eventLabel - 경조사 종류 label
  * @param isSelected - 선택 여부
  * @param onClick - click event
  */
 @Composable
 fun BongBaekFilterChip(
-    event: EventType,
+    eventLabel: String,
     isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -56,7 +56,7 @@ fun BongBaekFilterChip(
         contentAlignment = Alignment.Center,
     ) {
         Text(
-            text = event.label,
+            text = eventLabel,
             style = BongBaekTheme.typography.body1Medium16,
             color = textColor,
         )
@@ -110,12 +110,12 @@ private fun BongBaekChipFilterPreview() {
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             BongBaekFilterChip(
-                event = EventType.WEDDING,
+                eventLabel = EventType.WEDDING.label,
                 isSelected = true,
                 onClick = { },
             )
             BongBaekFilterChip(
-                event = EventType.WEDDING,
+                eventLabel = EventType.WEDDING.label,
                 isSelected = false,
                 onClick = { },
             )

@@ -10,6 +10,10 @@
     <string name="recommendation_select_description">관계의 친밀도를 알려주시면\n더 정확한 정보를 받을 수 있어요</string>
     <!--Record    -->
     <string name="record">기록하기</string>
+    <string name="record_top_bar_title">경조사 전체 기록</string>
+    <string name="record_card_list_year">%d년</string>
+    <string name="record_card_list_month">%d월</string>
+    <string name="record_card_cost">%,d원</string>
     <!--TextField    -->
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
     <string name="name_text_field_error_length">2자 이상 10자 이내로 입력해주세요</string>
