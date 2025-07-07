@@ -9,8 +9,9 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
+import com.bongtu.baekseo.presentation.main.component.MainBottomBar
+import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -53,5 +54,7 @@ private fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         dummyGraph(modifier = modifier)
+
+        recordGraph(modifier = modifier)
     }
 }
