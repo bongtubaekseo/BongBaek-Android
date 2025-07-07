@@ -33,7 +33,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun RelationSelector(
+fun RecommendRelationSelector(
     selectedRelation: RelationType?,
     onRelationSelect: (RelationType) -> Unit,
     modifier: Modifier = Modifier,
@@ -123,11 +123,11 @@ private fun RelationSelectorItem(
 
 @Preview
 @Composable
-private fun RelationSelectorPreview() {
+private fun RecommendRelationSelectorPreview() {
     BongBaekTheme {
         var selectedRelation by remember { mutableStateOf<RelationType?>(null) }
 
-        RelationSelector(
+        RecommendRelationSelector(
             selectedRelation = selectedRelation,
             onRelationSelect = { selectedRelation = it },
             modifier = Modifier

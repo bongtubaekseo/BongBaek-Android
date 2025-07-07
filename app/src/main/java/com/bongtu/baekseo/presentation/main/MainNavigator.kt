@@ -9,6 +9,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.dummy.navigation.Dummy
+import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 
 class MainNavigator(
@@ -18,7 +19,7 @@ class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Dummy
+    val startDestination = OnBoarding
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
