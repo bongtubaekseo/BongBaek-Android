@@ -147,6 +147,7 @@ private fun OnBoardingBottomSheetAgreeContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 40.dp),
+            enabled = allChecked,
         )
     }
 }
@@ -268,7 +269,7 @@ private fun OnBoardingBottomSheetPreview() {
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
-    var showBottomSheet by remember { mutableStateOf(true) }
+    val showBottomSheet by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         if (showBottomSheet) {
