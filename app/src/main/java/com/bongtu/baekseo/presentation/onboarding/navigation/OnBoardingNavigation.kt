@@ -18,9 +18,7 @@ fun NavGraphBuilder.onBoardingGraph(
 ) {
     composable<OnBoarding> {
         OnBoardingRoute(
-            navigateToHome = {
-                // TODO: 홈 화면으로 이동
-            },
+            navigateToHome = navigateToHome,
             modifier = modifier,
         )
     }

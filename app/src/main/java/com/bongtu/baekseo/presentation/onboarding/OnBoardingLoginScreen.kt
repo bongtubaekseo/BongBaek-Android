@@ -69,9 +69,7 @@ fun OnBoardingRoute(
 
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
-                navigateToHome = {
-                    navigateToHome()
-                },
+                navigateToHome = navigateToHome,
                 modifier = modifier,
             )
         }
