@@ -5,6 +5,9 @@
     <string name="home">홈</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
+    <string name="recommendation_select">선택</string>
+    <string name="recommendation_select_title">더 정확한 추천을 받고 싶다면?</string>
+    <string name="recommendation_select_description">관계의 친밀도를 알려주시면\n더 정확한 정보를 받을 수 있어요</string>
     <!--Record    -->
     <string name="record">기록하기</string>
     <!--TextField    -->

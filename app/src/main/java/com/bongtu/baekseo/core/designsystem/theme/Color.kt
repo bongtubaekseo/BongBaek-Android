@@ -20,6 +20,7 @@ val primaryNormal = Color(0xFF6E7FFF)
 val primaryStrong = Color(0xFF502EFF)
 val primaryLight = Color(0xFFDFDCFB)
 val primaryGradient = Color(0xFF807FFF)
+val primaryBackground = Color(0x1A6E7FFF)
 
 // Secondary
 val secondaryRed = Color(0xFFFF9AA7)
@@ -43,6 +44,7 @@ val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
 val transparent = Color(0x00000000)
 val kakaoYellow = Color(0xFFFEE500)
+val gradientSlider = Color(0xFF8B5CF6)
 
 @Immutable
 data class BongBaekColors(
@@ -50,6 +52,7 @@ data class BongBaekColors(
     val primaryStrong: Color,
     val primaryLight: Color,
     val primaryGradient: Color,
+    val primaryBackground: Color,
     val secondaryRed: Color,
     val gray900: Color,
     val gray850: Color,
@@ -67,6 +70,7 @@ data class BongBaekColors(
     val black: Color,
     val transparent: Color,
     val kakaoYellow: Color,
+    val gradientSlider: Color,
 )
 
 val defaultBongBaekColors = BongBaekColors(
@@ -74,6 +78,7 @@ val defaultBongBaekColors = BongBaekColors(
     primaryStrong = primaryStrong,
     primaryLight = primaryLight,
     primaryGradient = primaryGradient,
+    primaryBackground = primaryBackground,
     secondaryRed = secondaryRed,
     gray900 = gray900,
     gray850 = gray850,
@@ -91,6 +96,7 @@ val defaultBongBaekColors = BongBaekColors(
     black = black,
     transparent = transparent,
     kakaoYellow = kakaoYellow,
+    gradientSlider = gradientSlider,
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
@@ -105,6 +111,7 @@ private fun BongBaekColorsPreview() {
                 colors.primaryStrong,
                 colors.primaryLight,
                 colors.primaryGradient,
+                colors.primaryBackground,
                 colors.secondaryRed,
                 colors.gray900,
                 colors.gray850,
@@ -122,6 +129,7 @@ private fun BongBaekColorsPreview() {
                 colors.black,
                 colors.transparent,
                 colors.kakaoYellow,
+                colors.gradientSlider,
             ).forEach { color ->
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp),
