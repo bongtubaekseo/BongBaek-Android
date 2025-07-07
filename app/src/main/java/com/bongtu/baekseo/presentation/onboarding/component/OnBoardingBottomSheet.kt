@@ -191,9 +191,7 @@ private fun OnBoardingAgreeItem(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_arrow_right),
                 contentDescription = null,
-                modifier = Modifier.noRippleClickable {
-                    onIconClick()
-                },
+                modifier = Modifier.noRippleClickable(onClick = onIconClick),
                 tint = BongBaekTheme.colors.gray400,
             )
         }
