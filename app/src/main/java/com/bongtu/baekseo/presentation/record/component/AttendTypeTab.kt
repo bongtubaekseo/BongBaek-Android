@@ -60,7 +60,7 @@ fun AttendTypeTab(
                         TabStyle(
                             textColor = color.white,
                             textStyle = typography.titleSemiBold16,
-                            backgroundColor = color.primaryNormal.copy(alpha = 0.1f),
+                            backgroundColor = color.primaryBackground,
                             lineColor = color.primaryNormal,
                         )
                     } else {
