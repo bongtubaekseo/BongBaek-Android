@@ -17,6 +17,10 @@
     <!--TextField    -->
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
     <string name="name_text_field_error_length">2자 이상 10자 이내로 입력해주세요</string>
+    <string name="name_text_field_label">이름</string>
+    <string name="name_text_field_placeholder">이름을 입력해주세요</string>
+    <string name="birth_text_field_label">생년월일</string>
+    <string name="birth_text_field_placeholder">생년월일을 입력해주세요</string>
     <string name="name_text_field_error_special_character">특수문자는 기입할 수 없어요</string>
     <!--BongBaekDatePicker    -->
     <string name="date_picker_description_birth">생년월일을 입력해주세요</string>
@@ -26,6 +30,12 @@
     <string name="date_picker_cancel">cancel</string>
     <string name="date_picker_ok">ok</string>
     <string name="date_picker_error">유효한 날짜 형식이 아닙니다</string>
+    <!--Button    -->
+    <string name="button_kakao">카카오 로그인</string>
+    <string name="button_next">다음</string>
+    <string name="button_start_service">봉투백서 시작하기</string>
+    <!--TopBar    -->
+    <string name="topbar_profile_setting">프로필 설정</string>
     <!--OnBoarding    -->
     <string name="onboarding_bottom_sheet_description">앱 사용을 위해 약관에 동의해주세요.\n서비스 이용에 필수적인 약관들이에요.</string>
     <string name="onboarding_bottom_sheet_check_all">서비스 이용 약관 전체 동의</string>
@@ -41,4 +51,6 @@
     <string name="onboarding_profile_setting">프로필 설정</string>
     <string name="onboarding_income">현재 수입 있음</string>
     <string name="onboarding_income_question">현재 수입은 어느 정도인가요?</string>
+    <string name="onboarding_button_income_down">월 200만원 미만</string>
+    <string name="onboarding_button_income_up">월 200만원 이상</string>
 </resources>
