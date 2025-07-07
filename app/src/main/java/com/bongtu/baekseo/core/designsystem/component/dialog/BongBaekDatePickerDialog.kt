@@ -81,7 +81,7 @@ fun BongBaekDatePickerDialog(
         properties = DialogProperties(
             dismissOnBackPress = true,
             dismissOnClickOutside = true,
-            usePlatformDefaultWidth = false
+            usePlatformDefaultWidth = false,
         ),
     ) {
         Card(
@@ -173,7 +173,6 @@ fun BongBaekDatePickerDialog(
                             .noRippleClickable {
                                 if (isValid) {
                                     onDismissRequest()
-                                    // TODO: ok 클릭 시 이벤트 구현
                                     onConfirmClick()
                                 }
                             },
