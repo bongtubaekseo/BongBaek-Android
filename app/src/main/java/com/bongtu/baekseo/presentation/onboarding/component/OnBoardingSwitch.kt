@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.onboarding.component
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -76,10 +75,8 @@ fun OnBoardingSwitch(
                     .size(switchSize)
                     .clip(shape = CircleShape)
                     .border(
-                        BorderStroke(
-                            width = 0.89.dp,
-                            color = BongBaekTheme.colors.gray100,
-                        ),
+                        width = 1.dp,
+                        color = BongBaekTheme.colors.gray100,
                         shape = CircleShape,
                     )
                     .background(color = BongBaekTheme.colors.white),
