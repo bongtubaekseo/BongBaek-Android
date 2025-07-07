@@ -1,17 +1,35 @@
 package com.bongtu.baekseo.presentation.record
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bongtu.baekseo.R.drawable.ic_delete
+import com.bongtu.baekseo.R.drawable.ic_plus
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
+import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
+import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
+import com.bongtu.baekseo.presentation.record.component.RecordListContent
+import com.bongtu.baekseo.presentation.record.type.AttendType
+import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 
 @Composable
 fun RecordRoute(
@@ -26,6 +44,8 @@ fun RecordRoute(
 
     RecordScreen(
         uiState = uiState,
+        onTabClick = viewModel::updateAttendType,
+        onCategoryClick = viewModel::updateEventType,
         modifier = modifier,
     )
 }
@@ -33,12 +53,55 @@ fun RecordRoute(
 @Composable
 private fun RecordScreen(
     uiState: RecordState,
+    onTabClick: (AttendType) -> Unit,
+    onCategoryClick: (EventCategoryType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize(),
+            .fillMaxSize()
+            .background(color = BongBaekTheme.colors.gray900),
     ) {
+        BongBaekTopBar(
+            title = "경조사 전체 기록",
+            topBarType = TopBarType.TRAILING_ICON,
+            trailingIcon = {
+                Row(
+                    modifier = Modifier,
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_plus),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(14.dp)
+                            .size(20.dp),
+                        tint = BongBaekTheme.colors.gray400,
+                    )
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_delete),
+                        contentDescription = null,
+                        modifier = Modifier
+                            .padding(14.dp)
+                            .size(20.dp),
+                        tint = BongBaekTheme.colors.gray400,
+                    )
+                }
+            },
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+        )
+
+        AttendTypeTab(
+            selectedTab = uiState.attendType,
+            onTabClick = onTabClick,
+        )
+
+        EventCategoryBar(
+            selectedCategory = uiState.eventCategoryType,
+            onCategoryClick = onCategoryClick,
+        )
+
         when (uiState.recordLoadState) {
             is UiState.Empty -> {
                 // 빈 상태 화면
@@ -53,7 +116,10 @@ private fun RecordScreen(
             }
 
             is UiState.Success -> {
-
+                RecordListContent(
+                    recordEventList = uiState.recordLoadState.data,
+                    onCardClick = {},
+                )
             }
         }
     }
@@ -63,6 +129,10 @@ private fun RecordScreen(
 @Composable
 private fun RecordScreenPreview() {
     BongBaekTheme {
-        RecordRoute()
+        RecordScreen(
+            uiState = RecordState(),
+            onTabClick = {},
+            onCategoryClick = {},
+        )
     }
 }

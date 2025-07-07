@@ -2,11 +2,11 @@ package com.bongtu.baekseo.presentation.record
 
 import androidx.lifecycle.ViewModel
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.data.model.Event
-import com.bongtu.baekseo.data.model.EventInfo
-import com.bongtu.baekseo.data.model.HostInfo
+import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.data.repository.DummyRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
+import com.bongtu.baekseo.presentation.record.type.AttendType
+import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,63 +22,98 @@ class RecordViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun fetchRecordEvent() {
-        TODO("서버 통신 연결")
+        // TODO("서버 통신 연결")
         updateRecordUiState(
             value = UiState.Success(
                 listOf(
-                    Event(
-                        eventId = 1,
-                        host = HostInfo(name = "username", nickname = "nickname"),
-                        event = EventInfo(
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            amount = 10000,
-                            isAttend = true,
-                            date = LocalDate.now(),
-                        ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2025, 5, 4),
                     ),
-                    Event(
-                        eventId = 1,
-                        host = HostInfo(name = "username", nickname = "nickname"),
-                        event = EventInfo(
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            amount = 10000,
-                            isAttend = true,
-                            date = LocalDate.now(),
-                        ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2025, 5, 2),
                     ),
-                    Event(
-                        eventId = 1,
-                        host = HostInfo(name = "username", nickname = "nickname"),
-                        event = EventInfo(
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            amount = 10000,
-                            isAttend = true,
-                            date = LocalDate.now(),
-                        ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2025, 4, 10),
                     ),
-                    Event(
-                        eventId = 1,
-                        host = HostInfo(name = "username", nickname = "nickname"),
-                        event = EventInfo(
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            amount = 10000,
-                            isAttend = true,
-                            date = LocalDate.now(),
-                        ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2025, 2, 23),
+                    ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2024, 6, 8),
+                    ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2024, 5, 24),
+                    ),
+                    RecordEvent(
+                        eventId = "eventId",
+                        hostName = "username",
+                        hostNickName = "nickname",
+                        category = "경조사 유형",
+                        relationship = "관계",
+                        cost = 10000,
+                        eventDate = LocalDate.of(2023, 2, 4),
                     ),
                 )
             )
         )
     }
 
-    private fun updateRecordUiState(value: UiState<List<Event>>) {
+    private fun updateRecordUiState(value: UiState<List<RecordEvent>>) {
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
+            )
+        }
+    }
+
+    fun updateAttendType(attendType: AttendType) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                attendType = attendType,
+            )
+        }
+    }
+
+    fun updateEventType(eventCategoryType: EventCategoryType) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                eventCategoryType = eventCategoryType,
             )
         }
     }

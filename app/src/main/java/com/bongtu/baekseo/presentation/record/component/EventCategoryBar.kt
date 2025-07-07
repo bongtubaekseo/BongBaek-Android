@@ -24,7 +24,7 @@ fun EventCategoryBar(
 ) {
     LazyRow(
         modifier = modifier
-            .padding(vertical = 20.dp)
+            .padding(vertical = 16.dp)
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
