@@ -63,7 +63,8 @@ fun OnBoardingBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier
             .fillMaxWidth()
-            .wrapContentHeight(),
+            .wrapContentHeight()
+            .navigationBarsPadding(),
         dragHandle = null,
         sheetState = sheetState,
         shape = RoundedCornerShape(
@@ -79,8 +80,7 @@ fun OnBoardingBottomSheet(
             onNextClick = onNextClick,
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
-                .navigationBarsPadding(),
+                .wrapContentHeight(),
         )
     }
 }
