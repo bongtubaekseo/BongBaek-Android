@@ -12,6 +12,9 @@
     <string name="recommendation_name_placeholder">이름을 적어주세요</string>
     <string name="recommendation_nickname_placeholder">별명을 적어주세요</string>
     <string name="recommendation_date_title">행사 날짜를 알려주세요</string>
+    <string name="recommendation_participation_title">참석 여부</string>
+    <string name="recommendation_participation_yes">예</string>
+    <string name="recommendation_participation_no">아니오</string>
     <!--Record    -->
     <string name="record">기록하기</string>
     <!--TextField    -->
