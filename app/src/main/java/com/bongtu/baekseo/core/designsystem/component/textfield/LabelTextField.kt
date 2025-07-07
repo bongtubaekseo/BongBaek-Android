@@ -9,7 +9,6 @@ import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -65,7 +64,6 @@ fun LabelTextField(
     onInputDone: (() -> Unit)? = null,
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     isClearButtonEnabled: Boolean = true,
-    paddingValues: PaddingValues = PaddingValues(horizontal = 20.dp),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -89,8 +87,7 @@ fun LabelTextField(
     }
 
     Column(
-        modifier = modifier
-            .padding(paddingValues),
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier.padding(bottom = 12.dp),
