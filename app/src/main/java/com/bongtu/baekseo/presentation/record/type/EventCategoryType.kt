@@ -9,5 +9,5 @@ enum class EventCategoryType(
     WEDDING(label = EventType.WEDDING.label),
     FUNERAL(label = EventType.FUNERAL.label),
     FIRST_BD(label = EventType.FIRST_BD.label),
-    BIRTHDAY(label = EventType.ANNIVERSARY.label); // TODO: 생일 변경 예정
+    BIRTHDAY(label = EventType.BIRTHDAY.label);
 }
