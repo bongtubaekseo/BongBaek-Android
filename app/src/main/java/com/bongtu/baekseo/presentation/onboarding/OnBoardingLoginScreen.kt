@@ -157,6 +157,7 @@ fun OnBoardingLoginScreen(
                         Icon(
                             imageVector = ImageVector.vectorResource(ic_kakao),
                             contentDescription = null,
+                            tint = BongBaekTheme.colors.transparent,
                         )
                     },
                 )
