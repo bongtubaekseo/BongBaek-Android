@@ -32,6 +32,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_kakao
+import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_service
@@ -139,7 +140,7 @@ fun OnBoardingLoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             BongBaekButton(
-                title = "카카오 로그인",
+                title = stringResource(id = button_kakao),
                 onClick = {
                     isBottomSheetVisible = true
                 },

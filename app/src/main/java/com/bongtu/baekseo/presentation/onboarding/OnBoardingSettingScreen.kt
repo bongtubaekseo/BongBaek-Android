@@ -6,7 +6,6 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -27,10 +26,18 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
+import com.bongtu.baekseo.R.string.birth_text_field_label
+import com.bongtu.baekseo.R.string.birth_text_field_placeholder
+import com.bongtu.baekseo.R.string.button_start_service
 import com.bongtu.baekseo.R.string.name_text_field_error_length
 import com.bongtu.baekseo.R.string.name_text_field_error_special_character
+import com.bongtu.baekseo.R.string.name_text_field_label
+import com.bongtu.baekseo.R.string.name_text_field_placeholder
+import com.bongtu.baekseo.R.string.onboarding_button_income_down
+import com.bongtu.baekseo.R.string.onboarding_button_income_up
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
+import com.bongtu.baekseo.R.string.topbar_profile_setting
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -71,7 +78,7 @@ fun OnBoardingSettingScreen(
             .background(color = BongBaekTheme.colors.gray900),
     ) {
         BongBaekTopBar(
-            title = "프로필 설정",
+            title = stringResource(id = topbar_profile_setting),
             topBarType = TopBarType.TEXT_ONLY_START,
         )
 
@@ -84,9 +91,9 @@ fun OnBoardingSettingScreen(
             Column {
                 LabelTextField(
                     labelImage = ic_person,
-                    labelName = "이름",
+                    labelName = stringResource(id = name_text_field_label),
                     text = name,
-                    placeholder = "이름을 입력해주세요",
+                    placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = modifier,
                     validateResult = validateResult,
                     onTextChange = {
@@ -114,9 +121,9 @@ fun OnBoardingSettingScreen(
 
                 LabelTextField(
                     labelImage = ic_calendar,
-                    labelName = "생년월일",
+                    labelName = stringResource(id = birth_text_field_label),
                     text = birth,
-                    placeholder = "생년월일을 입력해주세요",
+                    placeholder = stringResource(id = birth_text_field_placeholder),
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
@@ -191,7 +198,7 @@ fun OnBoardingSettingScreen(
                         )
 
                         OnBoardingButton(
-                            title = "월 200만원 미만",
+                            title = stringResource(id = onboarding_button_income_down),
                             selected = incomeSelected,
                             onClick = {
                                 if (!incomeSelected) incomeSelected = true
@@ -200,7 +207,7 @@ fun OnBoardingSettingScreen(
                         )
 
                         OnBoardingButton(
-                            title = "월 200만원 이상",
+                            title = stringResource(id = onboarding_button_income_up),
                             selected = !incomeSelected,
                             onClick = {
                                 if (incomeSelected) incomeSelected = false
@@ -212,7 +219,7 @@ fun OnBoardingSettingScreen(
             }
 
             BongBaekButton(
-                title = "봉투백서 시작하기",
+                title = stringResource(id = button_start_service),
                 onClick = { },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier

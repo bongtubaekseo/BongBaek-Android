@@ -34,6 +34,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
+import com.bongtu.baekseo.R.string.button_next
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_all
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
@@ -141,7 +142,7 @@ private fun OnBoardingBottomSheetAgreeContent(
         }
 
         BongBaekButton(
-            title = "다음",
+            title = stringResource(id = button_next),
             onClick = onNextClick,
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier
