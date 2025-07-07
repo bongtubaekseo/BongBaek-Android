@@ -84,7 +84,7 @@ fun RecommendOptionCard(
 
         BongBaekCheckBox(
             isChecked = isChecked,
-            onClick = onCheckBoxClick,
+            onCheckedChange = onCheckBoxClick,
             checkBoxType = CheckBoxType.GRAY,
         )
     }

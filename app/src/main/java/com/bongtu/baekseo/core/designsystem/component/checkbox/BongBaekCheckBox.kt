@@ -30,13 +30,13 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  * 온보딩과 금액 추천에서 사용하는 component
  *
  * @param isChecked - 선택 여부
- * @param onClick - click event
+ * @param onCheckedChange - click event
  * @param checkBoxType - check box 타입 (CheckBoxType.PRIMARY, CheckBoxType.GRAY)
  */
 @Composable
 fun BongBaekCheckBox(
     isChecked: Boolean,
-    onClick: (Boolean) -> Unit,
+    onCheckedChange: (Boolean) -> Unit,
     checkBoxType: CheckBoxType,
     modifier: Modifier = Modifier,
 ) {
@@ -44,7 +44,7 @@ fun BongBaekCheckBox(
 
     Box(
         modifier = modifier.noRippleClickable {
-            onClick(!isChecked)
+            onCheckedChange(!isChecked)
         },
     ) {
         AnimatedVisibility(
@@ -85,14 +85,14 @@ private fun BongBaekCheckBoxPreview() {
         ) {
             BongBaekCheckBox(
                 isChecked = isChecked,
-                onClick = {
+                onCheckedChange = {
                     isChecked = it
                 },
                 checkBoxType = CheckBoxType.PRIMARY,
             )
             BongBaekCheckBox(
                 isChecked = isChecked,
-                onClick = {
+                onCheckedChange = {
                     isChecked = it
                 },
                 checkBoxType = CheckBoxType.GRAY,
