@@ -67,7 +67,6 @@ fun RecommendIntroScreen(
                 )
             },
             modifier = Modifier
-                .fillMaxWidth()
                 .statusBarsPadding(),
         )
 
