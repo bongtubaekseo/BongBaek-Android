@@ -72,7 +72,6 @@ fun OnBoardingBottomSheet(
             topStart = 10.dp,
             topEnd = 10.dp,
         ),
-        contentWindowInsets = { WindowInsets(0) },
     ) {
         OnBoardingBottomSheetAgreeContent(
             items = items,
