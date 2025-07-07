@@ -82,7 +82,7 @@ fun OnBoardingLoginScreen(
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var allChecked by remember { mutableStateOf(false) }
+    val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
@@ -192,16 +192,14 @@ fun OnBoardingLoginScreen(
     if (isBottomSheetVisible) {
         OnBoardingBottomSheet(
             items = items,
-            allChecked = allChecked,
+            checkedStates = checkedStates,
             onAllCheckedChange = { checked ->
-                allChecked = checked
-                items.forEachIndexed { index, _ ->
-                    items[index] = items[index].copy(isChecked = checked)
+                checkedStates.indices.forEach { index ->
+                    checkedStates[index] = checked
                 }
             },
             onItemCheckedChange = { index, checked ->
-                items[index] = items[index].copy(isChecked = checked)
-                allChecked = items.all { it.isChecked }
+                checkedStates[index] = checked
             },
             onNextClick = {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {

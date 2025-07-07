@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -53,7 +51,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun OnBoardingBottomSheet(
     items: List<OnBoardingAgree>,
-    allChecked: Boolean,
+    checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
     onNextClick: () -> Unit,
@@ -75,7 +73,7 @@ fun OnBoardingBottomSheet(
     ) {
         OnBoardingBottomSheetAgreeContent(
             items = items,
-            allChecked = allChecked,
+            checkedStates = checkedStates,
             onAllCheckedChange = onAllCheckedChange,
             onItemCheckedChange = onItemCheckedChange,
             onNextClick = onNextClick,
@@ -90,12 +88,13 @@ fun OnBoardingBottomSheet(
 @Composable
 private fun OnBoardingBottomSheetAgreeContent(
     items: List<OnBoardingAgree>,
-    allChecked: Boolean,
+    checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
     onNextClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isAllChecked = checkedStates.all { it }
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray750)
@@ -115,8 +114,8 @@ private fun OnBoardingBottomSheetAgreeContent(
                 titleRes = onboarding_bottom_sheet_check_all,
                 isDescription = true,
                 isArrowVisible = false,
-                isChecked = allChecked,
             ),
+            isChecked = isAllChecked,
             onCheckedChange = onAllCheckedChange,
         )
 
@@ -131,6 +130,7 @@ private fun OnBoardingBottomSheetAgreeContent(
         items.forEachIndexed { index, item ->
             OnBoardingAgreeItem(
                 item = item,
+                isChecked = checkedStates[index],
                 onCheckedChange = { checked ->
                     onItemCheckedChange(index, checked)
                 },
@@ -147,7 +147,7 @@ private fun OnBoardingBottomSheetAgreeContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 40.dp),
-            enabled = allChecked,
+            enabled = isAllChecked,
         )
     }
 }
@@ -155,6 +155,7 @@ private fun OnBoardingBottomSheetAgreeContent(
 @Composable
 private fun OnBoardingAgreeItem(
     item: OnBoardingAgree,
+    isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     onIconClick: () -> Unit = {},
@@ -172,7 +173,7 @@ private fun OnBoardingAgreeItem(
         verticalAlignment = Alignment.CenterVertically,
     ) {
         BongBaekCheckBox(
-            isChecked = item.isChecked,
+            isChecked = isChecked,
             onCheckedChange = onCheckedChange,
             checkBoxType = CheckBoxType.PRIMARY,
         )
@@ -200,7 +201,8 @@ private fun OnBoardingAgreeItem(
 @Preview
 @Composable
 private fun OnBoardingBottomSheetAgreeContentPreview() {
-    var allChecked by remember { mutableStateOf(false) }
+    val checkedStates = remember { mutableStateListOf(false, false, false) }
+
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
@@ -224,16 +226,14 @@ private fun OnBoardingBottomSheetAgreeContentPreview() {
     BongBaekTheme {
         OnBoardingBottomSheetAgreeContent(
             items = items,
-            allChecked = allChecked,
+            checkedStates = checkedStates,
             onAllCheckedChange = { checked ->
-                allChecked = checked
-                items.forEachIndexed { index, _ ->
-                    items[index] = items[index].copy(isChecked = checked)
+                checkedStates.indices.forEach { index ->
+                    checkedStates[index] = checked
                 }
             },
             onItemCheckedChange = { index, checked ->
-                items[index] = items[index].copy(isChecked = checked)
-                allChecked = items.all { it.isChecked }
+                checkedStates[index] = checked
             },
             onNextClick = {},
         )
@@ -244,7 +244,7 @@ private fun OnBoardingBottomSheetAgreeContentPreview() {
 @Preview
 @Composable
 private fun OnBoardingBottomSheetPreview() {
-    var allChecked by remember { mutableStateOf(false) }
+    val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
@@ -273,16 +273,14 @@ private fun OnBoardingBottomSheetPreview() {
         if (showBottomSheet) {
             OnBoardingBottomSheet(
                 items = items,
-                allChecked = allChecked,
+                checkedStates = checkedStates,
                 onAllCheckedChange = { checked ->
-                    allChecked = checked
-                    items.forEachIndexed { index, _ ->
-                        items[index] = items[index].copy(isChecked = checked)
+                    checkedStates.indices.forEach { index ->
+                        checkedStates[index] = checked
                     }
                 },
                 onItemCheckedChange = { index, checked ->
-                    items[index] = items[index].copy(isChecked = checked)
-                    allChecked = items.all { it.isChecked }
+                    checkedStates[index] = checked
                 },
                 onNextClick = {},
                 onDismissRequest = {
