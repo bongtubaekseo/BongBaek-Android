@@ -141,7 +141,12 @@ private fun RecordCard(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(size = 10.dp))
             .background(color = BongBaekTheme.colors.gray750)
-            .padding(vertical = 16.dp, horizontal = 20.dp)
+            .padding(
+                top = 16.dp,
+                bottom = 18.dp,
+                start = 20.dp,
+                end = 20.dp,
+            )
             .noRippleClickable(onClick = onCardClick),
     ) {
         Text(
