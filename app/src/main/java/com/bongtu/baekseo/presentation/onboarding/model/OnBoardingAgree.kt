@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.data.model
+package com.bongtu.baekseo.presentation.onboarding.model
 
 import androidx.annotation.StringRes
 

@@ -44,8 +44,8 @@ import com.bongtu.baekseo.R.string.onboarding_term_of_use
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.data.model.OnBoardingAgree
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
+import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
 import com.bongtu.baekseo.presentation.onboarding.type.OnBoardingType
 import kotlinx.coroutines.launch
 
