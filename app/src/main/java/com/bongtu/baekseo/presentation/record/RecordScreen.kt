@@ -106,15 +106,15 @@ private fun RecordScreen(
 
         when (uiState.recordLoadState) {
             is UiState.Empty -> {
-                // 빈 상태 화면
+                // TODO: 빈 상태 화면
             }
 
             is UiState.Failure -> {
-                // 에러 상태 화면
+                // TODO: 에러 상태 화면
             }
 
             is UiState.Loading -> {
-                //로딩 상태 화면
+                // TODO: 로딩 상태 화면
             }
 
             is UiState.Success -> {
