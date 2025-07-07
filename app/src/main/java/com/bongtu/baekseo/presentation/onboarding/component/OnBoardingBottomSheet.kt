@@ -1,11 +1,12 @@
 package com.bongtu.baekseo.presentation.onboarding.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -62,24 +63,27 @@ fun OnBoardingBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray750),
+            .fillMaxWidth()
+            .wrapContentHeight(),
         dragHandle = null,
         sheetState = sheetState,
         shape = RoundedCornerShape(
             topStart = 10.dp,
             topEnd = 10.dp,
         ),
+        contentWindowInsets = { WindowInsets(0) },
     ) {
-        Box {
-            OnBoardingBottomSheetAgreeContent(
-                items = items,
-                allChecked = allChecked,
-                onAllCheckedChange = onAllCheckedChange,
-                onItemCheckedChange = onItemCheckedChange,
-                onNextClick = onNextClick,
-                modifier = Modifier,
-            )
-        }
+        OnBoardingBottomSheetAgreeContent(
+            items = items,
+            allChecked = allChecked,
+            onAllCheckedChange = onAllCheckedChange,
+            onItemCheckedChange = onItemCheckedChange,
+            onNextClick = onNextClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .navigationBarsPadding(),
+        )
     }
 }
 
@@ -262,30 +266,33 @@ private fun OnBoardingBottomSheetPreview() {
         )
     }
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
+    var showBottomSheet by remember { mutableStateOf(true) }
 
     BongBaekTheme {
-        OnBoardingBottomSheet(
-            items = items,
-            allChecked = allChecked,
-            onAllCheckedChange = { checked ->
-                allChecked = checked
-                items.forEachIndexed { index, _ ->
+        if (showBottomSheet) {
+            OnBoardingBottomSheet(
+                items = items,
+                allChecked = allChecked,
+                onAllCheckedChange = { checked ->
+                    allChecked = checked
+                    items.forEachIndexed { index, _ ->
+                        items[index] = items[index].copy(isChecked = checked)
+                    }
+                },
+                onItemCheckedChange = { index, checked ->
                     items[index] = items[index].copy(isChecked = checked)
-                }
-            },
-            onItemCheckedChange = { index, checked ->
-                items[index] = items[index].copy(isChecked = checked)
-                allChecked = items.all { it.isChecked }
-            },
-            onNextClick = {},
-            onDismissRequest = {
-                scope.launch {
-                    sheetState.hide()
-                }
-            },
-            sheetState = sheetState,
-        )
+                    allChecked = items.all { it.isChecked }
+                },
+                onNextClick = {},
+                onDismissRequest = {
+                    scope.launch {
+                        sheetState.hide()
+                    }
+                },
+                sheetState = sheetState,
+            )
+        }
     }
 }

@@ -2,7 +2,6 @@ package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -104,142 +103,137 @@ fun OnBoardingLoginScreen(
         )
     }
 
-    val sheetState = rememberModalBottomSheetState()
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
 
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
+            .padding(horizontal = 20.dp),
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp),
-            verticalArrangement = Arrangement.SpaceBetween,
+            modifier = Modifier.padding(top = 120.dp),
         ) {
-            Column(
-                modifier = Modifier.padding(top = 120.dp),
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
+                        append(stringResource(id = onboarding_title_primary))
+                    }
+                    append(stringResource(id = onboarding_title_white))
+                },
+                style = BongBaekTheme.typography.headBold26,
+                color = BongBaekTheme.colors.white,
+            )
+
+            Text(
+                text = stringResource(id = onboarding_description),
+                modifier = Modifier.padding(top = 30.dp),
+                style = BongBaekTheme.typography.body2Regular16,
+                color = BongBaekTheme.colors.gray300,
+            )
+        }
+
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            BongBaekButton(
+                title = "카카오 로그인",
+                onClick = {
+                    isBottomSheetVisible = true
+                },
+                buttonType = ButtonType.KAKAO,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                textStyle = BongBaekTheme.typography.titleSemiBold18,
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_kakao),
+                        contentDescription = null,
+                        tint = BongBaekTheme.colors.black,
+                    )
+                },
+            )
+
+            Text(
+                text = stringResource(id = onboarding_login_information),
+                modifier = Modifier.padding(top = 20.dp),
+                style = BongBaekTheme.typography.captionRegular12,
+                color = BongBaekTheme.colors.white,
+            )
+
+            Row(
+                modifier = Modifier.padding(
+                    top = 4.dp,
+                    bottom = 26.dp,
+                ),
             ) {
                 Text(
-                    text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
-                            append(stringResource(id = onboarding_title_primary))
-                        }
-                        append(stringResource(id = onboarding_title_white))
+                    text = stringResource(id = onboarding_personal_privacy),
+                    modifier = Modifier.drawBehind {
+                        val strokeWidthPx = 1.dp.toPx()
+                        val verticalOffset = size.height
+                        drawLine(
+                            color = underlineColor,
+                            strokeWidth = strokeWidthPx,
+                            start = Offset(0f, verticalOffset),
+                            end = Offset(size.width, verticalOffset)
+                        )
                     },
-                    style = BongBaekTheme.typography.headBold26,
-                    color = BongBaekTheme.colors.white,
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.gray300,
                 )
 
+                Spacer(modifier = Modifier.width(30.dp))
+
                 Text(
-                    text = stringResource(id = onboarding_description),
-                    modifier = Modifier.padding(top = 30.dp),
-                    style = BongBaekTheme.typography.body2Regular16,
+                    text = stringResource(id = onboarding_term_of_use),
+                    modifier = Modifier.drawBehind {
+                        val strokeWidthPx = 1.dp.toPx()
+                        val verticalOffset = size.height
+                        drawLine(
+                            color = underlineColor,
+                            strokeWidth = strokeWidthPx,
+                            start = Offset(0f, verticalOffset),
+                            end = Offset(size.width, verticalOffset)
+                        )
+                    },
+                    style = BongBaekTheme.typography.captionRegular12,
                     color = BongBaekTheme.colors.gray300,
                 )
             }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                BongBaekButton(
-                    title = "카카오 로그인",
-                    onClick = {
-                        isBottomSheetVisible = true
-                    },
-                    buttonType = ButtonType.KAKAO,
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    textStyle = BongBaekTheme.typography.titleSemiBold18,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_kakao),
-                            contentDescription = null,
-                            tint = BongBaekTheme.colors.black,
-                        )
-                    },
-                )
-
-                Text(
-                    text = stringResource(id = onboarding_login_information),
-                    modifier = Modifier.padding(top = 20.dp),
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.white,
-                )
-
-                Row(
-                    modifier = Modifier.padding(
-                        top = 4.dp,
-                        bottom = 26.dp,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(id = onboarding_personal_privacy),
-                        modifier = Modifier.drawBehind {
-                            val strokeWidthPx = 1.dp.toPx()
-                            val verticalOffset = size.height
-                            drawLine(
-                                color = underlineColor,
-                                strokeWidth = strokeWidthPx,
-                                start = Offset(0f, verticalOffset),
-                                end = Offset(size.width, verticalOffset)
-                            )
-                        },
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
-                    )
-
-                    Spacer(modifier = Modifier.width(30.dp))
-
-                    Text(
-                        text = stringResource(id = onboarding_term_of_use),
-                        modifier = Modifier.drawBehind {
-                            val strokeWidthPx = 1.dp.toPx()
-                            val verticalOffset = size.height
-                            drawLine(
-                                color = underlineColor,
-                                strokeWidth = strokeWidthPx,
-                                start = Offset(0f, verticalOffset),
-                                end = Offset(size.width, verticalOffset)
-                            )
-                        },
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
-                    )
-                }
-            }
         }
-        if (isBottomSheetVisible) {
-            OnBoardingBottomSheet(
-                items = items,
-                allChecked = allChecked,
-                onAllCheckedChange = { checked ->
-                    allChecked = checked
-                    items.forEachIndexed { index, _ ->
-                        items[index] = items[index].copy(isChecked = checked)
-                    }
-                },
-                onItemCheckedChange = { index, checked ->
+    }
+
+    if (isBottomSheetVisible) {
+        OnBoardingBottomSheet(
+            items = items,
+            allChecked = allChecked,
+            onAllCheckedChange = { checked ->
+                allChecked = checked
+                items.forEachIndexed { index, _ ->
                     items[index] = items[index].copy(isChecked = checked)
-                    allChecked = items.all { it.isChecked }
-                },
-                onNextClick = {
-                    scope.launch { sheetState.hide() }.invokeOnCompletion {
-                        if (!sheetState.isVisible) {
-                            isBottomSheetVisible = false
-                            onNext()
-                        }
+                }
+            },
+            onItemCheckedChange = { index, checked ->
+                items[index] = items[index].copy(isChecked = checked)
+                allChecked = items.all { it.isChecked }
+            },
+            onNextClick = {
+                scope.launch { sheetState.hide() }.invokeOnCompletion {
+                    if (!sheetState.isVisible) {
+                        isBottomSheetVisible = false
+                        onNext()
                     }
-                },
-                onDismissRequest = {
-                    isBottomSheetVisible = false
-                },
-                modifier = Modifier.align(Alignment.BottomCenter),
-                sheetState = sheetState,
-            )
-        }
+                }
+            },
+            onDismissRequest = {
+                isBottomSheetVisible = false
+            },
+            sheetState = sheetState,
+        )
     }
 }
 
