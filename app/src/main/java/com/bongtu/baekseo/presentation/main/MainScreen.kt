@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
+import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import kotlinx.collections.immutable.toImmutableList
 
@@ -54,7 +55,7 @@ private fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         dummyGraph(modifier = modifier)
-
+        onBoardingGraph(modifier = modifier)
         recordGraph(modifier = modifier)
     }
 }
