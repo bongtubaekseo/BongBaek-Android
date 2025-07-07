@@ -158,7 +158,7 @@ fun OnBoardingSettingScreen(
                         checked = switchChecked,
                         onCheckedChange = {
                             switchChecked = it
-                        }
+                        },
                     )
                 }
 
@@ -173,7 +173,7 @@ fun OnBoardingSettingScreen(
                             .fillMaxWidth()
                             .clip(shape = RoundedCornerShape(10.dp))
                             .background(color = BongBaekTheme.colors.gray750)
-                            .padding(20.dp)
+                            .padding(20.dp),
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
