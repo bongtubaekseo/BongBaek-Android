@@ -5,9 +5,21 @@
     <string name="home">홈</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
+    <string name="recommendation_intro_topbar">금액 추천 가이드</string>
+    <string name="recommendation_intro_title">경조사비,\n얼마가 적당할까요?</string>
+    <string name="recommendation_intro_description">내 상황에 딱 맞는 경조사비,\n지금 바로 알아보세요!</string>
+    <string name="recommendation_intro_privacy">개인정보 보호모드 작동 중</string>
+    <string name="recommendation_intro_start">금액추천 시작하기</string>
     <string name="recommendation_select">선택</string>
     <string name="recommendation_select_title">더 정확한 추천을 받고 싶다면?</string>
     <string name="recommendation_select_description">관계의 친밀도를 알려주시면\n더 정확한 정보를 받을 수 있어요</string>
+    <string name="recommendation_name_title">상대방의 이름과 별명을 알려주세요</string>
+    <string name="recommendation_name_placeholder">이름을 적어주세요</string>
+    <string name="recommendation_nickname_placeholder">별명을 적어주세요</string>
+    <string name="recommendation_date_title">행사 날짜를 알려주세요</string>
+    <string name="recommendation_participation_title">참석 여부</string>
+    <string name="recommendation_participation_yes">예</string>
+    <string name="recommendation_participation_no">아니오</string>
     <!--Record    -->
     <string name="record">기록하기</string>
     <string name="record_top_bar_title">경조사 전체 기록</string>

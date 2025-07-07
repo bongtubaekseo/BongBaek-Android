@@ -30,7 +30,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun EventSelector(
+fun RecommendEventSelector(
     selectedEvent: EventType?,
     onEventSelect: (EventType) -> Unit,
     modifier: Modifier = Modifier,
@@ -113,7 +113,7 @@ private fun EventSelectorPreview() {
     BongBaekTheme {
         var selectedEvent by remember { mutableStateOf<EventType?>(null) }
 
-        EventSelector(
+        RecommendEventSelector(
             selectedEvent = selectedEvent,
             onEventSelect = { selectedEvent = it },
         )
