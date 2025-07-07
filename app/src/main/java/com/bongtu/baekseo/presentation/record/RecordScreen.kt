@@ -13,6 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -20,6 +21,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_delete
 import com.bongtu.baekseo.R.drawable.ic_plus
+import com.bongtu.baekseo.R.string.record_top_bar_title
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
@@ -63,7 +65,7 @@ private fun RecordScreen(
             .background(color = BongBaekTheme.colors.gray900),
     ) {
         BongBaekTopBar(
-            title = "경조사 전체 기록",
+            title = stringResource(record_top_bar_title),
             topBarType = TopBarType.TRAILING_ICON,
             trailingIcon = {
                 Row(
