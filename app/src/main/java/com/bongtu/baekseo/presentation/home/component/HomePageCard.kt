@@ -44,6 +44,8 @@ import java.time.LocalDate
 
 private const val SINGLE_RATIO = 320 / 250
 private const val MULTIPLE_RATIO = 308 / 250
+private const val POSTPOSITION_GA = "가"
+private const val POSTPOSITION_E = "이"
 
 @Composable
 fun HomePageSingleCard(
@@ -56,8 +58,8 @@ fun HomePageSingleCard(
     val (date, weekDay) = eventDate.toFormattedDateWithDay()
     val postposition = remember(eventType) {
         when (eventType) {
-            EventType.FIRST_BD -> "가"
-            else -> "이"
+            EventType.FIRST_BD -> POSTPOSITION_GA
+            else -> POSTPOSITION_E
         }
     }
 
@@ -123,8 +125,8 @@ fun HomePageMultipleCard(
     val (date, weekDay) = eventDate.toFormattedDateWithDay()
     val postposition = remember(eventType) {
         when (eventType) {
-            EventType.FIRST_BD -> "가"
-            else -> "이"
+            EventType.FIRST_BD -> POSTPOSITION_GA
+            else -> POSTPOSITION_E
         }
     }
 
