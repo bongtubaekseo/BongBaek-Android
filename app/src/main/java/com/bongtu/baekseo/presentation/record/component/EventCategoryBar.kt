@@ -19,9 +19,9 @@ import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 @Composable
 fun EventCategoryBar(
     selectedCategory: EventCategoryType,
+    onCategoryClick: (EventCategoryType) -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
-    onCategoryClick: (EventCategoryType) -> Unit = {},
-    isEnabled: Boolean = true,
 ) {
     LazyRow(
         modifier = modifier
@@ -57,6 +57,8 @@ private fun EventCategoryBarPreview() {
     BongBaekTheme {
         EventCategoryBar(
             selectedCategory = EventCategoryType.WEDDING,
+            onCategoryClick = {},
+            isEnabled = true,
         )
     }
 }

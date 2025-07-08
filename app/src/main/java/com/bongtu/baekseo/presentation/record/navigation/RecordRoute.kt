@@ -9,5 +9,5 @@ sealed interface RecordRoute : Route {
     data object Default : RecordRoute
 
     @Serializable
-    data object Delete : RecordRoute
+    data object Edit : RecordRoute  // TODO: 추가 페이지 예정
 }

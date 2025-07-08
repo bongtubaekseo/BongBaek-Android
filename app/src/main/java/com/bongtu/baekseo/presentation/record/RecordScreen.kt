@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.record.navigation
+package com.bongtu.baekseo.presentation.record
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -10,7 +10,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.record.RecordViewModel
+import com.bongtu.baekseo.presentation.record.navigation.RecordRoute
+import com.bongtu.baekseo.presentation.record.navigation.recordNestedGraph
 
 @Composable
 fun RecordScreen(

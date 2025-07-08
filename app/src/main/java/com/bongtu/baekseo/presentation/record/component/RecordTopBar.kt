@@ -4,7 +4,9 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_delete
 import com.bongtu.baekseo.R.drawable.ic_plus
+import com.bongtu.baekseo.R.string.record_top_bar_delete_button
 import com.bongtu.baekseo.R.string.record_top_bar_delete_title
 import com.bongtu.baekseo.R.string.record_top_bar_title
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -23,18 +26,18 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
 fun RecordTopBar(
+    isDeleting: Boolean,
     modifier: Modifier = Modifier,
-    isDeleting: Boolean = false,
-    onDeleteButtonClick: () -> Unit = {},
     onBackButtonClick: () -> Unit = {},
+    onDeleteButtonClick: () -> Unit = {},
+    isDeletable: Boolean = false,
 ) {
     val (title, topBarType) = when (isDeleting) {
-        true -> record_top_bar_delete_title to TopBarType.LEADING_ICON
+        true -> record_top_bar_delete_title to TopBarType.BOTH_ICONS
         false -> record_top_bar_title to TopBarType.TRAILING_ICON
     }
 
     BongBaekTopBar(
-        modifier = modifier,
         title = stringResource(title),
         topBarType = topBarType,
         leadingIcon = if (isDeleting) {
@@ -42,12 +45,32 @@ fun RecordTopBar(
         } else null,
         trailingIcon = if (!isDeleting) {
             {
-                TopBarTrailingIcon(
+                TopBarDefaultTrailingIcon(
                     onAddButtonClick = {},
                     onDeleteButtonClick = onDeleteButtonClick,
                 )
             }
-        } else null,
+        } else {
+            {
+                val colors = BongBaekTheme.colors
+                val textColor = remember(isDeletable) {
+                    if (isDeletable) {
+                        colors.secondaryRed
+                    } else {
+                        colors.gray500
+                    }
+                }
+                Text(
+                    text = stringResource(record_top_bar_delete_button),
+                    style = BongBaekTheme.typography.titleSemiBold16,
+                    color = textColor,
+                    modifier = Modifier
+                        .padding(vertical = 12.dp, horizontal = 10.dp)
+                        .padding(end = 8.dp)
+                        .noRippleClickable( onClick = { if(isDeletable) { onDeleteButtonClick() } } ),
+                )
+            }
+        },
     )
 }
 
@@ -67,7 +90,7 @@ private fun TopBarLeadingIcon(
 }
 
 @Composable
-private fun TopBarTrailingIcon(
+private fun TopBarDefaultTrailingIcon(
     onAddButtonClick: () -> Unit,
     onDeleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier,

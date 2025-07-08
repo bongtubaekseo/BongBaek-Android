@@ -8,6 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -24,9 +25,8 @@ import java.time.LocalDate
 
 @Composable
 fun RecordDefaultRoute(
-    onDeleteNavigate: () -> Unit,
-    viewModel: RecordViewModel,
     modifier: Modifier = Modifier,
+    viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -38,7 +38,8 @@ fun RecordDefaultRoute(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = onDeleteNavigate,
+        onDeleteButtonClick = viewModel::updateDeleting,
+        onDeleteCancelButtonClick = viewModel::updateDeletingCancel,
         modifier = modifier,
     )
 }
@@ -49,6 +50,7 @@ private fun RecordDefaultScreen(
     onTabClick: (AttendType) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
     onDeleteButtonClick: () -> Unit,
+    onDeleteCancelButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -58,16 +60,20 @@ private fun RecordDefaultScreen(
     ) {
         RecordTopBar(
             onDeleteButtonClick = onDeleteButtonClick,
+            onBackButtonClick = onDeleteCancelButtonClick,
+            isDeleting = uiState.isDeleting,
         )
 
         AttendTypeTab(
             selectedTab = uiState.attendType,
             onTabClick = onTabClick,
+            isEnabled = !uiState.isDeleting,
         )
 
         EventCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
+            isEnabled = !uiState.isDeleting,
         )
 
         when (uiState.recordLoadState) {
@@ -87,6 +93,7 @@ private fun RecordDefaultScreen(
                 RecordListContent(
                     recordEventList = uiState.recordLoadState.data,
                     onCardClick = {},
+                    isDeleting = uiState.isDeleting,
                 )
             }
         }
@@ -170,6 +177,7 @@ private fun RecordDefaultScreenPreview() {
             onTabClick = {},
             onCategoryClick = {},
             onDeleteButtonClick = {},
+            onDeleteCancelButtonClick = {},
             modifier = Modifier,
         )
     }

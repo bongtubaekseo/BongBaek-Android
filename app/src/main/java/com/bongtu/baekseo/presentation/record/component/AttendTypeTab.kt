@@ -35,9 +35,9 @@ private data class TabStyle(
 @Composable
 fun AttendTypeTab(
     selectedTab: AttendType,
+    onTabClick: (AttendType) -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
-    onTabClick: (AttendType) -> Unit = {},
-    isEnabled: Boolean = true,
 ) {
     Box(
         modifier = modifier,
@@ -118,6 +118,8 @@ private fun AttendTypeTabPreview() {
     BongBaekTheme {
         AttendTypeTab(
             selectedTab = AttendType.ATTEND,
+            onTabClick = {},
+            isEnabled = true,
         )
     }
 }

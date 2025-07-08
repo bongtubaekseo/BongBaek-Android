@@ -114,4 +114,20 @@ class RecordViewModel @Inject constructor(
                 eventCategoryType = eventCategoryType,
             )
         }
+
+    fun updateDeleting() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleting = true,
+            )
+        }
+    }
+
+    fun updateDeletingCancel() {
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleting = false,
+            )
+        }
+    }
 }
