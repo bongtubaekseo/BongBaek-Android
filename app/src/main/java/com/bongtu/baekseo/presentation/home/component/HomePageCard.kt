@@ -41,6 +41,9 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import java.time.LocalDate
 
+private const val SINGLE_RATIO = 320 / 250
+private const val MULTIPLE_RATIO = 308 / 250
+
 @Composable
 fun HomePageSingleCard(
     hostname: String,
@@ -65,7 +68,7 @@ fun HomePageSingleCard(
             contentDescription = null,
             modifier = Modifier
                 .wrapContentSize()
-                .aspectRatio(32 / 25f),
+                .aspectRatio(SINGLE_RATIO.toFloat()),
         )
 
         Column(
@@ -131,7 +134,7 @@ fun HomePageMultipleCard(
             contentDescription = null,
             modifier = Modifier
                 .wrapContentSize()
-                .aspectRatio(154 / 125f),
+                .aspectRatio(MULTIPLE_RATIO.toFloat()),
         )
 
         Column(
