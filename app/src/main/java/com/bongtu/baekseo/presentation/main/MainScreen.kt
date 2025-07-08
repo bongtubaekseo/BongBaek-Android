@@ -10,9 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
+import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
-import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import kotlinx.collections.immutable.toImmutableList
 
@@ -57,11 +57,10 @@ private fun MainNavHost(
     ) {
         dummyGraph(modifier = modifier)
         onBoardingGraph(
-            navigateToHome = {
-                // TODO: 홈 화면으로 이동
-            },
+            navigateToHome = navigator::navigateToHome,
             modifier = modifier,
         )
+        homeGraph(modifier = modifier)
         recordGraph(modifier = modifier)
     }
 }
