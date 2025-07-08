@@ -53,7 +53,7 @@ fun HomeRecommendCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Column(
-                modifier = Modifier.wrapContentSize()
+                modifier = Modifier.wrapContentSize(),
             ) {
                 Text(
                     text = stringResource(id = home_recommend_card_description),
