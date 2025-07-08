@@ -48,7 +48,10 @@ fun RecordDefaultRoute(
             viewModel.updateDeletingCancel()
         },
         onDeletingSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
-        onDeletingDeleteButtonClick = viewModel::fetchSelectedDeleteEventIds,
+        onDeletingDeleteButtonClick = {
+            toggleButtonBar()
+            viewModel.fetchSelectedDeleteEventIds()
+        },
         modifier = modifier,
     )
 }
