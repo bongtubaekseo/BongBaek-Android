@@ -4,7 +4,9 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -53,7 +55,7 @@ fun RecommendOptionCard(
                 horizontal = 20.dp,
                 vertical = 18.dp,
             ),
-        horizontalArrangement = Arrangement.spacedBy(24.dp),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Column(
@@ -81,6 +83,8 @@ fun RecommendOptionCard(
                 color = textColor,
             )
         }
+
+        Spacer(modifier = Modifier.width(24.dp))
 
         BongBaekCheckBox(
             isChecked = isChecked,
