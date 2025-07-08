@@ -8,7 +8,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -23,11 +22,11 @@ import com.bongtu.baekseo.presentation.record.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import java.time.LocalDate
 
-
 @Composable
-fun RecordRoute(
+fun RecordDefaultRoute(
+    onDeleteNavigate: () -> Unit,
+    viewModel: RecordViewModel,
     modifier: Modifier = Modifier,
-    viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
@@ -35,23 +34,21 @@ fun RecordRoute(
         viewModel.fetchRecordEvent()
     }
 
-    RecordScreen(
+    RecordDefaultScreen(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = viewModel::updateToDeletingMode,
-        onBackButtonClick = viewModel::updateToDefaultMode,
+        onDeleteButtonClick = onDeleteNavigate,
         modifier = modifier,
     )
 }
 
 @Composable
-private fun RecordScreen(
+private fun RecordDefaultScreen(
     uiState: RecordState,
     onTabClick: (AttendType) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
     onDeleteButtonClick: () -> Unit,
-    onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -60,9 +57,7 @@ private fun RecordScreen(
             .background(color = BongBaekTheme.colors.gray900),
     ) {
         RecordTopBar(
-            isDeleting = uiState.isDeleting,
             onDeleteButtonClick = onDeleteButtonClick,
-            onBackButtonClick = onBackButtonClick,
         )
 
         AttendTypeTab(
@@ -92,7 +87,6 @@ private fun RecordScreen(
                 RecordListContent(
                     recordEventList = uiState.recordLoadState.data,
                     onCardClick = {},
-                    isDeleting = uiState.isDeleting,
                 )
             }
         }
@@ -101,9 +95,9 @@ private fun RecordScreen(
 
 @Preview
 @Composable
-private fun RecordScreenPreview() {
+private fun RecordDefaultScreenPreview() {
     BongBaekTheme {
-        RecordScreen(
+        RecordDefaultScreen(
             uiState = RecordState(
                 recordLoadState = UiState.Success(
                     listOf(
@@ -172,12 +166,10 @@ private fun RecordScreenPreview() {
                         ),
                     ),
                 ),
-                isDeleting = false,
             ),
             onTabClick = {},
             onCategoryClick = {},
             onDeleteButtonClick = {},
-            onBackButtonClick = {},
             modifier = Modifier,
         )
     }
