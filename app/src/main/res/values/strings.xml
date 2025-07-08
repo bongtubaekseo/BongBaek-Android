@@ -20,6 +20,25 @@
     <string name="recommendation_participation_title">참석 여부</string>
     <string name="recommendation_participation_yes">예</string>
     <string name="recommendation_participation_no">아니오</string>
+    <string name="recommendation_slider_title_contact">얼마나 자주 연락하나요?</string>
+    <string name="recommendation_slider_title_meet">얼마나 자주 만나나요?</string>
+    <string name="recommendation_slider_rarely">가끔</string>
+    <string name="recommendation_slider_frequently">매일</string>
+    <string name="recommendation_relation_topbar">관계 정보</string>
+    <string name="recommendation_relation_title">먼저, 마음을 전하고 싶은 분의\n정보를 적어주세요</string>
+    <string name="recommendation_relation_description">상대에 대한 정보와 관계를 말씀해주시면,\n더 정확한 추천을 해드릴게요</string>
+    <string name="recommendation_relation_selector_title">관계를 선택해주세요</string>
+    <string name="recommendation_event_type_topbar">경조사 정보</string>
+    <string name="recommendation_event_type_title">어떤 경조사에\n참여하시나요?</string>
+    <string name="recommendation_event_type_description">상황에 맞는 봉투를 준비해드릴게요</string>
+    <string name="recommendation_event_date_topbar">행사 날짜</string>
+    <string name="recommendation_event_date_title">행사 날짜와 참석여부를\n알려주세요</string>
+    <string name="recommendation_event_date_description">봉투백서가 경조사 일정을 관리해드릴게요!</string>
+    <string name="recommendation_event_location_topbar">행사장 위치</string>
+    <string name="recommendation_event_location_title">어디서 열리나요?</string>
+    <string name="recommendation_event_location_skip">건너뛰기</string>
+    <string name="recommendation_event_location_description">주소로 검색하면 더 빠르게 찾을 수 있어요!</string>
+
     <!--Record    -->
     <string name="record">기록하기</string>
     <string name="record_top_bar_title">경조사 전체 기록</string>
