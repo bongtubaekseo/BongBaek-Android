@@ -43,7 +43,7 @@ fun HomeScheduleEmptyCard(
 
         Text(
             text = stringResource(id = home_schedule_empty),
-            style = BongBaekTheme.typography.titleSemiBold18, // TODO: typography 변경
+            style = BongBaekTheme.typography.titleSemiBold18,
             color = BongBaekTheme.colors.white,
         )
 
