@@ -59,8 +59,11 @@ fun RecommendEventLocationContent(
 @Composable
 private fun RecommendEventLocationContentPreview() {
     var searchValue by remember { mutableStateOf("") }
-    RecommendEventLocationContent(
-        searchValue = searchValue,
-        onSearchValueChange = { searchValue = it },
-    )
+
+    BongBaekTheme {
+        RecommendEventLocationContent(
+            searchValue = searchValue,
+            onSearchValueChange = { searchValue = it },
+        )
+    }
 }
