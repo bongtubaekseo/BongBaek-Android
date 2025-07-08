@@ -35,8 +35,9 @@ private data class TabStyle(
 @Composable
 fun AttendTypeTab(
     selectedTab: AttendType,
-    onTabClick: (AttendType) -> Unit,
     modifier: Modifier = Modifier,
+    onTabClick: (AttendType) -> Unit = {},
+    isEnabled: Boolean = true,
 ) {
     Box(
         modifier = modifier,
@@ -88,7 +89,7 @@ fun AttendTypeTab(
                             .background(
                                 color = style.backgroundColor,
                             )
-                            .noRippleClickable { onTabClick(type) },
+                            .noRippleClickable { if(isEnabled) onTabClick(type) },
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
@@ -117,7 +118,6 @@ private fun AttendTypeTabPreview() {
     BongBaekTheme {
         AttendTypeTab(
             selectedTab = AttendType.ATTEND,
-            onTabClick = {},
         )
     }
 }

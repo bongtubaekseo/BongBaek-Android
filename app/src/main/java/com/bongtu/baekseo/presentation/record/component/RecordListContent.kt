@@ -50,9 +50,9 @@ import java.time.LocalDate
 @Composable
 fun RecordListContent(
     recordEventList: List<RecordEvent>,
-    isDeleting: Boolean,
-    onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onCardClick: (String) -> Unit = {},
+    isDeleting: Boolean = false,
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
 
@@ -120,7 +120,7 @@ fun RecordListContent(
                             category = category,
                             relationship = relationship,
                             eventDate = eventDate,
-                            onCardClick = { onCardClick(eventId) },
+                            onCardClick = { if (!isDeleting) onCardClick(eventId) },
                             isDeleting = isDeleting,
                             isDeleteToggleCheck = true,    // TODO: 삭제 로직 처리
                             onDeleteToggleClick = {},       // TODO: 삭제 로직 처리

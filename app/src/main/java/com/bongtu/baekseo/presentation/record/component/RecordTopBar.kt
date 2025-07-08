@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -24,16 +23,14 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
 fun RecordTopBar(
-    isDeleting: Boolean,
-    onDeleteButtonClick: () -> Unit,
-    onBackButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
+    isDeleting: Boolean = false,
+    onDeleteButtonClick: () -> Unit = {},
+    onBackButtonClick: () -> Unit = {},
 ) {
-    val (title, topBarType) = remember(isDeleting) {
-        when (isDeleting) {
-            true -> record_top_bar_delete_title to TopBarType.LEADING_ICON
-            false -> record_top_bar_title to TopBarType.TRAILING_ICON
-        }
+    val (title, topBarType) = when (isDeleting) {
+        true -> record_top_bar_delete_title to TopBarType.LEADING_ICON
+        false -> record_top_bar_title to TopBarType.TRAILING_ICON
     }
 
     BongBaekTopBar(
