@@ -3,6 +3,13 @@
 
     <!--Home    -->
     <string name="home">홈</string>
+    <string name="home_recommend_card_description">경조사비 추천</string>
+    <string name="home_recommend_card_title">내 상황에 어울리는 경조사비는?</string>
+    <string name="home_schedule_empty">예정된 일정이 없습니다</string>
+    <string name="home_page_card_description">마음을 담은 봉투, 준비되셨나요?</string>
+    <string name="home_page_card_empty">아직 예정된 일정이\n존재하지 않아요</string>
+    <string name="home_page_card_title">%1$s님의 %2$s%3$s\n%4$d일 남았어요!</string>
+    <string name="home_card_date">%1$d (%2$d)</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
     <string name="recommendation_intro_topbar">금액 추천 가이드</string>
@@ -45,6 +52,8 @@
     <string name="record_card_list_year">%d년</string>
     <string name="record_card_list_month">%d월</string>
     <string name="record_card_cost">%,d원</string>
+    <!--Badge    -->
+    <string name="badge_schedule_empty">일정 추가하기</string>
     <!--TextField    -->
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
     <string name="name_text_field_error_length">2자 이상 10자 이내로 입력해주세요</string>
@@ -65,6 +74,7 @@
     <string name="button_kakao">카카오 로그인</string>
     <string name="button_next">다음</string>
     <string name="button_start_service">봉투백서 시작하기</string>
+    <string name="button_recommend">경조사비 추천 받기</string>
     <!--TopBar    -->
     <string name="topbar_profile_setting">프로필 설정</string>
     <!--OnBoarding    -->
