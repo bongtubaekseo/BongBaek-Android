@@ -9,6 +9,7 @@
     <string name="home_page_card_description">마음을 담은 봉투, 준비되셨나요?</string>
     <string name="home_page_card_empty">아직 예정된 일정이\n존재하지 않아요</string>
     <string name="home_page_card_title">%1$s님의 %2$s%3$s\n%4$d일 남았어요!</string>
+    <string name="home_card_date">%1$d (%2$d)</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
     <string name="recommendation_intro_topbar">금액 추천 가이드</string>
