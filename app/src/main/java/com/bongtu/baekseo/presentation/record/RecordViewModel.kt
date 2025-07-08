@@ -89,8 +89,8 @@ class RecordViewModel @Inject constructor(
                         cost = 10000,
                         eventDate = LocalDate.of(2023, 2, 4),
                     ),
-                )
-            )
+                ),
+            ),
         )
     }
 
@@ -112,24 +112,6 @@ class RecordViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
-            )
-        }
-
-    fun updateToDeletingMode() {
-        if (_uiState.value.recordLoadState !is UiState.Success) return
-
-        _uiState.update {
-            it.copy(
-                isDeleting = true,
-            )
-        }
-    }
-
-    fun updateToDefaultMode() =
-        _uiState.update {
-            it.copy(
-                isDeleting = false,
-                selectedEventIds = emptySet()
             )
         }
 }
