@@ -50,6 +50,7 @@ class MainNavigator(
 
     @Composable
     fun showBottomBar() = MainTab.contains {
+
         currentDestination?.hasRoute(it::class) == true
     }
 }

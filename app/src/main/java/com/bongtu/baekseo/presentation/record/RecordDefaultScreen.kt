@@ -40,6 +40,8 @@ fun RecordDefaultRoute(
         onCategoryClick = viewModel::updateEventType,
         onDeleteButtonClick = viewModel::updateDeleting,
         onDeleteCancelButtonClick = viewModel::updateDeletingCancel,
+        onDeletingSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
+        onDeletingDeleteButtonClick = viewModel::fetchSelectedDeleteEventIds,
         modifier = modifier,
     )
 }
@@ -51,8 +53,12 @@ private fun RecordDefaultScreen(
     onCategoryClick: (EventCategoryType) -> Unit,
     onDeleteButtonClick: () -> Unit,
     onDeleteCancelButtonClick: () -> Unit,
+    onDeletingSelectedButtonClick: (String) -> Unit,
+    onDeletingDeleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val isDeletable = uiState.selectedDeleteEventIds.isNotEmpty()
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -61,7 +67,9 @@ private fun RecordDefaultScreen(
         RecordTopBar(
             onDeleteButtonClick = onDeleteButtonClick,
             onBackButtonClick = onDeleteCancelButtonClick,
+            onDeletingDeleteButtonClick = onDeletingDeleteButtonClick,
             isDeleting = uiState.isDeleting,
+            isDeletable = isDeletable,
         )
 
         AttendTypeTab(
@@ -93,6 +101,8 @@ private fun RecordDefaultScreen(
                 RecordListContent(
                     recordEventList = uiState.recordLoadState.data,
                     onCardClick = {},
+                    selectedDeleteEventIds = uiState.selectedDeleteEventIds,
+                    onDeletingSelectedButtonClick = onDeletingSelectedButtonClick,
                     isDeleting = uiState.isDeleting,
                 )
             }
@@ -178,6 +188,8 @@ private fun RecordDefaultScreenPreview() {
             onCategoryClick = {},
             onDeleteButtonClick = {},
             onDeleteCancelButtonClick = {},
+            onDeletingSelectedButtonClick = {},
+            onDeletingDeleteButtonClick = {},
             modifier = Modifier,
         )
     }

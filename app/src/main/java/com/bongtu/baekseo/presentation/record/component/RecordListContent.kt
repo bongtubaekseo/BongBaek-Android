@@ -1,9 +1,6 @@
 package com.bongtu.baekseo.presentation.record.component
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -52,7 +49,9 @@ fun RecordListContent(
     recordEventList: List<RecordEvent>,
     isDeleting: Boolean,
     modifier: Modifier = Modifier,
+    selectedDeleteEventIds: Set<String> = emptySet(),
     onCardClick: (String) -> Unit = {},
+    onDeletingSelectedButtonClick: (String) -> Unit = {},
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
 
@@ -113,6 +112,7 @@ fun RecordListContent(
 
                 is YearMonthEventItem.Event -> {
                     with(item.event) {
+                        val isDeleteToggleCheck = selectedDeleteEventIds.contains(eventId)
                         RecordCard(
                             nickname = hostNickName,
                             username = hostName,
@@ -122,8 +122,8 @@ fun RecordListContent(
                             eventDate = eventDate,
                             onCardClick = { if (!isDeleting) onCardClick(eventId) },
                             isDeleting = isDeleting,
-                            isDeleteToggleCheck = true,    // TODO: 삭제 로직 처리
-                            onDeleteToggleClick = {},       // TODO: 삭제 로직 처리
+                            isDeleteToggleCheck = isDeleteToggleCheck,
+                            onDeleteToggleClick = { onDeletingSelectedButtonClick(eventId) },
                             modifier = Modifier.padding(top = topPadding),
                         )
                     }
@@ -148,7 +148,7 @@ private fun RecordCard(
     onCardClick: () -> Unit,
     isDeleting: Boolean,
     isDeleteToggleCheck: Boolean,
-    onDeleteToggleClick: (Boolean) -> Unit,
+    onDeleteToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (date, weekDay) = eventDate.toFormattedDateWithDay()
@@ -239,34 +239,25 @@ private fun RecordCard(
 @Composable
 private fun RecordDeleteToggleButton(
     isDeleteToggleCheck: Boolean,
-    onDeleteToggleClick: (Boolean) -> Unit,
+    onDeleteToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = isDeleteToggleCheck,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
+    if (isDeleteToggleCheck) {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_check_secondary_red),
             contentDescription = null,
             modifier = modifier
                 .size(18.dp)
-                .noRippleClickable(onClick = { onDeleteToggleClick(!isDeleteToggleCheck) }),
+                .noRippleClickable(onClick = onDeleteToggleClick),
             tint = Color.Unspecified,
         )
-    }
-    AnimatedVisibility(
-        visible = !isDeleteToggleCheck,
-        enter = fadeIn(),
-        exit = fadeOut(),
-    ) {
+    } else {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_record_radio_circle),
             contentDescription = null,
             modifier = modifier
                 .size(18.dp)
-                .noRippleClickable(onClick = { onDeleteToggleClick(!isDeleteToggleCheck) }),
+                .noRippleClickable(onClick = onDeleteToggleClick),
             tint = Color.Unspecified,
         )
     }

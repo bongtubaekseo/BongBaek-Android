@@ -30,6 +30,7 @@ fun RecordTopBar(
     modifier: Modifier = Modifier,
     onBackButtonClick: () -> Unit = {},
     onDeleteButtonClick: () -> Unit = {},
+    onDeletingDeleteButtonClick: () -> Unit = {},
     isDeletable: Boolean = false,
 ) {
     val (title, topBarType) = when (isDeleting) {
@@ -38,6 +39,7 @@ fun RecordTopBar(
     }
 
     BongBaekTopBar(
+        modifier = modifier,
         title = stringResource(title),
         topBarType = topBarType,
         leadingIcon = if (isDeleting) {
@@ -67,7 +69,11 @@ fun RecordTopBar(
                     modifier = Modifier
                         .padding(vertical = 12.dp, horizontal = 10.dp)
                         .padding(end = 8.dp)
-                        .noRippleClickable( onClick = { if(isDeletable) { onDeleteButtonClick() } } ),
+                        .noRippleClickable(onClick = {
+                            if (isDeletable) {
+                                onDeletingDeleteButtonClick()
+                            }
+                        }),
                 )
             }
         },
