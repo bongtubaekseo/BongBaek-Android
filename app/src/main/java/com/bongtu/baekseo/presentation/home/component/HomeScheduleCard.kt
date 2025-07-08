@@ -122,7 +122,7 @@ fun HomeScheduleCardInfo(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.blackBackground,
+                color = BongBaekTheme.colors.gray800,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(horizontal = 8.dp, vertical = 6.dp),
