@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -61,14 +62,15 @@ fun HomePageSingleCard(
     }
 
     Box(
-        modifier = modifier.wrapContentSize(),
+        modifier = modifier
+            .aspectRatio(SINGLE_RATIO.toFloat())
+            .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = img_home_card_single),
             contentDescription = null,
             modifier = Modifier
-                .wrapContentSize()
-                .aspectRatio(SINGLE_RATIO.toFloat()),
+                .wrapContentSize(),
         )
 
         Column(
@@ -127,14 +129,15 @@ fun HomePageMultipleCard(
     }
 
     Box(
-        modifier = modifier.wrapContentSize(),
+        modifier = modifier
+            .aspectRatio(MULTIPLE_RATIO.toFloat())
+            .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = img_home_card_multiple),
             contentDescription = null,
             modifier = Modifier
-                .wrapContentSize()
-                .aspectRatio(MULTIPLE_RATIO.toFloat()),
+                .wrapContentSize(),
         )
 
         Column(
@@ -281,10 +284,16 @@ private fun HomePageCardPreview() {
                 daysLeft = 10,
                 eventDate = LocalDate.of(2025, 2, 11),
             )
-
-            HomePageEmptyCard(
-                onBadgeClick = {},
-            )
         }
+    }
+}
+
+@Preview
+@Composable
+private fun HomePageCardEmptyPreview() {
+    BongBaekTheme {
+        HomePageEmptyCard(
+            onBadgeClick = {},
+        )
     }
 }
