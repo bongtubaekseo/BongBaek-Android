@@ -111,7 +111,7 @@ fun HomeScheduleCard(
 }
 
 @Composable
-fun HomeScheduleCardInfo(
+private fun HomeScheduleCardInfo(
     infoType: HomeScheduleCardInfoType,
     content: String,
     modifier: Modifier = Modifier,
