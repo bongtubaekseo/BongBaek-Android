@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -82,12 +81,11 @@ fun HomeScheduleCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(top = 10.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             BongBaekSmallBadge(
                 title = event.eventInfo.eventCategory.label,
             )
-
-            Spacer(modifier = Modifier.width(4.dp))
 
             BongBaekSmallBadge(
                 title = event.eventInfo.relationship.label,
@@ -126,6 +124,7 @@ private fun HomeScheduleCardInfo(
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(horizontal = 8.dp, vertical = 6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
@@ -134,8 +133,6 @@ private fun HomeScheduleCardInfo(
             modifier = Modifier.size(16.dp),
             tint = BongBaekTheme.colors.primaryNormal,
         )
-
-        Spacer(modifier = Modifier.width(6.dp))
 
         Text(
             text = content,
