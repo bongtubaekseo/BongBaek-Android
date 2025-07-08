@@ -22,6 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_location
+import com.bongtu.baekseo.R.string.home_card_date
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -103,7 +104,7 @@ fun HomeScheduleCard(
 
         HomeScheduleCardInfo(
             infoType = HomeScheduleCardInfoType.DATE,
-            content = "$date (${weekDay})",
+            content = stringResource(home_card_date, date, weekDay),
         )
     }
 }

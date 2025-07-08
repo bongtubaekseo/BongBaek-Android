@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -33,6 +32,7 @@ import com.bongtu.baekseo.R.drawable.img_black_alarm
 import com.bongtu.baekseo.R.drawable.img_home_card_multiple
 import com.bongtu.baekseo.R.drawable.img_home_card_single
 import com.bongtu.baekseo.R.string.badge_schedule_empty
+import com.bongtu.baekseo.R.string.home_card_date
 import com.bongtu.baekseo.R.string.home_page_card_description
 import com.bongtu.baekseo.R.string.home_page_card_empty
 import com.bongtu.baekseo.R.string.home_page_card_title
@@ -103,7 +103,7 @@ fun HomePageSingleCard(
         }
 
         HomePageCardDate(
-            date = "$date (${weekDay})",
+            date = stringResource(home_card_date, date, weekDay),
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
@@ -170,7 +170,7 @@ fun HomePageMultipleCard(
         }
 
         HomePageCardDate(
-            date = "$date (${weekDay})",
+            date = stringResource(home_card_date, date, weekDay),
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
