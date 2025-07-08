@@ -61,6 +61,9 @@ private fun MainNavHost(
             },
             modifier = modifier,
         )
-        recordGraph(modifier = modifier)
+        recordGraph(
+            toggleBottomBar = navigator::toggleBottomBar,
+            modifier = modifier,
+        )
     }
 }

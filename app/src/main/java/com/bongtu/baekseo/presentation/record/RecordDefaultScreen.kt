@@ -25,6 +25,7 @@ import java.time.LocalDate
 
 @Composable
 fun RecordDefaultRoute(
+    toggleButtonBar: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
@@ -38,8 +39,14 @@ fun RecordDefaultRoute(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = viewModel::updateDeleting,
-        onDeleteCancelButtonClick = viewModel::updateDeletingCancel,
+        onDeleteButtonClick = {
+            toggleButtonBar()
+            viewModel.updateDeleting()
+        },
+        onDeleteCancelButtonClick = {
+            toggleButtonBar()
+            viewModel.updateDeletingCancel()
+        },
         onDeletingSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
         onDeletingDeleteButtonClick = viewModel::fetchSelectedDeleteEventIds,
         modifier = modifier,

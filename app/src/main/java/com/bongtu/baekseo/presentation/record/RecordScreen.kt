@@ -15,6 +15,7 @@ import com.bongtu.baekseo.presentation.record.navigation.recordNestedGraph
 
 @Composable
 fun RecordScreen(
+    toggleBottomBar: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
@@ -32,6 +33,7 @@ fun RecordScreen(
             .background(color = BongBaekTheme.colors.gray900),
     ) {
         recordNestedGraph(
+            toggleBottomBar = toggleBottomBar,
             navController = navController,
             viewModel = viewModel,
         )
