@@ -26,14 +26,14 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
 fun RecordTopBar(
-    isDeleting: Boolean,
+    isDeleteMode: Boolean,
+    isDeleteButtonEnabled: Boolean,
+    onEnterDeleteModeClick : () -> Unit,
+    onExitDeleteModeClick: () -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
-    onBackButtonClick: () -> Unit = {},
-    onDeleteButtonClick: () -> Unit = {},
-    onDeletingDeleteButtonClick: () -> Unit = {},
-    isDeletable: Boolean = false,
 ) {
-    val (title, topBarType) = when (isDeleting) {
+    val (title, topBarType) = when (isDeleteMode) {
         true -> record_top_bar_delete_title to TopBarType.BOTH_ICONS
         false -> record_top_bar_title to TopBarType.TRAILING_ICON
     }
@@ -42,21 +42,21 @@ fun RecordTopBar(
         modifier = modifier,
         title = stringResource(title),
         topBarType = topBarType,
-        leadingIcon = if (isDeleting) {
-            { TopBarDeleteLeadingIcon(onBackButtonClick = onBackButtonClick) }
+        leadingIcon = if (isDeleteMode) {
+            { TopBarDeleteLeadingIcon(onExitDeleteModeClick = onExitDeleteModeClick) }
         } else null,
-        trailingIcon = if (!isDeleting) {
+        trailingIcon = if (!isDeleteMode) {
             {
                 TopBarDefaultTrailingIcon(
                     onAddButtonClick = {},
-                    onDeleteButtonClick = onDeleteButtonClick,
+                    onEnterDeleteModeClick = onEnterDeleteModeClick,
                 )
             }
         } else {
             {
                 TopBarDeleteTrailingIcon(
-                    isDeletable = isDeletable,
-                    onDeletingDeleteButtonClick = onDeletingDeleteButtonClick,
+                    isDeleteButtonEnabled = isDeleteButtonEnabled,
+                    onDeleteClick = onDeleteClick,
                 )
             }
         },
@@ -66,7 +66,7 @@ fun RecordTopBar(
 @Composable
 private fun TopBarDefaultTrailingIcon(
     onAddButtonClick: () -> Unit,
-    onDeleteButtonClick: () -> Unit,
+    onEnterDeleteModeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Row(
@@ -89,14 +89,14 @@ private fun TopBarDefaultTrailingIcon(
             modifier = Modifier
                 .padding(14.dp)
                 .size(20.dp)
-                .noRippleClickable(onClick = onDeleteButtonClick),
+                .noRippleClickable(onClick = onEnterDeleteModeClick),
         )
     }
 }
 
 @Composable
 private fun TopBarDeleteLeadingIcon(
-    onBackButtonClick: () -> Unit,
+    onExitDeleteModeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Icon(
@@ -104,20 +104,20 @@ private fun TopBarDeleteLeadingIcon(
         contentDescription = null,
         modifier = modifier
             .padding(12.dp)
-            .noRippleClickable(onClick = onBackButtonClick),
+            .noRippleClickable(onClick = onExitDeleteModeClick),
         tint = BongBaekTheme.colors.white,
     )
 }
 
 @Composable
 private fun TopBarDeleteTrailingIcon(
-    isDeletable: Boolean,
-    onDeletingDeleteButtonClick: () -> Unit,
+    isDeleteButtonEnabled: Boolean,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val colors = BongBaekTheme.colors
-    val textColor = remember(isDeletable) {
-        if (isDeletable) {
+    val textColor = remember(isDeleteButtonEnabled) {
+        if (isDeleteButtonEnabled) {
             colors.secondaryRed
         } else {
             colors.gray500
@@ -131,10 +131,6 @@ private fun TopBarDeleteTrailingIcon(
         modifier = modifier
             .padding(vertical = 12.dp, horizontal = 10.dp)
             .padding(end = 8.dp)
-            .noRippleClickable(onClick = {
-                if (isDeletable) {
-                    onDeletingDeleteButtonClick()
-                }
-            }),
+            .noRippleClickable(onClick = { if (isDeleteButtonEnabled) { onDeleteClick() } }),
     )
 }

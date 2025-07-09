@@ -31,9 +31,9 @@ fun RecordDefaultRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    if (uiState.isDeleting) { BackHandler { viewModel.updateDeletingCancel() } }
+    if (uiState.isDeleteMode) { BackHandler { viewModel.updateDeleteModeCancel() } }
 
-    LaunchedEffect(uiState.isDeleting) { setBottomBarVisible(!uiState.isDeleting) }
+    LaunchedEffect(uiState.isDeleteMode) { setBottomBarVisible(!uiState.isDeleteMode) }
 
     LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
 
@@ -41,10 +41,10 @@ fun RecordDefaultRoute(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = viewModel::updateDeleting,
-        onDeleteCancelButtonClick = viewModel::updateDeletingCancel,
-        onDeletingSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
-        onDeletingDeleteButtonClick = viewModel::fetchSelectedDeleteEventIds,
+        onEnterDeleteModeClick = viewModel::updateDeleteMode,
+        onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
+        onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
+        onDeleteClick = viewModel::fetchSelectedDeleteEventIds,
         modifier = modifier,
     )
 }
@@ -54,36 +54,36 @@ private fun RecordDefaultScreen(
     uiState: RecordState,
     onTabClick: (AttendType) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
-    onDeleteButtonClick: () -> Unit,
-    onDeleteCancelButtonClick: () -> Unit,
-    onDeletingSelectedButtonClick: (String) -> Unit,
-    onDeletingDeleteButtonClick: () -> Unit,
+    onEnterDeleteModeClick: () -> Unit,
+    onExitDeleteModeClick: () -> Unit,
+    onDeleteSelectedButtonClick: (String) -> Unit,
+    onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isDeletable = uiState.selectedDeleteEventIds.isNotEmpty()
+    val isDeleteButtonEnabled = uiState.selectedDeleteEventIds.isNotEmpty()
 
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900)
     ) {
         RecordTopBar(
-            onDeleteButtonClick = onDeleteButtonClick,
-            onBackButtonClick = onDeleteCancelButtonClick,
-            onDeletingDeleteButtonClick = onDeletingDeleteButtonClick,
-            isDeleting = uiState.isDeleting,
-            isDeletable = isDeletable,
+            isDeleteMode = uiState.isDeleteMode,
+            isDeleteButtonEnabled = isDeleteButtonEnabled,
+            onEnterDeleteModeClick = onEnterDeleteModeClick,
+            onExitDeleteModeClick = onExitDeleteModeClick,
+            onDeleteClick = onDeleteClick,
         )
 
         AttendTypeTab(
             selectedTab = uiState.attendType,
             onTabClick = onTabClick,
-            isEnabled = !uiState.isDeleting,
+            isEnabled = !uiState.isDeleteMode,
         )
 
         EventCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
-            isEnabled = !uiState.isDeleting,
+            isEnabled = !uiState.isDeleteMode,
         )
 
         when (uiState.recordLoadState) {
@@ -102,10 +102,10 @@ private fun RecordDefaultScreen(
             is UiState.Success -> {
                 RecordListContent(
                     recordEventList = uiState.recordLoadState.data,
-                    onCardClick = {},
+                    isDeleteMode = uiState.isDeleteMode,
                     selectedDeleteEventIds = uiState.selectedDeleteEventIds,
-                    onDeletingSelectedButtonClick = onDeletingSelectedButtonClick,
-                    isDeleting = uiState.isDeleting,
+                    onCardClick = {},
+                    onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
                 )
             }
         }
@@ -188,10 +188,10 @@ private fun RecordDefaultScreenPreview() {
             ),
             onTabClick = {},
             onCategoryClick = {},
-            onDeleteButtonClick = {},
-            onDeleteCancelButtonClick = {},
-            onDeletingSelectedButtonClick = {},
-            onDeletingDeleteButtonClick = {},
+            onEnterDeleteModeClick = {},
+            onExitDeleteModeClick = {},
+            onDeleteSelectedButtonClick = {},
+            onDeleteClick = {},
             modifier = Modifier,
         )
     }

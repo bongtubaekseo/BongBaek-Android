@@ -47,11 +47,11 @@ import java.time.LocalDate
 @Composable
 fun RecordListContent(
     recordEventList: List<RecordEvent>,
-    isDeleting: Boolean,
+    isDeleteMode: Boolean,
+    selectedDeleteEventIds: Set<String>,
+    onCardClick: (String) -> Unit,
+    onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    selectedDeleteEventIds: Set<String> = emptySet(),
-    onCardClick: (String) -> Unit = {},
-    onDeletingSelectedButtonClick: (String) -> Unit = {},
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
 
@@ -120,10 +120,10 @@ fun RecordListContent(
                             category = category,
                             relationship = relationship,
                             eventDate = eventDate,
-                            onCardClick = { if (!isDeleting) onCardClick(eventId) },
-                            isDeleting = isDeleting,
+                            onCardClick = { if (!isDeleteMode) onCardClick(eventId) },
+                            isDeleteMode = isDeleteMode,
                             isDeleteToggleCheck = isDeleteToggleCheck,
-                            onDeleteToggleClick = { onDeletingSelectedButtonClick(eventId) },
+                            onDeleteToggleClick = { onDeleteSelectedButtonClick(eventId) },
                             modifier = Modifier.padding(top = topPadding),
                         )
                     }
@@ -146,7 +146,7 @@ private fun RecordCard(
     relationship: String,
     eventDate: LocalDate,
     onCardClick: () -> Unit,
-    isDeleting: Boolean,
+    isDeleteMode: Boolean,
     isDeleteToggleCheck: Boolean,
     onDeleteToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -154,14 +154,14 @@ private fun RecordCard(
     val (date, weekDay) = eventDate.toFormattedDateWithDay()
 
     val deletePadding by animateDpAsState(
-        targetValue = if (isDeleting) 16.dp else 0.dp,
+        targetValue = if (isDeleteMode) 16.dp else 0.dp,
     )
 
     Row(
         modifier = modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        if (isDeleting) {
+        if (isDeleteMode) {
             RecordDeleteToggleButton(
                 isDeleteToggleCheck = isDeleteToggleCheck,
                 onDeleteToggleClick = onDeleteToggleClick,
@@ -336,7 +336,9 @@ private fun RecordContentPreview() {
                 ),
             ),
             onCardClick = {},
-            isDeleting = true,
+            onDeleteSelectedButtonClick = {},
+            isDeleteMode = true,
+            selectedDeleteEventIds = setOf("eventId"),
         )
     }
 }

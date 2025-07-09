@@ -96,7 +96,7 @@ class RecordViewModel @Inject constructor(
 
     fun fetchSelectedDeleteEventIds() {
         // TODO("선택된 삭제 처리 추가 예정")
-        updateDeletingCancel()
+        updateDeleteModeCancel()
         updateInitSelectedDeleteEventIds()
     }
 
@@ -128,17 +128,17 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateDeleting() =
+    fun updateDeleteMode() =
         _uiState.update { currentState ->
             currentState.copy(
-                isDeleting = true,
+                isDeleteMode = true,
             )
         }
 
-    fun updateDeletingCancel() =
+    fun updateDeleteModeCancel() =
         _uiState.update { currentState ->
             currentState.copy(
-                isDeleting = false,
+                isDeleteMode = false,
                 selectedDeleteEventIds = emptySet(),
             )
         }
