@@ -43,6 +43,7 @@ fun HomeRecommendCard(
             .border(
                 width = 1.dp,
                 color = BongBaekTheme.colors.lineNormal,
+                shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
