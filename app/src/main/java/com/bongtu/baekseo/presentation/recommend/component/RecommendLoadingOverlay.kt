@@ -22,6 +22,7 @@ import com.bongtu.baekseo.R
 import com.bongtu.baekseo.R.string.recommendation_loading_description
 import com.bongtu.baekseo.R.string.recommendation_loading_title
 import com.bongtu.baekseo.R.string.recommendation_loading_topbar
+import com.bongtu.baekseo.R.raw.lottie_find_amount
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.LottieOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
@@ -50,7 +51,7 @@ fun RecommendLoadingOverlay(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             LottieOverlay(
-                lottieRes = R.raw.lottie_find_amount,
+                lottieRes = lottie_find_amount,
                 modifier = Modifier
                     .padding(horizontal = 100.dp)
                     .aspectRatio(1f)
