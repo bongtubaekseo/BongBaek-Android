@@ -28,7 +28,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun RecordTopBar(
     isDeleteMode: Boolean,
     isDeleteButtonEnabled: Boolean,
-    onEnterDeleteModeClick : () -> Unit,
+    onEnterDeleteModeClick: () -> Unit,
     onExitDeleteModeClick: () -> Unit,
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -43,7 +43,11 @@ fun RecordTopBar(
         title = stringResource(title),
         topBarType = topBarType,
         leadingIcon = if (isDeleteMode) {
-            { TopBarDeleteLeadingIcon(onExitDeleteModeClick = onExitDeleteModeClick) }
+            {
+                TopBarDeleteLeadingIcon(
+                    onExitDeleteModeClick = onExitDeleteModeClick
+                )
+            }
         } else null,
         trailingIcon = if (!isDeleteMode) {
             {
@@ -131,6 +135,10 @@ private fun TopBarDeleteTrailingIcon(
         modifier = modifier
             .padding(vertical = 12.dp, horizontal = 10.dp)
             .padding(end = 8.dp)
-            .noRippleClickable(onClick = { if (isDeleteButtonEnabled) { onDeleteClick() } }),
+            .noRippleClickable(onClick = {
+                if (isDeleteButtonEnabled) {
+                    onDeleteClick()
+                }
+            }),
     )
 }
