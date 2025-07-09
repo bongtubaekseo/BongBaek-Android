@@ -109,7 +109,7 @@ fun RecommendResultContent(
             Column {
                 HorizontalDivider(
                     thickness = 10.dp,
-                    color = BongBaekTheme.colors.gray900,
+                    color = BongBaekTheme.colors.black,
                 )
 
                 Spacer(modifier = Modifier.height(36.dp))
