@@ -56,15 +56,6 @@ class MainNavigator(
         navController.navigateUp()
     }
 
-    fun navigateToHome(navOptions: NavOptions? = null) {
-        navController.navigateToHome(navOptions ?: navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
-                inclusive = true
-            }
-            launchSingleTop = true
-        })
-    }
-
     @Composable
     fun showBottomBar(): Boolean {
         val isMainTabRoute = MainTab.contains {

@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
+import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
@@ -57,7 +58,9 @@ private fun MainNavHost(
     ) {
         dummyGraph(modifier = modifier)
         onBoardingGraph(
-            navigateToHome = navigator::navigateToHome,
+            navigateToHome = {
+                navigator.navController.navigateToHome()
+            },
             modifier = modifier,
         )
         homeGraph(modifier = modifier)
