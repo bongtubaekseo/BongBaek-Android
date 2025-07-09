@@ -72,7 +72,7 @@ fun HomePageSingleCard(
             painter = painterResource(id = img_home_card_single),
             contentDescription = null,
             modifier = Modifier
-                .wrapContentSize(),
+                .aspectRatio(SINGLE_RATIO.toFloat()),
         )
 
         Column(
@@ -139,7 +139,7 @@ fun HomePageMultipleCard(
             painter = painterResource(id = img_home_card_multiple),
             contentDescription = null,
             modifier = Modifier
-                .wrapContentSize(),
+                .aspectRatio(SINGLE_RATIO.toFloat()),
         )
 
         Column(

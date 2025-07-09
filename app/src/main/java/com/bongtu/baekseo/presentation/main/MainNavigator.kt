@@ -7,11 +7,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
-import com.bongtu.baekseo.presentation.dummy.navigation.Dummy
+import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
+import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 
 class MainNavigator(
@@ -21,7 +24,7 @@ class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = Dummy
+    val startDestination = OnBoarding
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
@@ -43,7 +46,7 @@ class MainNavigator(
         }
 
         when (tab) {
-            MainTab.HOME -> {}
+            MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.RECOMMEND -> {}
             MainTab.RECORD -> navController.navigateToRecord(navOptions = navOptions)
         }
