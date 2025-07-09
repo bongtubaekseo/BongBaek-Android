@@ -62,22 +62,22 @@ class HomeViewModel @Inject constructor(
                             location = "강남구 테헤란로 강남 웨딩홀"
                         ),
                     ),
-//                    HomeEvent(
-//                        eventId = "eventId",
-//                        hostInfo = HomeHostInfo(
-//                            hostName = "김헤정",
-//                            hostNickname = "메정",
-//                        ),
-//                        eventInfo = HomeEventInfo(
-//                            eventCategory = EventType.BIRTHDAY,
-//                            relationship = RelationType.ALUMNI,
-//                            cost = 10000,
-//                            eventDate = LocalDate.of(2025, 2, 11),
-//                        ),
-//                        locationInfo = HomeLocationInfo(
-//                            location = "강남구 테헤란로 강남 웨딩홀"
-//                        ),
-//                    ),
+                    HomeEvent(
+                        eventId = "eventId",
+                        hostInfo = HomeHostInfo(
+                            hostName = "김헤정",
+                            hostNickname = "메정",
+                        ),
+                        eventInfo = HomeEventInfo(
+                            eventCategory = EventType.BIRTHDAY,
+                            relationship = RelationType.ALUMNI,
+                            cost = 10000,
+                            eventDate = LocalDate.of(2025, 2, 11),
+                        ),
+                        locationInfo = HomeLocationInfo(
+                            location = "강남구 테헤란로 강남 웨딩홀"
+                        ),
+                    ),
                 )
             )
         )
