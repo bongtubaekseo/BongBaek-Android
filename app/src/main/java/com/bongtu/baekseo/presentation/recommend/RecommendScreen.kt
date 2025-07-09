@@ -84,7 +84,6 @@ private fun RecommendScreen(
     var text by remember { mutableStateOf("") }
     var isEventParticipated by remember { mutableStateOf<Boolean?>(null) }
     var searchValue by remember { mutableStateOf("") }
-
     val (topbarRes, titleRes, descRes) = when (currentPageIndex) {
         1 -> Triple(
             recommendation_relation_topbar,
@@ -110,6 +109,7 @@ private fun RecommendScreen(
             recommendation_event_location_description,
         )
     }
+    val scrollState = rememberScrollState()
 
     Column(
         modifier = modifier
@@ -152,7 +152,7 @@ private fun RecommendScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(scrollState),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -177,7 +177,6 @@ private fun RecommendScreen(
                     )
                 }
             }
-
 
             Spacer(modifier = Modifier.height(14.dp))
 
