@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -107,6 +108,7 @@ private fun RecordDetailScreen(
 
         Column(
             modifier = Modifier
+                .weight(1f)
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState()),
@@ -115,13 +117,11 @@ private fun RecordDetailScreen(
                 title = "${event.hostName}의 ${event.category}",
                 eventDate = LocalDate.of(2024, 8, 10),
                 modifier = Modifier
-                    .padding(top = 20.dp),
+                    .padding(vertical = 20.dp),
             )
 
             RecordDetailCostCard(
                 cost = event.cost,
-                modifier = Modifier
-                    .padding(top = 20.dp),
             )
 
             RecordDetailDropDown(
@@ -134,14 +134,16 @@ private fun RecordDetailScreen(
                 formattedEventDate = event.eventDate.toFormattedShortMonth(),
                 location = location,
                 address = address,
+                modifier = Modifier
+                    .padding(vertical = 20.dp)
             )
+
             Text(
                 text = stringResource(record_detail_memo_title),
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
                 modifier = Modifier
                     .padding(
-                        top = 20.dp,
                         bottom = 10.dp,
                     )
                     .fillMaxWidth(),
@@ -167,12 +169,14 @@ private fun RecordDetailScreen(
                 )
             }
 
+            Spacer(modifier = Modifier.weight(1f))
+
             BongBaekButton(
                 title = stringResource(record_detail_delete),
                 onClick = { /*TODO: 삭제 로직 구현*/ },
                 buttonType = ButtonType.DELETE,
                 modifier = Modifier
-                    .padding(top = 65.dp, bottom = 36.dp)
+                    .padding(top = 65.dp, bottom = 40.dp)
                     .fillMaxWidth()
                     .border(
                         width = 1.dp,
