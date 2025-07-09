@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animate
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -42,12 +44,16 @@ import com.bongtu.baekseo.R.drawable.ic_info_primary
 import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.string.recommendation_result_amount_card_title
 import com.bongtu.baekseo.R.string.recommendation_result_amount_card_unit
+import com.bongtu.baekseo.R.string.recommendation_result_confirm
+import com.bongtu.baekseo.R.string.recommendation_result_edit
 import com.bongtu.baekseo.R.string.recommendation_result_event_type
 import com.bongtu.baekseo.R.string.recommendation_result_inform_desc
 import com.bongtu.baekseo.R.string.recommendation_result_inform_title
 import com.bongtu.baekseo.R.string.recommendation_result_location
 import com.bongtu.baekseo.R.string.recommendation_result_logic_desc
 import com.bongtu.baekseo.R.string.recommendation_result_logic_title
+import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.progressbar.BongBaekProgressBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -60,6 +66,8 @@ private const val MAX_AMOUNT = 200_000
 fun RecommendResultContent(
     expense: Int,
     isLottieEnded: Boolean,
+    onConfirmClick: () -> Unit,
+    onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -95,10 +103,10 @@ fun RecommendResultContent(
 
         AnimatedVisibility(
             visible = isLottieEnded,
+            enter = fadeIn(),
+            exit = fadeOut(),
         ) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(14.dp),
-            ) {
+            Column {
                 HorizontalDivider(
                     thickness = 10.dp,
                     color = BongBaekTheme.colors.gray900,
@@ -112,11 +120,38 @@ fun RecommendResultContent(
                     descriptionRes = recommendation_result_logic_desc,
                 )
 
+                Spacer(modifier = Modifier.height(14.dp))
+
                 ResultDescriptionCard(
                     iconRes = ic_check,
                     titleRes = recommendation_result_inform_title,
                     descriptionRes = recommendation_result_inform_desc,
                 )
+
+                Spacer(modifier = Modifier.height(40.dp))
+
+                BongBaekButton(
+                    title = stringResource(recommendation_result_confirm),
+                    onClick = onConfirmClick,
+                    buttonType = ButtonType.PRIMARY,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                )
+
+                Spacer(modifier = Modifier.height(10.dp))
+
+                BongBaekButton(
+                    title = stringResource(recommendation_result_edit),
+                    onClick = onEditClick,
+                    buttonType = ButtonType.SECONDARY,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            bottom = 46.dp,
+                        ),
+                )
+
+                Spacer(modifier = Modifier.height(50.dp))
             }
         }
     }
@@ -313,6 +348,8 @@ private fun RecommendResultContentPreview() {
         RecommendResultContent(
             expense = 125_000,
             isLottieEnded = isLottieEnded,
+            onConfirmClick = {},
+            onEditClick = {},
             modifier = Modifier.noRippleClickable { isLottieEnded = !isLottieEnded },
         )
     }
