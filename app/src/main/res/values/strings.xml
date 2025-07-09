@@ -48,7 +48,7 @@
     <string name="recommendation_loading_topbar">금액 추천 중</string>
     <string name="recommendation_loading_title">%s님을 위한\n금액을 찾고 있어요</string>
     <string name="recommendation_loading_description">잠시만 기다려주세요</string>
-    <string name="recommendation_result_topbar">잠시만 기다려주세요</string>
+    <string name="recommendation_result_topbar">추천 금액</string>
     <string name="recommendation_result_amount_card_title">적정 범위</string>
     <string name="recommendation_result_amount_card_unit">%s원</string>
     <string name="recommendation_result_event_type">경조사 종류</string>
