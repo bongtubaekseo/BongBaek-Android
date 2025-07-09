@@ -130,6 +130,9 @@ fun HomeScreen(
                     end = pagerContentPadding,
                 ),
                 pageSpacing = 8.dp,
+                key = { page ->
+                    items[page].eventId
+                },
             ) { page ->
                 val item = items[page]
 
