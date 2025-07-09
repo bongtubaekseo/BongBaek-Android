@@ -343,7 +343,7 @@ private fun ResultDescriptionCard(
 @Composable
 private fun RecommendResultContentPreview() {
     BongBaekTheme {
-        var isLottieEnded by remember { mutableStateOf(false) }
+        var isLottieEnded by remember { mutableStateOf(true) }
 
         RecommendResultContent(
             expense = 125_000,
