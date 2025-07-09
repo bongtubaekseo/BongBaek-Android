@@ -224,6 +224,7 @@ private fun RecordCard(
                     text = date,
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.captionRegular12,
+                    modifier = Modifier.padding(end = 4.dp),
                 )
 
                 Text(
