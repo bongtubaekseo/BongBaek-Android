@@ -13,6 +13,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import okhttp3.internal.immutableListOf
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -27,7 +28,7 @@ class HomeViewModel @Inject constructor(
         // TODO: API 연동
         updateHomeUiState(
             value = UiState.Success(
-                listOf(
+                immutableListOf(
                     HomeEvent(
                         eventId = "eventId",
                         hostInfo = HomeHostInfo(
