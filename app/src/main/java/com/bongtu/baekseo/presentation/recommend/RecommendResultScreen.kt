@@ -61,16 +61,17 @@ fun RecommendResultScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(
-                    horizontal = 20.dp,
-                )
                 .verticalScroll(scrollState),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(top = 20.dp)
+                    .padding(
+                        start = 20.dp,
+                        top = 20.dp,
+                        end = 20.dp,
+                    )
                     .aspectRatio(ENVELOPE_RATIO)
                     .clipToBounds(),
                 contentAlignment = Alignment.Center,
@@ -104,6 +105,7 @@ fun RecommendResultScreen(
                 isLottieEnded = isLottieEnded,
                 onConfirmClick = onConfirmClick,
                 onEditClick = onEditClick,
+                modifier = Modifier,
             )
         }
     }

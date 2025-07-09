@@ -70,6 +70,8 @@ fun RecommendResultContent(
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val paddedModifier = Modifier.padding(horizontal = 20.dp)
+
     Column(
         modifier = modifier
             .background(BongBaekTheme.colors.gray900),
@@ -77,11 +79,13 @@ fun RecommendResultContent(
         RecommendAmountCard(
             expense = expense,
             isLottieEnded = isLottieEnded,
+            modifier = paddedModifier,
         )
 
         Spacer(modifier = Modifier.height(20.dp))
 
         Row(
+            modifier = paddedModifier,
             horizontalArrangement = Arrangement.spacedBy(6.dp),
         ) {
             RecommendEventInfoCard(
@@ -118,6 +122,7 @@ fun RecommendResultContent(
                     iconRes = ic_info_primary,
                     titleRes = recommendation_result_logic_title,
                     descriptionRes = recommendation_result_logic_desc,
+                    modifier = paddedModifier,
                 )
 
                 Spacer(modifier = Modifier.height(14.dp))
@@ -126,6 +131,7 @@ fun RecommendResultContent(
                     iconRes = ic_check,
                     titleRes = recommendation_result_inform_title,
                     descriptionRes = recommendation_result_inform_desc,
+                    modifier = paddedModifier,
                 )
 
                 Spacer(modifier = Modifier.height(40.dp))
@@ -134,7 +140,7 @@ fun RecommendResultContent(
                     title = stringResource(recommendation_result_confirm),
                     onClick = onConfirmClick,
                     buttonType = ButtonType.PRIMARY,
-                    modifier = Modifier
+                    modifier = paddedModifier
                         .fillMaxWidth(),
                 )
 
@@ -144,7 +150,7 @@ fun RecommendResultContent(
                     title = stringResource(recommendation_result_edit),
                     onClick = onEditClick,
                     buttonType = ButtonType.SECONDARY,
-                    modifier = Modifier
+                    modifier = paddedModifier
                         .fillMaxWidth()
                         .padding(
                             bottom = 46.dp,
