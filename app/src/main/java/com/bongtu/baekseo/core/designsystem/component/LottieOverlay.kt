@@ -38,7 +38,7 @@ fun LottieOverlay(
 
 @Preview
 @Composable
-private fun NapzakLoadingOverlayPreview() {
+private fun LottieOverlayPreview() {
     BongBaekTheme {
         Column(
             modifier = Modifier
