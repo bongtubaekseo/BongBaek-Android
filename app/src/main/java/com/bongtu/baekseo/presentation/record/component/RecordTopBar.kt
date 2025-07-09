@@ -89,11 +89,11 @@ private fun TopBarDefaultTrailingIcon(
         Icon(
             imageVector = ImageVector.vectorResource(ic_delete),
             contentDescription = null,
-            tint = BongBaekTheme.colors.gray400,
             modifier = Modifier
                 .padding(14.dp)
                 .size(20.dp)
                 .noRippleClickable(onClick = onEnterDeleteModeClick),
+            tint = BongBaekTheme.colors.gray400,
         )
     }
 }
