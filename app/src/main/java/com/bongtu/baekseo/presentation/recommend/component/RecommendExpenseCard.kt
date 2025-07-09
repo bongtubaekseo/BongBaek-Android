@@ -40,14 +40,16 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.designsystem.component.chip.BongBaekLabelChip
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import java.text.DecimalFormat
 
 @Composable
 fun RecommendExpenseCard(
     event: EventType,
-    expense: String,
+    expense: Int,
     isLottieEnded: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val decimalFormatter = remember { DecimalFormat("#,###") }
     val bongBaekColors = BongBaekTheme.colors
     val gradientBackground = remember {
         Brush.linearGradient(
@@ -126,7 +128,7 @@ fun RecommendExpenseCard(
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
-                        text = expense,
+                        text = decimalFormatter.format(expense),
                         style = BongBaekTheme.typography.headBold24.copy(
                             fontSize = 44.sp,
                             fontWeight = FontWeight.ExtraBold,
@@ -185,7 +187,7 @@ private fun RecommendExpenseCardPreview() {
         ) {
             RecommendExpenseCard(
                 event = EventType.BIRTHDAY,
-                expense = "100,000",
+                expense = 100_000,
                 isLottieEnded = isLottieEnded,
                 modifier = Modifier
             )
