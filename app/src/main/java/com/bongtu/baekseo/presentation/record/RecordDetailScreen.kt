@@ -19,7 +19,10 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -29,12 +32,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.R.string.record_detail_cost_title
 import com.bongtu.baekseo.R.string.record_detail_delete
+import com.bongtu.baekseo.R.string.record_detail_delete_dialog_cancel_label
+import com.bongtu.baekseo.R.string.record_detail_delete_dialog_delete_label
+import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
+import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -72,6 +81,8 @@ private fun RecordDetailScreen(
     )
     val (location, address) = "강남 알베르" to "강남구 테헤란로 123-4 567호"
     val (attendLabel, note) = AttendType.ATTEND.label to "메모 입니다아아아아"
+
+    var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -173,7 +184,7 @@ private fun RecordDetailScreen(
 
             BongBaekButton(
                 title = stringResource(record_detail_delete),
-                onClick = { /*TODO: 삭제 로직 구현*/ },
+                onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
                 buttonType = ButtonType.DELETE,
                 modifier = Modifier
                     .padding(top = 65.dp, bottom = 40.dp)
@@ -184,6 +195,13 @@ private fun RecordDetailScreen(
                         shape = RoundedCornerShape(10.dp),
                     ),
             )
+
+            if (isDeleteAlertDialogVisible) {
+                RecordDeleteAlertDialog(
+                    onDismissRequest = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
+                    onDeleteClick = { /* TODO: 삭제 로직 구현*/ },
+                )
+            }
         }
     }
 }
@@ -277,6 +295,76 @@ private fun RecordDetailCostCard(
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
+        }
+    }
+}
+
+@Composable
+private fun RecordDeleteAlertDialog(
+    onDismissRequest: () -> Unit,
+    onDeleteClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Dialog(
+        onDismissRequest = onDismissRequest,
+        properties = DialogProperties(
+            dismissOnBackPress = true,
+            dismissOnClickOutside = true,
+            usePlatformDefaultWidth = false,
+        ),
+    ) {
+        Column(
+            modifier = modifier
+                .padding(horizontal = 20.dp)
+                .fillMaxWidth()
+                .background(
+                    color = BongBaekTheme.colors.gray750,
+                    shape = RoundedCornerShape(10.dp),
+                )
+                .padding(
+                    top = 20.dp,
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 16.dp,
+                )
+        ) {
+            Text(
+                text = stringResource(record_detail_delete_dialog_title),
+                color = BongBaekTheme.colors.white,
+                style = BongBaekTheme.typography.titleSemiBold20,
+                modifier = Modifier
+                    .padding(bottom = 6.dp),
+            )
+            Text(
+                text = stringResource(record_detail_delete_dialog_description),
+                color = BongBaekTheme.colors.gray300,
+                style = BongBaekTheme.typography.captionRegular12,
+                modifier = Modifier
+                    .padding(bottom = 10.dp),
+            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.End,
+            ) {
+                Text(
+                    text = stringResource(record_detail_delete_dialog_cancel_label),
+                    color = BongBaekTheme.colors.gray300,
+                    style = BongBaekTheme.typography.body2Regular16,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp, horizontal = 16.dp)
+                        .noRippleClickable(onClick = onDismissRequest),
+                )
+                Text(
+                    text = stringResource(record_detail_delete_dialog_delete_label),
+                    color = BongBaekTheme.colors.secondaryRed,
+                    style = BongBaekTheme.typography.body2Regular16,
+                    modifier = Modifier
+                        .padding(vertical = 8.dp, horizontal = 16.dp)
+                        .noRippleClickable(onClick = onDeleteClick),
+                )
+            }
+
         }
     }
 }
