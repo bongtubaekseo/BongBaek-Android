@@ -248,7 +248,7 @@ private fun RecordDetailDropDownLocationContent(
                     color = BongBaekTheme.colors.primaryLight,
                     shape = RoundedCornerShape(10.dp),
                 )
-                .aspectRatio(MAP_RATIO.toFloat()),
+                .aspectRatio(MAP_RATIO),
         ) {
             // TODO: 지도로 대체
 

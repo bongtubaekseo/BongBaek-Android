@@ -167,7 +167,7 @@ private fun RecordDetailScreen(
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(size = 10.dp))
                     .background(color = BongBaekTheme.colors.gray750)
-                    .aspectRatio(MEMO_RATIO.toFloat()),
+                    .aspectRatio(MEMO_RATIO),
                 contentAlignment = Alignment.TopStart,
             ) {
                 Text(
