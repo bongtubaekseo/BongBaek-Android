@@ -9,6 +9,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.bongtu.baekseo.presentation.home.navigation.HomeRoute
 import com.bongtu.baekseo.presentation.home.navigation.homeDefaultGraph
+import com.bongtu.baekseo.presentation.home.schedule.navigation.navigateToSchedule
 import com.bongtu.baekseo.presentation.home.schedule.navigation.scheduleGraph
 
 @Composable
@@ -28,6 +29,7 @@ fun HomeNavHost(
             .fillMaxSize(),
     ) {
         homeDefaultGraph(
+            navigateToSchedule = navController::navigateToSchedule,
             modifier = Modifier,
         )
         scheduleGraph(

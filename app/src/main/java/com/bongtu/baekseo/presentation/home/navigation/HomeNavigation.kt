@@ -24,10 +24,12 @@ fun NavGraphBuilder.homeGraph(
 }
 
 fun NavGraphBuilder.homeDefaultGraph(
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Default> {
         HomeDefaultRoute(
+            navigateToSchedule = navigateToSchedule,
             modifier = modifier,
         )
     }

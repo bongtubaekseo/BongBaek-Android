@@ -35,6 +35,7 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
@@ -51,6 +52,7 @@ import java.time.LocalDate
 
 @Composable
 fun HomeDefaultRoute(
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -65,6 +67,7 @@ fun HomeDefaultRoute(
         onBadgeClick = {
             // TODO: 뱃지 클릭 이벤트
         },
+        navigateToSchedule = navigateToSchedule,
         modifier = modifier,
     )
 }
@@ -73,6 +76,7 @@ fun HomeDefaultRoute(
 fun HomeDefaultScreen(
     uiState: HomeState,
     onBadgeClick: () -> Unit,
+    navigateToSchedule: ()->Unit,
     modifier: Modifier = Modifier,
 ) {
     var items = emptyList<HomeEvent>()
@@ -207,6 +211,7 @@ fun HomeDefaultScreen(
                 if (items.isNotEmpty()) {
                     Text(
                         text = stringResource(id = home_schedule_more),
+                        modifier = Modifier.noRippleClickable(navigateToSchedule),
                         style = BongBaekTheme.typography.captionRegular12,  // TODO: 스타일 변경
                         color = BongBaekTheme.colors.gray200,
                     )
@@ -295,6 +300,7 @@ private fun HomeDefaultScreenPreview() {
                 homeLoadState = UiState.Success(items)
             ),
             onBadgeClick = {},
+            navigateToSchedule = {},
         )
     }
 }
