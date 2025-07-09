@@ -10,8 +10,9 @@ class RecordContract {
     @Immutable
     data class RecordState(
         val recordLoadState: UiState<List<RecordEvent>> = UiState.Loading,
+        val selectedDeleteEventIds: Set<String> = emptySet(),
         val attendType: AttendType = AttendType.ATTEND,
         val eventCategoryType: EventCategoryType = EventCategoryType.ALL,
-        val isDeleting: Boolean = false,
+        val isDeleteMode: Boolean = false,
     )
 }

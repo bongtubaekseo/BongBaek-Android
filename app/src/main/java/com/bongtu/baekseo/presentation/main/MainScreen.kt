@@ -61,6 +61,9 @@ private fun MainNavHost(
             modifier = modifier,
         )
         homeGraph(modifier = modifier)
-        recordGraph(modifier = modifier)
+        recordGraph(
+            setBottomBarVisible = navigator::updateBottomBarVisible,
+            modifier = modifier,
+        )
     }
 }

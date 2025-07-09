@@ -36,6 +36,7 @@ private data class TabStyle(
 fun AttendTypeTab(
     selectedTab: AttendType,
     onTabClick: (AttendType) -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -88,7 +89,7 @@ fun AttendTypeTab(
                             .background(
                                 color = style.backgroundColor,
                             )
-                            .noRippleClickable { onTabClick(type) },
+                            .noRippleClickable { if(isEnabled) onTabClick(type) },
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(
@@ -118,6 +119,7 @@ private fun AttendTypeTabPreview() {
         AttendTypeTab(
             selectedTab = AttendType.ATTEND,
             onTabClick = {},
+            isEnabled = true,
         )
     }
 }
