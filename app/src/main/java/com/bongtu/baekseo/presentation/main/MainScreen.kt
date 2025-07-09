@@ -9,10 +9,12 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
+import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -59,7 +61,13 @@ private fun MainNavHost(
         dummyGraph(modifier = modifier)
         onBoardingGraph(
             navigateToHome = {
-                navigator.navController.navigateToHome()
+                navigator.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<OnBoarding> {
+                            inclusive = true
+                        }
+                    }
+                )
             },
             modifier = modifier,
         )
