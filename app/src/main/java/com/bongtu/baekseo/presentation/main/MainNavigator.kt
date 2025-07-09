@@ -1,7 +1,10 @@
 package com.bongtu.baekseo.presentation.main
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -9,7 +12,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.dummy.navigation.Dummy
-import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 
 class MainNavigator(
@@ -19,12 +21,15 @@ class MainNavigator(
         @Composable get() = navController
             .currentBackStackEntryAsState().value?.destination
 
-    val startDestination = OnBoarding
+    val startDestination = Dummy
 
     val currentTab: MainTab?
         @Composable get() = MainTab.find { tab ->
             currentDestination?.hasRoute(tab::class) == true
         }
+
+    var isBottomBarVisible: Boolean by mutableStateOf(true)
+        private set
 
     fun navigate(tab: MainTab) {
         val navOptions = navOptions {
@@ -49,8 +54,16 @@ class MainNavigator(
     }
 
     @Composable
-    fun showBottomBar() = MainTab.contains {
-        currentDestination?.hasRoute(it::class) == true
+    fun showBottomBar(): Boolean {
+        val isMainTabRoute = MainTab.contains {
+            currentDestination?.hasRoute(it::class) == true
+        }
+
+        return isMainTabRoute && isBottomBarVisible
+    }
+
+    fun updateBottomBarVisible(isVisible: Boolean) {
+        isBottomBarVisible = isVisible
     }
 }
 

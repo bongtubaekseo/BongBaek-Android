@@ -20,6 +20,7 @@ import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 fun EventCategoryBar(
     selectedCategory: EventCategoryType,
     onCategoryClick: (EventCategoryType) -> Unit,
+    isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     LazyRow(
@@ -40,7 +41,7 @@ fun EventCategoryBar(
             BongBaekFilterChip(
                 eventLabel = type.label,
                 isSelected = isSelected,
-                onClick = { onCategoryClick(type) },
+                onClick = { if(isEnabled) onCategoryClick(type) },
             )
 
             if (index == EventCategoryType.entries.lastIndex) {
@@ -57,6 +58,7 @@ private fun EventCategoryBarPreview() {
         EventCategoryBar(
             selectedCategory = EventCategoryType.WEDDING,
             onCategoryClick = {},
+            isEnabled = true,
         )
     }
 }

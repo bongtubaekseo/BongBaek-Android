@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.record.component
 
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,22 +10,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_check_secondary_red
+import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
+import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -37,7 +47,10 @@ import java.time.LocalDate
 @Composable
 fun RecordListContent(
     recordEventList: List<RecordEvent>,
+    isDeleteMode: Boolean,
+    selectedDeleteEventIds: Set<String>,
     onCardClick: (String) -> Unit,
+    onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
@@ -61,9 +74,7 @@ fun RecordListContent(
             }
 
             if (index == 0) {
-                Spacer(
-                    modifier = Modifier.height(20.dp),
-                )
+                Spacer(modifier = Modifier.height(20.dp))
             }
 
             when (item) {
@@ -101,6 +112,7 @@ fun RecordListContent(
 
                 is YearMonthEventItem.Event -> {
                     with(item.event) {
+                        val isDeleteToggleCheck = selectedDeleteEventIds.contains(eventId)
                         RecordCard(
                             nickname = hostNickName,
                             username = hostName,
@@ -108,7 +120,10 @@ fun RecordListContent(
                             category = category,
                             relationship = relationship,
                             eventDate = eventDate,
-                            onCardClick = { onCardClick(eventId) },
+                            onCardClick = { if (!isDeleteMode) onCardClick(eventId) },
+                            isDeleteMode = isDeleteMode,
+                            isDeleteToggleCheck = isDeleteToggleCheck,
+                            onDeleteToggleClick = { onDeleteSelectedButtonClick(eventId) },
                             modifier = Modifier.padding(top = topPadding),
                         )
                     }
@@ -116,9 +131,7 @@ fun RecordListContent(
             }
 
             if (index == yearMonthEventItems.lastIndex) {
-                Spacer(
-                    modifier = Modifier.height(20.dp),
-                )
+                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }
@@ -133,75 +146,121 @@ private fun RecordCard(
     relationship: String,
     eventDate: LocalDate,
     onCardClick: () -> Unit,
+    isDeleteMode: Boolean,
+    isDeleteToggleCheck: Boolean,
+    onDeleteToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (date, weekDay) = eventDate.toFormattedDateWithDay()
 
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(size = 10.dp))
-            .background(color = BongBaekTheme.colors.gray750)
-            .padding(
-                top = 16.dp,
-                bottom = 18.dp,
-                start = 20.dp,
-                end = 20.dp,
-            )
-            .noRippleClickable(onClick = onCardClick),
-    ) {
-        Text(
-            text = nickname,
-            color = BongBaekTheme.colors.primaryNormal,
-            style = BongBaekTheme.typography.captionRegular12,
-        )
+    val deletePadding by animateDpAsState(
+        targetValue = if (isDeleteMode) 16.dp else 0.dp,
+    )
 
-        Row(
+    Row(
+        modifier = modifier.fillMaxWidth(),
+        verticalAlignment = Alignment.CenterVertically,
+    ) {
+        if (isDeleteMode) {
+            RecordDeleteToggleButton(
+                isDeleteToggleCheck = isDeleteToggleCheck,
+                onDeleteToggleClick = onDeleteToggleClick,
+                modifier = Modifier.padding(end = deletePadding),
+            )
+        }
+
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
+                .clip(shape = RoundedCornerShape(size = 10.dp))
+                .background(color = BongBaekTheme.colors.gray750)
+                .padding(
+                    top = 16.dp,
+                    bottom = 18.dp,
+                    start = 20.dp,
+                    end = 20.dp,
+                )
+                .noRippleClickable(onClick = onCardClick),
         ) {
             Text(
-                text = username,
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-            Text(
-                text = stringResource(record_card_cost, cost),
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            BongBaekSmallBadge(
-                title = category,
-                modifier = Modifier.padding(end = 8.dp),
-            )
-
-            BongBaekSmallBadge(
-                title = relationship,
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = date,
-                color = BongBaekTheme.colors.gray400,
+                text = nickname,
+                color = BongBaekTheme.colors.primaryNormal,
                 style = BongBaekTheme.typography.captionRegular12,
             )
 
-            Text(
-                text = "(${weekDay})",
-                color = BongBaekTheme.colors.gray400,
-                style = BongBaekTheme.typography.captionRegular12,
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = 8.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = username,
+                    color = BongBaekTheme.colors.white,
+                    style = BongBaekTheme.typography.titleSemiBold18,
+                )
+                Text(
+                    text = stringResource(record_card_cost, cost),
+                    color = BongBaekTheme.colors.white,
+                    style = BongBaekTheme.typography.titleSemiBold18,
+                )
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BongBaekSmallBadge(
+                    title = category,
+                    modifier = Modifier.padding(end = 8.dp),
+                )
+
+                BongBaekSmallBadge(title = relationship)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Text(
+                    text = date,
+                    color = BongBaekTheme.colors.gray400,
+                    style = BongBaekTheme.typography.captionRegular12,
+                    modifier = Modifier.padding(end = 4.dp),
+                )
+
+                Text(
+                    text = stringResource(record_card_weekday, weekDay),
+                    color = BongBaekTheme.colors.gray400,
+                    style = BongBaekTheme.typography.captionRegular12,
+                )
+            }
         }
+    }
+}
+
+@Composable
+private fun RecordDeleteToggleButton(
+    isDeleteToggleCheck: Boolean,
+    onDeleteToggleClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    if (isDeleteToggleCheck) {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = ic_check_secondary_red),
+            contentDescription = null,
+            modifier = modifier
+                .size(18.dp)
+                .noRippleClickable(onClick = onDeleteToggleClick),
+            tint = Color.Unspecified,
+        )
+    } else {
+        Icon(
+            imageVector = ImageVector.vectorResource(id = ic_record_radio_circle),
+            contentDescription = null,
+            modifier = modifier
+                .size(18.dp)
+                .noRippleClickable(onClick = onDeleteToggleClick),
+            tint = Color.Unspecified,
+        )
     }
 }
 
@@ -277,6 +336,9 @@ private fun RecordContentPreview() {
                 ),
             ),
             onCardClick = {},
+            onDeleteSelectedButtonClick = {},
+            isDeleteMode = true,
+            selectedDeleteEventIds = setOf("eventId"),
         )
     }
 }

@@ -27,7 +27,7 @@ class RecordViewModel @Inject constructor(
             value = UiState.Success(
                 listOf(
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "201",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -36,7 +36,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2025, 5, 4),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "202",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -45,7 +45,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2025, 5, 2),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "203",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -54,7 +54,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2025, 4, 10),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "204",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -63,7 +63,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2025, 2, 23),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "205",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -72,7 +72,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2024, 6, 8),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "206",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -81,7 +81,7 @@ class RecordViewModel @Inject constructor(
                         eventDate = LocalDate.of(2024, 5, 24),
                     ),
                     RecordEvent(
-                        eventId = "eventId",
+                        eventId = "207",
                         hostName = "username",
                         hostNickName = "nickname",
                         category = "경조사 유형",
@@ -89,15 +89,28 @@ class RecordViewModel @Inject constructor(
                         cost = 10000,
                         eventDate = LocalDate.of(2023, 2, 4),
                     ),
-                )
-            )
+                ),
+            ),
         )
+    }
+
+    fun fetchSelectedDeleteEventIds() {
+        // TODO("선택된 삭제 처리 추가 예정")
+        updateDeleteModeCancel()
+        updateInitSelectedDeleteEventIds()
     }
 
     private fun updateRecordUiState(value: UiState<List<RecordEvent>>) =
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
+            )
+        }
+
+    private fun updateInitSelectedDeleteEventIds() =
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedDeleteEventIds = emptySet(),
             )
         }
 
@@ -112,6 +125,32 @@ class RecordViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
+            )
+        }
+
+    fun updateDeleteMode() =
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleteMode = true,
+            )
+        }
+
+    fun updateDeleteModeCancel() =
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleteMode = false,
+                selectedDeleteEventIds = emptySet(),
+            )
+        }
+
+    fun updateSelectedDeleteEventId(eventId: String) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedDeleteEventIds = if (currentState.selectedDeleteEventIds.contains(eventId)) {
+                    currentState.selectedDeleteEventIds - eventId
+                } else {
+                    currentState.selectedDeleteEventIds + eventId
+                }
             )
         }
 }
