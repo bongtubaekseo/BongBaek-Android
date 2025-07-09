@@ -45,7 +45,9 @@ import com.bongtu.baekseo.R.string.record_detail_delete_dialog_delete_label
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
 import com.bongtu.baekseo.R.string.record_detail_memo_title
+import com.bongtu.baekseo.R.string.record_detail_delete
 import com.bongtu.baekseo.R.string.record_detail_title
+import com.bongtu.baekseo.R.string.record_detail_title_card_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -125,7 +127,7 @@ private fun RecordDetailScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             RecordDetailTitleCard(
-                title = "${event.hostName}의 ${event.category}",
+                title = stringResource(record_detail_title_card_title),
                 eventDate = LocalDate.of(2024, 8, 10),
                 modifier = Modifier
                     .padding(vertical = 20.dp),
