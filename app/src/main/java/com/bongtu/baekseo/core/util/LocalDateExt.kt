@@ -9,3 +9,8 @@ fun LocalDate.toFormattedDateWithDay(): Pair<String, String> {
     val day = this.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREA)
     return date to day
 }
+
+fun LocalDate.toFormattedShortMonth(): String {
+    val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH)
+    return this.format(formatter)
+}
