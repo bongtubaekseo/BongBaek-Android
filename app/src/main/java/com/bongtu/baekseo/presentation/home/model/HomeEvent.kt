@@ -21,6 +21,7 @@ data class HomeEventInfo(
     val relationship: RelationType,
     val cost: Int,
     val eventDate: LocalDate,
+    val dDay: Int = 1,
 )
 
 data class HomeLocationInfo(
