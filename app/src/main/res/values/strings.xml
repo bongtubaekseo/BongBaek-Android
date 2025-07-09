@@ -65,7 +65,7 @@
     <string name="recommendation_result_edit">추천 받은 금액 수정하기</string>
     <string name="recommendation_record_topbar">기록 완료</string>
     <string name="recommendation_record_title">기록이 완료됐어요!</string>
-    <string name="recommendation_record_description">경조사 기록이 저장되었습니다.\n[기록하기] 확인할 수 있어요.</string>
+    <string name="recommendation_record_description">경조사 기록이 저장되었습니다.\n[기록하기]에서 확인할 수 있어요.</string>
     <string name="recommendation_to_home">홈으로 가기</string>
     <string name="recommendation_to_record">내 기록 보기</string>
     <!--Record    -->
