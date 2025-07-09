@@ -32,6 +32,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_check_gray
@@ -114,7 +115,9 @@ fun RecordDetailDropDown(
                 modifier = Modifier.padding(vertical = 20.dp),
             )
             Icon(
-                imageVector = ImageVector.vectorResource(ic_arrow_up),
+                imageVector = ImageVector.vectorResource(
+                    if (isDetailVisible) ic_arrow_up else ic_arrow_down
+                ),
                 contentDescription = null,
                 modifier = Modifier
                     .noRippleClickable { isDetailVisible = !isDetailVisible },
