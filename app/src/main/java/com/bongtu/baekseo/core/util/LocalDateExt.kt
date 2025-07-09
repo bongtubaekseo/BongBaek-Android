@@ -9,3 +9,9 @@ fun LocalDate.toFormattedDateWithDay(): Pair<String, String> {
     val day = this.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREA)
     return date to day
 }
+
+fun LocalDate.toFormattedYearWithMonth(): Pair<Int, Int> {
+    val date = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
+    val (year, month) = date.split("-")
+    return year.toInt() to month.toInt()
+}
