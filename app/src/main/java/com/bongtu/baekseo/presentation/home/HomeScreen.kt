@@ -63,7 +63,9 @@ fun HomeRoute(
 
     HomeScreen(
         uiState = uiState,
-        onBadgeClick = {},
+        onBadgeClick = {
+            // TODO: 뱃지 클릭 이벤트
+        },
         modifier = modifier,
     )
 }
