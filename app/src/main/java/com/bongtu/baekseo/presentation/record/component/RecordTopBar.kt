@@ -43,7 +43,7 @@ fun RecordTopBar(
         title = stringResource(title),
         topBarType = topBarType,
         leadingIcon = if (isDeleting) {
-            { TopBarLeadingIcon(onBackButtonClick = onBackButtonClick) }
+            { TopBarDeleteLeadingIcon(onBackButtonClick = onBackButtonClick) }
         } else null,
         trailingIcon = if (!isDeleting) {
             {
@@ -54,44 +54,12 @@ fun RecordTopBar(
             }
         } else {
             {
-                val colors = BongBaekTheme.colors
-                val textColor = remember(isDeletable) {
-                    if (isDeletable) {
-                        colors.secondaryRed
-                    } else {
-                        colors.gray500
-                    }
-                }
-                Text(
-                    text = stringResource(record_top_bar_delete_button),
-                    style = BongBaekTheme.typography.titleSemiBold16,
-                    color = textColor,
-                    modifier = Modifier
-                        .padding(vertical = 12.dp, horizontal = 10.dp)
-                        .padding(end = 8.dp)
-                        .noRippleClickable(onClick = {
-                            if (isDeletable) {
-                                onDeletingDeleteButtonClick()
-                            }
-                        }),
+                TopBarDeleteTrailingIcon(
+                    isDeletable = isDeletable,
+                    onDeletingDeleteButtonClick = onDeletingDeleteButtonClick,
                 )
             }
         },
-    )
-}
-
-@Composable
-private fun TopBarLeadingIcon(
-    onBackButtonClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Icon(
-        imageVector = ImageVector.vectorResource(ic_arrow_back),
-        contentDescription = null,
-        modifier = modifier
-            .padding(12.dp)
-            .noRippleClickable(onClick = onBackButtonClick),
-        tint = BongBaekTheme.colors.white,
     )
 }
 
@@ -124,4 +92,49 @@ private fun TopBarDefaultTrailingIcon(
                 .noRippleClickable(onClick = onDeleteButtonClick),
         )
     }
+}
+
+@Composable
+private fun TopBarDeleteLeadingIcon(
+    onBackButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Icon(
+        imageVector = ImageVector.vectorResource(ic_arrow_back),
+        contentDescription = null,
+        modifier = modifier
+            .padding(12.dp)
+            .noRippleClickable(onClick = onBackButtonClick),
+        tint = BongBaekTheme.colors.white,
+    )
+}
+
+@Composable
+private fun TopBarDeleteTrailingIcon(
+    isDeletable: Boolean,
+    onDeletingDeleteButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val colors = BongBaekTheme.colors
+    val textColor = remember(isDeletable) {
+        if (isDeletable) {
+            colors.secondaryRed
+        } else {
+            colors.gray500
+        }
+    }
+
+    Text(
+        text = stringResource(record_top_bar_delete_button),
+        style = BongBaekTheme.typography.titleSemiBold16,
+        color = textColor,
+        modifier = modifier
+            .padding(vertical = 12.dp, horizontal = 10.dp)
+            .padding(end = 8.dp)
+            .noRippleClickable(onClick = {
+                if (isDeletable) {
+                    onDeletingDeleteButtonClick()
+                }
+            }),
+    )
 }
