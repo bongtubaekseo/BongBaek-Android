@@ -45,7 +45,6 @@ import com.bongtu.baekseo.R.string.record_detail_delete_dialog_delete_label
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
 import com.bongtu.baekseo.R.string.record_detail_memo_title
-import com.bongtu.baekseo.R.string.record_detail_delete
 import com.bongtu.baekseo.R.string.record_detail_title
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -57,7 +56,6 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.core.util.toFormattedShortMonth
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.component.RecordDetailDropDown
 import com.bongtu.baekseo.presentation.record.type.AttendType
@@ -127,7 +125,11 @@ private fun RecordDetailScreen(
                 .verticalScroll(rememberScrollState()),
         ) {
             RecordDetailTitleCard(
-                title = stringResource(record_detail_title_card_title),
+                title = stringResource(
+                    record_detail_title_card_title,
+                    event.hostName,
+                    event.category
+                ),
                 eventDate = LocalDate.of(2024, 8, 10),
                 modifier = Modifier
                     .padding(vertical = 20.dp),
@@ -138,13 +140,8 @@ private fun RecordDetailScreen(
             )
 
             RecordDetailDropDown(
-                hostName = event.hostName,
-                hostNickName = event.hostNickName,
-                relationship = event.relationship,
-                category = event.category,
-                costLabel = stringResource(record_card_cost, event.cost),
+                event = event,
                 attendLabel = attendLabel,
-                formattedEventDate = event.eventDate.toFormattedShortMonth(),
                 location = location,
                 address = address,
                 modifier = Modifier

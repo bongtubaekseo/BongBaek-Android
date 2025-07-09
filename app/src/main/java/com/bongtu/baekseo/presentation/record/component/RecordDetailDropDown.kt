@@ -42,60 +42,76 @@ import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.string.record_card_cost
+import com.bongtu.baekseo.R.string.record_detail_calendar_title
+import com.bongtu.baekseo.R.string.record_detail_cost_title
+import com.bongtu.baekseo.R.string.record_detail_event_title
+import com.bongtu.baekseo.R.string.record_detail_location_title
+import com.bongtu.baekseo.R.string.record_detail_name_title
+import com.bongtu.baekseo.R.string.record_detail_nickname_title
+import com.bongtu.baekseo.R.string.record_detail_realtion_title
 import com.bongtu.baekseo.R.string.record_detail_dropdown_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.toFormattedShortMonth
+import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
 @Composable
 fun RecordDetailDropDown(
-    hostName: String,
-    hostNickName: String,
-    relationship: String,
-    category: String,
-    costLabel: String,
-    attendLabel: String,
-    formattedEventDate: String,
+    event: RecordEvent,
     modifier: Modifier = Modifier,
+    attendLabel: String,
     location: String? = null,
     address: String? = null,
 ) {
     var isDetailVisible by remember { mutableStateOf(false) }
 
-    val dropDownItems = persistentListOf(
+    val recordDetailItems = persistentListOf(
         Triple(
-            ic_person, "이름",
-            RecordDetailDropDownTrailingType.TrailingText(hostName)
+            ic_person,
+            stringResource(record_detail_name_title),
+            RecordDetailDropDownTrailingType.TrailingText(event.hostName)
         ),
         Triple(
-            ic_nickname, "별명",
-            RecordDetailDropDownTrailingType.TrailingText(hostNickName)
+            ic_nickname,
+            stringResource(record_detail_nickname_title),
+            RecordDetailDropDownTrailingType.TrailingText(event.hostNickName)
         ),
         Triple(
-            ic_relation, "관계",
-            RecordDetailDropDownTrailingType.TrailingChip(relationship)
+            ic_relation,
+            stringResource(record_detail_realtion_title),
+            RecordDetailDropDownTrailingType.TrailingChip(event.relationship)
         ),
         Triple(
-            ic_event, "경조사",
-            RecordDetailDropDownTrailingType.TrailingChip(category)
+            ic_event,
+            stringResource(record_detail_event_title),
+            RecordDetailDropDownTrailingType.TrailingChip(event.category)
         ),
         Triple(
-            ic_coin, "경조사비",
-            RecordDetailDropDownTrailingType.TrailingText(costLabel)
+            ic_coin,
+            stringResource(record_detail_cost_title),
+            RecordDetailDropDownTrailingType.TrailingText(
+                stringResource(record_card_cost, event.cost)
+            )
         ),
         Triple(
-            ic_check_gray, "참석 여부", RecordDetailDropDownTrailingType.TrailingChip(attendLabel)
+            ic_check_gray,
+            stringResource(record_detail_cost_title),
+            RecordDetailDropDownTrailingType.TrailingChip(attendLabel)
         ),
         Triple(
-            ic_calendar, "날짜",
-            RecordDetailDropDownTrailingType.TrailingChip(formattedEventDate)
+            ic_calendar,
+            stringResource(record_detail_calendar_title),
+            RecordDetailDropDownTrailingType.TrailingChip(event.eventDate.toFormattedShortMonth())
         ),
         Triple(
-            ic_location, "행사장",
+            ic_location,
+            stringResource(record_detail_location_title),
             null
-        ),
+        )
     )
 
     Column(
@@ -142,7 +158,7 @@ fun RecordDetailDropDown(
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                dropDownItems.forEach { (iconRes, label, type) ->
+                recordDetailItems.forEach { (iconRes, label, type) ->
                     RecordDetailDropDownItem(
                         iconRes = iconRes,
                         label = label,
@@ -283,13 +299,18 @@ private fun RecordDetailDropDownLocationContent(
 private fun RecordDetailDropDownPreview() {
     BongBaekTheme {
         RecordDetailDropDown(
-            hostName = "김봉백",
-            hostNickName = "봉봉",
-            category = "경조사",
-            relationship = "가족",
-            costLabel = "10000원",
+            event = RecordEvent(
+                eventId = "",
+                hostName = "김봉백",
+                hostNickName = "봉봉",
+                relationship = "가족/친척",
+                category = "결혼식",
+                cost = 100000,
+                eventDate = LocalDate.of(2024, 10, 5),
+            ),
             attendLabel = "참석",
-            formattedEventDate = LocalDate.now().toString(),
+            location = "서울특별시 강남구 예식장",
+            address = "서울특별시 강남구 예식장",
         )
     }
 }
