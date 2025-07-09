@@ -16,25 +16,25 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToRecord(navOptions: NavOptions? = null) = navigate(Record, navOptions)
 
 fun NavGraphBuilder.recordGraph(
-    toggleBottomBar: () -> Unit,
+    setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Record> {
         RecordScreen(
-            toggleBottomBar = toggleBottomBar,
+            setBottomBarVisible = setBottomBarVisible,
             modifier = modifier,
         )
     }
 }
 
 fun NavGraphBuilder.recordNestedGraph(
-    toggleBottomBar: () -> Unit,
+    setBottomBarVisible: (Boolean) -> Unit,
     navController: NavHostController,
     viewModel: RecordViewModel,
 ) {
     composable<Default> {
         RecordDefaultRoute(
-            toggleButtonBar = toggleBottomBar,
+            setBottomBarVisible = setBottomBarVisible,
             viewModel = viewModel,
         )
     }

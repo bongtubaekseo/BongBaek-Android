@@ -28,7 +28,7 @@ class MainNavigator(
             currentDestination?.hasRoute(tab::class) == true
         }
 
-    var isBottomBarVisibility: Boolean by mutableStateOf(true)
+    var isBottomBarVisible: Boolean by mutableStateOf(true)
         private set
 
     fun navigate(tab: MainTab) {
@@ -59,11 +59,11 @@ class MainNavigator(
             currentDestination?.hasRoute(it::class) == true
         }
 
-        return isMainTabRoute && isBottomBarVisibility
+        return isMainTabRoute && isBottomBarVisible
     }
 
-    fun toggleBottomBar() {
-        isBottomBarVisibility = !isBottomBarVisibility
+    fun updateBottomBarVisible(isVisible: Boolean) {
+        isBottomBarVisible = isVisible
     }
 }
 

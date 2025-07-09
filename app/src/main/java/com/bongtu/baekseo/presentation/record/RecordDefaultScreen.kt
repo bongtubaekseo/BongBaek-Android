@@ -1,8 +1,8 @@
 package com.bongtu.baekseo.presentation.record
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -25,33 +25,26 @@ import java.time.LocalDate
 
 @Composable
 fun RecordDefaultRoute(
-    toggleButtonBar: () -> Unit,
+    setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) {
-        viewModel.fetchRecordEvent()
-    }
+    if (uiState.isDeleting) { BackHandler { viewModel.updateDeletingCancel() } }
+
+    LaunchedEffect(uiState.isDeleting) { setBottomBarVisible(!uiState.isDeleting) }
+
+    LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
 
     RecordDefaultScreen(
         uiState = uiState,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
-        onDeleteButtonClick = {
-            toggleButtonBar()
-            viewModel.updateDeleting()
-        },
-        onDeleteCancelButtonClick = {
-            toggleButtonBar()
-            viewModel.updateDeletingCancel()
-        },
+        onDeleteButtonClick = viewModel::updateDeleting,
+        onDeleteCancelButtonClick = viewModel::updateDeletingCancel,
         onDeletingSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
-        onDeletingDeleteButtonClick = {
-            toggleButtonBar()
-            viewModel.fetchSelectedDeleteEventIds()
-        },
+        onDeletingDeleteButtonClick = viewModel::fetchSelectedDeleteEventIds,
         modifier = modifier,
     )
 }
@@ -71,8 +64,7 @@ private fun RecordDefaultScreen(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.gray900)
     ) {
         RecordTopBar(
             onDeleteButtonClick = onDeleteButtonClick,
