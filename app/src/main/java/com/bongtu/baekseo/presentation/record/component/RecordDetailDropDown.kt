@@ -8,9 +8,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -24,7 +26,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,6 +41,7 @@ import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.string.record_detail_dropdown_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType
@@ -53,6 +58,7 @@ fun RecordDetailDropDown(
     costLabel: String,
     attendLabel: String,
     formattedEventDate: String,
+    modifier: Modifier = Modifier,
     location: String? = null,
     address: String? = null,
 ) {
@@ -81,11 +87,11 @@ fun RecordDetailDropDown(
             RecordDetailDropDownTrailingType.TrailingText(costLabel)
         ),
         Triple(
-            ic_check_gray, "참석 여부", RecordDetailDropDownTrailingType.TrailingText(attendLabel)
+            ic_check_gray, "참석 여부", RecordDetailDropDownTrailingType.TrailingChip(attendLabel)
         ),
         Triple(
             ic_calendar, "날짜",
-            RecordDetailDropDownTrailingType.TrailingText(formattedEventDate)
+            RecordDetailDropDownTrailingType.TrailingChip(formattedEventDate)
         ),
         Triple(
             ic_location, "행사장",
@@ -93,55 +99,60 @@ fun RecordDetailDropDown(
         ),
     )
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth(),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween,
+    Column(
+        modifier = modifier,
     ) {
-        Text(
-            text = "상세정보",
-            style = BongBaekTheme.typography.titleSemiBold18,
-            color = BongBaekTheme.colors.white,
-            modifier = Modifier.padding(vertical = 20.dp),
-        )
-        Icon(
-            imageVector = ImageVector.vectorResource(ic_arrow_up),
-            contentDescription = null,
+        Row(
             modifier = Modifier
-                .padding(14.dp)
-                .size(20.dp)
-                .noRippleClickable({ isDetailVisible != isDetailVisible }),
-            tint = BongBaekTheme.colors.white,
-        )
-    }
-
-
-    AnimatedVisibility(
-        visible = isDetailVisible,
-        enter = expandVertically() + fadeIn(),
-        exit = shrinkVertically() + fadeOut()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = BongBaekTheme.colors.gray800,
-                    shape = RoundedCornerShape(10.dp)
-                )
-                .padding(
-                    horizontal = 20.dp,
-                    vertical = 24.dp
-                ),
-            verticalArrangement = Arrangement.spacedBy(24.dp)
+                .fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            dropDownItems.forEach { (iconRes, label, type) ->
-                RecordDetailDropDownItem(
-                    iconRes = iconRes,
-                    label = label,
-                    trailingType = type,
-                )
+            Text(
+                text = stringResource(record_detail_dropdown_title),
+                style = BongBaekTheme.typography.titleSemiBold18,
+                color = BongBaekTheme.colors.white,
+                modifier = Modifier.padding(vertical = 20.dp),
+            )
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_arrow_up),
+                contentDescription = null,
+                modifier = Modifier
+                    .noRippleClickable { isDetailVisible = !isDetailVisible },
+                tint = BongBaekTheme.colors.white,
+            )
+        }
 
+
+        AnimatedVisibility(
+            visible = isDetailVisible,
+            enter = expandVertically() + fadeIn(),
+            exit = shrinkVertically() + fadeOut()
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = BongBaekTheme.colors.gray800,
+                        shape = RoundedCornerShape(10.dp)
+                    )
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 24.dp
+                    ),
+                verticalArrangement = Arrangement.spacedBy(24.dp)
+            ) {
+                dropDownItems.forEach { (iconRes, label, type) ->
+                    RecordDetailDropDownItem(
+                        iconRes = iconRes,
+                        label = label,
+                        trailingType = type,
+                    )
+                }
+                RecordDetailDropDownLocationContent(
+                    location = location ?: "",
+                    address = address ?: "",
+                )
             }
         }
     }
@@ -168,9 +179,9 @@ private fun RecordDetailDropDownItem(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(vertical = 10.dp)
-                    .size(16.dp)
+                    .size(21.dp)
                     .padding(end = 4.dp),
-                tint = BongBaekTheme.colors.gray400,
+                tint = Color.Unspecified,
             )
             Text(
                 text = label,
@@ -210,6 +221,58 @@ private fun RecordDetailDropDownItem(
                         modifier = Modifier.padding(vertical = 6.dp)
                     )
             }
+        }
+    }
+}
+
+private const val MAP_RATIO = 280f / 180f
+
+@Composable
+private fun RecordDetailDropDownLocationContent(
+    location: String,
+    address: String,
+) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(
+                color = BongBaekTheme.colors.gray700,
+                shape = RoundedCornerShape(10.dp),
+            )
+    ) {
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = BongBaekTheme.colors.primaryLight,
+                    shape = RoundedCornerShape(10.dp),
+                )
+                .aspectRatio(MAP_RATIO.toFloat()),
+        ) {
+            // TODO: 지도로 대체
+
+        }
+
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(
+                    horizontal = 16.dp,
+                    vertical = 14.dp,
+                ),
+        ) {
+            Text(
+                text = location,
+                style = BongBaekTheme.typography.body1Medium16,
+                color = BongBaekTheme.colors.white,
+                modifier = Modifier
+                    .padding(bottom = 2.dp),
+            )
+            Text(
+                text = address,
+                style = BongBaekTheme.typography.body2Regular14,
+                color = BongBaekTheme.colors.gray400,
+            )
         }
     }
 }
