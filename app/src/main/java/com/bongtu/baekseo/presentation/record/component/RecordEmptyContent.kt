@@ -60,7 +60,7 @@ fun RecordEmptyContent(
 
         Button(
             modifier = Modifier.padding(top = 32.dp),
-            onClick = { },
+            onClick = { /* TODO: 기록 생성 화면 전환 */ },
             shape = RoundedCornerShape(6.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = BongBaekTheme.colors.primaryNormal,
