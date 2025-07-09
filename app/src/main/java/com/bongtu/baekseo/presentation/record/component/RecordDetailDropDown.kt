@@ -49,7 +49,6 @@ import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingT
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
-
 @Composable
 fun RecordDetailDropDown(
     hostName: String,
@@ -125,11 +124,10 @@ fun RecordDetailDropDown(
             )
         }
 
-
         AnimatedVisibility(
             visible = isDetailVisible,
             enter = expandVertically() + fadeIn(),
-            exit = shrinkVertically() + fadeOut()
+            exit = shrinkVertically() + fadeOut(),
         ) {
             Column(
                 modifier = Modifier
@@ -140,7 +138,7 @@ fun RecordDetailDropDown(
                     )
                     .padding(
                         horizontal = 20.dp,
-                        vertical = 24.dp
+                        vertical = 24.dp,
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {

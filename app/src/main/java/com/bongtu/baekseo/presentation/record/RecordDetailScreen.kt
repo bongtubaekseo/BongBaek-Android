@@ -148,7 +148,7 @@ private fun RecordDetailScreen(
                 location = location,
                 address = address,
                 modifier = Modifier
-                    .padding(vertical = 20.dp)
+                    .padding(vertical = 20.dp),
             )
 
             Text(
@@ -178,7 +178,7 @@ private fun RecordDetailScreen(
                         .padding(
                             horizontal = 20.dp,
                             vertical = 16.dp,
-                        )
+                        ),
                 )
             }
 
