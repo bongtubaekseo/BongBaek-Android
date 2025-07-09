@@ -45,7 +45,9 @@
     <string name="recommendation_event_location_title">어디서 열리나요?</string>
     <string name="recommendation_event_location_skip">건너뛰기</string>
     <string name="recommendation_event_location_description">주소로 검색하면 더 빠르게 찾을 수 있어요!</string>
-
+    <string name="recommendation_loading_topbar">금액 추천 중</string>
+    <string name="recommendation_loading_title">%s님을 위한\n금액을 찾고 있어요</string>
+    <string name="recommendation_loading_description">잠시만 기다려주세요</string>
     <!--Record    -->
     <string name="record">기록하기</string>
     <string name="record_top_bar_title">경조사 전체 기록</string>
