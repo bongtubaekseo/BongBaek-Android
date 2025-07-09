@@ -6,19 +6,23 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -28,16 +32,26 @@ import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_weekday
+import com.bongtu.baekseo.R.string.record_detail_cost_title
+import com.bongtu.baekseo.R.string.record_detail_delete
+import com.bongtu.baekseo.R.string.record_detail_memo_title
+import com.bongtu.baekseo.R.string.record_detail_title
+import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
+import com.bongtu.baekseo.core.util.toFormattedShortMonth
 import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.presentation.record.component.RecordDetailDropDown
 import com.bongtu.baekseo.presentation.record.type.AttendType
 import java.time.LocalDate
+
+private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 private fun RecordDetailScreen(
@@ -56,22 +70,23 @@ private fun RecordDetailScreen(
         eventDate = LocalDate.of(2024, 6, 10),
     )
     val (location, address) = "강남 알베르" to "강남구 테헤란로 123-4 567호"
-    val (isAttend, note) = AttendType.ATTEND.label to "메모 입니다아아아아"
+    val (attendLabel, note) = AttendType.ATTEND.label to "메모 입니다아아아아"
 
     Column(
         modifier = modifier
+            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .systemBarsPadding(),
     ) {
         BongBaekTopBar(
-            title = "경조사 상세 조회",
-            modifier = modifier,
+            title = stringResource(record_detail_title),
+            modifier = Modifier,
             topBarType = TopBarType.BOTH_ICONS,
             leadingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_back),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(onClick = onBackButtonClick),
                     tint = BongBaekTheme.colors.white,
@@ -81,7 +96,7 @@ private fun RecordDetailScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_edit),
                     contentDescription = null,
-                    modifier = modifier
+                    modifier = Modifier
                         .padding(14.dp)
                         .size(20.dp)
                         .noRippleClickable(onClick = onEditButtonClick),
@@ -90,16 +105,82 @@ private fun RecordDetailScreen(
             },
         )
 
-        RecordDetailTitleCard(
-            title = "김승우의 결혼식",
-            eventDate = LocalDate.of(2024, 8, 10),
-            modifier = Modifier.padding(20.dp),
-        )
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            RecordDetailTitleCard(
+                title = "${event.hostName}의 ${event.category}",
+                eventDate = LocalDate.of(2024, 8, 10),
+                modifier = Modifier
+                    .padding(top = 20.dp),
+            )
 
-        RecordDetailCostCard(
-            cost = event.cost,
-            modifier = Modifier.padding(20.dp),
-        )
+            RecordDetailCostCard(
+                cost = event.cost,
+                modifier = Modifier
+                    .padding(top = 20.dp),
+            )
+
+            RecordDetailDropDown(
+                hostName = event.hostName,
+                hostNickName = event.hostNickName,
+                relationship = event.relationship,
+                category = event.category,
+                costLabel = stringResource(record_card_cost, event.cost),
+                attendLabel = attendLabel,
+                formattedEventDate = event.eventDate.toFormattedShortMonth(),
+                location = location,
+                address = address,
+            )
+            Text(
+                text = stringResource(record_detail_memo_title),
+                color = BongBaekTheme.colors.white,
+                style = BongBaekTheme.typography.titleSemiBold18,
+                modifier = Modifier
+                    .padding(
+                        top = 20.dp,
+                        bottom = 10.dp,
+                    )
+                    .fillMaxWidth(),
+            )
+
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clip(shape = RoundedCornerShape(size = 10.dp))
+                    .background(color = BongBaekTheme.colors.gray750)
+                    .aspectRatio(MEMO_RATIO.toFloat()),
+                contentAlignment = Alignment.TopStart,
+            ) {
+                Text(
+                    text = note,
+                    color = BongBaekTheme.colors.white,
+                    style = BongBaekTheme.typography.body2Regular16,
+                    modifier = Modifier
+                        .padding(
+                            horizontal = 20.dp,
+                            vertical = 16.dp,
+                        )
+                )
+            }
+
+            BongBaekButton(
+                title = stringResource(record_detail_delete),
+                onClick = { /*TODO: 삭제 로직 구현*/ },
+                buttonType = ButtonType.DELETE,
+                modifier = Modifier
+                    .padding(top = 65.dp, bottom = 36.dp)
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = BongBaekTheme.colors.secondaryRed,
+                        shape = RoundedCornerShape(10.dp),
+                    ),
+            )
+        }
     }
 }
 
@@ -115,7 +196,7 @@ fun RecordDetailTitleCard(
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(size = 10.dp))
             .background(color = BongBaekTheme.colors.gray750)
-            .padding(20.dp)
+            .padding(20.dp),
     ) {
         Text(
             text = title,
@@ -124,13 +205,14 @@ fun RecordDetailTitleCard(
         )
         Row(
             modifier = Modifier
-                .padding(top = 2.dp)
+                .padding(top = 2.dp),
         ) {
             Text(
                 text = date,
                 color = BongBaekTheme.colors.gray400,
                 style = BongBaekTheme.typography.body2Regular14,
-                modifier = Modifier.padding(end = 4.dp)
+                modifier = Modifier
+                    .padding(end = 4.dp),
             )
             Text(
                 text = stringResource(record_card_weekday, weekDay),
@@ -146,24 +228,30 @@ private fun RecordDetailCostCard(
     cost: Int,
     modifier: Modifier = Modifier,
 ) {
+    val bongBaekColors = BongBaekTheme.colors
     Box(
         modifier = modifier
+            .fillMaxWidth()
             .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        BongBaekTheme.colors.primaryNormal,
-                        Color(0xFF6F53FF),       // TODO: 컬러 세팅 필요
-                    ),
-                ),
+                brush = remember {
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0.16f to bongBaekColors.primaryNormal,
+                            1f to bongBaekColors.gradientCostCardBackGround,
+                        ),
+                    )
+                },
                 shape = RoundedCornerShape(10.dp),
             )
             .border(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        Color(0xFFBFB8FF),      // TODO: 컬러 세팅 필요
-                        BongBaekTheme.colors.primaryNormal,
-                    ),
-                ),
+                brush = remember {
+                    Brush.verticalGradient(
+                        colorStops = arrayOf(
+                            0f to bongBaekColors.gradientCostCardBorder,
+                            1f to bongBaekColors.primaryNormal,
+                        ),
+                    )
+                },
                 width = 1.dp,
                 shape = RoundedCornerShape(10.dp),
             )
@@ -176,7 +264,7 @@ private fun RecordDetailCostCard(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = "경조사비",
+                text = stringResource(record_detail_cost_title),
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold16,
             )

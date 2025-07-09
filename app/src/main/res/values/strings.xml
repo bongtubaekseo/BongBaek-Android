@@ -58,6 +58,7 @@
     <string name="record_empty_button">지금 기록하기</string>
     <string name="record_top_bar_delete_title">경조사 기록 삭제</string>
     <string name="record_top_bar_delete_button">삭제</string>
+    <string name="record_detail_cost_title">경조사비</string>
     <string name="record_detail_title">경조사 상세 조회</string>
     <string name="record_detail_dropdown_title">상세 정보</string>
     <string name="record_detail_memo_title">메모</string>

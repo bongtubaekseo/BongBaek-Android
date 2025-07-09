@@ -64,7 +64,6 @@ fun RecordDetailDropDown(
 ) {
     var isDetailVisible by remember { mutableStateOf(false) }
 
-    // TODO: 변경 예정
     val dropDownItems = persistentListOf(
         Triple(
             ic_person, "이름",
@@ -218,7 +217,8 @@ private fun RecordDetailDropDownItem(
                         text = trailingType.text,
                         style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.white,
-                        modifier = Modifier.padding(vertical = 6.dp)
+                        modifier = Modifier
+                            .padding(vertical = 6.dp),
                     )
             }
         }
