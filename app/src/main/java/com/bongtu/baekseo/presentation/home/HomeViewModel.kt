@@ -30,7 +30,7 @@ class HomeViewModel @Inject constructor(
             value = UiState.Success(
                 immutableListOf(
                     HomeEvent(
-                        eventId = "eventId",
+                        eventId = "1",
                         hostInfo = HomeHostInfo(
                             hostName = "공승준",
                             hostNickname = "초록승준",
@@ -47,7 +47,7 @@ class HomeViewModel @Inject constructor(
                         ),
                     ),
                     HomeEvent(
-                        eventId = "eventId",
+                        eventId = "2",
                         hostInfo = HomeHostInfo(
                             hostName = "김종명",
                             hostNickname = "봉준호",
@@ -64,7 +64,7 @@ class HomeViewModel @Inject constructor(
                         ),
                     ),
                     HomeEvent(
-                        eventId = "eventId",
+                        eventId = "3",
                         hostInfo = HomeHostInfo(
                             hostName = "김헤정",
                             hostNickname = "메정",

@@ -241,7 +241,7 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     val items = listOf(
         HomeEvent(
-            eventId = "eventId",
+            eventId = "1",
             hostInfo = HomeHostInfo(
                 hostName = "공승준",
                 hostNickname = "초록승준",
@@ -257,7 +257,7 @@ private fun HomeScreenPreview() {
             ),
         ),
         HomeEvent(
-            eventId = "eventId",
+            eventId = "2",
             hostInfo = HomeHostInfo(
                 hostName = "김종명",
                 hostNickname = "봉준호",
@@ -273,7 +273,7 @@ private fun HomeScreenPreview() {
             ),
         ),
         HomeEvent(
-            eventId = "eventId",
+            eventId = "3",
             hostInfo = HomeHostInfo(
                 hostName = "김헤정",
                 hostNickname = "메정",
