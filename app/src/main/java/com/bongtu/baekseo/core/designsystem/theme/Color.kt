@@ -47,8 +47,8 @@ val kakaoYellow = Color(0xFFFEE500)
 
 // Gradient
 val gradientSlider = Color(0xFF8B5CF6)
-val gradientEnvelopeStart = Color(0xFFA6BEF3)
-val gradientEnvelopeEnd = Color(0xFFD3D9FF)
+val gradientEnvelopeStart = Color(0xE6A6BEF3)
+val gradientEnvelopeEnd = Color(0xE6D3D9FF)
 val gradientExpenseStart = Color(0xFF4E62FF)
 val gradientExpenseEnd = Color(0xFF502EFF)
 
