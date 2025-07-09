@@ -28,7 +28,7 @@ import com.bongtu.baekseo.R.string.recommendation_to_home
 import com.bongtu.baekseo.R.string.recommendation_to_record
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.TopBarType
-import com.bongtu.baekseo.core.designsystem.component.LottieOverlay
+import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -60,7 +60,7 @@ fun RecommendRecordScreen(
                 .align(Alignment.Center),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            LottieOverlay(
+            LottieFiniteOverlay(
                 lottieRes = lottie_envelope, // TODO: Lottie 수정
                 modifier = Modifier
                     .padding(horizontal = 100.dp)

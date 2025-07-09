@@ -18,13 +18,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R
+import com.bongtu.baekseo.R.raw.lottie_find_amount
 import com.bongtu.baekseo.R.string.recommendation_loading_description
 import com.bongtu.baekseo.R.string.recommendation_loading_title
 import com.bongtu.baekseo.R.string.recommendation_loading_topbar
-import com.bongtu.baekseo.R.raw.lottie_find_amount
 import com.bongtu.baekseo.core.common.type.TopBarType
-import com.bongtu.baekseo.core.designsystem.component.LottieOverlay
+import com.bongtu.baekseo.core.designsystem.component.LottieInfiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -50,7 +49,7 @@ fun RecommendLoadingOverlay(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            LottieOverlay(
+            LottieInfiniteOverlay(
                 lottieRes = lottie_find_amount,
                 modifier = Modifier
                     .padding(horizontal = 100.dp)
