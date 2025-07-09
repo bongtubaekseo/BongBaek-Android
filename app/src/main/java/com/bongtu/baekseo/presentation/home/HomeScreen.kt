@@ -212,7 +212,7 @@ fun HomeScreen(
                 }
             }
 
-            items.forEachIndexed { _, item ->
+            items.forEach { item ->
                 HomeScheduleCard(
                     event = item
                 )
