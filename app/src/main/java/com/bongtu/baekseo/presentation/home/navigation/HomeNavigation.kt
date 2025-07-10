@@ -12,14 +12,16 @@ import kotlinx.serialization.Serializable
 fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(Home, navOptions)
 
 fun NavGraphBuilder.homeGraph(
+    setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
         HomeRoute(
+            setBottomBarVisible = setBottomBarVisible,
             modifier = modifier,
         )
     }
 }
 
 @Serializable
-data object Home: MainTabRoute
+data object Home : MainTabRoute

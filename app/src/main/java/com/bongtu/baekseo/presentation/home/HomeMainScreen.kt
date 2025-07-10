@@ -35,6 +35,7 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
@@ -47,11 +48,13 @@ import com.bongtu.baekseo.presentation.home.model.HomeEvent
 import com.bongtu.baekseo.presentation.home.model.HomeEventInfo
 import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
 import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
-
 @Composable
-fun HomeRoute(
+fun HomeMainRoute(
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -61,23 +64,23 @@ fun HomeRoute(
         viewModel.fetchHomeEvent()
     }
 
-    HomeScreen(
+    HomeMainScreen(
         uiState = uiState,
         onBadgeClick = {
             // TODO: 뱃지 클릭 이벤트
         },
+        navigateToSchedule = navigateToSchedule,
         modifier = modifier,
     )
 }
 
 @Composable
-fun HomeScreen(
+fun HomeMainScreen(
     uiState: HomeState,
     onBadgeClick: () -> Unit,
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var items = emptyList<HomeEvent>()
-
     when (uiState.homeLoadState) {
         is UiState.Empty -> {
             // TODO: 빈 상태
@@ -92,10 +95,23 @@ fun HomeScreen(
         }
 
         is UiState.Success -> {
-            items = uiState.homeLoadState.data
+            HomeMainSuccessScreen(
+                items = uiState.homeLoadState.data,
+                onBadgeClick = onBadgeClick,
+                navigateToSchedule = navigateToSchedule,
+                modifier = modifier,
+            )
         }
     }
+}
 
+@Composable
+fun HomeMainSuccessScreen(
+    items: ImmutableList<HomeEvent>,
+    onBadgeClick: () -> Unit,
+    navigateToSchedule: () -> Unit,
+    modifier: Modifier = Modifier
+) {
     val pagerState = rememberPagerState(pageCount = {
         items.size
     })
@@ -208,6 +224,7 @@ fun HomeScreen(
                 if (items.isNotEmpty()) {
                     Text(
                         text = stringResource(id = home_schedule_more),
+                        modifier = Modifier.noRippleClickable(navigateToSchedule),
                         style = BongBaekTheme.typography.captionRegular12,  // TODO: 스타일 변경
                         color = BongBaekTheme.colors.gray200,
                     )
@@ -216,7 +233,7 @@ fun HomeScreen(
 
             items.forEach { item ->
                 HomeScheduleCard(
-                    event = item
+                    event = item,
                 )
 
                 Spacer(modifier = Modifier.size(10.dp))
@@ -238,8 +255,8 @@ fun HomeScreen(
 
 @Preview
 @Composable
-private fun HomeScreenPreview() {
-    val items = listOf(
+private fun HomeMainSuccessScreenPreview() {
+    val items = persistentListOf(
         HomeEvent(
             eventId = "1",
             hostInfo = HomeHostInfo(
@@ -275,7 +292,7 @@ private fun HomeScreenPreview() {
         HomeEvent(
             eventId = "3",
             hostInfo = HomeHostInfo(
-                hostName = "김헤정",
+                hostName = "김혜정",
                 hostNickname = "메정",
             ),
             eventInfo = HomeEventInfo(
@@ -291,11 +308,10 @@ private fun HomeScreenPreview() {
     )
 
     BongBaekTheme {
-        HomeScreen(
-            uiState = HomeState(
-                homeLoadState = UiState.Success(items)
-            ),
+        HomeMainSuccessScreen(
+            items = items,
             onBadgeClick = {},
+            navigateToSchedule = {},
         )
     }
 }

@@ -14,3 +14,9 @@ fun LocalDate.toFormattedShortMonth(): String {
     val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH)
     return this.format(formatter)
 }
+
+fun LocalDate.toFormattedYearWithMonth(): Pair<Int, Int> {
+    val date = this.format(DateTimeFormatter.ofPattern("yyyy-MM"))
+    val (year, month) = date.split("-")
+    return year.toInt() to month.toInt()
+}
