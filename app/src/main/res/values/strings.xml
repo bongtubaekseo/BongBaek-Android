@@ -80,6 +80,25 @@
     <string name="record_empty_button">지금 기록하기</string>
     <string name="record_top_bar_delete_title">경조사 기록 삭제</string>
     <string name="record_top_bar_delete_button">삭제</string>
+    <string name="record_detail_title">경조사 상세 조회</string>
+    <string name="record_detail_title_card_title">%1$s의 %2$s</string>
+    <string name="record_detail_dropdown_title">상세 정보</string>
+    <string name="record_detail_memo_title">메모</string>
+    <string name="record_detail_memo_placeholder">메모를 작성해주세요</string>
+    <string name="record_detail_delete">기록 삭제하기</string>
+    <string name="record_detail_delete_dialog_title">경조사 기록을 삭제하겠습니까?</string>
+    <string name="record_detail_delete_dialog_description">이 기록의 모든 내용이 삭제됩니다.</string>
+    <string name="record_detail_delete_dialog_cancel_label">취소</string>
+    <string name="record_detail_delete_dialog_delete_label">삭제</string>
+    <string name="record_detail_name_title">이름</string>
+    <string name="record_detail_nickname_title">별명</string>
+    <string name="record_detail_realtion_title">관계</string>
+    <string name="record_detail_event_title">경조사</string>
+    <string name="record_detail_cost_title">경조사비</string>
+    <string name="record_detail_is_attend_title">참석 여부</string>
+    <string name="record_detail_calendar_title">날짜</string>
+    <string name="record_detail_location_title">행사장</string>
+    <string name="record_detail_location_add">추가하기</string>
     <!--Badge    -->
     <string name="badge_schedule_empty">일정 추가하기</string>
     <!--TextField    -->
