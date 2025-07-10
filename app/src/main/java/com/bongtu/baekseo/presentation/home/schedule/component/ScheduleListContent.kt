@@ -38,12 +38,14 @@ import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
 import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
 // TODO: 기록하기와 공통 컴포넌트화 할 것
 @Composable
 fun ScheduleListContent(
-    scheduleEventList: List<ScheduleEvent>,
+    scheduleEventList: ImmutableList<ScheduleEvent>,
     onCardClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -207,7 +209,7 @@ private fun ScheduleListContentPreview() {
     BongBaekTheme {
         ScheduleListContent(
             modifier = Modifier.background(color = BongBaekTheme.colors.gray900),
-            scheduleEventList = listOf(
+            scheduleEventList = persistentListOf(
                 ScheduleEvent(
                     eventId = "1",
                     hostInfo = ScheduleHostInfo(
