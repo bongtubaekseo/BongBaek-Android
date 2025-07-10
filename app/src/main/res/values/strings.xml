@@ -102,6 +102,7 @@
     <!--Badge    -->
     <string name="badge_schedule_empty">일정 추가하기</string>
     <!--TextField    -->
+    <string name="label_text_field_required_text">*</string>
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
     <string name="name_text_field_error_length">2자 이상 10자 이내로 입력해주세요</string>
     <string name="name_text_field_label">이름</string>
@@ -142,8 +143,6 @@
     <string name="onboarding_button_income_down">월 200만원 미만</string>
     <string name="onboarding_button_income_up">월 200만원 이상</string>
     <!--Edit    -->
-    <string name="edit_top_bar_add_title">경조사 기록하기</string>
-    <string name="edit_top_bar_edit_title">경조사 수정하기</string>
     <string name="edit_name_title">이름</string>
     <string name="edit_nickname_title">별명</string>
     <string name="edit_relation_title">관계</string>
@@ -153,4 +152,14 @@
     <string name="edit_date_title">날짜</string>
     <string name="edit_location_title">행사장</string>
     <string name="edit_memo_title">메모</string>
+    <string name="edit_required_text">*</string>
+    <string name="edit_name_text_field_placeholder">이름을 입력하세요</string>
+    <string name="edit_nickname_text_field_placeholder">별명을 입력하세요</string>
+    <string name="edit_relation_dropdown_placeholder">관계을 선택하세요</string>
+    <string name="edit_event_dropdown_placeholder">경조사를 선택하세요</string>
+    <string name="edit_cost_text_field_placeholder">금액을 입력하세요</string>
+    <string name="edit_is_attend_dropdown_placeholder">참석여부를 선택하세요</string>
+    <string name="edit_date_text_field_placeholder">2025.07.02</string>
+    <string name="edit_location_add_text">추가하기</string>
+    <string name="edit_memo_text_field_placeholder">메모를 작성해주세요</string>
 </resources>
