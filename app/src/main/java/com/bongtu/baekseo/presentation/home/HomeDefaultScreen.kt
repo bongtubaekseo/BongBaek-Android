@@ -76,7 +76,7 @@ fun HomeDefaultRoute(
 fun HomeDefaultScreen(
     uiState: HomeState,
     onBadgeClick: () -> Unit,
-    navigateToSchedule: ()->Unit,
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var items = emptyList<HomeEvent>()
