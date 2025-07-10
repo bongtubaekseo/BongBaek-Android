@@ -51,7 +51,7 @@ import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
 import java.time.LocalDate
 
 @Composable
-fun HomeDefaultRoute(
+fun HomeMainRoute(
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -62,7 +62,7 @@ fun HomeDefaultRoute(
         viewModel.fetchHomeEvent()
     }
 
-    HomeDefaultScreen(
+    HomeMainScreen(
         uiState = uiState,
         onBadgeClick = {
             // TODO: 뱃지 클릭 이벤트
@@ -73,7 +73,7 @@ fun HomeDefaultRoute(
 }
 
 @Composable
-fun HomeDefaultScreen(
+fun HomeMainScreen(
     uiState: HomeState,
     onBadgeClick: () -> Unit,
     navigateToSchedule: () -> Unit,
@@ -242,7 +242,7 @@ fun HomeDefaultScreen(
 
 @Preview
 @Composable
-private fun HomeDefaultScreenPreview() {
+private fun HomeMainScreenPreview() {
     val items = listOf(
         HomeEvent(
             eventId = "1",
@@ -295,7 +295,7 @@ private fun HomeDefaultScreenPreview() {
     )
 
     BongBaekTheme {
-        HomeDefaultScreen(
+        HomeMainScreen(
             uiState = HomeState(
                 homeLoadState = UiState.Success(items)
             ),
