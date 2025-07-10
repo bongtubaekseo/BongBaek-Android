@@ -14,6 +14,7 @@ import com.bongtu.baekseo.presentation.home.schedule.navigation.scheduleGraph
 
 @Composable
 fun HomeNavHost(
+    setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -33,6 +34,7 @@ fun HomeNavHost(
             modifier = Modifier,
         )
         scheduleGraph(
+            setBottomBarVisible = setBottomBarVisible,
             modifier = Modifier,
         )
     }

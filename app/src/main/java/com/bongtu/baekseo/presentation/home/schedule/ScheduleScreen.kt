@@ -35,12 +35,16 @@ import java.time.LocalDate
 
 @Composable
 fun ScheduleRoute(
+    setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
-    LaunchedEffect(Unit) { viewModel.fetchScheduleEvent() }
+    LaunchedEffect(Unit) {
+        setBottomBarVisible(false)
+        viewModel.fetchScheduleEvent()
+    }
 
     ScheduleScreen(
         uiState = uiState,
