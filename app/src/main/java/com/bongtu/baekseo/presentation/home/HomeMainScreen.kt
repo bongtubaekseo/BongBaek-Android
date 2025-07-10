@@ -240,7 +240,7 @@ fun HomeMainSuccessScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(id = home_schedule_title, "봉백"),
+                    text = stringResource(id = home_schedule_title, "봉백"), // TODO: 이름 처리
                     style = BongBaekTheme.typography.titleSemiBold18,
                     color = BongBaekTheme.colors.white,
                 )
