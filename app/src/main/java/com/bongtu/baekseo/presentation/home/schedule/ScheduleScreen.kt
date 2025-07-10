@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -42,8 +43,14 @@ fun ScheduleRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        setBottomBarVisible(false)
         viewModel.fetchScheduleEvent()
+    }
+
+    DisposableEffect(Unit) {
+        setBottomBarVisible(false)
+        onDispose {
+            setBottomBarVisible(true)
+        }
     }
 
     ScheduleScreen(
