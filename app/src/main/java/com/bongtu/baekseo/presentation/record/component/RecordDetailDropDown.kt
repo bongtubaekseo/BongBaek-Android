@@ -14,7 +14,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxWidth import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -158,13 +158,17 @@ fun RecordDetailDropDown(
                         horizontal = 20.dp,
                         vertical = 24.dp,
                     ),
-                verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                recordDetailItems.forEach { (iconRes, labelId, type) ->
+                recordDetailItems.forEachIndexed { index, (iconRes, labelId, type) ->
                     RecordDetailDropDownItem(
                         iconRes = iconRes,
                         labelRes = labelId,
                         trailingType = type,
+                    )
+                    Spacer(
+                        modifier = Modifier.height(
+                            if (index == recordDetailItems.lastIndex) 12.dp else 24.dp
+                        )
                     )
                 }
 
@@ -254,9 +258,10 @@ private const val MAP_RATIO = 280f / 180f
 private fun RecordDetailDropDownLocationContent(
     location: String,      // TODO: field 수정 예정 LatLng
     address: String,
+    modifier: Modifier = Modifier,
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .background(
                 color = BongBaekTheme.colors.gray700,
