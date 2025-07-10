@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.record.component
 
 import androidx.annotation.DrawableRes
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
@@ -45,17 +46,20 @@ import com.bongtu.baekseo.R.drawable.ic_relation
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_detail_calendar_title
 import com.bongtu.baekseo.R.string.record_detail_cost_title
+import com.bongtu.baekseo.R.string.record_detail_dropdown_title
 import com.bongtu.baekseo.R.string.record_detail_event_title
+import com.bongtu.baekseo.R.string.record_detail_is_attend_title
 import com.bongtu.baekseo.R.string.record_detail_location_title
 import com.bongtu.baekseo.R.string.record_detail_name_title
 import com.bongtu.baekseo.R.string.record_detail_nickname_title
 import com.bongtu.baekseo.R.string.record_detail_realtion_title
-import com.bongtu.baekseo.R.string.record_detail_dropdown_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedShortMonth
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType
+import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType.TrailingChip
+import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType.TrailingText
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
@@ -72,44 +76,42 @@ fun RecordDetailDropDown(
     val recordDetailItems = persistentListOf(
         Triple(
             ic_person,
-            stringResource(record_detail_name_title),
-            RecordDetailDropDownTrailingType.TrailingText(event.hostName)
+            record_detail_name_title,
+            TrailingText(event.hostName)
         ),
         Triple(
             ic_nickname,
-            stringResource(record_detail_nickname_title),
-            RecordDetailDropDownTrailingType.TrailingText(event.hostNickName)
+            record_detail_nickname_title,
+            TrailingText(event.hostNickName)
         ),
         Triple(
             ic_relation,
-            stringResource(record_detail_realtion_title),
-            RecordDetailDropDownTrailingType.TrailingChip(event.relationship)
+            record_detail_realtion_title,
+            TrailingChip(event.relationship)
         ),
         Triple(
             ic_event,
-            stringResource(record_detail_event_title),
-            RecordDetailDropDownTrailingType.TrailingChip(event.category)
+            record_detail_event_title,
+            TrailingChip(event.category)
         ),
         Triple(
             ic_coin,
-            stringResource(record_detail_cost_title),
-            RecordDetailDropDownTrailingType.TrailingText(
-                stringResource(record_card_cost, event.cost)
-            )
+            record_detail_cost_title,
+            TrailingText(stringResource(record_card_cost, event.cost))
         ),
         Triple(
             ic_check_gray,
-            stringResource(record_detail_cost_title),
-            RecordDetailDropDownTrailingType.TrailingChip(attendLabel)
+            record_detail_is_attend_title,
+            TrailingChip(attendLabel)
         ),
         Triple(
             ic_calendar,
-            stringResource(record_detail_calendar_title),
-            RecordDetailDropDownTrailingType.TrailingChip(event.eventDate.toFormattedShortMonth())
+            record_detail_calendar_title,
+            TrailingChip(event.eventDate.toFormattedShortMonth())
         ),
         Triple(
             ic_location,
-            stringResource(record_detail_location_title),
+            record_detail_location_title,
             null
         )
     )
@@ -158,17 +160,21 @@ fun RecordDetailDropDown(
                     ),
                 verticalArrangement = Arrangement.spacedBy(24.dp)
             ) {
-                recordDetailItems.forEach { (iconRes, label, type) ->
+                recordDetailItems.forEach { (iconRes, labelId, type) ->
                     RecordDetailDropDownItem(
                         iconRes = iconRes,
-                        label = label,
+                        labelRes = labelId,
                         trailingType = type,
                     )
                 }
-                RecordDetailDropDownLocationContent(
-                    location = location ?: "",
-                    address = address ?: "",
-                )
+
+                // TODO: Location Info field 로 변경 예정
+                if (location != null && address != null) {
+                    RecordDetailDropDownLocationContent(
+                        location = location,
+                        address = address,
+                    )
+                }
             }
         }
     }
@@ -177,7 +183,7 @@ fun RecordDetailDropDown(
 @Composable
 private fun RecordDetailDropDownItem(
     @DrawableRes iconRes: Int,
-    label: String,
+    @StringRes labelRes: Int,
     modifier: Modifier = Modifier,
     trailingType: RecordDetailDropDownTrailingType? = null,
 ) {
@@ -200,7 +206,7 @@ private fun RecordDetailDropDownItem(
                 tint = Color.Unspecified,
             )
             Text(
-                text = label,
+                text = stringResource(id = labelRes),
                 style = BongBaekTheme.typography.body1Medium14,
                 color = BongBaekTheme.colors.gray100,
             )
@@ -210,7 +216,7 @@ private fun RecordDetailDropDownItem(
 
         trailingType?.let {
             when (trailingType) {
-                is RecordDetailDropDownTrailingType.TrailingChip ->
+                is TrailingChip ->
                     Row(
                         modifier = modifier
                             .background(
@@ -229,7 +235,7 @@ private fun RecordDetailDropDownItem(
                         )
                     }
 
-                is RecordDetailDropDownTrailingType.TrailingText ->
+                is TrailingText ->
                     Text(
                         text = trailingType.text,
                         style = BongBaekTheme.typography.body1Medium16,
@@ -246,7 +252,7 @@ private const val MAP_RATIO = 280f / 180f
 
 @Composable
 private fun RecordDetailDropDownLocationContent(
-    location: String,
+    location: String,      // TODO: field 수정 예정 LatLng
     address: String,
 ) {
     Column(
@@ -267,7 +273,6 @@ private fun RecordDetailDropDownLocationContent(
                 .aspectRatio(MAP_RATIO),
         ) {
             // TODO: 지도로 대체
-
         }
 
         Column(

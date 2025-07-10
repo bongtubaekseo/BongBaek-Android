@@ -78,6 +78,7 @@
     <string name="record_detail_is_attend_title">참석 여부</string>
     <string name="record_detail_calendar_title">날짜</string>
     <string name="record_detail_location_title">행사장</string>
+    <string name="record_detail_location_add">추가하기</string>
     <!--Badge    -->
     <string name="badge_schedule_empty">일정 추가하기</string>
     <!--TextField    -->

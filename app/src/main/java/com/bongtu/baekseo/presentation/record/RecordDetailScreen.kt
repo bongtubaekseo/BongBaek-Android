@@ -44,9 +44,9 @@ import com.bongtu.baekseo.R.string.record_detail_delete_dialog_cancel_label
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_delete_label
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
+import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
-import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
@@ -69,8 +69,7 @@ private fun RecordDetailScreen(
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-) {
-    /* TODO: state 수정 예정 임시 더미 데이터 사용 */
+) {/* TODO: state 수정 예정 임시 더미 데이터 사용 */
     val event = RecordEvent(
         eventId = "eventId",
         hostName = "김봉백",
@@ -80,8 +79,22 @@ private fun RecordDetailScreen(
         cost = 50000,
         eventDate = LocalDate.of(2024, 6, 10),
     )
-    val (location, address) = "강남 알베르" to "강남구 테헤란로 123-4 567호"                 // TODO: RecordEvent 수정 예정
-    val (attendLabel, note) = AttendType.ATTEND.label to null as String?
+    val (location, address) = "주소" to "주소"                                // TODO: RecordEvent 수정 예정
+    val (attendLabel, note) = AttendType.ATTEND.label to null as String? // TODO: RecordEvent 수정 예정
+
+    val (noteText, noteTextColor, noteBackgroundColor) = if (note.isNullOrBlank()) {
+        Triple(
+            stringResource(record_detail_memo_placeholder),
+            BongBaekTheme.colors.gray500,
+            BongBaekTheme.colors.gray800
+        )
+    } else {
+        Triple(
+            note,
+            BongBaekTheme.colors.white,
+            BongBaekTheme.colors.gray750
+        )
+    }
 
     var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
 
@@ -127,13 +140,10 @@ private fun RecordDetailScreen(
         ) {
             RecordDetailTitleCard(
                 title = stringResource(
-                    record_detail_title_card_title,
-                    event.hostName,
-                    event.category
+                    record_detail_title_card_title, event.hostName, event.category
                 ),
                 eventDate = LocalDate.of(2024, 8, 10),
-                modifier = Modifier
-                    .padding(vertical = 20.dp),
+                modifier = Modifier.padding(vertical = 20.dp),
             )
 
             RecordDetailCostCard(
@@ -145,8 +155,7 @@ private fun RecordDetailScreen(
                 attendLabel = attendLabel,
                 location = location,
                 address = address,
-                modifier = Modifier
-                    .padding(vertical = 20.dp),
+                modifier = Modifier.padding(vertical = 20.dp),
             )
 
             Text(
@@ -164,19 +173,18 @@ private fun RecordDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(size = 10.dp))
-                    .background(color = BongBaekTheme.colors.gray800)
+                    .background(color = noteBackgroundColor)
                     .aspectRatio(MEMO_RATIO),
                 contentAlignment = Alignment.TopStart,
             ) {
                 Text(
-                    text = note ?: stringResource(record_detail_memo_placeholder),
-                    color = if(note != null) BongBaekTheme.colors.white else BongBaekTheme.colors.gray500,
+                    text = noteText,
+                    color = noteTextColor,
                     style = BongBaekTheme.typography.body2Regular16,
-                    modifier = Modifier
-                        .padding(
-                            horizontal = 20.dp,
-                            vertical = 16.dp,
-                        ),
+                    modifier = Modifier.padding(
+                        horizontal = 20.dp,
+                        vertical = 16.dp,
+                    ),
                 )
             }
 
@@ -226,15 +234,13 @@ fun RecordDetailTitleCard(
             style = BongBaekTheme.typography.titleSemiBold18,
         )
         Row(
-            modifier = Modifier
-                .padding(top = 2.dp),
+            modifier = Modifier.padding(top = 2.dp),
         ) {
             Text(
                 text = date,
                 color = BongBaekTheme.colors.gray400,
                 style = BongBaekTheme.typography.body2Regular14,
-                modifier = Modifier
-                    .padding(end = 4.dp),
+                modifier = Modifier.padding(end = 4.dp),
             )
             Text(
                 text = stringResource(record_card_weekday, weekDay),
@@ -280,8 +286,7 @@ private fun RecordDetailCostCard(
             .padding(horizontal = 20.dp, vertical = 16.dp),
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -332,19 +337,16 @@ private fun RecordDeleteAlertDialog(
                 text = stringResource(record_detail_delete_dialog_title),
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold20,
-                modifier = Modifier
-                    .padding(bottom = 6.dp),
+                modifier = Modifier.padding(bottom = 6.dp),
             )
             Text(
                 text = stringResource(record_detail_delete_dialog_description),
                 color = BongBaekTheme.colors.gray300,
                 style = BongBaekTheme.typography.captionRegular12,
-                modifier = Modifier
-                    .padding(bottom = 10.dp),
+                modifier = Modifier.padding(bottom = 10.dp),
             )
             Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.End,
             ) {
                 Text(
