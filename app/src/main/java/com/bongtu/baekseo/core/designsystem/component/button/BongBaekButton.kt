@@ -60,7 +60,7 @@ fun BongBaekButton(
                 else bongBaekColors.primaryNormal.copy(alpha = .1f) to bongBaekColors.gray500
             }
 
-            ButtonType.SECONDARY -> bongBaekColors.gray700 to bongBaekColors.white
+            ButtonType.SECONDARY -> bongBaekColors.gray700 to bongBaekColors.gray200
             ButtonType.DELETE -> bongBaekColors.transparent to bongBaekColors.secondaryRed
             ButtonType.KAKAO -> bongBaekColors.kakaoYellow to bongBaekColors.black
         }
