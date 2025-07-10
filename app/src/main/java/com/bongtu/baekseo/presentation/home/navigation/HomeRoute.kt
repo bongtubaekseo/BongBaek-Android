@@ -4,9 +4,9 @@ import com.bongtu.baekseo.core.common.navigation.Route
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface HomeRoute: Route {
+sealed interface HomeRoute {
     @Serializable
-    data object Default: HomeRoute
+    data object Main: HomeRoute
     @Serializable
     data object Schedule: HomeRoute
 }

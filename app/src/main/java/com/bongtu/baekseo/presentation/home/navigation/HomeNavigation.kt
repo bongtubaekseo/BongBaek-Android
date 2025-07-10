@@ -6,9 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
-import com.bongtu.baekseo.presentation.home.HomeDefaultRoute
 import com.bongtu.baekseo.presentation.home.HomeRoute
-import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Default
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(Home, navOptions)
@@ -20,18 +18,6 @@ fun NavGraphBuilder.homeGraph(
     composable<Home> {
         HomeRoute(
             setBottomBarVisible = setBottomBarVisible,
-            modifier = modifier,
-        )
-    }
-}
-
-fun NavGraphBuilder.homeDefaultGraph(
-    navigateToSchedule: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    composable<Default> {
-        HomeDefaultRoute(
-            navigateToSchedule = navigateToSchedule,
             modifier = modifier,
         )
     }
