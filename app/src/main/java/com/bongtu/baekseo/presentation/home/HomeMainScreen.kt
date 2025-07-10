@@ -116,13 +116,18 @@ fun HomeMainSuccessScreen(
     val pagerState = rememberPagerState(pageCount = {
         items.size
     })
-    val isMultipleCard = items.size > 1
-    val (recommendCardPadding, pagerContentPadding) = remember(isMultipleCard) {
-        if (isMultipleCard) {
-            0.dp to 32.dp
-        } else {
-            30.dp to 20.dp
-        }
+    val isMultipleCard = remember {
+        items.size > 1
+    }
+    val isLastPage = remember {
+        pagerState.currentPage == pagerState.pageCount - 1
+    }
+
+    val recommendCardPadding= remember(isMultipleCard) {
+        if (isMultipleCard) 0.dp else 30.dp
+    }
+    val pagerContentPadding = remember(isMultipleCard, isLastPage) {
+        if(isMultipleCard || isLastPage) 20.dp else 32.dp
     }
 
     Column(
@@ -276,54 +281,54 @@ fun HomeMainSuccessScreen(
 @Composable
 private fun HomeMainSuccessScreenPreview() {
     val items = persistentListOf<HomeEvent>(
-        HomeEvent(
-            eventId = "1",
-            hostInfo = HomeHostInfo(
-                hostName = "공승준",
-                hostNickname = "초록승준",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.WEDDING,
-                relationship = RelationType.FRIEND,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
-        ),
-        HomeEvent(
-            eventId = "2",
-            hostInfo = HomeHostInfo(
-                hostName = "김종명",
-                hostNickname = "봉준호",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.FIRST_BD,
-                relationship = RelationType.NEIGHBOR,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
-        ),
-        HomeEvent(
-            eventId = "3",
-            hostInfo = HomeHostInfo(
-                hostName = "김혜정",
-                hostNickname = "메정",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.BIRTHDAY,
-                relationship = RelationType.ALUMNI,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
-        ),
+//        HomeEvent(
+//            eventId = "1",
+//            hostInfo = HomeHostInfo(
+//                hostName = "공승준",
+//                hostNickname = "초록승준",
+//            ),
+//            eventInfo = HomeEventInfo(
+//                eventCategory = EventType.WEDDING,
+//                relationship = RelationType.FRIEND,
+//                cost = 10000,
+//                eventDate = LocalDate.of(2025, 2, 11),
+//            ),
+//            locationInfo = HomeLocationInfo(
+//                location = "강남구 테헤란로 강남 웨딩홀"
+//            ),
+//        ),
+//        HomeEvent(
+//            eventId = "2",
+//            hostInfo = HomeHostInfo(
+//                hostName = "김종명",
+//                hostNickname = "봉준호",
+//            ),
+//            eventInfo = HomeEventInfo(
+//                eventCategory = EventType.FIRST_BD,
+//                relationship = RelationType.NEIGHBOR,
+//                cost = 10000,
+//                eventDate = LocalDate.of(2025, 2, 11),
+//            ),
+//            locationInfo = HomeLocationInfo(
+//                location = "강남구 테헤란로 강남 웨딩홀"
+//            ),
+//        ),
+//        HomeEvent(
+//            eventId = "3",
+//            hostInfo = HomeHostInfo(
+//                hostName = "김혜정",
+//                hostNickname = "메정",
+//            ),
+//            eventInfo = HomeEventInfo(
+//                eventCategory = EventType.BIRTHDAY,
+//                relationship = RelationType.ALUMNI,
+//                cost = 10000,
+//                eventDate = LocalDate.of(2025, 2, 11),
+//            ),
+//            locationInfo = HomeLocationInfo(
+//                location = "강남구 테헤란로 강남 웨딩홀"
+//            ),
+//        ),
     )
 
     BongBaekTheme {
