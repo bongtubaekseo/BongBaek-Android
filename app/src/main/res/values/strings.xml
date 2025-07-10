@@ -64,6 +64,7 @@
     <string name="record_detail_title_card_title">%1$s의 %2$s</string>
     <string name="record_detail_dropdown_title">상세 정보</string>
     <string name="record_detail_memo_title">메모</string>
+    <string name="record_detail_memo_placeholder">메모를 작성해주세요</string>
     <string name="record_detail_delete">기록 삭제하기</string>
     <string name="record_detail_delete_dialog_title">경조사 기록을 삭제하겠습니까?</string>
     <string name="record_detail_delete_dialog_description">이 기록의 모든 내용이 삭제됩니다.</string>

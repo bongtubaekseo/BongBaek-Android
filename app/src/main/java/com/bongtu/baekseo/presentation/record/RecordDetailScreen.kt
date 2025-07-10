@@ -46,6 +46,7 @@ import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
 import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
+import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
@@ -79,8 +80,8 @@ private fun RecordDetailScreen(
         cost = 50000,
         eventDate = LocalDate.of(2024, 6, 10),
     )
-    val (location, address) = "강남 알베르" to "강남구 테헤란로 123-4 567호"
-    val (attendLabel, note) = AttendType.ATTEND.label to "메모 입니다아아아아"
+    val (location, address) = "강남 알베르" to "강남구 테헤란로 123-4 567호"                 // TODO: RecordEvent 수정 예정
+    val (attendLabel, note) = AttendType.ATTEND.label to null as String?
 
     var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
 
@@ -163,13 +164,13 @@ private fun RecordDetailScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .clip(shape = RoundedCornerShape(size = 10.dp))
-                    .background(color = BongBaekTheme.colors.gray750)
+                    .background(color = BongBaekTheme.colors.gray800)
                     .aspectRatio(MEMO_RATIO),
                 contentAlignment = Alignment.TopStart,
             ) {
                 Text(
-                    text = note,
-                    color = BongBaekTheme.colors.white,
+                    text = note ?: stringResource(record_detail_memo_placeholder),
+                    color = if(note != null) BongBaekTheme.colors.white else BongBaekTheme.colors.gray500,
                     style = BongBaekTheme.typography.body2Regular16,
                     modifier = Modifier
                         .padding(
