@@ -113,7 +113,7 @@ private fun ScheduleScreen(
 
             is UiState.Success -> {
                 ScheduleListContent(
-                    scheduleEventList = uiState.scheduleLoadState.data.toPersistentList(),
+                    scheduleEventList = uiState.scheduleLoadState.data,
                     onCardClick = {
                         // TODO: Card 클릭 이벤트
                     },
