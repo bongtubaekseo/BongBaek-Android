@@ -42,8 +42,8 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import java.time.LocalDate
 
-private const val SINGLE_RATIO = 320 / 250
-private const val MULTIPLE_RATIO = 308 / 250
+private const val SINGLE_RATIO = 320 / 250f
+private const val MULTIPLE_RATIO = 308 / 250f
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
 
@@ -65,14 +65,14 @@ fun HomePageSingleCard(
 
     Box(
         modifier = modifier
-            .aspectRatio(SINGLE_RATIO.toFloat())
+            .aspectRatio(SINGLE_RATIO)
             .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = img_home_card_single),
             contentDescription = null,
             modifier = Modifier
-                .aspectRatio(SINGLE_RATIO.toFloat()),
+                .aspectRatio(SINGLE_RATIO),
         )
 
         Column(
@@ -132,14 +132,14 @@ fun HomePageMultipleCard(
 
     Box(
         modifier = modifier
-            .aspectRatio(MULTIPLE_RATIO.toFloat())
+            .aspectRatio(MULTIPLE_RATIO)
             .wrapContentSize(),
     ) {
         Image(
             painter = painterResource(id = img_home_card_multiple),
             contentDescription = null,
             modifier = Modifier
-                .aspectRatio(SINGLE_RATIO.toFloat()),
+                .aspectRatio(MULTIPLE_RATIO),
         )
 
         Column(
