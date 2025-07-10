@@ -21,6 +21,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -115,8 +116,14 @@ fun HomeMainSuccessScreen(
     val pagerState = rememberPagerState(pageCount = {
         items.size
     })
-    val recommendCardPadding = if (items.isEmpty()) 30.dp else 10.dp
-    val pagerContentPadding = if (items.size > 1) 32.dp else 20.dp
+    val isMultipleCard = items.size > 1
+    val (recommendCardPadding, pagerContentPadding) = remember(isMultipleCard) {
+        if (isMultipleCard) {
+            0.dp to 32.dp
+        } else {
+            30.dp to 20.dp
+        }
+    }
 
     Column(
         modifier = modifier
@@ -133,68 +140,76 @@ fun HomeMainSuccessScreen(
                     .padding(top = 20.dp)
                     .padding(horizontal = 20.dp),
             )
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(8.dp),
-        ) {
-            HorizontalPager(
-                state = pagerState,
+        } else {
+            Column(
                 modifier = Modifier
-                    .fillMaxSize()
-                    .padding(
-                        top = 20.dp,
+                    .fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            top = 20.dp,
+                        ),
+                    contentPadding = PaddingValues(
+                        start = 20.dp,
+                        end = pagerContentPadding,
                     ),
-                contentPadding = PaddingValues(
-                    start = 20.dp,
-                    end = pagerContentPadding,
-                ),
-                pageSpacing = 8.dp,
-                key = { page ->
-                    items[page].eventId
-                },
-            ) { page ->
-                val item = items[page]
+                    pageSpacing = 8.dp,
+                    key = { page ->
+                        items[page].eventId
+                    },
+                ) { page ->
+                    val item = items[page]
 
-                when (items.size) {
-                    1 -> {
-                        HomePageSingleCard(
-                            hostname = item.hostInfo.hostName,
-                            eventType = item.eventInfo.eventCategory,
-                            daysLeft = item.eventInfo.dDay,
-                            eventDate = item.eventInfo.eventDate,
-                        )
-                    }
+                    when (items.size) {
+                        1 -> {
+                            HomePageSingleCard(
+                                hostname = item.hostInfo.hostName,
+                                eventType = item.eventInfo.eventCategory,
+                                daysLeft = item.eventInfo.dDay,
+                                eventDate = item.eventInfo.eventDate,
+                            )
+                        }
 
-                    else -> {
-                        HomePageMultipleCard(
-                            hostname = item.hostInfo.hostName,
-                            eventType = item.eventInfo.eventCategory,
-                            daysLeft = item.eventInfo.dDay,
-                            eventDate = item.eventInfo.eventDate,
-                        )
+                        else -> {
+                            HomePageMultipleCard(
+                                hostname = item.hostInfo.hostName,
+                                eventType = item.eventInfo.eventCategory,
+                                daysLeft = item.eventInfo.dDay,
+                                eventDate = item.eventInfo.eventDate,
+                            )
+                        }
                     }
                 }
             }
 
-            Row(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .padding(vertical = 14.dp),
-                horizontalArrangement = Arrangement.spacedBy(6.dp, Alignment.CenterHorizontally),
-            ) {
-                repeat(pagerState.pageCount) { iteration ->
-                    val color =
-                        if (pagerState.currentPage == iteration) BongBaekTheme.colors.white else BongBaekTheme.colors.pageIndicator
-                    Box(
-                        modifier = Modifier
-                            .clip(CircleShape)
-                            .background(color)
-                            .size(5.dp),
-                    )
+            if (isMultipleCard) {
+                Row(
+                    modifier = Modifier
+                        .wrapContentHeight()
+                        .fillMaxWidth()
+                        .padding(
+                            top = 22.dp,
+                            bottom = 24.dp,
+                        ),
+                    horizontalArrangement = Arrangement.spacedBy(
+                        6.dp,
+                        Alignment.CenterHorizontally,
+                    ),
+                ) {
+                    repeat(pagerState.pageCount) { iteration ->
+                        val color =
+                            if (pagerState.currentPage == iteration) BongBaekTheme.colors.white else BongBaekTheme.colors.pageIndicator
+                        Box(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .background(color)
+                                .size(5.dp),
+                        )
+                    }
                 }
             }
         }
@@ -260,7 +275,7 @@ fun HomeMainSuccessScreen(
 @Preview
 @Composable
 private fun HomeMainSuccessScreenPreview() {
-    val items = persistentListOf(
+    val items = persistentListOf<HomeEvent>(
         HomeEvent(
             eventId = "1",
             hostInfo = HomeHostInfo(
