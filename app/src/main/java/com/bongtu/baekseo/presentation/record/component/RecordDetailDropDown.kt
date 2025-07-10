@@ -152,7 +152,7 @@ fun RecordDetailDropDown(
                     .fillMaxWidth()
                     .background(
                         color = BongBaekTheme.colors.gray800,
-                        shape = RoundedCornerShape(10.dp)
+                        shape = RoundedCornerShape(10.dp),
                     )
                     .padding(
                         horizontal = 20.dp,
@@ -168,7 +168,7 @@ fun RecordDetailDropDown(
                     Spacer(
                         modifier = Modifier.height(
                             if (index == recordDetailItems.lastIndex) 12.dp else 24.dp
-                        )
+                        ),
                     )
                 }
 
