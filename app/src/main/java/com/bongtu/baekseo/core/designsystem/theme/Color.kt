@@ -44,7 +44,13 @@ val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
 val transparent = Color(0x00000000)
 val kakaoYellow = Color(0xFFFEE500)
+
+// Gradient
 val gradientSlider = Color(0xFF8B5CF6)
+val gradientEnvelopeStart = Color(0xE6A6BEF3)
+val gradientEnvelopeEnd = Color(0xE6D3D9FF)
+val gradientExpenseStart = Color(0xFF4E62FF)
+val gradientExpenseEnd = Color(0xFF502EFF)
 
 // Page Indicator
 val pageIndicator = Color(0x4DFFFFFF)
@@ -77,6 +83,10 @@ data class BongBaekColors(
     val transparent: Color,
     val kakaoYellow: Color,
     val gradientSlider: Color,
+    val gradientEnvelopeStart: Color,
+    val gradientEnvelopeEnd: Color,
+    val gradientExpenseStart: Color,
+    val gradientExpenseEnd: Color,
     val pageIndicator: Color,
     val gradientCostCardBackGround: Color,
     val gradientCostCardBorder: Color,
@@ -106,6 +116,10 @@ val defaultBongBaekColors = BongBaekColors(
     transparent = transparent,
     kakaoYellow = kakaoYellow,
     gradientSlider = gradientSlider,
+    gradientEnvelopeStart = gradientEnvelopeStart,
+    gradientEnvelopeEnd = gradientEnvelopeEnd,
+    gradientExpenseStart = gradientExpenseStart,
+    gradientExpenseEnd = gradientExpenseEnd,
     pageIndicator = pageIndicator,
     gradientCostCardBackGround = gradientCostCardBackGround,
     gradientCostCardBorder = gradientCostCardBorder,
@@ -142,6 +156,10 @@ private fun BongBaekColorsPreview() {
                 colors.transparent,
                 colors.kakaoYellow,
                 colors.gradientSlider,
+                colors.gradientEnvelopeStart,
+                colors.gradientEnvelopeEnd,
+                colors.gradientExpenseStart,
+                colors.gradientExpenseEnd,
                 colors.pageIndicator,
                 colors.gradientCostCardBackGround,
                 colors.gradientCostCardBorder,

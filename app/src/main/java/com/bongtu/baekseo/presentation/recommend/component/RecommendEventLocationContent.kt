@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
-private const val MAP_RATIO = 320 / 312
+private const val MAP_RATIO = 320 / 312f
 
 @Composable
 fun RecommendEventLocationContent(
@@ -43,7 +43,7 @@ fun RecommendEventLocationContent(
                     color = BongBaekTheme.colors.primaryLight,
                     shape = RoundedCornerShape(12.dp),
                 )
-                .aspectRatio(MAP_RATIO.toFloat()),
+                .aspectRatio(MAP_RATIO),
             contentAlignment = Alignment.Center,
         ) {
             Text(
