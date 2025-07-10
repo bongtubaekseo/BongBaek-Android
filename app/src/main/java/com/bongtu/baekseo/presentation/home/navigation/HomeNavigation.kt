@@ -7,7 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.presentation.home.HomeDefaultRoute
-import com.bongtu.baekseo.presentation.home.HomeNavHost
+import com.bongtu.baekseo.presentation.home.HomeRoute
 import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Default
 import kotlinx.serialization.Serializable
 
@@ -18,7 +18,7 @@ fun NavGraphBuilder.homeGraph(
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
-        HomeNavHost(
+        HomeRoute(
             setBottomBarVisible = setBottomBarVisible,
             modifier = modifier,
         )

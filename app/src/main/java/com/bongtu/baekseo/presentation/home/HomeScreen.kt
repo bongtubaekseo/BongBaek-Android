@@ -13,7 +13,18 @@ import com.bongtu.baekseo.presentation.home.schedule.navigation.navigateToSchedu
 import com.bongtu.baekseo.presentation.home.schedule.navigation.scheduleGraph
 
 @Composable
-fun HomeNavHost(
+fun HomeRoute(
+    setBottomBarVisible: (Boolean) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    HomeScreen(
+        setBottomBarVisible = setBottomBarVisible,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun HomeScreen(
     setBottomBarVisible: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
