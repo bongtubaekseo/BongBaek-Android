@@ -36,7 +36,6 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
@@ -62,26 +61,7 @@ fun HomeMainRoute(
         viewModel.fetchHomeEvent()
     }
 
-    HomeMainScreen(
-        uiState = uiState,
-        onBadgeClick = {
-            // TODO: 뱃지 클릭 이벤트
-        },
-        navigateToSchedule = navigateToSchedule,
-        modifier = modifier,
-    )
-}
-
-@Composable
-fun HomeMainScreen(
-    uiState: HomeState,
-    onBadgeClick: () -> Unit,
-    navigateToSchedule: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    var items = emptyList<HomeEvent>()
-
-    when (uiState.homeLoadState) {
+    when (val homeLoadState = uiState.homeLoadState) {
         is UiState.Empty -> {
             // TODO: 빈 상태
         }
@@ -95,10 +75,25 @@ fun HomeMainScreen(
         }
 
         is UiState.Success -> {
-            items = uiState.homeLoadState.data
+            HomeMainScreen(
+                items = homeLoadState.data,
+                onBadgeClick = {
+                    // TODO: 뱃지 클릭 이벤트
+                },
+                navigateToSchedule = navigateToSchedule,
+                modifier = modifier,
+            )
         }
     }
+}
 
+@Composable
+fun HomeMainScreen(
+    items: List<HomeEvent>,
+    onBadgeClick: () -> Unit,
+    navigateToSchedule: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val pagerState = rememberPagerState(pageCount = {
         items.size
     })
@@ -220,7 +215,7 @@ fun HomeMainScreen(
 
             items.forEach { item ->
                 HomeScheduleCard(
-                    event = item
+                    event = item,
                 )
 
                 Spacer(modifier = Modifier.size(10.dp))
@@ -296,9 +291,7 @@ private fun HomeMainScreenPreview() {
 
     BongBaekTheme {
         HomeMainScreen(
-            uiState = HomeState(
-                homeLoadState = UiState.Success(items)
-            ),
+            items = items,
             onBadgeClick = {},
             navigateToSchedule = {},
         )
