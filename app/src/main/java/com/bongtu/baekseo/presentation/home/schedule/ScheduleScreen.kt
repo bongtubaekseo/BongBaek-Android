@@ -33,6 +33,8 @@ import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import java.time.LocalDate
 
 @Composable
@@ -111,7 +113,7 @@ private fun ScheduleScreen(
 
             is UiState.Success -> {
                 ScheduleListContent(
-                    scheduleEventList = uiState.scheduleLoadState.data,
+                    scheduleEventList = uiState.scheduleLoadState.data.toPersistentList(),
                     onCardClick = {
                         // TODO: Card 클릭 이벤트
                     },
@@ -128,7 +130,7 @@ private fun ScheduleScreenPreview() {
         ScheduleScreen(
             uiState = ScheduleState(
                 scheduleLoadState = UiState.Success(
-                    listOf(
+                    persistentListOf(
                         ScheduleEvent(
                             eventId = "1",
                             hostInfo = ScheduleHostInfo(
