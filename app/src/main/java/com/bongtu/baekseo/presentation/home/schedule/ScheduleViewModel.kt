@@ -1,6 +1,8 @@
 package com.bongtu.baekseo.presentation.home.schedule
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -12,6 +14,7 @@ import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import okhttp3.internal.immutableListOf
 import java.time.LocalDate
 import javax.inject.Inject
@@ -23,66 +26,72 @@ class ScheduleViewModel @Inject constructor(
     val uiState = _uiState.asStateFlow()
 
     fun fetchScheduleEvent() {
-        // TODO: API 연동
-        updateScheduleUiState(
-            value = UiState.Success(
-                immutableListOf(
-                    ScheduleEvent(
-                        eventId = "1",
-                        hostInfo = ScheduleHostInfo(
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
+        // TODO: 전체 일정 조회 API 연동
+        viewModelScope.launch {
+            updateScheduleUiState(
+                value = UiState.Success(
+                    immutableListOf(
+                        ScheduleEvent(
+                            eventId = "1",
+                            hostInfo = ScheduleHostInfo(
+                                hostName = "공승준",
+                                hostNickname = "초록승준",
+                            ),
+                            eventInfo = ScheduleEventInfo(
+                                eventCategory = EventType.WEDDING,
+                                relationship = RelationType.FRIEND,
+                                cost = 10000,
+                                eventDate = LocalDate.of(2025, 3, 11),
+                            ),
                         ),
-                        eventInfo = ScheduleEventInfo(
-                            eventCategory = EventType.WEDDING,
-                            relationship = RelationType.FRIEND,
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 3, 11),
+                        ScheduleEvent(
+                            eventId = "2",
+                            hostInfo = ScheduleHostInfo(
+                                hostName = "김종명",
+                                hostNickname = "봉준호",
+                            ),
+                            eventInfo = ScheduleEventInfo(
+                                eventCategory = EventType.FIRST_BD,
+                                relationship = RelationType.NEIGHBOR,
+                                cost = 10000,
+                                eventDate = LocalDate.of(2025, 2, 11),
+                            ),
                         ),
-                    ),
-                    ScheduleEvent(
-                        eventId = "2",
-                        hostInfo = ScheduleHostInfo(
-                            hostName = "김종명",
-                            hostNickname = "봉준호",
+                        ScheduleEvent(
+                            eventId = "3",
+                            hostInfo = ScheduleHostInfo(
+                                hostName = "김헤정",
+                                hostNickname = "메정",
+                            ),
+                            eventInfo = ScheduleEventInfo(
+                                eventCategory = EventType.BIRTHDAY,
+                                relationship = RelationType.ALUMNI,
+                                cost = 10000,
+                                eventDate = LocalDate.of(2025, 1, 11),
+                            ),
                         ),
-                        eventInfo = ScheduleEventInfo(
-                            eventCategory = EventType.FIRST_BD,
-                            relationship = RelationType.NEIGHBOR,
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 2, 11),
-                        ),
-                    ),
-                    ScheduleEvent(
-                        eventId = "3",
-                        hostInfo = ScheduleHostInfo(
-                            hostName = "김헤정",
-                            hostNickname = "메정",
-                        ),
-                        eventInfo = ScheduleEventInfo(
-                            eventCategory = EventType.BIRTHDAY,
-                            relationship = RelationType.ALUMNI,
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 1, 11),
-                        ),
-                    ),
+                    )
                 )
-            )
-        )
-    }
-
-    private fun updateScheduleUiState(value: UiState<List<ScheduleEvent>>) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                scheduleLoadState = value,
             )
         }
     }
 
+    private fun updateScheduleUiState(value: UiState<List<ScheduleEvent>>) {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    scheduleLoadState = value,
+                )
+            }
+        }
+    }
+
     fun updateEventType(eventCategoryType: EventCategoryType) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                eventCategoryType = eventCategoryType,
-            )
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    eventCategoryType = eventCategoryType,
+                )
+            }
         }
 }
