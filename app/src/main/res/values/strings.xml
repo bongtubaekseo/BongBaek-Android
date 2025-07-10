@@ -92,7 +92,7 @@
     <string name="record_detail_delete_dialog_delete_label">삭제</string>
     <string name="record_detail_name_title">이름</string>
     <string name="record_detail_nickname_title">별명</string>
-    <string name="record_detail_realtion_title">관계</string>
+    <string name="record_detail_relation_title">관계</string>
     <string name="record_detail_event_title">경조사</string>
     <string name="record_detail_cost_title">경조사비</string>
     <string name="record_detail_is_attend_title">참석 여부</string>
@@ -141,4 +141,16 @@
     <string name="onboarding_income_question">현재 수입은 어느 정도인가요?</string>
     <string name="onboarding_button_income_down">월 200만원 미만</string>
     <string name="onboarding_button_income_up">월 200만원 이상</string>
+    <!--Edit    -->
+    <string name="edit_top_bar_add_title">경조사 기록하기</string>
+    <string name="edit_top_bar_edit_title">경조사 수정하기</string>
+    <string name="edit_name_title">이름</string>
+    <string name="edit_nickname_title">별명</string>
+    <string name="edit_relation_title">관계</string>
+    <string name="edit_event_title">경조사</string>
+    <string name="edit_cost_title">경조사비</string>
+    <string name="edit_is_attend_title">참석여부</string>
+    <string name="edit_date_title">날짜</string>
+    <string name="edit_location_title">행사장</string>
+    <string name="edit_memo_title">메모</string>
 </resources>
