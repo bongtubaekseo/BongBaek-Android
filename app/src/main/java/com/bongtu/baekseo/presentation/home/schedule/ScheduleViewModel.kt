@@ -2,7 +2,6 @@ package com.bongtu.baekseo.presentation.home.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -11,11 +10,12 @@ import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import okhttp3.internal.immutableListOf
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -30,7 +30,7 @@ class ScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             updateScheduleUiState(
                 value = UiState.Success(
-                    immutableListOf(
+                    persistentListOf(
                         ScheduleEvent(
                             eventId = "1",
                             hostInfo = ScheduleHostInfo(
@@ -76,7 +76,7 @@ class ScheduleViewModel @Inject constructor(
         }
     }
 
-    private fun updateScheduleUiState(value: UiState<List<ScheduleEvent>>) {
+    private fun updateScheduleUiState(value: UiState<ImmutableList<ScheduleEvent>>) {
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(

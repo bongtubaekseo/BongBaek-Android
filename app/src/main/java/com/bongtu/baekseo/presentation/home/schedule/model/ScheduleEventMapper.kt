@@ -1,8 +1,10 @@
 package com.bongtu.baekseo.presentation.home.schedule.model
 
 import com.bongtu.baekseo.core.util.toFormattedYearWithMonth
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 
-fun List<ScheduleEvent>.toYearMonthEventItemList(): List<ScheduleYearMonthEventItem> {
+fun ImmutableList<ScheduleEvent>.toYearMonthEventItemList(): ImmutableList<ScheduleYearMonthEventItem> {
     val result = mutableListOf<ScheduleYearMonthEventItem>()
     var lastYear: Int? = null
     var lastMonth: Int? = null
@@ -24,5 +26,5 @@ fun List<ScheduleEvent>.toYearMonthEventItemList(): List<ScheduleYearMonthEventI
         result.add(ScheduleYearMonthEventItem.Event(event))
     }
 
-    return result
+    return result.toImmutableList()
 }

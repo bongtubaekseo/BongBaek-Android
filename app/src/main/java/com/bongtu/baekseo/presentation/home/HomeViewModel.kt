@@ -10,6 +10,8 @@ import com.bongtu.baekseo.presentation.home.model.HomeEventInfo
 import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
 import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -28,7 +30,7 @@ class HomeViewModel @Inject constructor(
         // TODO: API 연동
         updateHomeUiState(
             value = UiState.Success(
-                immutableListOf(
+                persistentListOf(
                     HomeEvent(
                         eventId = "1",
                         hostInfo = HomeHostInfo(
@@ -84,7 +86,7 @@ class HomeViewModel @Inject constructor(
         )
     }
 
-    private fun updateHomeUiState(value: UiState<List<HomeEvent>>) {
+    private fun updateHomeUiState(value: UiState<ImmutableList<HomeEvent>>) {
         _uiState.update { currentState ->
             currentState.copy(
                 homeLoadState = value,
