@@ -142,7 +142,11 @@ fun HomeMainSuccessScreen(
         ) {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize(),
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(
+                        top = 20.dp,
+                    ),
                 contentPadding = PaddingValues(
                     start = 20.dp,
                     end = pagerContentPadding,
@@ -217,7 +221,7 @@ fun HomeMainSuccessScreen(
             ) {
                 Text(
                     text = stringResource(id = home_schedule_title, "봉백"),
-                    style = BongBaekTheme.typography.body2Regular14, // TODO: 스타일 변경
+                    style = BongBaekTheme.typography.titleSemiBold18,
                     color = BongBaekTheme.colors.white,
                 )
 
@@ -225,7 +229,7 @@ fun HomeMainSuccessScreen(
                     Text(
                         text = stringResource(id = home_schedule_more),
                         modifier = Modifier.noRippleClickable(navigateToSchedule),
-                        style = BongBaekTheme.typography.captionRegular12,  // TODO: 스타일 변경
+                        style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray200,
                     )
                 }
