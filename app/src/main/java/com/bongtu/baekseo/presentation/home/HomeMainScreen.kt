@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -119,15 +120,31 @@ fun HomeMainSuccessScreen(
     val isMultipleCard = remember {
         items.size > 1
     }
-    val isLastPage = remember {
-        pagerState.currentPage == pagerState.pageCount - 1
+    val isFirstPage by remember {
+        derivedStateOf { pagerState.currentPage == 0 }
+    }
+    val isLastPage by remember {
+        derivedStateOf { pagerState.currentPage == pagerState.pageCount - 1 }
     }
 
-    val recommendCardPadding= remember(isMultipleCard) {
+    val recommendCardPadding = remember(isMultipleCard) {
         if (isMultipleCard) 0.dp else 30.dp
     }
-    val pagerContentPadding = remember(isMultipleCard, isLastPage) {
-        if(isMultipleCard || isLastPage) 20.dp else 32.dp
+    val pagerStartContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
+        when {
+            !isMultipleCard -> 20.dp
+            isFirstPage -> 20.dp
+            isLastPage -> 32.dp
+            else -> 26.dp
+        }
+    }
+    val pagerEndContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
+        when {
+            !isMultipleCard -> 20.dp
+            isFirstPage -> 32.dp
+            isLastPage -> 20.dp
+            else -> 26.dp
+        }
     }
 
     Column(
@@ -159,8 +176,8 @@ fun HomeMainSuccessScreen(
                             top = 20.dp,
                         ),
                     contentPadding = PaddingValues(
-                        start = 20.dp,
-                        end = pagerContentPadding,
+                        start = pagerStartContentPadding,
+                        end = pagerEndContentPadding,
                     ),
                     pageSpacing = 8.dp,
                     key = { page ->
@@ -280,55 +297,55 @@ fun HomeMainSuccessScreen(
 @Preview
 @Composable
 private fun HomeMainSuccessScreenPreview() {
-    val items = persistentListOf<HomeEvent>(
-//        HomeEvent(
-//            eventId = "1",
-//            hostInfo = HomeHostInfo(
-//                hostName = "공승준",
-//                hostNickname = "초록승준",
-//            ),
-//            eventInfo = HomeEventInfo(
-//                eventCategory = EventType.WEDDING,
-//                relationship = RelationType.FRIEND,
-//                cost = 10000,
-//                eventDate = LocalDate.of(2025, 2, 11),
-//            ),
-//            locationInfo = HomeLocationInfo(
-//                location = "강남구 테헤란로 강남 웨딩홀"
-//            ),
-//        ),
-//        HomeEvent(
-//            eventId = "2",
-//            hostInfo = HomeHostInfo(
-//                hostName = "김종명",
-//                hostNickname = "봉준호",
-//            ),
-//            eventInfo = HomeEventInfo(
-//                eventCategory = EventType.FIRST_BD,
-//                relationship = RelationType.NEIGHBOR,
-//                cost = 10000,
-//                eventDate = LocalDate.of(2025, 2, 11),
-//            ),
-//            locationInfo = HomeLocationInfo(
-//                location = "강남구 테헤란로 강남 웨딩홀"
-//            ),
-//        ),
-//        HomeEvent(
-//            eventId = "3",
-//            hostInfo = HomeHostInfo(
-//                hostName = "김혜정",
-//                hostNickname = "메정",
-//            ),
-//            eventInfo = HomeEventInfo(
-//                eventCategory = EventType.BIRTHDAY,
-//                relationship = RelationType.ALUMNI,
-//                cost = 10000,
-//                eventDate = LocalDate.of(2025, 2, 11),
-//            ),
-//            locationInfo = HomeLocationInfo(
-//                location = "강남구 테헤란로 강남 웨딩홀"
-//            ),
-//        ),
+    val items = persistentListOf(
+        HomeEvent(
+            eventId = "1",
+            hostInfo = HomeHostInfo(
+                hostName = "공승준",
+                hostNickname = "초록승준",
+            ),
+            eventInfo = HomeEventInfo(
+                eventCategory = EventType.WEDDING,
+                relationship = RelationType.FRIEND,
+                cost = 10000,
+                eventDate = LocalDate.of(2025, 2, 11),
+            ),
+            locationInfo = HomeLocationInfo(
+                location = "강남구 테헤란로 강남 웨딩홀"
+            ),
+        ),
+        HomeEvent(
+            eventId = "2",
+            hostInfo = HomeHostInfo(
+                hostName = "김종명",
+                hostNickname = "봉준호",
+            ),
+            eventInfo = HomeEventInfo(
+                eventCategory = EventType.FIRST_BD,
+                relationship = RelationType.NEIGHBOR,
+                cost = 10000,
+                eventDate = LocalDate.of(2025, 2, 11),
+            ),
+            locationInfo = HomeLocationInfo(
+                location = "강남구 테헤란로 강남 웨딩홀"
+            ),
+        ),
+        HomeEvent(
+            eventId = "3",
+            hostInfo = HomeHostInfo(
+                hostName = "김혜정",
+                hostNickname = "메정",
+            ),
+            eventInfo = HomeEventInfo(
+                eventCategory = EventType.BIRTHDAY,
+                relationship = RelationType.ALUMNI,
+                cost = 10000,
+                eventDate = LocalDate.of(2025, 2, 11),
+            ),
+            locationInfo = HomeLocationInfo(
+                location = "강남구 테헤란로 강남 웨딩홀"
+            ),
+        ),
     )
 
     BongBaekTheme {
