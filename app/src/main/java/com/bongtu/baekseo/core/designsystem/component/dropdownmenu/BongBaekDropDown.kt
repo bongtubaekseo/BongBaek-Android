@@ -1,0 +1,170 @@
+package com.bongtu.baekseo.core.designsystem.component.dropdownmenu
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+
+/**
+ * 공통 드롭 다운 메뉴
+ * 보여지는 아이템 개수를 지정하여 설정 가능한 드롭다운
+ * @param expanded 드롭 다운 메뉴가 열려있는지 여부
+ * @param items 드롭 다운 메뉴에 표시될 아이템 리스트
+ * @param maxItemSize 아이템의 최대 개수(보여지는 아이템의 개수)
+ * @param selectedItem 선택된 아이템
+ * @param onDismissRequest 드롭 다운 메뉴가 닫힐 때 호출되는 콜백
+ * @param onItemSelected 아이템이 선택될 때 호출되는 콜백
+ */
+@Composable
+fun BongBaekDropdownMenu(
+    expanded: Boolean,
+    items: ImmutableList<String>,
+    maxItemSize: Int,
+    selectedItem: String,
+    onDismissRequest: () -> Unit,
+    onItemSelected: (String) -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    val bongBaekColors = BongBaekTheme.colors
+    var itemHeightDp by remember { mutableStateOf(0.dp) }
+    val scrollState = rememberScrollState()
+
+    AnimatedVisibility(
+        visible = expanded,
+        enter = fadeIn() + expandVertically(),
+        exit = fadeOut() + shrinkVertically(),
+    ) {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(bongBaekColors.gray750)
+                .padding(12.dp),
+        ) {
+            Column(
+                modifier = Modifier
+                    .let {
+                        if (itemHeightDp > 0.dp) {
+                            it.heightIn(max = itemHeightDp * maxItemSize)
+                        } else it.heightIn(max = 0.dp)
+                    }
+                    .verticalScroll(scrollState),
+            ) {
+                items.forEachIndexed { index, item ->
+                    DropDownMenuItem(
+                        item = item,
+                        index = index,
+                        selectedItem = selectedItem,
+                        onItemSelected = onItemSelected,
+                        onFirstItemMeasured = { itemHeightDp = it },
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun DropDownMenuItem(
+    item: String,
+    index: Int,
+    selectedItem: String,
+    onItemSelected: (String) -> Unit,
+    onFirstItemMeasured: (Dp) -> Unit,
+) {
+    val bongBaekColors = BongBaekTheme.colors
+    val density = LocalDensity.current
+
+    val (backgroundColor, textColor) = remember(selectedItem, item) {
+        if (selectedItem == item) {
+            bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
+        } else {
+            bongBaekColors.transparent to bongBaekColors.white
+        }
+    }
+
+    Box(
+        modifier = Modifier
+            .onGloballyPositioned {
+                if (index == 0) {
+                    val px = it.size.height
+                    onFirstItemMeasured(with(density) { px.toDp() })
+                }
+            }
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(4.dp),
+            )
+            .fillMaxWidth()
+            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .noRippleClickable { onItemSelected(item) },
+        contentAlignment = Alignment.CenterStart,
+    ) {
+        Text(
+            text = item,
+            color = textColor,
+            style = BongBaekTheme.typography.body1Medium16,
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun BongBaekDropdownMenuPreview() {
+    BongBaekTheme {
+        val dummyItems = remember {
+            persistentListOf("강남 웨딩홀", "강남 어쩌구저쩌구", "강남 이러쿵저쩌쿵", "강남스타일", "강남 알베르")
+        }
+        var expanded by remember { mutableStateOf(true) }
+        var selectedItem by remember { mutableStateOf("강남 웨딩홀") }
+
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Center,
+        ) {
+            BongBaekDropdownMenu(
+                expanded = expanded,
+                items = dummyItems,
+                maxItemSize = 3,
+                selectedItem = selectedItem,
+                onDismissRequest = { expanded = false },
+                onItemSelected = {
+                    selectedItem = it
+                },
+                modifier = Modifier,
+            )
+        }
+
+    }
+}
