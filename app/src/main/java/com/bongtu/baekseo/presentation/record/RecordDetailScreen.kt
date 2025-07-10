@@ -331,7 +331,7 @@ private fun RecordDeleteAlertDialog(
                     start = 20.dp,
                     end = 20.dp,
                     bottom = 16.dp,
-                )
+                ),
         ) {
             Text(
                 text = stringResource(record_detail_delete_dialog_title),
@@ -366,7 +366,6 @@ private fun RecordDeleteAlertDialog(
                         .noRippleClickable(onClick = onDeleteClick),
                 )
             }
-
         }
     }
 }
