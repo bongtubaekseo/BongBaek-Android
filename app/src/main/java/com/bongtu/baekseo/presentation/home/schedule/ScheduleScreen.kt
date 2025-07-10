@@ -25,6 +25,7 @@ import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
@@ -37,6 +38,7 @@ import java.time.LocalDate
 @Composable
 fun ScheduleRoute(
     setBottomBarVisible: (Boolean) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
@@ -56,6 +58,7 @@ fun ScheduleRoute(
     ScheduleScreen(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
+        onBackClick = onBackClick,
         modifier = modifier,
     )
 }
@@ -64,6 +67,7 @@ fun ScheduleRoute(
 private fun ScheduleScreen(
     uiState: ScheduleState,
     onCategoryClick: (EventCategoryType) -> Unit,
+    onBackClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -79,7 +83,8 @@ private fun ScheduleScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .size(24.dp),
+                        .size(24.dp)
+                        .noRippleClickable(onBackClick),
                     tint = BongBaekTheme.colors.white,
                 )
             }
@@ -206,6 +211,7 @@ private fun ScheduleScreenPreview() {
                 ),
             ),
             onCategoryClick = {},
+            onBackClick = {},
             modifier = Modifier,
         )
     }

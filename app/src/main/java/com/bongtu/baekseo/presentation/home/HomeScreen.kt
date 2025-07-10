@@ -35,6 +35,7 @@ fun HomeNavHost(
         )
         scheduleGraph(
             setBottomBarVisible = setBottomBarVisible,
+            onBackClick = navController::popBackStack,
             modifier = Modifier,
         )
     }
