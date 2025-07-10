@@ -93,7 +93,7 @@ private fun ScheduleScreen(
 
         when (uiState.scheduleLoadState) {
             is UiState.Empty -> {
-                // 빈 화면 필요 X
+                // TODO: 빈 상태
             }
 
             is UiState.Failure -> {
