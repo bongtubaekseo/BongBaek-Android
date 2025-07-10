@@ -274,9 +274,9 @@ private fun RecordDetailCostCard(
             .border(
                 brush = remember {
                     Brush.verticalGradient(
-                        colorStops = arrayOf(
-                            0f to bongBaekColors.gradientCostCardBorder,
-                            1f to bongBaekColors.primaryNormal,
+                        colors = listOf(
+                            bongBaekColors.gradientCostCardBorder,
+                            bongBaekColors.primaryNormal,
                         ),
                     )
                 },
