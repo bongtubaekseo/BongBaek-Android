@@ -72,7 +72,7 @@ private fun ScheduleScreen(
 ) {
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.gray900),
     ) {
         BongBaekTopBar(
             title = stringResource(id = schedule_title, "봉백"),
@@ -87,7 +87,7 @@ private fun ScheduleScreen(
                         .noRippleClickable(onBackClick),
                     tint = BongBaekTheme.colors.white,
                 )
-            }
+            },
         )
 
         EventCategoryBar(
