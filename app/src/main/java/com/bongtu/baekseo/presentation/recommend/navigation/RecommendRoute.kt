@@ -14,5 +14,5 @@ sealed interface RecommendRoute {
     data object Result : RecommendRoute
 
     @Serializable
-    data object Finish : RecommendRoute
+    data object Final : RecommendRoute
 }
