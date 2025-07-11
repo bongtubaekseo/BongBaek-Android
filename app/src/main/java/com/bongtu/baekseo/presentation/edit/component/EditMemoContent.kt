@@ -28,6 +28,7 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTex
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 private const val MEMO_RATIO = 320 / 152f
+private const val MEMO_INPUT_MAX_LENGTH = 50
 
 @Composable
 fun EditMemoContent(
@@ -71,7 +72,11 @@ fun EditMemoContent(
         ) {
             BongBaekInnerTextField(
                 text = text,
-                onTextChange = onTextChange,
+                onTextChange = {
+                    if (it.length <= MEMO_INPUT_MAX_LENGTH) {
+                        onTextChange(it)
+                    }
+                },
                 textColor = BongBaekTheme.colors.white,
                 placeholder = stringResource(edit_memo_text_field_placeholder),
                 placeholderColor = BongBaekTheme.colors.gray500,
