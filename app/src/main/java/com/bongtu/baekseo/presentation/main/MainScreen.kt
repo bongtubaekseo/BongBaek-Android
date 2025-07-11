@@ -2,13 +2,15 @@ package com.bongtu.baekseo.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
@@ -35,22 +37,22 @@ fun MainScreen(
                 onTabSelected = navigator::navigate,
             )
         },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BongBaekTheme.colors.gray900),
     ) { innerPadding ->
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            MainNavHost(
-                navigator = navigator,
-                modifier = Modifier.padding(innerPadding),
-            )
-        }
+        MainNavHost(
+            navigator = navigator,
+            innerPadding = innerPadding,
+            modifier = Modifier,
+        )
     }
 }
 
 @Composable
 private fun MainNavHost(
     navigator: MainNavigator,
+    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
