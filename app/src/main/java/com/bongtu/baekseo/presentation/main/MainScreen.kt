@@ -15,8 +15,10 @@ import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
+import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
+import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
 import kotlinx.collections.immutable.toImmutableList
 
@@ -60,7 +62,27 @@ private fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         dummyGraph(modifier = modifier)
-        splashGraph(modifier = modifier)
+        splashGraph(
+            navigateToOnBoarding = {
+                navigator.navController.navigateToOnBoarding(
+                    navOptions = navOptions {
+                        popUpTo<Splash> {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
+            navigateToHome = {
+                navigator.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Splash> {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
+            modifier = modifier,
+        )
         onBoardingGraph(
             navigateToHome = {
                 navigator.navController.navigateToHome(

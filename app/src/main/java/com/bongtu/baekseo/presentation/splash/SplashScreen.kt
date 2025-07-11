@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -22,7 +23,15 @@ import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun SplashRoute(modifier: Modifier = Modifier) {
+fun SplashRoute(
+    navigateToOnBoarding: () -> Unit,
+    navigateToHome: () -> Unit, // TODO: 추후 사용
+    modifier: Modifier = Modifier,
+) {
+    LaunchedEffect(Unit) {
+        navigateToOnBoarding()
+    }
+
     SplashScreen(
         modifier = modifier,
     )
@@ -70,8 +79,6 @@ fun SplashScreen(
 @Composable
 private fun SplashScreenPreview() {
     BongBaekTheme {
-        SplashScreen(
-
-        )
+        SplashScreen()
     }
 }
