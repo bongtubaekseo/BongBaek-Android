@@ -2,14 +2,15 @@ package com.bongtu.baekseo.presentation.main
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
@@ -17,6 +18,9 @@ import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
+import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
+import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
@@ -35,22 +39,22 @@ fun MainScreen(
                 onTabSelected = navigator::navigate,
             )
         },
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize()
+            .background(BongBaekTheme.colors.gray900),
     ) { innerPadding ->
-        Column(
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            MainNavHost(
-                navigator = navigator,
-                modifier = Modifier.padding(innerPadding),
-            )
-        }
+        MainNavHost(
+            navigator = navigator,
+            innerPadding = innerPadding,
+            modifier = Modifier,
+        )
     }
 }
 
 @Composable
 private fun MainNavHost(
     navigator: MainNavigator,
+    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -62,6 +66,7 @@ private fun MainNavHost(
         startDestination = navigator.startDestination,
     ) {
         dummyGraph(modifier = modifier)
+
         splashGraph(
             navigateToOnBoarding = {
                 navigator.navController.navigateToOnBoarding(
@@ -83,6 +88,7 @@ private fun MainNavHost(
             },
             modifier = modifier,
         )
+
         onBoardingGraph(
             navigateToHome = {
                 navigator.navController.navigateToHome(
@@ -95,10 +101,40 @@ private fun MainNavHost(
             },
             modifier = modifier,
         )
+
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
             modifier = modifier,
         )
+
+        recommendGraph(
+            navigateToUp = navigator::navigateUp,
+            navigateToHome = {
+                navigator.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Recommend> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            navigateToRecord = {
+                navigator.navController.navigateToRecord(
+                    navOptions = navOptions {
+                        popUpTo<Recommend> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            navigateToEdit = {
+                // TODO: 수정 화면으로 이동
+            },
+            modifier = modifier,
+        )
+
         recordGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
             modifier = modifier,
