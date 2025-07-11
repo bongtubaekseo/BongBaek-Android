@@ -116,8 +116,8 @@ private fun EditScreen(
     var cost by remember { mutableStateOf("") }
     var attendanceSelectedItem by remember { mutableStateOf("") }
 
-    var birth by remember { mutableStateOf("") }
-    var dialogBirth by remember { mutableStateOf("") }
+    var date by remember { mutableStateOf("") }
+    var dialogDate by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
 
     var location by remember { mutableStateOf(null) } // TODO: LocationInfo 변경 예정
@@ -138,7 +138,7 @@ private fun EditScreen(
             && eventSelectedItem.isNotBlank()
             && cost.isNotBlank()
             && attendanceSelectedItem.isNotBlank()
-            && birth.isNotBlank()
+            && date.isNotBlank()
 
     Column(
         modifier = modifier
@@ -266,11 +266,11 @@ private fun EditScreen(
                 LabelTextField(
                     labelImage = ic_calendar,
                     labelName = stringResource(id = edit_date_title),
-                    text = birth,
+                    text = date,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            dialogBirth = birth
+                            dialogDate = date
                             isDatePickerDialogVisible = true
                         },
                     isEditable = false,
@@ -319,17 +319,17 @@ private fun EditScreen(
         }
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
-                datePickerDialogType = DatePickerDialogType.BIRTH,
-                value = dialogBirth,
+                datePickerDialogType = DatePickerDialogType.DATE,
+                value = dialogDate,
                 onValueChange = {
-                    dialogBirth = it
+                    dialogDate = it
                 },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
                 },
                 onConfirmClick = {
                     isDatePickerDialogVisible = false
-                    birth = dialogBirth
+                    date = dialogDate
                 },
             )
         }
