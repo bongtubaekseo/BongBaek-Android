@@ -7,11 +7,13 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
+import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 
@@ -34,10 +36,8 @@ class MainNavigator(
 
     fun navigate(tab: MainTab) {
         val navOptions = navOptions {
-            navController.currentDestination?.route?.let {
-                popUpTo(it) {
-                    saveState = true
-                }
+            popUpTo(navController.graph.findStartDestination().id) {
+                saveState = true
             }
             launchSingleTop = true
             restoreState = true
@@ -45,7 +45,7 @@ class MainNavigator(
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
-            MainTab.RECOMMEND -> {}
+            MainTab.RECOMMEND -> navController.navigateToRecommend(navOptions = navOptions)
             MainTab.RECORD -> navController.navigateToRecord(navOptions = navOptions)
         }
     }
@@ -60,7 +60,9 @@ class MainNavigator(
             currentDestination?.hasRoute(it::class) == true
         }
 
-        return isMainTabRoute && isBottomBarVisible
+        val tab = MainTab.find { currentDestination?.hasRoute(it::class) == true }
+
+        return (isMainTabRoute && isBottomBarVisible) && tab != MainTab.RECOMMEND
     }
 
     fun updateBottomBarVisible(isVisible: Boolean) {
