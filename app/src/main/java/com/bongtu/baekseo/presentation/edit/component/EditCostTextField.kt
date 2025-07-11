@@ -43,8 +43,6 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 
-private const val NUMBER_INPUT_MAX_LENGTH = 8
-
 @Composable
 fun EditCostLabelTextField(
     text: String,

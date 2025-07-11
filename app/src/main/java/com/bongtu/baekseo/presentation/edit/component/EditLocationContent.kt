@@ -27,7 +27,7 @@ fun EditLocationContent(
             .background(
                 color = BongBaekTheme.colors.gray700,
                 shape = RoundedCornerShape(10.dp),
-            )
+            ),
     ) {
         Box(
             modifier = Modifier
