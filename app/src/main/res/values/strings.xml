@@ -155,7 +155,7 @@
     <string name="edit_required_text">*</string>
     <string name="edit_name_text_field_placeholder">이름을 입력하세요</string>
     <string name="edit_nickname_text_field_placeholder">별명을 입력하세요</string>
-    <string name="edit_relation_dropdown_placeholder">관계을 선택하세요</string>
+    <string name="edit_relation_dropdown_placeholder">관계를 선택하세요</string>
     <string name="edit_event_dropdown_placeholder">경조사를 선택하세요</string>
     <string name="edit_cost_text_field_placeholder">금액을 입력하세요</string>
     <string name="edit_is_attend_dropdown_placeholder">참석여부를 선택하세요</string>
