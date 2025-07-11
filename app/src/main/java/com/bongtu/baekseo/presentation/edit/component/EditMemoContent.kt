@@ -41,8 +41,13 @@ fun EditMemoContent(
     val focusManager = LocalFocusManager.current
 
     val bongBaekColors = BongBaekTheme.colors
-    val borderColor = if (isFocused) bongBaekColors.primaryNormal else bongBaekColors.transparent
-    val backgroundColor = if (isFocused) bongBaekColors.gray750 else bongBaekColors.gray800
+    val (borderColor, backgroundColor) = remember(isFocused) {
+        if (isFocused) {
+            bongBaekColors.primaryNormal to bongBaekColors.gray750
+        } else {
+            bongBaekColors.transparent to bongBaekColors.gray800
+        }
+    }
 
     Column(
         modifier = modifier,
