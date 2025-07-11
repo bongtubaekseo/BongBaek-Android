@@ -193,6 +193,7 @@ private fun EditScreen(
                     onInputDone = {
                         // TODO: 유효성 검증 로직
                     },
+                    isRequired = true,
                 )
 
                 LabelTextField(
@@ -200,8 +201,6 @@ private fun EditScreen(
                     labelImage = ic_nickname,
                     text = nickName,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    modifier = Modifier
-                        .padding(bottom = 12.dp),
                     validateResult = validateResult,
                     onTextChange = {
                         nickName = it
@@ -210,6 +209,7 @@ private fun EditScreen(
                     onInputDone = {
                         // TODO: 유효성 검증 로직
                     },
+                    isRequired = true,
                 )
 
                 FormFieldItem(
