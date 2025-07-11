@@ -158,7 +158,7 @@ fun LabelTextField(
 
         HorizontalDivider(
             modifier = Modifier
-                .padding(top = 12.dp, bottom = 6.dp),
+                .padding(top = 12.dp),
             thickness = 1.dp,
             color = dividerColor,
         )
@@ -170,6 +170,7 @@ fun LabelTextField(
         ) {
             Row(
                 modifier = Modifier
+                    .padding(top = 6.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
