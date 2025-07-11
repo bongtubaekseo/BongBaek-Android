@@ -88,6 +88,7 @@ fun EditCostLabelTextField(
                     .height(16.dp)
                     .padding(end = 6.dp),
             )
+
             Text(
                 text = stringResource(id = edit_cost_title),
                 style = BongBaekTheme.typography.body1Medium14,
@@ -178,9 +179,9 @@ fun EditCostLabelTextField(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = ic_caution),
                     contentDescription = null,
-                    tint = BongBaekTheme.colors.secondaryRed,
                     modifier = Modifier
                         .size(14.dp),
+                    tint = BongBaekTheme.colors.secondaryRed,
                 )
                 Text(
                     text = validateResult.message.orEmpty(),

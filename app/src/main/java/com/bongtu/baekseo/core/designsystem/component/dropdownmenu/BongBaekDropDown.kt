@@ -126,7 +126,7 @@ private fun DropDownMenuItem(
                 shape = RoundedCornerShape(4.dp),
             )
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 12.dp)
+            .padding(horizontal = 12.dp, vertical = 8.dp)
             .noRippleClickable { onItemSelected(item) },
         contentAlignment = Alignment.CenterStart,
     ) {
@@ -165,6 +165,5 @@ private fun BongBaekDropdownMenuPreview() {
                 modifier = Modifier,
             )
         }
-
     }
 }
