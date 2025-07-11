@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_splash_logo
 import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import kotlinx.coroutines.delay
 
 @Composable
 fun SplashRoute(
@@ -29,6 +30,7 @@ fun SplashRoute(
     modifier: Modifier = Modifier,
 ) {
     LaunchedEffect(Unit) {
+        delay(1500)
         navigateToOnBoarding()
     }
 
