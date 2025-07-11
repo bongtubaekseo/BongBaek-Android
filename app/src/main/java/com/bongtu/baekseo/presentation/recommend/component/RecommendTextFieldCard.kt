@@ -28,6 +28,7 @@ import com.bongtu.baekseo.R.string.recommendation_name_placeholder
 import com.bongtu.baekseo.R.string.recommendation_name_title
 import com.bongtu.baekseo.R.string.recommendation_nickname_placeholder
 import com.bongtu.baekseo.core.designsystem.component.textfield.RoundedBoxTextField
+import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
@@ -38,6 +39,9 @@ fun RecommendTextFieldCard(
     onNicknameChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var nameValidateResult: TextFieldValidateResult by remember { mutableStateOf(TextFieldValidateResult.Default) }
+    var nicknameValidateResult: TextFieldValidateResult by remember { mutableStateOf(TextFieldValidateResult.Default) }
+
     Column(
         modifier = modifier
             .background(
@@ -70,6 +74,10 @@ fun RecommendTextFieldCard(
             text = name,
             placeholder = stringResource(recommendation_name_placeholder),
             onTextChange = onNameChange,
+            onInputDone = {
+                nameValidateResult = TextFieldValidateResult.validate(name)
+            },
+            validateResult = nameValidateResult,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -78,7 +86,11 @@ fun RecommendTextFieldCard(
             text = nickname,
             placeholder = stringResource(recommendation_nickname_placeholder),
             onTextChange = onNicknameChange,
-            // TODO 검증로직 추가 필요
+            onInputDone = {
+                nicknameValidateResult = TextFieldValidateResult.validate(nickname)
+            },
+            validateResult = nicknameValidateResult,
+            // TODO 검증로직 추가 필요 + 검증 방식 수정 필요
         )
     }
 }
