@@ -12,7 +12,7 @@ class BongBaekApplication : Application() {
         super.onCreate()
 
         initTimber()
-        initKakaoSkd()
+        initKakaoSdk()
         setNightMode()
     }
 
@@ -24,7 +24,7 @@ class BongBaekApplication : Application() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
     }
 
-    private fun initKakaoSkd() {
+    private fun initKakaoSdk() {
         KakaoSdk.init(this, BuildConfig.KAKAO_KEY)
     }
 }
