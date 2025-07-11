@@ -25,6 +25,6 @@ class BongBaekApplication : Application() {
     }
 
     private fun initKakaoSkd() {
-        KakaoSdk.init(this, KAKAO_KEY)
+        KakaoSdk.init(this, BuildConfig.KAKAO_KEY)
     }
 }
