@@ -5,15 +5,13 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
-import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import androidx.navigation.navOptions
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
-import com.bongtu.baekseo.presentation.home.navigation.Home
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
@@ -22,7 +20,6 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoardin
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
-import com.bongtu.baekseo.presentation.record.navigation.Record
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
