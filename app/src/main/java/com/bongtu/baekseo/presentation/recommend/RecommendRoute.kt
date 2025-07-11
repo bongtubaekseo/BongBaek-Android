@@ -14,6 +14,7 @@ import com.bongtu.baekseo.presentation.recommend.navigation.nestedRecommendGraph
 @Composable
 fun RecommendRoute(
     navigateToUp: () -> Unit,
+    navigateToEdit: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
@@ -32,6 +33,7 @@ fun RecommendRoute(
         nestedRecommendGraph(
             navController = recommendNavigator,
             navigateToUp = navigateToUp,
+            navigateToEdit = navigateToEdit,
             navigateToHome = navigateToHome,
             navigateToRecord = navigateToRecord,
             viewModel = viewModel,
