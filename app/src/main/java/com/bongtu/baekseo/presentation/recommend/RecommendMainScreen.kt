@@ -214,7 +214,7 @@ private fun RecommendMainScreen(
                 .padding(
                     start = 20.dp,
                     end = 20.dp,
-                    bottom = 28.dp
+                    bottom = 28.dp,
                 ),
         )
 
@@ -251,7 +251,7 @@ private fun RecommendMainScreen(
             Text(
                 text = stringResource(descRes),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.gray400,
             )
 
             if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
