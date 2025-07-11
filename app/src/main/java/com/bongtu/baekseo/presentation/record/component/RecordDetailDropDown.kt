@@ -14,7 +14,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxWidth import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -52,7 +53,7 @@ import com.bongtu.baekseo.R.string.record_detail_is_attend_title
 import com.bongtu.baekseo.R.string.record_detail_location_title
 import com.bongtu.baekseo.R.string.record_detail_name_title
 import com.bongtu.baekseo.R.string.record_detail_nickname_title
-import com.bongtu.baekseo.R.string.record_detail_realtion_title
+import com.bongtu.baekseo.R.string.record_detail_relation_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedShortMonth
@@ -86,7 +87,7 @@ fun RecordDetailDropDown(
         ),
         Triple(
             ic_relation,
-            record_detail_realtion_title,
+            record_detail_relation_title,
             TrailingChip(event.relationship)
         ),
         Triple(
