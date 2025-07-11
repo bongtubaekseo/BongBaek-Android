@@ -23,7 +23,13 @@ class RecommendContract {
         val expense: Int = 0,
     )
 
-    sealed class RecommendSideEffect {
-        data object NavigateToResult : RecommendSideEffect()
+    sealed interface RecommendSideEffect {
+        sealed class MainSideEffect : RecommendSideEffect {
+            data object NavigateToResult : MainSideEffect()
+        }
+
+        sealed class ResultSideEffect : RecommendSideEffect {
+            data object NavigateToFinal : ResultSideEffect()
+        }
     }
 }
