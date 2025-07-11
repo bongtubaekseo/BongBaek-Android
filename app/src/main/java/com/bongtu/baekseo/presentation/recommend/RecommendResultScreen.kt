@@ -34,7 +34,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.recommend.component.RecommendExpenseCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendResultContent
 
-private const val ENVELOPE_RATIO = 320 / 331f
+private const val ENVELOPE_RATIO = 320 / 291f
 
 @Composable
 fun RecommendResultScreen(
@@ -69,7 +69,6 @@ fun RecommendResultScreen(
                     .fillMaxWidth()
                     .padding(
                         start = 20.dp,
-                        top = 20.dp,
                         end = 20.dp,
                     )
                     .aspectRatio(ENVELOPE_RATIO)
@@ -96,6 +95,7 @@ fun RecommendResultScreen(
                     expense = expense,
                     isLottieEnded = isLottieEnded,
                     modifier = Modifier
+                        .align(Alignment.Center)
                         .matchParentSize(),
                 )
             }
