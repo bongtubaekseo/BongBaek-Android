@@ -115,6 +115,7 @@ private fun MainNavHost(
                         popUpTo<Recommend> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 )
             },
@@ -124,6 +125,7 @@ private fun MainNavHost(
                         popUpTo<Recommend> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 )
             },
