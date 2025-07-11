@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
@@ -43,10 +44,13 @@ fun SplashRoute(
 fun SplashScreen(
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColors = listOf(
-        BongBaekTheme.colors.gray750,
-        BongBaekTheme.colors.gray900,
-    )
+    val bongbaekColors = BongBaekTheme.colors
+    val backgroundColors = remember {
+        listOf(
+            bongbaekColors.gray750,
+            bongbaekColors.gray900,
+        )
+    }
 
     Box(
         modifier = modifier
