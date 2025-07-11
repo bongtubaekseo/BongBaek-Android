@@ -90,6 +90,7 @@ fun EditMemoContent(
                         focusManager.clearFocus()
                     },
                 ),
+                isSingleLine = false,
                 modifier = Modifier
                     .padding(
                         vertical = 16.dp,
