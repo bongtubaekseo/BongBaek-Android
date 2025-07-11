@@ -78,10 +78,7 @@ class RecommendViewModel @Inject constructor(
     fun updateButtonState(): Boolean {
         with(_uiState.value) {
             return when (pageIndex) {
-                1 -> {
-                    name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
-                }
-
+                1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null
                 else -> eventLocation != null
