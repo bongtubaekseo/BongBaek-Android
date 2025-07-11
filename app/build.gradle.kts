@@ -45,15 +45,27 @@ android {
             properties.getProperty("user.token")
         )
 
-        val kakaoNativeAppKey = properties["kakao.key"].toString()
+        val kakaoKey = properties["kakao.key"].toString()
 
-        buildConfigField(
-            "String",
-            "KAKAO_KEY",
-            properties.getProperty("kakao.key")
-        )
-        manifestPlaceholders["KAKAO_KEY"] = kakaoNativeAppKey
+        buildTypes {
+            getByName("debug") {
+                buildConfigField(
+                    "String",
+                    "KAKAO_KEY",
+                    "\"$kakaoKey\""
+                )
+            }
 
+            getByName("release") {
+                buildConfigField(
+                    "String",
+                    "KAKAO_KEY",
+                    "\"$kakaoKey\""
+                )
+            }
+        }
+
+        manifestPlaceholders["KAKAO_KEY"] = kakaoKey
     }
 
     buildTypes {
