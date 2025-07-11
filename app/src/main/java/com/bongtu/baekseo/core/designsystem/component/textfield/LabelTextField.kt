@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.VisualTransformation
@@ -39,6 +40,7 @@ import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.R.string.label_text_field_required_text
 
 /**
  *  Label Text Field
@@ -47,6 +49,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  @param labelImage 라벨 이미지 리소스
  *  @param text 입력값
  *  @param placeholder 힌트
+ *  @param isRequired 필수 값 * 표시 여부
  *  @param isEditable write / read
  *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
@@ -60,6 +63,7 @@ fun LabelTextField(
     text: String,
     placeholder: String,
     modifier: Modifier = Modifier,
+    isRequired: Boolean = false,
     isEditable: Boolean = true,
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
@@ -108,6 +112,16 @@ fun LabelTextField(
                 style = BongBaekTheme.typography.body1Medium14,
                 color = BongBaekTheme.colors.gray100,
             )
+
+            if (isRequired) {
+                Text(
+                    text = stringResource(label_text_field_required_text),
+                    style = BongBaekTheme.typography.body1Medium14,
+                    color = BongBaekTheme.colors.primaryNormal,
+                    modifier = Modifier
+                        .padding(start = 2.dp),
+                )
+            }
         }
 
         BongBaekInnerTextField(
@@ -144,7 +158,7 @@ fun LabelTextField(
 
         HorizontalDivider(
             modifier = Modifier
-                .padding(top = 12.dp, bottom = 6.dp),
+                .padding(top = 12.dp),
             thickness = 1.dp,
             color = dividerColor,
         )
@@ -156,6 +170,7 @@ fun LabelTextField(
         ) {
             Row(
                 modifier = Modifier
+                    .padding(top = 6.dp)
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
