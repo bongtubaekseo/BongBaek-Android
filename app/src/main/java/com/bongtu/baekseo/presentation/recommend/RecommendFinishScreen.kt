@@ -34,7 +34,20 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun RecommendRecordScreen(
+fun RecommendFinishRoute(
+    navigateToHome: () -> Unit,
+    navigateToRecord: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    RecommendFinishScreen(
+        onHomeButtonClick = navigateToHome,
+        onRecordButtonClick = navigateToRecord,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun RecommendFinishScreen(
     onHomeButtonClick: () -> Unit,
     onRecordButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -117,7 +130,7 @@ fun RecommendRecordScreen(
 @Composable
 private fun RecommendRecordScreenPreview() {
     BongBaekTheme {
-        RecommendRecordScreen(
+        RecommendFinishScreen(
             onHomeButtonClick = {},
             onRecordButtonClick = {},
         )
