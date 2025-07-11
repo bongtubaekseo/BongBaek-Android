@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
@@ -73,7 +74,7 @@ fun SplashScreen(
                 modifier = Modifier.size(34.dp),
             )
 
-            Image(
+            Icon(
                 imageVector = ImageVector.vectorResource(id = ic_splash_name),
                 contentDescription = null,
             )
