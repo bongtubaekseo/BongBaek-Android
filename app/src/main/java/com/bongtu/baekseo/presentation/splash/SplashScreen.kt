@@ -1,0 +1,91 @@
+package com.bongtu.baekseo.presentation.splash
+
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material3.Icon
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_splash_logo
+import com.bongtu.baekseo.R.drawable.ic_splash_name
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import kotlinx.coroutines.delay
+
+@Composable
+fun SplashRoute(
+    navigateToOnBoarding: () -> Unit,
+    navigateToHome: () -> Unit, // TODO: 추후 사용
+    modifier: Modifier = Modifier,
+) {
+    LaunchedEffect(Unit) {
+        delay(1500)
+        navigateToOnBoarding()
+    }
+
+    SplashScreen(
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun SplashScreen(
+    modifier: Modifier = Modifier,
+) {
+    val bongbaekColors = BongBaekTheme.colors
+    val backgroundColors = remember {
+        listOf(
+            bongbaekColors.gray750,
+            bongbaekColors.gray900,
+        )
+    }
+
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = backgroundColors,
+                )
+            ),
+        contentAlignment = Alignment.Center,
+    ) {
+        Row(
+            modifier = Modifier.wrapContentSize(),
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Image(
+                painter = painterResource(id = ic_splash_logo),
+                contentDescription = null,
+                modifier = Modifier.size(34.dp),
+            )
+
+            Icon(
+                imageVector = ImageVector.vectorResource(id = ic_splash_name),
+                contentDescription = null,
+            )
+        }
+    }
+}
+
+@Preview
+@Composable
+private fun SplashScreenPreview() {
+    BongBaekTheme {
+        SplashScreen()
+    }
+}
