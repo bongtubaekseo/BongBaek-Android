@@ -44,6 +44,12 @@ android {
             "USER_TOKEN",
             properties.getProperty("user.token")
         )
+
+        buildConfigField(
+            "String",
+            "KAKAO_NATIVE_APP_KEY",
+            properties.getProperty("kakao.key")
+        )
     }
 
     buildTypes {
@@ -100,4 +106,7 @@ dependencies {
     implementation(libs.advanced.bottom.sheet)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    // Kakao
+    implementation(libs.kakao.user)
 }

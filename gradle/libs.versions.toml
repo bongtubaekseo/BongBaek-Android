@@ -53,6 +53,9 @@ ksp = "2.0.0-1.0.24"
 appcompat = "1.7.0"
 playServicesMaps = "19.0.0"
 
+# Kakao SDK
+kakao = "2.21.0"
+
 [libraries]
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -111,6 +114,9 @@ coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", versi
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
 advanced-bottom-sheet = { group = "io.morfly.compose", name = "advanced-bottomsheet-material3", version.ref = "advancedBottomSheet" }
+
+# --- Kakao SDK ---
+kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
