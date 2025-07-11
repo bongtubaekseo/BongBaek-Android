@@ -132,17 +132,15 @@ fun HomeMainSuccessScreen(
     }
     val pagerStartContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
         when {
-            !isMultipleCard -> 20.dp
-            isFirstPage -> 20.dp
+            !isMultipleCard || isFirstPage -> 20.dp
             isLastPage -> 32.dp
             else -> 26.dp
         }
     }
     val pagerEndContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
         when {
-            !isMultipleCard -> 20.dp
+            !isMultipleCard || isLastPage-> 20.dp
             isFirstPage -> 32.dp
-            isLastPage -> 20.dp
             else -> 26.dp
         }
     }
