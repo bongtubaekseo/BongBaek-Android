@@ -14,7 +14,9 @@ class HomeContract {
 
     sealed interface HomeSideEffect {
         sealed class MainSideEffect : HomeSideEffect {
-            data object NavigateToSchedule: MainSideEffect()
+            data object NavigateToSchedule : MainSideEffect()
+            data object NavigateToEdit : MainSideEffect()
+            data object NavigateToRecommend : MainSideEffect()
         }
     }
 }

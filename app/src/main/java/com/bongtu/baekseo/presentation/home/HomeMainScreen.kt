@@ -43,6 +43,8 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToSchedule
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToEdit
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToRecommend
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
@@ -80,6 +82,8 @@ fun HomeMainRoute(
             .collect { sideEffect ->
                 when(sideEffect) {
                     NavigateToSchedule -> navigateToSchedule()
+                    NavigateToEdit -> navigateToEdit()
+                    NavigateToRecommend -> navigateToRecommend()
                 }
             }
     }
