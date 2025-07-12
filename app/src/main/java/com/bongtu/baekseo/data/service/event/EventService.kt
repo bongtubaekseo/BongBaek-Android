@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.data.service
+package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
