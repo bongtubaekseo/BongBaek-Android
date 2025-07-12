@@ -42,7 +42,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun EditLocationRoute(
-
     modifier: Modifier = Modifier,
 ) {
     var searchValue by remember { mutableStateOf("") }
@@ -101,7 +100,7 @@ fun EditLocationScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(
-                    horizontal = 20.dp
+                    horizontal = 20.dp,
                 )
                 .verticalScroll(rememberScrollState()),
         ) {
@@ -111,7 +110,7 @@ fun EditLocationScreen(
                 modifier = Modifier
                     .padding(
                         top = 16.dp,
-                        bottom = 14.dp
+                        bottom = 14.dp,
                     ),
             )
 
