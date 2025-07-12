@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostEventInfoResponse(
+data class PostEventCostResponse(
     @SerialName("cost")
     val cost: Int,
     @SerialName("range")

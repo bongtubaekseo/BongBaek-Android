@@ -1,8 +1,9 @@
 package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
-import com.bongtu.baekseo.data.dto.event.PostEventInfoResponse
+import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -14,6 +15,6 @@ interface EventService {
 
     @POST("events/cost")
     suspend fun postEventCost(
-        @Body request: PostEventInfoRequest,
-    ): BaseResponse<PostEventInfoResponse>
+        @Body request: PostEventCostRequest,
+    ): BaseResponse<PostEventCostResponse>
 }
