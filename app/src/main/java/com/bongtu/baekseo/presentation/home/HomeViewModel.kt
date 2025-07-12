@@ -1,9 +1,11 @@
 package com.bongtu.baekseo.presentation.home
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.model.HomeEvent
@@ -18,12 +20,14 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     // TODO: Repository 주입
+    private val usernameDataStore: UsernameDataStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState = _uiState.asStateFlow()
@@ -96,6 +100,16 @@ class HomeViewModel @Inject constructor(
             currentState.copy(
                 homeLoadState = value,
             )
+        }
+    }
+
+    fun getUsername() {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    name = usernameDataStore.getUsername()
+                )
+            }
         }
     }
 }

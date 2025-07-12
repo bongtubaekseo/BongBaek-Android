@@ -40,11 +40,11 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToRecommend
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToSchedule
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
@@ -74,13 +74,14 @@ fun HomeMainRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
+        viewModel.getUsername()
     }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .filterIsInstance<HomeSideEffect.MainSideEffect>()
             .collect { sideEffect ->
-                when(sideEffect) {
+                when (sideEffect) {
                     NavigateToSchedule -> navigateToSchedule()
                     NavigateToEdit -> navigateToEdit()
                     NavigateToRecommend -> navigateToRecommend()
@@ -121,6 +122,7 @@ fun HomeMainScreen(
         is UiState.Success -> {
             HomeMainSuccessScreen(
                 items = uiState.homeLoadState.data,
+                name = uiState.name,
                 navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
@@ -133,6 +135,7 @@ fun HomeMainScreen(
 @Composable
 fun HomeMainSuccessScreen(
     items: ImmutableList<HomeEvent>,
+    name: String?,
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
@@ -277,7 +280,7 @@ fun HomeMainSuccessScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(id = home_schedule_title, "봉백"), // TODO: 이름 처리
+                    text = stringResource(id = home_schedule_title, name ?: ""),
                     style = BongBaekTheme.typography.titleSemiBold18,
                     color = BongBaekTheme.colors.white,
                 )
@@ -371,6 +374,7 @@ private fun HomeMainSuccessScreenPreview() {
     BongBaekTheme {
         HomeMainSuccessScreen(
             items = items,
+            name = "",
             navigateToEdit = {},
             navigateToRecommend = {},
             navigateToSchedule = {},

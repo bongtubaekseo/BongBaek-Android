@@ -1,0 +1,53 @@
+package com.bongtu.baekseo.presentation.onboarding
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.MainSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import javax.inject.Inject
+
+@HiltViewModel
+class OnBoardingViewModel @Inject constructor(
+    private val usernameDataStore: UsernameDataStore,
+) : ViewModel() {
+
+    private val _uiState = MutableStateFlow(OnBoardingUiState())
+    val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<OnBoardingSideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
+
+    fun setUsername(name: String) {
+        viewModelScope.launch {
+            usernameDataStore.setUsername(name)
+            navigateToHome()
+        }
+    }
+
+    fun updateName(newName: String) = _uiState.update {
+        it.copy(name = newName)
+    }
+
+    fun updateBirth(newBirth: String) = _uiState.update {
+        it.copy(birth = newBirth)
+    }
+
+    fun updateIncome(newIncome: String) = _uiState.update {
+        it.copy(income = newIncome)
+    }
+
+    private fun navigateToHome() {
+        viewModelScope.launch {
+            _sideEffect.emit(NavigateToHome)
+        }
+    }
+}
