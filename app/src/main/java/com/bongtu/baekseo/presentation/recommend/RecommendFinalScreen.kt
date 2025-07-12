@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.recommend
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +35,24 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun RecommendRecordScreen(
+fun RecommendFinalRoute(
+    navigateToHome: () -> Unit,
+    navigateToRecord: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    BackHandler {
+        // 뒤로가기 버튼 방지 TODO: 뭔가 더 깔끔한 방법 찾아야 할 듯
+    }
+    
+    RecommendFinalScreen(
+        onHomeButtonClick = navigateToHome,
+        onRecordButtonClick = navigateToRecord,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun RecommendFinalScreen(
     onHomeButtonClick: () -> Unit,
     onRecordButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -115,9 +133,9 @@ fun RecommendRecordScreen(
 
 @Preview
 @Composable
-private fun RecommendRecordScreenPreview() {
+private fun RecommendFinalScreenPreview() {
     BongBaekTheme {
-        RecommendRecordScreen(
+        RecommendFinalScreen(
             onHomeButtonClick = {},
             onRecordButtonClick = {},
         )
