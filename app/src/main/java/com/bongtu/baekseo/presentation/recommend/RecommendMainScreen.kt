@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.recommend
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,6 +18,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -28,6 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.button_next
 import com.bongtu.baekseo.R.string.recommendation_event_date_description
@@ -43,6 +48,7 @@ import com.bongtu.baekseo.R.string.recommendation_event_type_topbar
 import com.bongtu.baekseo.R.string.recommendation_relation_description
 import com.bongtu.baekseo.R.string.recommendation_relation_title
 import com.bongtu.baekseo.R.string.recommendation_relation_topbar
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -51,40 +57,94 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import com.bongtu.baekseo.presentation.recommend.component.RecommendDateCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendEventLocationContent
 import com.bongtu.baekseo.presentation.recommend.component.RecommendEventSelector
+import com.bongtu.baekseo.presentation.recommend.component.RecommendLoadingOverlay
 import com.bongtu.baekseo.presentation.recommend.component.RecommendParticipationCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendProgressBar
 import com.bongtu.baekseo.presentation.recommend.component.RecommendRelationTypeContent
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
-fun RecommendRoute(
+fun RecommendMainRoute(
+    navigateToUp: () -> Unit,
+    navigateToResult: () -> Unit,
+    viewModel: RecommendViewModel,
     modifier: Modifier = Modifier,
 ) {
-    RecommendScreen(
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    val onBackClick: () -> Unit = {
+        if (uiState.pageIndex == 1) navigateToUp()
+        else viewModel.updatePageIndex(uiState.pageIndex - 1)
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<RecommendSideEffect.MainSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToResult -> navigateToResult()
+                }
+            }
+    }
+
+    BackHandler {
+        onBackClick()
+    }
+
+    if (uiState.loadState is UiState.Loading) {
+        RecommendLoadingOverlay(
+            name = uiState.name,
+        )
+    }
+
+    RecommendMainScreen(
+        uiState = uiState,
+        onBackClick = onBackClick,
+        navigateToResult = navigateToResult, // TODO: ViewModel API 호출 함수로 변경
+        onPageIndexChange = viewModel::updatePageIndex,
+        onNameChange = viewModel::updateName,
+        onNicknameChange = viewModel::updateNickname,
+        onRelationSelect = viewModel::updateRelationType,
+        onCheckBoxClick = viewModel::updateIsHighAccuracy,
+        onContactFrequencyChange = viewModel::updateContactFrequency,
+        onMeetFrequencyChange = viewModel::updateMeetFrequency,
+        onEventSelect = viewModel::updateEventType,
+        onDateChange = viewModel::updateEventDate,
+        onParticipationSelect = viewModel::updateIsEventParticipated,
+        onLocationSelect = viewModel::updateEventLocation,
+        checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
     )
 }
 
 @Composable
-private fun RecommendScreen(
+private fun RecommendMainScreen(
+    uiState: RecommendUiState,
+    onBackClick: () -> Unit,
+    navigateToResult: () -> Unit,
+    onPageIndexChange: (Int) -> Unit,
+    onNameChange: (String) -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onRelationSelect: (RelationType) -> Unit,
+    onCheckBoxClick: (Boolean) -> Unit,
+    onContactFrequencyChange: (Float) -> Unit,
+    onMeetFrequencyChange: (Float) -> Unit,
+    onEventSelect: (EventType) -> Unit,
+    onDateChange: (String) -> Unit,
+    onParticipationSelect: (Boolean) -> Unit,
+    onLocationSelect: (Pair<Double, Double>) -> Unit, // TODO: 지도 구현 후 연결 필요
+    checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: UIState로 수정
-    var currentPageIndex by remember { mutableStateOf(1) }
-    var selectedRelation by remember { mutableStateOf<RelationType?>(null) }
-    var name by remember { mutableStateOf("") }
-    var nickname by remember { mutableStateOf("") }
-    var isChecked by remember { mutableStateOf(false) }
-    var contactFrequency by remember { mutableStateOf(0f) }
-    var meetFrequency by remember { mutableStateOf(0f) }
-    var selectedEvent by remember { mutableStateOf<EventType?>(null) }
-    var date by remember { mutableStateOf("") }
     var text by remember { mutableStateOf("") }
-    var isEventParticipated by remember { mutableStateOf<Boolean?>(null) }
     var searchValue by remember { mutableStateOf("") }
-    val (topbarRes, titleRes, descRes) = when (currentPageIndex) {
+    val (topbarRes, titleRes, descRes) = when (uiState.pageIndex) {
         1 -> Triple(
             recommendation_relation_topbar,
             recommendation_relation_title,
@@ -110,6 +170,19 @@ private fun RecommendScreen(
         )
     }
     val scrollState = rememberScrollState()
+    val isButtonEnabled = remember(
+        uiState.pageIndex,
+        uiState.name,
+        uiState.nickname,
+        uiState.relationType,
+        uiState.isHighAccuracy,
+        uiState.contactFrequency,
+        uiState.meetFrequency,
+        uiState.eventType,
+        uiState.eventDate,
+        uiState.isEventParticipated,
+        uiState.eventLocation,
+    ) { checkButtonEnabled() }
 
     Column(
         modifier = modifier
@@ -127,10 +200,7 @@ private fun RecommendScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable {
-                            // TODO: navigateUp 대체
-                            currentPageIndex--
-                        },
+                        .noRippleClickable(onBackClick),
                     tint = BongBaekTheme.colors.white,
                 )
             },
@@ -139,12 +209,12 @@ private fun RecommendScreen(
         Spacer(modifier = Modifier.height(8.dp))
 
         RecommendProgressBar(
-            currentIndex = currentPageIndex,
+            currentIndex = uiState.pageIndex,
             modifier = Modifier
                 .padding(
                     start = 20.dp,
                     end = 20.dp,
-                    bottom = 28.dp
+                    bottom = 28.dp,
                 ),
         )
 
@@ -165,15 +235,13 @@ private fun RecommendScreen(
                     color = BongBaekTheme.colors.white,
                 )
 
-                if (currentPageIndex == 4) {
+                if (uiState.pageIndex == 4) {
                     Text(
                         text = stringResource(recommendation_event_location_skip),
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.gray500,
                         modifier = Modifier
-                            .noRippleClickable {
-                                // TODO: skip
-                            },
+                            .noRippleClickable(navigateToResult),
                     )
                 }
             }
@@ -183,35 +251,34 @@ private fun RecommendScreen(
             Text(
                 text = stringResource(descRes),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.gray400,
             )
 
-            if (currentPageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
+            if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
             else Spacer(modifier = Modifier.height(30.dp))
 
             AnimatedContent(
-                targetState = currentPageIndex,
+                targetState = uiState.pageIndex,
             ) { page ->
                 when (page) {
-                    // TODO: 내부 로직 수정 필요 -> viewModel
                     1 -> RecommendRelationTypeContent(
-                        selectedRelation = selectedRelation,
-                        onRelationSelect = { selectedRelation = it },
-                        name = name,
-                        onNameChange = { name = it },
-                        nickname = nickname,
-                        onNicknameChange = { nickname = it },
-                        isChecked = isChecked,
-                        onCheckBoxClick = { isChecked = it },
-                        contactFrequency = contactFrequency,
-                        onContactFrequencyChange = { contactFrequency = it },
-                        meetFrequency = meetFrequency,
-                        onMeetFrequencyChange = { meetFrequency = it },
+                        name = uiState.name,
+                        onNameChange = onNameChange,
+                        nickname = uiState.nickname,
+                        onNicknameChange = onNicknameChange,
+                        selectedRelation = uiState.relationType,
+                        onRelationSelect = onRelationSelect,
+                        isChecked = uiState.isHighAccuracy,
+                        onCheckBoxClick = onCheckBoxClick,
+                        contactFrequency = uiState.contactFrequency,
+                        onContactFrequencyChange = onContactFrequencyChange,
+                        meetFrequency = uiState.meetFrequency,
+                        onMeetFrequencyChange = onMeetFrequencyChange,
                     )
 
                     2 -> RecommendEventSelector(
-                        selectedEvent = selectedEvent,
-                        onEventSelect = { selectedEvent = it },
+                        selectedEvent = uiState.eventType,
+                        onEventSelect = onEventSelect,
                     )
 
                     3 -> {
@@ -219,17 +286,17 @@ private fun RecommendScreen(
                             verticalArrangement = Arrangement.spacedBy(14.dp),
                         ) {
                             RecommendDateCard(
-                                date = date,
+                                date = uiState.eventDate,
                                 text = text,
                                 onTextChange = { text = it },
                                 onConfirmClick = {
-                                    // TODO: date 검증 후 date에 값 update 해주기
+                                    onDateChange(text)
                                 },
                             )
 
                             RecommendParticipationCard(
-                                isEventParticipated = isEventParticipated,
-                                onParticipationSelect = { isEventParticipated = it },
+                                isEventParticipated = uiState.isEventParticipated,
+                                onParticipationSelect = onParticipationSelect,
                             )
                         }
                     }
@@ -246,9 +313,8 @@ private fun RecommendScreen(
             BongBaekButton(
                 title = stringResource(button_next),
                 onClick = {
-                    // TODO: onNext로 대체 필요
-                    currentPageIndex++
-                    if (currentPageIndex == 5) currentPageIndex = 1
+                    if (uiState.pageIndex == 4) navigateToResult()
+                    else onPageIndexChange(uiState.pageIndex + 1)
                 },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
@@ -257,6 +323,7 @@ private fun RecommendScreen(
                         bottom = 24.dp,
                     )
                     .navigationBarsPadding(),
+                enabled = isButtonEnabled,
             )
         }
     }
@@ -266,6 +333,22 @@ private fun RecommendScreen(
 @Composable
 private fun RecommendScreenPreview() {
     BongBaekTheme {
-        RecommendScreen()
+        RecommendMainScreen(
+            uiState = RecommendUiState(),
+            onBackClick = {},
+            navigateToResult = {},
+            onPageIndexChange = {},
+            onNameChange = {},
+            onNicknameChange = {},
+            onRelationSelect = {},
+            onCheckBoxClick = {},
+            onContactFrequencyChange = {},
+            onMeetFrequencyChange = {},
+            onEventSelect = {},
+            onDateChange = {},
+            onParticipationSelect = {},
+            onLocationSelect = {},
+            checkButtonEnabled = { true },
+        )
     }
 }

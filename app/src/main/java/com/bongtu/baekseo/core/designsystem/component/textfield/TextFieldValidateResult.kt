@@ -21,4 +21,18 @@ sealed class TextFieldValidateResult {
         override val message: String
             get() = errorMessage
     }
+
+    companion object {
+        private val SPECIAL_CHAR_REGEX = Regex("[!@#\$%^&*(),.?\":{}|<>]")
+
+        fun validate(input: String): TextFieldValidateResult {
+            return when {
+                input.length < 2 || input.length > 10 ->
+                    Error("2자 이상 10자 이내로 입력해주세요.")
+                SPECIAL_CHAR_REGEX.containsMatchIn(input) ->
+                    Error("특수문자는 사용할 수 없어요.")
+                else -> Default
+            }
+        }
+    }
 }
