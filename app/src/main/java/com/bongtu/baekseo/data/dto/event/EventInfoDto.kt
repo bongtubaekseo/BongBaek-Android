@@ -3,7 +3,6 @@ package com.bongtu.baekseo.data.dto.event
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 data class EventInfoDto(
     @SerialName("eventCategory")
