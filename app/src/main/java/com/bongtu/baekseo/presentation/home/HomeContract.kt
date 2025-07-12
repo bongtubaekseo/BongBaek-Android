@@ -11,4 +11,10 @@ class HomeContract {
     data class HomeState(
         val homeLoadState: UiState<ImmutableList<HomeEvent>> = UiState.Loading,
     )
+
+    sealed interface HomeSideEffect {
+        sealed class MainSideEffect : HomeSideEffect {
+            data object NavigateToSchedule: MainSideEffect()
+        }
+    }
 }

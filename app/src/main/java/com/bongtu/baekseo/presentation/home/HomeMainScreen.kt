@@ -30,7 +30,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
@@ -39,6 +41,8 @@ import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
@@ -52,6 +56,7 @@ import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
 import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.filterIsInstance
 import java.time.LocalDate
 
 @Composable
@@ -63,9 +68,20 @@ fun HomeMainRoute(
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<HomeSideEffect.MainSideEffect>()
+            .collect { sideEffect ->
+                when(sideEffect) {
+                    NavigateToSchedule -> navigateToSchedule()
+                }
+            }
     }
 
     HomeMainScreen(
