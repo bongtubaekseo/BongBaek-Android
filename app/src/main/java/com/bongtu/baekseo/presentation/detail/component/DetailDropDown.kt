@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.record.component
+package com.bongtu.baekseo.presentation.detail.component
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -58,14 +58,14 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedShortMonth
 import com.bongtu.baekseo.data.model.RecordEvent
-import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType
-import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType.TrailingChip
-import com.bongtu.baekseo.presentation.record.type.RecordDetailDropDownTrailingType.TrailingText
+import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType
+import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingChip
+import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingText
 import kotlinx.collections.immutable.persistentListOf
 import java.time.LocalDate
 
 @Composable
-fun RecordDetailDropDown(
+fun DetailDropDown(
     event: RecordEvent,
     modifier: Modifier = Modifier,
     attendLabel: String,
@@ -161,7 +161,7 @@ fun RecordDetailDropDown(
                     ),
             ) {
                 recordDetailItems.forEachIndexed { index, (iconRes, labelId, type) ->
-                    RecordDetailDropDownItem(
+                    DetailDropDownItem(
                         iconRes = iconRes,
                         labelRes = labelId,
                         trailingType = type,
@@ -175,7 +175,7 @@ fun RecordDetailDropDown(
 
                 // TODO: Location Info field 로 변경 예정
                 if (location != null && address != null) {
-                    RecordDetailDropDownLocationContent(
+                    DetailDropDownLocationContent(
                         location = location,
                         address = address,
                     )
@@ -186,11 +186,11 @@ fun RecordDetailDropDown(
 }
 
 @Composable
-private fun RecordDetailDropDownItem(
+private fun DetailDropDownItem(
     @DrawableRes iconRes: Int,
     @StringRes labelRes: Int,
     modifier: Modifier = Modifier,
-    trailingType: RecordDetailDropDownTrailingType? = null,
+    trailingType: DetailDropDownTrailingType? = null,
 ) {
     Row(
         modifier = modifier
@@ -256,7 +256,7 @@ private fun RecordDetailDropDownItem(
 private const val MAP_RATIO = 280f / 180f
 
 @Composable
-private fun RecordDetailDropDownLocationContent(
+private fun DetailDropDownLocationContent(
     location: String,      // TODO: field 수정 예정 LatLng
     address: String,
     modifier: Modifier = Modifier,
@@ -307,9 +307,9 @@ private fun RecordDetailDropDownLocationContent(
 
 @Preview
 @Composable
-private fun RecordDetailDropDownPreview() {
+private fun DetailDropDownPreview() {
     BongBaekTheme {
-        RecordDetailDropDown(
+        DetailDropDown(
             event = RecordEvent(
                 eventId = "",
                 hostName = "김봉백",

@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.record
+package com.bongtu.baekseo.presentation.detail
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -58,7 +58,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import com.bongtu.baekseo.data.model.RecordEvent
-import com.bongtu.baekseo.presentation.record.component.RecordDetailDropDown
+import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
 import com.bongtu.baekseo.presentation.record.type.AttendType
 import java.time.LocalDate
 
@@ -150,7 +150,7 @@ private fun RecordDetailScreen(
                 cost = event.cost,
             )
 
-            RecordDetailDropDown(
+            DetailDropDown(
                 event = event,
                 attendLabel = attendLabel,
                 location = location,
