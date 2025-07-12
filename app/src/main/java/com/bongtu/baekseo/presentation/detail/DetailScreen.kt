@@ -65,11 +65,25 @@ import java.time.LocalDate
 private const val MEMO_RATIO = 320f / 152f
 
 @Composable
-private fun RecordDetailScreen(
+fun DetailRoute(
+    navigateUp: () -> Unit,
+    navigateToEdit: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    DetailScreen(
+        onBackButtonClick = navigateUp,
+        onEditButtonClick = navigateToEdit,
+        modifier = modifier,
+    )
+}
+
+@Composable
+private fun DetailScreen(
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
-) {/* TODO: state 수정 예정 임시 더미 데이터 사용 */
+) {
+    /* TODO: state 수정 예정 임시 더미 데이터 사용 */
     val event = RecordEvent(
         eventId = "eventId",
         hostName = "김봉백",
@@ -374,7 +388,7 @@ private fun RecordDeleteAlertDialog(
 @Composable
 private fun RecordDetailScreenPreview() {
     BongBaekTheme {
-        RecordDetailScreen(
+        DetailScreen(
             onBackButtonClick = {},
             onEditButtonClick = {},
         )
