@@ -16,4 +16,6 @@ data class EventInfoDto(
     val isAttend: Boolean,
     @SerialName("eventDate")
     val eventDate: String,
+    @SerialName("note")
+    val note: String,
 )
