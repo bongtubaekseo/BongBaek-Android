@@ -56,6 +56,8 @@ import java.time.LocalDate
 
 @Composable
 fun HomeMainRoute(
+    navigateToEdit: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
@@ -68,9 +70,8 @@ fun HomeMainRoute(
 
     HomeMainScreen(
         uiState = uiState,
-        onBadgeClick = {
-            // TODO: 뱃지 클릭 이벤트
-        },
+        navigateToEdit = navigateToEdit,
+        navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
         modifier = modifier,
     )
@@ -79,7 +80,8 @@ fun HomeMainRoute(
 @Composable
 fun HomeMainScreen(
     uiState: HomeState,
-    onBadgeClick: () -> Unit,
+    navigateToEdit: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -99,7 +101,8 @@ fun HomeMainScreen(
         is UiState.Success -> {
             HomeMainSuccessScreen(
                 items = uiState.homeLoadState.data,
-                onBadgeClick = onBadgeClick,
+                navigateToEdit = navigateToEdit,
+                navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
                 modifier = modifier,
             )
@@ -110,7 +113,8 @@ fun HomeMainScreen(
 @Composable
 fun HomeMainSuccessScreen(
     items: ImmutableList<HomeEvent>,
-    onBadgeClick: () -> Unit,
+    navigateToEdit: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -139,7 +143,7 @@ fun HomeMainSuccessScreen(
     }
     val pagerEndContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
         when {
-            !isMultipleCard || isLastPage-> 20.dp
+            !isMultipleCard || isLastPage -> 20.dp
             isFirstPage -> 32.dp
             else -> 26.dp
         }
@@ -155,7 +159,7 @@ fun HomeMainSuccessScreen(
 
         if (items.isEmpty()) {
             HomePageEmptyCard(
-                onBadgeClick = onBadgeClick,
+                onBadgeClick = navigateToEdit,
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .padding(horizontal = 20.dp),
@@ -238,9 +242,7 @@ fun HomeMainSuccessScreen(
             modifier = Modifier.padding(horizontal = 20.dp),
         ) {
             HomeRecommendCard(
-                onClick = {
-                    // TODO: 경조사비 추천 받기 클릭 이벤트
-                },
+                onClick = navigateToRecommend,
                 modifier = Modifier.padding(top = recommendCardPadding),
             )
 
@@ -284,7 +286,7 @@ fun HomeMainSuccessScreen(
 
             if (items.isEmpty()) {
                 HomeScheduleEmptyCard(
-                    onBadgeClick = onBadgeClick,
+                    onBadgeClick = navigateToEdit,
                     modifier = Modifier.padding(bottom = 40.dp),
                 )
             }
@@ -349,7 +351,8 @@ private fun HomeMainSuccessScreenPreview() {
     BongBaekTheme {
         HomeMainSuccessScreen(
             items = items,
-            onBadgeClick = {},
+            navigateToEdit = {},
+            navigateToRecommend = {},
             navigateToSchedule = {},
         )
     }

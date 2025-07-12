@@ -12,6 +12,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
+import com.bongtu.baekseo.presentation.home.navigation.Home
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
@@ -19,6 +20,7 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
@@ -104,6 +106,16 @@ private fun MainNavHost(
 
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
+            navigateToRecommend = {
+                navigator.navController.navigateToRecommend(
+                    navOptions = navOptions {
+                        popUpTo<Home> {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             modifier = modifier,
         )
 

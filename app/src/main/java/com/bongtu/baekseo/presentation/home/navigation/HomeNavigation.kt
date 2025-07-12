@@ -13,11 +13,13 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(Home
 
 fun NavGraphBuilder.homeGraph(
     setBottomBarVisible: (Boolean) -> Unit,
+    navigateToRecommend: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
         HomeRoute(
             setBottomBarVisible = setBottomBarVisible,
+            navigateToRecommend = navigateToRecommend,
             modifier = modifier,
         )
     }
