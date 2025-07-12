@@ -77,6 +77,7 @@ fun SplashScreen(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_splash_name),
                 contentDescription = null,
+                tint = BongBaekTheme.colors.white,
             )
         }
     }
