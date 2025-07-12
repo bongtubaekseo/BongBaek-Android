@@ -28,6 +28,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun RecordTopBar(
     isDeleteMode: Boolean,
     isDeleteButtonEnabled: Boolean,
+    navigateToAdd: () -> Unit,
     onEnterDeleteModeClick: () -> Unit,
     onExitDeleteModeClick: () -> Unit,
     onDeleteClick: () -> Unit,
@@ -52,7 +53,7 @@ fun RecordTopBar(
         trailingIcon = if (!isDeleteMode) {
             {
                 TopBarDefaultTrailingIcon(
-                    onAddButtonClick = {},
+                    onAddButtonClick = navigateToAdd,
                     onEnterDeleteModeClick = onEnterDeleteModeClick,
                 )
             }
