@@ -19,11 +19,11 @@ class OnBoardingLoginKakaoLauncher(
             if (error != null) {
                 // Login Fail
                 Timber.tag("KakaoLogin").d("카카오계정으로 로그인 실패")
+                onError(error)
             } else if (token != null) {
                 // Login Success
                 Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.accessToken}")
-
-                // onTokenReceived
+                onTokenReceived(token.accessToken)
             }
         }
 
@@ -42,7 +42,7 @@ class OnBoardingLoginKakaoLauncher(
                 } else if (token != null) {
                     // 카카오톡으로 로그인 성공
                     Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.accessToken}")
-//                    onTokenReceived
+                    onTokenReceived(token.accessToken)
                 } else {
                     UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 }
