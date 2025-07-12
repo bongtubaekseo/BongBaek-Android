@@ -14,6 +14,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
@@ -31,6 +33,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
@@ -54,12 +58,48 @@ import kotlinx.coroutines.launch
 fun OnBoardingRoute(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
+    val context = LocalContext.current
     var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
+    val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
+    var isBottomSheetVisible by remember { mutableStateOf(false) }
+
+    LaunchedEffect(socialLoginState) {
+        when (socialLoginState) {
+            SocialLoginState.Fail -> {
+                // TODO: 카카오 로그인 실패
+            }
+
+            SocialLoginState.Idle -> {
+                // TODO: 추후 구현
+            }
+
+            SocialLoginState.Success -> {
+                isBottomSheetVisible = true
+                viewModel.setUiStateIdle()
+            }
+        }
+    }
 
     when (screenState) {
         OnBoardingType.LOGIN -> {
             OnBoardingLoginScreen(
+                onKakaoLoginClick = {
+                    OnBoardingLoginKakaoLauncher(
+                        context = context,
+                        onTokenReceived = { token ->
+                            viewModel.loginWithKakao(token)
+                        },
+                        onError = {
+                            // TODO 추후 구현
+                        }
+                    ).startKakaoLogin()
+                },
+                isBottomSheetVisible = isBottomSheetVisible,
+                onBottomSheetVisibleChange = {
+                    isBottomSheetVisible = it
+                },
                 onNext = {
                     screenState = OnBoardingType.SETTING
                 },
@@ -79,6 +119,9 @@ fun OnBoardingRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingLoginScreen(
+    onKakaoLoginClick: () -> Unit,
+    isBottomSheetVisible: Boolean,
+    onBottomSheetVisibleChange: (Boolean) -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -105,7 +148,7 @@ fun OnBoardingLoginScreen(
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
-    var isBottomSheetVisible by remember { mutableStateOf(false) }
+
 
     Column(
         modifier = modifier
@@ -142,7 +185,8 @@ fun OnBoardingLoginScreen(
             BongBaekButton(
                 title = stringResource(id = button_kakao),
                 onClick = {
-                    isBottomSheetVisible = true
+                    onKakaoLoginClick()
+                    // TODO: 이미 온 사용자이면 OnBoardingSetting으로 이동
                 },
                 buttonType = ButtonType.KAKAO,
                 modifier = Modifier
@@ -204,13 +248,13 @@ fun OnBoardingLoginScreen(
             onNextClick = {
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
-                        isBottomSheetVisible = false
+                        onBottomSheetVisibleChange(false)
                         onNext()
                     }
                 }
             },
             onDismissRequest = {
-                isBottomSheetVisible = false
+                onBottomSheetVisibleChange(false)
             },
             sheetState = sheetState,
         )
@@ -222,7 +266,10 @@ fun OnBoardingLoginScreen(
 private fun OnBoardingScreenLoginPreview() {
     BongBaekTheme {
         OnBoardingLoginScreen(
-            onNext = {}
+            onKakaoLoginClick = {},
+            isBottomSheetVisible = false,
+            onBottomSheetVisibleChange = {},
+            onNext = {},
         )
     }
 }

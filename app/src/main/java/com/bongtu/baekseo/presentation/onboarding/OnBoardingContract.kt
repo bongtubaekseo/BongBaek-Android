@@ -4,6 +4,8 @@ import androidx.compose.runtime.Immutable
 
 class OnBoardingContract {
     @Immutable
+    data class OnBoardingState(
+        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle)
     data class OnBoardingUiState(
         val name: String = "",
         val birth: String = "",
@@ -15,4 +17,10 @@ class OnBoardingContract {
             data object NavigateToHome : MainSideEffect()
         }
     }
+}
+
+sealed interface SocialLoginState {
+    data object Success : SocialLoginState
+    data object Fail : SocialLoginState
+    data object Idle : SocialLoginState
 }

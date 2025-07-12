@@ -19,6 +19,8 @@ import javax.inject.Inject
 class OnBoardingViewModel @Inject constructor(
     private val usernameDataStore: UsernameDataStore,
 ) : ViewModel() {
+    private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
+    val kakaoLoginState = _kakaoLoginState.asStateFlow()
 
     private val _uiState = MutableStateFlow(OnBoardingUiState())
     val uiState = _uiState.asStateFlow()
@@ -48,6 +50,26 @@ class OnBoardingViewModel @Inject constructor(
     private fun navigateToHome() {
         viewModelScope.launch {
             _sideEffect.emit(NavigateToHome)
+        }
+    }
+
+    fun kakaoLoginSuccess() {
+        _kakaoLoginState.tryEmit(SocialLoginState.Success)
+    }
+
+    fun kakaoLoginFail() {
+        _kakaoLoginState.tryEmit(SocialLoginState.Fail)
+    }
+
+    fun setUiStateIdle() {
+        _kakaoLoginState.tryEmit(SocialLoginState.Idle)
+    }
+
+    fun loginWithKakao(token: String) {
+        viewModelScope.launch {
+            _kakaoLoginState.update {
+                SocialLoginState.Success
+            }
         }
     }
 }
