@@ -6,4 +6,5 @@ data class Event(
     val cost: Int,
     val isEventParticipated: Boolean,
     val eventDate: String,
+    val note: String,
 )
