@@ -85,18 +85,18 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun EditRoute(
+fun EditMainRoute(
     modifier: Modifier = Modifier,
 ) {
     // TODO: previousBackStackEntry?.destination?.route 로 분기 처리 예정
     val editType = EditType.EDIT
     when (editType) {
-        EditType.EDIT -> EditScreen(
+        EditType.EDIT -> EditMainScreen(
             topBarTitle = EditType.EDIT.title,
             modifier = modifier,
         )
 
-        EditType.ADD -> EditScreen(
+        EditType.ADD -> EditMainScreen(
             topBarTitle = EditType.ADD.title,
             modifier = modifier,
         )
@@ -104,7 +104,7 @@ fun EditRoute(
 }
 
 @Composable
-private fun EditScreen(
+private fun EditMainScreen(
     topBarTitle: String,
     modifier: Modifier = Modifier,
 ) {
@@ -504,9 +504,9 @@ private fun SaveButton(
 
 @Preview
 @Composable
-private fun EditScreenPreview() {
+private fun EditMainScreenPreview() {
     BongBaekTheme {
-        EditScreen(
+        EditMainScreen(
             topBarTitle = EditType.EDIT.title,
         )
     }
