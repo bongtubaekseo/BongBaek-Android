@@ -28,7 +28,7 @@ class OnBoardingViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<OnBoardingSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun setUsername(name: String) {
+    fun saveUsername(name: String) {
         viewModelScope.launch {
             usernameDataStore.setUsername(name)
             navigateToHome()

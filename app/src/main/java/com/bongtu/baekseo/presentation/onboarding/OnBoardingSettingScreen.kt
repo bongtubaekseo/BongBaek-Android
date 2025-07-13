@@ -234,7 +234,7 @@ fun OnBoardingSettingScreen(
             BongBaekButton(
                 title = stringResource(id = button_start_service),
                 onClick = {
-                    viewModel.setUsername(name)
+                    viewModel.saveUsername(name)
                 },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
