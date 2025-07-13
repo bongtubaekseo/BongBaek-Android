@@ -14,9 +14,9 @@ import com.bongtu.baekseo.presentation.edit.type.EditType
 
 @Composable
 fun EditRoute(
+    navigateUp: () -> Unit,
     editType: EditType,
     setBottomBarVisible: (Boolean) -> Unit,
-    navigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
