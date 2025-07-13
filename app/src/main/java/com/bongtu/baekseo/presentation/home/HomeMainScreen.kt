@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -30,7 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
@@ -38,6 +41,9 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
@@ -56,21 +62,35 @@ import java.time.LocalDate
 
 @Composable
 fun HomeMainRoute(
+    navigateToRecord: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
+        viewModel.getUsername()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    NavigateToSchedule -> navigateToSchedule()
+                    NavigateToEdit -> navigateToRecord()
+                    NavigateToRecommend -> navigateToRecommend()
+                }
+            }
     }
 
     HomeMainScreen(
         uiState = uiState,
-        onBadgeClick = {
-            // TODO: 뱃지 클릭 이벤트
-        },
+        navigateToRecord = navigateToRecord,
+        navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
         modifier = modifier,
     )
@@ -79,7 +99,8 @@ fun HomeMainRoute(
 @Composable
 fun HomeMainScreen(
     uiState: HomeState,
-    onBadgeClick: () -> Unit,
+    navigateToRecord: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -99,7 +120,9 @@ fun HomeMainScreen(
         is UiState.Success -> {
             HomeMainSuccessScreen(
                 items = uiState.homeLoadState.data,
-                onBadgeClick = onBadgeClick,
+                name = uiState.name,
+                navigateToRecord = navigateToRecord,
+                navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
                 modifier = modifier,
             )
@@ -110,7 +133,9 @@ fun HomeMainScreen(
 @Composable
 fun HomeMainSuccessScreen(
     items: ImmutableList<HomeEvent>,
-    onBadgeClick: () -> Unit,
+    name: String,
+    navigateToRecord: () -> Unit,
+    navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -139,7 +164,7 @@ fun HomeMainSuccessScreen(
     }
     val pagerEndContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
         when {
-            !isMultipleCard || isLastPage-> 20.dp
+            !isMultipleCard || isLastPage -> 20.dp
             isFirstPage -> 32.dp
             else -> 26.dp
         }
@@ -149,13 +174,14 @@ fun HomeMainSuccessScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
+            .statusBarsPadding()
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar()
 
         if (items.isEmpty()) {
             HomePageEmptyCard(
-                onBadgeClick = onBadgeClick,
+                onBadgeClick = navigateToRecord,
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .padding(horizontal = 20.dp),
@@ -238,9 +264,7 @@ fun HomeMainSuccessScreen(
             modifier = Modifier.padding(horizontal = 20.dp),
         ) {
             HomeRecommendCard(
-                onClick = {
-                    // TODO: 경조사비 추천 받기 클릭 이벤트
-                },
+                onClick = navigateToRecommend,
                 modifier = Modifier.padding(top = recommendCardPadding),
             )
 
@@ -255,7 +279,7 @@ fun HomeMainSuccessScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(id = home_schedule_title, "봉백"), // TODO: 이름 처리
+                    text = stringResource(id = home_schedule_title, name),
                     style = BongBaekTheme.typography.titleSemiBold18,
                     color = BongBaekTheme.colors.white,
                 )
@@ -284,7 +308,7 @@ fun HomeMainSuccessScreen(
 
             if (items.isEmpty()) {
                 HomeScheduleEmptyCard(
-                    onBadgeClick = onBadgeClick,
+                    onBadgeClick = navigateToRecord,
                     modifier = Modifier.padding(bottom = 40.dp),
                 )
             }
@@ -349,7 +373,9 @@ private fun HomeMainSuccessScreenPreview() {
     BongBaekTheme {
         HomeMainSuccessScreen(
             items = items,
-            onBadgeClick = {},
+            name = "",
+            navigateToRecord = {},
+            navigateToRecommend = {},
             navigateToSchedule = {},
         )
     }

@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,6 +25,10 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.string.birth_text_field_label
@@ -40,6 +45,7 @@ import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.topbar_profile_setting
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
+import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
@@ -49,6 +55,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
 
@@ -56,7 +63,20 @@ import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
 fun OnBoardingSettingScreen(
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome()
+                }
+            }
+    }
+
     var name by remember { mutableStateOf("") }
     var birth by remember { mutableStateOf("") }
     var dialogBirth by remember { mutableStateOf("") }
@@ -71,6 +91,7 @@ fun OnBoardingSettingScreen(
         validateResult == TextFieldValidateResult.Default && birth.isNotEmpty() && name.isNotEmpty()
     }
     var incomeSelected by remember { mutableStateOf(true) }
+    var incomeType by remember { mutableStateOf(IncomeType.NONE) }
     val context = LocalContext.current
 
     Column(
@@ -100,6 +121,7 @@ fun OnBoardingSettingScreen(
                     onTextChange = {
                         name = it
                         validateResult = TextFieldValidateResult.Default
+                        viewModel.updateName(newName = it)
                     },
                     onInputDone = {
                         validateResult = if (name.length < 2 || name.length >= 10)
@@ -131,6 +153,9 @@ fun OnBoardingSettingScreen(
                             dialogBirth = birth
                             isDatePickerDialogVisible = true
                         },
+                    onTextChange = {
+                        viewModel.updateBirth(newBirth = it)
+                    },
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
@@ -186,6 +211,7 @@ fun OnBoardingSettingScreen(
                             selected = incomeSelected,
                             onClick = {
                                 if (!incomeSelected) incomeSelected = true
+                                viewModel.updateIncome(IncomeType.UNDER_200.label)
                             },
                             modifier = Modifier.padding(top = 16.dp),
                         )
@@ -195,6 +221,7 @@ fun OnBoardingSettingScreen(
                             selected = !incomeSelected,
                             onClick = {
                                 if (incomeSelected) incomeSelected = false
+                                viewModel.updateIncome(IncomeType.OVER_200.label)
                             },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -204,7 +231,9 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = navigateToHome,
+                onClick = {
+                    viewModel.saveUsername(name)
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -239,7 +268,8 @@ fun OnBoardingSettingScreen(
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen(
-            navigateToHome = {}
+            viewModel = hiltViewModel(),
+            navigateToHome = {},
         )
     }
 }
