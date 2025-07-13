@@ -38,6 +38,7 @@ import com.bongtu.baekseo.R.string.button_next
 import com.bongtu.baekseo.R.string.recommendation_event_date_description
 import com.bongtu.baekseo.R.string.recommendation_event_date_title
 import com.bongtu.baekseo.R.string.recommendation_event_date_topbar
+import com.bongtu.baekseo.R.string.recommendation_event_location_button
 import com.bongtu.baekseo.R.string.recommendation_event_location_description
 import com.bongtu.baekseo.R.string.recommendation_event_location_skip
 import com.bongtu.baekseo.R.string.recommendation_event_location_title
@@ -168,6 +169,12 @@ private fun RecommendMainScreen(
             recommendation_event_location_title,
             recommendation_event_location_description,
         )
+    }
+    val buttonTitleRes = remember(uiState.pageIndex) {
+        when (uiState.pageIndex) {
+            4 -> recommendation_event_location_button
+            else -> button_next
+        }
     }
     val scrollState = rememberScrollState()
     val isButtonEnabled = remember(
@@ -320,7 +327,7 @@ private fun RecommendMainScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             BongBaekButton(
-                title = stringResource(button_next),
+                title = stringResource(buttonTitleRes),
                 onClick = {
                     if (uiState.pageIndex == 4) navigateToResult()
                     else onPageIndexChange(uiState.pageIndex + 1)
