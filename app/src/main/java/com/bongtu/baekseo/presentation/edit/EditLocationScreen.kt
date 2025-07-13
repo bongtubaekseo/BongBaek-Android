@@ -42,6 +42,8 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun EditLocationRoute(
+    navigateUp: () -> Unit,
+    viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
     var searchValue by remember { mutableStateOf("") }
@@ -50,6 +52,7 @@ fun EditLocationRoute(
 
     EditLocationScreen(
         searchValue = searchValue,
+        navigateUp = navigateUp,
         onSearchValueChange = { searchValue = it },
         searchItems = dummyItems,                   // TODO: 검색 결과
         selectedSearchItem = selectedSearchItem,    // TODO: 검색 결과
@@ -62,6 +65,7 @@ fun EditLocationRoute(
 @Composable
 fun EditLocationScreen(
     searchValue: String,
+    navigateUp: () -> Unit,
     onSearchValueChange: (String) -> Unit,
     searchItems: ImmutableList<String>,
     selectedSearchItem: String,
@@ -88,9 +92,7 @@ fun EditLocationScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable {
-                            // TODO: navigateUp 예정
-                        },
+                        .noRippleClickable (onClick = navigateUp),
                     tint = BongBaekTheme.colors.white,
                 )
             },
@@ -203,6 +205,7 @@ private fun EditLocationScreenPreview() {
             searchItems = persistentListOf(),
             selectedSearchItem = "",
             onSearchItemSelected = {},
+            navigateUp = {},
         )
     }
 }
