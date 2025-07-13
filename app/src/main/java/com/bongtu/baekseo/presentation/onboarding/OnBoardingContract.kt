@@ -10,8 +10,10 @@ class OnBoardingContract {
 
     @Immutable
     data class OnBoardingUiState(
+        val kakaoId: Long = 0L,
         val name: String = "",
         val birth: String = "",
+        var dialogBirth: String = "",
         val income: String = "",
     )
 

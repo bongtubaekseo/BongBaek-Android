@@ -22,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,8 +34,6 @@ import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.string.birth_text_field_label
 import com.bongtu.baekseo.R.string.birth_text_field_placeholder
 import com.bongtu.baekseo.R.string.button_start_service
-import com.bongtu.baekseo.R.string.name_text_field_error_length
-import com.bongtu.baekseo.R.string.name_text_field_error_special_character
 import com.bongtu.baekseo.R.string.name_text_field_label
 import com.bongtu.baekseo.R.string.name_text_field_placeholder
 import com.bongtu.baekseo.R.string.onboarding_button_income_down
@@ -78,9 +75,6 @@ fun OnBoardingSettingScreen(
             }
     }
 
-    var name by remember { mutableStateOf("") }
-    var birth by remember { mutableStateOf("") }
-    var dialogBirth by remember { mutableStateOf("") }
     var validateResult: TextFieldValidateResult by remember {
         mutableStateOf(
             TextFieldValidateResult.Default
@@ -88,12 +82,10 @@ fun OnBoardingSettingScreen(
     }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
-    val buttonEnabled = remember(name, validateResult, birth) {
-        validateResult == TextFieldValidateResult.Default && birth.isNotEmpty() && name.isNotEmpty()
+    val buttonEnabled = remember(uiState.name, validateResult, uiState.birth) {
+        validateResult == TextFieldValidateResult.Default && uiState.birth.isNotEmpty() && uiState.name.isNotEmpty()
     }
     var incomeSelected by remember { mutableStateOf(true) }
-    var incomeType by remember { mutableStateOf(IncomeType.NONE) }
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -116,30 +108,16 @@ fun OnBoardingSettingScreen(
                 LabelTextField(
                     labelImage = ic_person,
                     labelName = stringResource(id = name_text_field_label),
-                    text = name,
+                    text = uiState.name,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
                     validateResult = validateResult,
                     onTextChange = {
-                        name = it
                         validateResult = TextFieldValidateResult.Default
                         viewModel.updateName(newName = it)
                     },
                     onInputDone = {
-                        validateResult = if (name.length < 2 || name.length >= 10)
-                            TextFieldValidateResult.Error(
-                                errorMessage = context.getString(
-                                    name_text_field_error_length
-                                )
-                            )
-                        else if (name.contains(Regex("[^a-zA-Z0-9가-힣]"))) // TODO: Regex 객체 관리
-                            TextFieldValidateResult.Error(
-                                errorMessage = context.getString(
-                                    name_text_field_error_special_character
-                                )
-                            )
-                        else
-                            TextFieldValidateResult.Default
+                        validateResult = TextFieldValidateResult.validate(uiState.name)
                     },
                     isClearButtonEnabled = false,
                 )
@@ -147,12 +125,12 @@ fun OnBoardingSettingScreen(
                 LabelTextField(
                     labelImage = ic_calendar,
                     labelName = stringResource(id = birth_text_field_label),
-                    text = birth,
+                    text = uiState.birth,
                     placeholder = stringResource(id = birth_text_field_placeholder),
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
-                            dialogBirth = birth
+                            viewModel.updateDialogBirth(uiState.birth)
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = {
@@ -234,7 +212,7 @@ fun OnBoardingSettingScreen(
             BongBaekButton(
                 title = stringResource(id = button_start_service),
                 onClick = {
-                    viewModel.saveUsername(name)
+                    viewModel.saveUsername(uiState.name)
                 },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
@@ -249,16 +227,16 @@ fun OnBoardingSettingScreen(
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
-                value = dialogBirth,
+                value = uiState.dialogBirth,
                 onValueChange = {
-                    dialogBirth = it
+                    viewModel.updateDialogBirth(newDialogBirth = it)
                 },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
                 },
                 onConfirmClick = {
                     isDatePickerDialogVisible = false
-                    birth = dialogBirth
+                    viewModel.updateBirth(uiState.dialogBirth)
                 },
             )
         }

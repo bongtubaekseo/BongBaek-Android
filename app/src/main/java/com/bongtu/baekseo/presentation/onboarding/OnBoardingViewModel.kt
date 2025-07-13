@@ -2,7 +2,10 @@ package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.data.repository.auth.AuthRepository
+import com.bongtu.baekseo.domain.usecase.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
@@ -18,6 +21,9 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val usernameDataStore: UsernameDataStore,
+    private val authRepository: AuthRepository,
+    private val tokenDataStore: TokenDataStore,
+    private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
 ) : ViewModel() {
     private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
     val kakaoLoginState = _kakaoLoginState.asStateFlow()
@@ -43,6 +49,10 @@ class OnBoardingViewModel @Inject constructor(
         it.copy(birth = newBirth)
     }
 
+    fun updateDialogBirth(newDialogBirth: String) = _uiState.update {
+        it.copy(dialogBirth = newDialogBirth)
+    }
+
     fun updateIncome(newIncome: String) = _uiState.update {
         it.copy(income = newIncome)
     }
@@ -61,9 +71,18 @@ class OnBoardingViewModel @Inject constructor(
 
     fun loginWithKakao(token: String) {
         viewModelScope.launch {
-            _kakaoLoginState.update {
-                SocialLoginState.Success
-            }
+            setKakaoLoginUseCase.invoke(token)
+                .onSuccess { response ->
+                    _kakaoLoginState.tryEmit(SocialLoginState.Success)
+                    updateKakaoId(response.kakaoId)
+                }
+                .onFailure {
+                    _kakaoLoginState.tryEmit(SocialLoginState.Fail)
+                }
         }
+    }
+
+    private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
+        it.copy(kakaoId = newKakaoId)
     }
 }
