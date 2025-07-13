@@ -132,7 +132,7 @@ fun HomeMainScreen(
 @Composable
 fun HomeMainSuccessScreen(
     items: ImmutableList<HomeEvent>,
-    name: String?,
+    name: String,
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
@@ -277,7 +277,7 @@ fun HomeMainSuccessScreen(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(
-                    text = stringResource(id = home_schedule_title, name ?: ""),
+                    text = stringResource(id = home_schedule_title, name),
                     style = BongBaekTheme.typography.titleSemiBold18,
                     color = BongBaekTheme.colors.white,
                 )
