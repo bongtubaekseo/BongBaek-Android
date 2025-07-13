@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.edit.navigation
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
@@ -21,9 +20,8 @@ fun NavController.navigateToEdit(editType: EditType, navOptions: NavOptions? = n
     navigate(Edit(editType), navOptions)
 
 fun NavGraphBuilder.editGraph(
-    navController: NavHostController,
+    navigateToUp: () -> Unit,
     setBottomBarVisible: (Boolean) -> Unit,
-    navigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
@@ -31,10 +29,11 @@ fun NavGraphBuilder.editGraph(
 
     composable<Edit> { backStackEntry ->
         val navArgs = backStackEntry.toRoute<Edit>()
+
         EditRoute(
+            navigateUp = navigateToUp,
             editType = navArgs.editType,
             setBottomBarVisible = setBottomBarVisible,
-            navigateUp = navigateUp,
             navigateToFinal = navigateToFinal,
             navigateToRecord = navigateToRecord,
             modifier = modifier,
