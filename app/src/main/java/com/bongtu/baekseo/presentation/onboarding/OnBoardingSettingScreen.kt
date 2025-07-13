@@ -45,6 +45,7 @@ import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.topbar_profile_setting
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
+import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
@@ -90,6 +91,7 @@ fun OnBoardingSettingScreen(
         validateResult == TextFieldValidateResult.Default && birth.isNotEmpty() && name.isNotEmpty()
     }
     var incomeSelected by remember { mutableStateOf(true) }
+    var incomeType by remember { mutableStateOf(IncomeType.NONE) }
     val context = LocalContext.current
 
     Column(
@@ -209,7 +211,8 @@ fun OnBoardingSettingScreen(
                             selected = incomeSelected,
                             onClick = {
                                 if (!incomeSelected) incomeSelected = true
-                                viewModel.updateIncome("200만원 미만")
+                                incomeType = IncomeType.UNDER_200
+                                viewModel.updateIncome(incomeType.label)
                             },
                             modifier = Modifier.padding(top = 16.dp),
                         )
@@ -219,7 +222,8 @@ fun OnBoardingSettingScreen(
                             selected = !incomeSelected,
                             onClick = {
                                 if (incomeSelected) incomeSelected = false
-                                viewModel.updateIncome("200만원 이상")
+                                incomeType = IncomeType.OVER_200
+                                viewModel.updateIncome(incomeType.label)
                             },
                             modifier = Modifier.padding(top = 8.dp),
                         )
