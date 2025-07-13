@@ -138,7 +138,7 @@ private fun RecommendMainScreen(
     onEventSelect: (EventType) -> Unit,
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
-    onLocationSelect: (Pair<Double, Double>) -> Unit, // TODO: 지도 구현 후 연결 필요
+    onLocationSelect: (Pair<Double, Double>) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -181,7 +181,8 @@ private fun RecommendMainScreen(
         uiState.eventType,
         uiState.eventDate,
         uiState.isEventParticipated,
-        uiState.eventLocation,
+        uiState.longitude,
+        uiState.latitude,
     ) { checkButtonEnabled() }
 
     Column(
@@ -244,7 +245,10 @@ private fun RecommendMainScreen(
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.gray500,
                         modifier = Modifier
-                            .noRippleClickable(navigateToResult),
+                            .noRippleClickable {
+                                onLocationSelect(Pair(0.0, 0.0))
+                                navigateToResult()
+                            },
                     )
                 }
             }
@@ -305,6 +309,8 @@ private fun RecommendMainScreen(
                     }
 
                     4 -> RecommendEventLocationContent(
+                        locationY = uiState.latitude,
+                        locationX = uiState.longitude,
                         searchValue = searchValue,
                         onSearchValueChange = { searchValue = it },
                     )
