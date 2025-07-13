@@ -31,7 +31,7 @@ class OnBoardingViewModel @Inject constructor(
     fun saveUsername(name: String) {
         viewModelScope.launch {
             usernameDataStore.setUsername(name)
-            navigateToHome()
+            _sideEffect.emit(NavigateToHome)
         }
     }
 
@@ -45,12 +45,6 @@ class OnBoardingViewModel @Inject constructor(
 
     fun updateIncome(newIncome: String) = _uiState.update {
         it.copy(income = newIncome)
-    }
-
-    private fun navigateToHome() {
-        viewModelScope.launch {
-            _sideEffect.emit(NavigateToHome)
-        }
     }
 
     fun kakaoLoginSuccess() {
