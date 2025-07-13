@@ -125,4 +125,5 @@ dependencies {
 
     // Kakao
     implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
 }
