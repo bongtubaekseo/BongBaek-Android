@@ -285,6 +285,7 @@ private fun EditMainScreen(
                             dialogDate = date
                             isDatePickerDialogVisible = true
                         },
+                    isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
