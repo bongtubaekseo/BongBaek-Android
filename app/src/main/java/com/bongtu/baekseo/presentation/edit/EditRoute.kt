@@ -39,7 +39,7 @@ fun EditRoute(
             navigateUp = navigateUp,
             navigateComplete = navigateComplete,
             viewModel = viewModel,
-            navigateToEdit = {
+            navigateToMain = {
                 navController.navigate(
                     route = Main,
                     navOptions = navOptions {
