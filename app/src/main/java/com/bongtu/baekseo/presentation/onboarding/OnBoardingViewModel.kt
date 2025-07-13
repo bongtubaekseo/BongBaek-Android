@@ -59,14 +59,6 @@ class OnBoardingViewModel @Inject constructor(
         it.copy(income = newIncome)
     }
 
-    fun kakaoLoginSuccess() {
-        _kakaoLoginState.tryEmit(SocialLoginState.Success)
-    }
-
-    fun kakaoLoginFail() {
-        _kakaoLoginState.tryEmit(SocialLoginState.Fail)
-    }
-
     fun setUiStateIdle() {
         _kakaoLoginState.tryEmit(SocialLoginState.Idle)
     }
@@ -75,7 +67,6 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             setKakaoLoginUseCase.invoke(token)
                 .onSuccess { response ->
-                    _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     updateKakaoId(response.kakaoId)
                     tokenDataStore.setTokens(
                         accessToken = response.accessToken,
@@ -83,6 +74,8 @@ class OnBoardingViewModel @Inject constructor(
                     )
                     if (response.isCompletedSignUp) {
                         _sideEffect.emit(NavigateToHome)
+                    } else {
+                        _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     }
                 }
                 .onFailure {
@@ -98,8 +91,8 @@ class OnBoardingViewModel @Inject constructor(
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth.toFormattedDate(),
                 memberIncome = uiState.value.income,
-            ).onSuccess { response ->
-
+            ).onSuccess {
+                _sideEffect.emit(NavigateToHome)
             }.onFailure {
                 updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
