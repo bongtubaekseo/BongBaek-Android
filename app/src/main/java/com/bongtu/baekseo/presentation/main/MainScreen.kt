@@ -14,6 +14,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
+import com.bongtu.baekseo.presentation.edit.navigation.Edit
 import com.bongtu.baekseo.presentation.edit.navigation.editGraph
 import com.bongtu.baekseo.presentation.edit.navigation.navigateToEdit
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
@@ -23,9 +24,7 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
-import com.bongtu.baekseo.presentation.recommend.navigation.RecommendRoute
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
-import com.bongtu.baekseo.presentation.record.navigation.Record
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
@@ -135,17 +134,7 @@ private fun MainNavHost(
                     }
                 )
             },
-            navigateToEdit = { type ->
-                navigator.navController.navigateToEdit(
-                    editType = type,
-                    navOptions = navOptions {
-                        popUpTo<Recommend> {
-                            inclusive = false
-                        }
-                        launchSingleTop = true
-                    }
-                )
-            },
+            navigateToEdit = navigator.navController::navigateToEdit,
             modifier = modifier,
         )
 
@@ -156,44 +145,35 @@ private fun MainNavHost(
                     eventId = eventId,
                 )
             },
-            navigateToAdd = { type ->
-                navigator.navController.navigateToEdit(
-                    editType = type,
-                )
-            },
+            navigateToAdd = navigator.navController::navigateToEdit,
             modifier = modifier,
         )
 
         detailGraph(
             navigateUp = navigator::navigateUp,
-            navigateToEdit = { type ->
-                navigator.navController.navigateToEdit(
-                    editType = type,
-                )
-            },
+            navigateToEdit = navigator.navController::navigateToEdit,
             modifier = modifier,
         )
 
         editGraph(
+            navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
-            navigateToFinal = {
-                navigator.navController.navigate(
-                    route = RecommendRoute.Final,
+            navigateToFinal = navigator::navigateUp,
+            navigateToDetail = {
+                navigator.navController.navigateToDetail(
                     navOptions = navOptions {
-                        popUpTo<RecommendRoute.Final> {
+                        popUpTo<Edit> {
                             inclusive = true
                         }
-                        launchSingleTop = true
                     }
                 )
             },
             navigateToRecord = {
                 navigator.navController.navigateToRecord(
                     navOptions = navOptions {
-                        popUpTo<Record> {
+                        popUpTo<Edit> {
                             inclusive = true
                         }
-                        launchSingleTop = true
                     }
                 )
             },

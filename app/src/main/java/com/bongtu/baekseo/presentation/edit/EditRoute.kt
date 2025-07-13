@@ -39,15 +39,17 @@ fun EditRoute(
             navigateUp = navigateUp,
             navigateComplete = navigateComplete,
             viewModel = viewModel,
-            navigateToEdit = { navController.navigate(
-                route = Main,
-                navOptions = navOptions {
-                    popUpTo<Main> {
-                        inclusive = true
-                    }
-                    launchSingleTop = true
-                }
-            ) },
+            navigateToEdit = {
+                navController.navigate(
+                    route = Main,
+                    navOptions = navOptions {
+                        popUpTo<Main> {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    },
+                )
+            },
             navigateToLocation = { navController.navigate(Location) },
             modifier = modifier,
         )

@@ -43,6 +43,7 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun EditLocationRoute(
     navigateUp: () -> Unit,
+    navigateToEdit: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -53,6 +54,7 @@ fun EditLocationRoute(
     EditLocationScreen(
         searchValue = searchValue,
         navigateUp = navigateUp,
+        navigateToEdit = navigateToEdit,
         onSearchValueChange = { searchValue = it },
         searchItems = dummyItems,                   // TODO: 검색 결과
         selectedSearchItem = selectedSearchItem,    // TODO: 검색 결과
@@ -66,6 +68,7 @@ fun EditLocationRoute(
 fun EditLocationScreen(
     searchValue: String,
     navigateUp: () -> Unit,
+    navigateToEdit: () -> Unit,
     onSearchValueChange: (String) -> Unit,
     searchItems: ImmutableList<String>,
     selectedSearchItem: String,
@@ -177,9 +180,7 @@ fun EditLocationScreen(
 
             BongBaekButton(
                 title = stringResource(edit_location_top_bar_title),
-                onClick = {
-                    // TODO: 저장 로직
-                },
+                onClick = navigateToEdit,       // TODO: SideEffect Fetch
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -206,6 +207,7 @@ private fun EditLocationScreenPreview() {
             selectedSearchItem = "",
             onSearchItemSelected = {},
             navigateUp = {},
+            navigateToEdit = {},
         )
     }
 }
