@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -173,6 +174,7 @@ fun HomeMainSuccessScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
+            .statusBarsPadding()
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar()

@@ -112,7 +112,7 @@ private fun MainNavHost(
             navigateToRecommend = {
                 navigator.navController.navigateToRecommend()
             },
-            modifier = modifier.padding(innerPadding),
+            modifier = modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         )
 
         recommendGraph(
