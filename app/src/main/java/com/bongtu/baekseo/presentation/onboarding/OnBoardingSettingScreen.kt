@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.string.birth_text_field_label
@@ -67,11 +68,12 @@ fun OnBoardingSettingScreen(
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
-        viewModel.sideEffect.collect { sideEffect ->
-            when (sideEffect) {
-                is NavigateToHome -> navigateToHome()
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome()
+                }
             }
-        }
     }
 
     var name by remember { mutableStateOf("") }
