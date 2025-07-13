@@ -10,14 +10,12 @@ class HomeContract {
     @Immutable
     data class HomeState(
         val homeLoadState: UiState<ImmutableList<HomeEvent>> = UiState.Loading,
-        val name: String? = "",
+        val name: String = "",
     )
 
-    sealed interface HomeSideEffect {
-        sealed class MainSideEffect : HomeSideEffect {
-            data object NavigateToSchedule : MainSideEffect()
-            data object NavigateToEdit : MainSideEffect()
-            data object NavigateToRecommend : MainSideEffect()
-        }
+    sealed class HomeSideEffect {
+        data object NavigateToSchedule : HomeSideEffect()
+        data object NavigateToEdit : HomeSideEffect()
+        data object NavigateToRecommend : HomeSideEffect()
     }
 }

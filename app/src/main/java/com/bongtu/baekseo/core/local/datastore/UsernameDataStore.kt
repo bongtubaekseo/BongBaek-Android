@@ -11,9 +11,9 @@ import javax.inject.Inject
 class UsernameDataStore @Inject constructor(
     private val preferenceDataStore: DataStore<Preferences>,
 ) {
-    suspend fun getUsername(): String? = preferenceDataStore.data.map { preferences ->
-        preferences[preferencesUsernameKey] ?: USER_NAME_KEY
-    }.firstOrNull()
+    suspend fun getUsername(): String = preferenceDataStore.data.map { preferences ->
+        preferences[preferencesUsernameKey]
+    }.firstOrNull() ?: USER_NAME_KEY
 
     suspend fun setUsername(name: String) {
         preferenceDataStore.edit { preferences ->

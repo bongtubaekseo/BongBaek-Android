@@ -40,10 +40,9 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToEdit
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToRecommend
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.MainSideEffect.NavigateToSchedule
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
@@ -58,7 +57,6 @@ import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
 import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.filterIsInstance
 import java.time.LocalDate
 
 @Composable
@@ -79,7 +77,6 @@ fun HomeMainRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<HomeSideEffect.MainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     NavigateToSchedule -> navigateToSchedule()
