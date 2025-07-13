@@ -16,7 +16,7 @@ object DataStoreModule {
     private const val USER_NAME_PREFERENCE_NAME = "user_name_preference"
 
     private val Context.provideDataStore by preferencesDataStore(TOKEN_PREFERENCE_NAME)
-    private val Context.provideUserNameDataStore by preferencesDataStore(USER_NAME_PREFERENCE_NAME)
+    private val Context.provideUsernameDataStore by preferencesDataStore(USER_NAME_PREFERENCE_NAME)
 
     @Provides
     @Singleton
@@ -26,7 +26,7 @@ object DataStoreModule {
 
     @Provides
     @Singleton
-    fun provideUserNameDataStore(
+    fun provideUsernameDataStore(
         @ApplicationContext context: Context,
-    ) = UsernameDataStore(context.provideUserNameDataStore)
+    ) = UsernameDataStore(context.provideUsernameDataStore)
 }
