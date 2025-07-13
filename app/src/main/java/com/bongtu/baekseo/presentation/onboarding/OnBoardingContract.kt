@@ -8,6 +8,7 @@ class OnBoardingContract {
         val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
     )
 
+    @Immutable
     data class OnBoardingUiState(
         val name: String = "",
         val birth: String = "",
