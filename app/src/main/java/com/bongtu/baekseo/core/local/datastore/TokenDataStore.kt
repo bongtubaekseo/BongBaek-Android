@@ -33,29 +33,11 @@ class TokenDataStore @Inject constructor(
         }
     }
 
-    suspend fun getKakaoId(): String = preferenceDataStore.data.map { preferences ->
-        preferences[preferencesKakaoIdKey]
-    }.firstOrNull() ?: KAKAO_ID_KEY
-
-    suspend fun setKakaoId(kakaoId: Long) {
-        preferenceDataStore.edit { preferences ->
-            preferences[preferencesKakaoIdKey] = kakaoId.toString()
-        }
-    }
-
-    suspend fun clearKakaoId() {
-        preferenceDataStore.edit { preferences ->
-            preferences.remove(preferencesKakaoIdKey)
-        }
-    }
-
     companion object {
         private const val ACCESS_TOKEN_KEY = "access_token"
         private const val REFRESH_TOKEN_KEY = "refresh_token"
-        private const val KAKAO_ID_KEY = "kakao_id"
 
         private val preferencesAccessTokenKey = stringPreferencesKey(ACCESS_TOKEN_KEY)
         private val preferencesRefreshTokenKey = stringPreferencesKey(REFRESH_TOKEN_KEY)
-        private val preferencesKakaoIdKey = stringPreferencesKey(KAKAO_ID_KEY)
     }
 }
