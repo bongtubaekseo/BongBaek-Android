@@ -222,7 +222,10 @@ private fun RecommendMainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(scrollState),
+                .then(
+                    if (uiState.pageIndex == 1) Modifier.verticalScroll(scrollState)
+                    else Modifier
+                ),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
