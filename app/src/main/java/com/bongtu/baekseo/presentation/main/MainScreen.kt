@@ -108,14 +108,7 @@ private fun MainNavHost(
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToRecommend = {
-                navigator.navController.navigateToRecommend(
-                    navOptions = navOptions {
-                        popUpTo<Home> {
-                            inclusive = false
-                        }
-                        launchSingleTop = true
-                    }
-                )
+                navigator.navController.navigateToRecommend()
             },
             modifier = modifier.padding(innerPadding),
         )
