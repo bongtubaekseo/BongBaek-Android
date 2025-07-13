@@ -18,7 +18,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -82,6 +81,9 @@ class OnBoardingViewModel @Inject constructor(
                         accessToken = response.accessToken,
                         refreshToken = response.refreshToken,
                     )
+                    if (response.isCompletedSignUp) {
+                        _sideEffect.emit(NavigateToHome)
+                    }
                 }
                 .onFailure {
                     _kakaoLoginState.tryEmit(SocialLoginState.Fail)
@@ -97,11 +99,10 @@ class OnBoardingViewModel @Inject constructor(
                 memberBirthday = uiState.value.birth.toFormattedDate(),
                 memberIncome = uiState.value.income,
             ).onSuccess { response ->
-                Timber.d("postSignUp: $response")
+
+            }.onFailure {
+                updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
-                .onFailure {
-                    updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
-                }
         }
     }
 
