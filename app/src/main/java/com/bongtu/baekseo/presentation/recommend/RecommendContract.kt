@@ -19,6 +19,7 @@ class RecommendContract {
         val eventType: EventType? = null,
         val eventDate: String = "",
         val isEventParticipated: Boolean? = null,
+        val isLocationSelected: Boolean = false,
         val latitude: Double = 37.5665,
         val longitude: Double = 126.9780,
         val expense: Int = 0,

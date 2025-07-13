@@ -68,7 +68,11 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateEventLocation(newEventLocation: Pair<Double, Double>) = _uiState.update {
-        it.copy(eventLocation = newEventLocation)
+        it.copy(
+            isLocationSelected = true,
+            latitude = newEventLocation.first,
+            longitude = newEventLocation.second,
+        )
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {
@@ -81,7 +85,7 @@ class RecommendViewModel @Inject constructor(
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null
-                else -> eventLocation != null
+                else -> isLocationSelected
             }
         }
     }
