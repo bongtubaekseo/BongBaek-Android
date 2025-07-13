@@ -4,6 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -74,7 +76,8 @@ private fun ScheduleScreen(
 ) {
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.gray900)
+            .statusBarsPadding(),
     ) {
         BongBaekTopBar(
             title = stringResource(id = schedule_title, "봉백"),
