@@ -4,6 +4,8 @@ import com.bongtu.baekseo.core.network.model.BaseResponse
 import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginResponse
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
+import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
+import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
 
@@ -17,4 +19,9 @@ interface AuthService {
     suspend fun postSignUp(
         @Body request: PostSignUpRequest,
     ): BaseResponse<PostKakaoLoginResponse>
+
+    @POST("/api/v1/member/reissue")
+    suspend fun postTokenReissue(
+        @Body request: PostTokenReissueRequest,
+    ): BaseResponse<PostTokenReissueResponse>
 }

@@ -78,6 +78,10 @@ class OnBoardingViewModel @Inject constructor(
                 .onSuccess { response ->
                     _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     updateKakaoId(response.kakaoId)
+                    tokenDataStore.setTokens(
+                        accessToken = response.accessToken,
+                        refreshToken = response.refreshToken,
+                    )
                 }
                 .onFailure {
                     _kakaoLoginState.tryEmit(SocialLoginState.Fail)
@@ -93,8 +97,8 @@ class OnBoardingViewModel @Inject constructor(
                 memberBirthday = uiState.value.birth.toFormattedDate(),
                 memberIncome = uiState.value.income,
             ).onSuccess { response ->
-                    Timber.d("postSignUp: $response")
-                }
+                Timber.d("postSignUp: $response")
+            }
                 .onFailure {
                     updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
                 }

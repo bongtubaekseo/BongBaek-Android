@@ -20,9 +20,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_splash_logo
 import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
 import kotlinx.coroutines.delay
 
 @Composable
@@ -30,10 +35,24 @@ fun SplashRoute(
     navigateToOnBoarding: () -> Unit,
     navigateToHome: () -> Unit, // TODO: 추후 사용
     modifier: Modifier = Modifier,
+    viewModel: SplashViewModel = hiltViewModel()
 ) {
+    val lifecycleOwner = LocalLifecycleOwner.current
+
     LaunchedEffect(Unit) {
+        viewModel.postTokenReissue()
         delay(1500)
         navigateToOnBoarding()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome()
+                    is NavigateToOnBoarding -> navigateToOnBoarding()
+                }
+            }
     }
 
     SplashScreen(
