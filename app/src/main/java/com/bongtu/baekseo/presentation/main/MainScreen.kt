@@ -11,7 +11,11 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
+import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
+import com.bongtu.baekseo.presentation.edit.navigation.editGraph
+import com.bongtu.baekseo.presentation.edit.navigation.navigateToEdit
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
@@ -19,7 +23,9 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.recommend.navigation.RecommendRoute
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
+import com.bongtu.baekseo.presentation.record.navigation.Record
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
@@ -129,14 +135,69 @@ private fun MainNavHost(
                     }
                 )
             },
-            navigateToEdit = {
-                // TODO: 수정 화면으로 이동
+            navigateToEdit = { type ->
+                navigator.navController.navigateToEdit(
+                    editType = type,
+                    navOptions = navOptions {
+                        popUpTo<Recommend> {
+                            inclusive = false
+                        }
+                        launchSingleTop = true
+                    }
+                )
             },
             modifier = modifier,
         )
 
         recordGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
+            navigateToDetail = { eventId ->
+                navigator.navController.navigateToDetail(
+                    eventId = eventId,
+                )
+            },
+            navigateToAdd = { type ->
+                navigator.navController.navigateToEdit(
+                    editType = type,
+                )
+            },
+            modifier = modifier,
+        )
+
+        detailGraph(
+            navigateUp = navigator::navigateUp,
+            navigateToEdit = { type ->
+                navigator.navController.navigateToEdit(
+                    editType = type,
+                )
+            },
+            modifier = modifier,
+        )
+
+        editGraph(
+            navigateToUp = navigator::navigateUp,
+            setBottomBarVisible = navigator::updateBottomBarVisible,
+            navigateToFinal = {
+                navigator.navController.navigate(
+                    route = RecommendRoute.Final,
+                    navOptions = navOptions {
+                        popUpTo<RecommendRoute.Final> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
+            navigateToRecord = {
+                navigator.navController.navigateToRecord(
+                    navOptions = navOptions {
+                        popUpTo<Record> {
+                            inclusive = true
+                        }
+                        launchSingleTop = true
+                    }
+                )
+            },
             modifier = modifier,
         )
     }
