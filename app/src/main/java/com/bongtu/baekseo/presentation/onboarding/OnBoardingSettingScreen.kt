@@ -211,8 +211,7 @@ fun OnBoardingSettingScreen(
                             selected = incomeSelected,
                             onClick = {
                                 if (!incomeSelected) incomeSelected = true
-                                incomeType = IncomeType.UNDER_200
-                                viewModel.updateIncome(incomeType.label)
+                                viewModel.updateIncome(IncomeType.UNDER_200.label)
                             },
                             modifier = Modifier.padding(top = 16.dp),
                         )
@@ -222,8 +221,7 @@ fun OnBoardingSettingScreen(
                             selected = !incomeSelected,
                             onClick = {
                                 if (incomeSelected) incomeSelected = false
-                                incomeType = IncomeType.OVER_200
-                                viewModel.updateIncome(incomeType.label)
+                                viewModel.updateIncome(IncomeType.OVER_200.label)
                             },
                             modifier = Modifier.padding(top = 8.dp),
                         )
