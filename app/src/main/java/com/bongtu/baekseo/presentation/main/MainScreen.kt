@@ -5,6 +5,7 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
@@ -104,7 +106,13 @@ private fun MainNavHost(
 
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
-            modifier = modifier,
+            navigateToRecord = {
+                navigator.navController.navigateToRecord()
+            },
+            navigateToRecommend = {
+                navigator.navController.navigateToRecommend()
+            },
+            modifier = modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         )
 
         recommendGraph(
