@@ -6,4 +6,11 @@ interface AuthRepository {
     suspend fun postKakaoLogin(
         accessToken: String,
     ): Result<KakaoLogin>
+
+    suspend fun postSignUp(
+        kakaoId: Long,
+        memberName: String,
+        memberBirthday: String,
+        memberIncome: String,
+    ): Result<KakaoLogin>
 }

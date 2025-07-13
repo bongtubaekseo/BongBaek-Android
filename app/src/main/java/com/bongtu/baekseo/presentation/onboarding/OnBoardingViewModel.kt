@@ -2,8 +2,10 @@ package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.domain.usecase.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
@@ -16,6 +18,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -79,6 +82,30 @@ class OnBoardingViewModel @Inject constructor(
                 .onFailure {
                     _kakaoLoginState.tryEmit(SocialLoginState.Fail)
                 }
+        }
+    }
+
+    fun postSignUp() {
+        viewModelScope.launch {
+            authRepository.postSignUp(
+                kakaoId = uiState.value.kakaoId,
+                memberName = uiState.value.name,
+                memberBirthday = uiState.value.birth.toFormattedDate(),
+                memberIncome = uiState.value.income,
+            ).onSuccess { response ->
+                    Timber.d("postSignUp: $response")
+                }
+                .onFailure {
+                    updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
+                }
+        }
+    }
+
+    private fun updateOnBoardingUiState(value: UiState<Nothing>) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                loadState = value,
+            )
         }
     }
 
