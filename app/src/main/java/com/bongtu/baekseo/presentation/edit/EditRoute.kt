@@ -8,6 +8,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navOptions
+import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.navigation.nestedEditGraph
 import com.bongtu.baekseo.presentation.edit.type.EditType
@@ -16,8 +18,7 @@ import com.bongtu.baekseo.presentation.edit.type.EditType
 fun EditRoute(
     navigateUp: () -> Unit,
     editType: EditType,
-    navigateToFinal: () -> Unit,
-    navigateToRecord: () -> Unit,
+    navigateComplete: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditViewModel = hiltViewModel(),
 ) {
@@ -36,9 +37,18 @@ fun EditRoute(
         nestedEditGraph(
             editType = editType,
             navigateUp = navigateUp,
-            navigateToFinal = navigateToFinal,
-            navigateToRecord = navigateToRecord,
+            navigateComplete = navigateComplete,
             viewModel = viewModel,
+            navigateToEdit = { navController.navigate(
+                route = Main,
+                navOptions = navOptions {
+                    popUpTo<Main> {
+                        inclusive = true
+                    }
+                    launchSingleTop = true
+                }
+            ) },
+            navigateToLocation = { navController.navigate(Location) },
             modifier = modifier,
         )
     }

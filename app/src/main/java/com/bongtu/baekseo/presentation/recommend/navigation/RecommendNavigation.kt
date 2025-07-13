@@ -24,13 +24,13 @@ fun NavGraphBuilder.recommendGraph(
     navigateToUp: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToRecord: () -> Unit,
-    navigateToEdit: (EditType) -> Unit,
+    navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Recommend> {
         RecommendRoute(
             navigateToUp = navigateToUp,
-            navigateToEdit = { navigateToEdit(EditType.EDIT) },
+            navigateToEdit = navigateToEdit,
             navigateToHome = navigateToHome,
             navigateToRecord = navigateToRecord,
             modifier = modifier,

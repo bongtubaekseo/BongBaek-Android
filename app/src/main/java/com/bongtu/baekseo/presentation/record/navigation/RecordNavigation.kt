@@ -6,7 +6,6 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
-import com.bongtu.baekseo.presentation.edit.type.EditType
 import com.bongtu.baekseo.presentation.record.RecordRoute
 import kotlinx.serialization.Serializable
 
@@ -14,7 +13,7 @@ fun NavController.navigateToRecord(navOptions: NavOptions? = null) = navigate(Re
 
 fun NavGraphBuilder.recordGraph(
     setBottomBarVisible: (Boolean) -> Unit,
-    navigateToAdd: (EditType) -> Unit,
+    navigateToAdd: () -> Unit,
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -22,7 +21,7 @@ fun NavGraphBuilder.recordGraph(
         RecordRoute(
             setBottomBarVisible = setBottomBarVisible,
             navigateToDetail = navigateToDetail,
-            navigateToAdd = { navigateToAdd(EditType.ADD) },
+            navigateToAdd = navigateToAdd,
             modifier = modifier,
         )
     }

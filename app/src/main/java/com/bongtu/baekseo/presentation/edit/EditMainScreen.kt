@@ -87,8 +87,8 @@ import kotlinx.collections.immutable.toImmutableList
 fun EditMainRoute(
     editType: EditType,
     navigateUp: () -> Unit,
-    navigateToFinal: () -> Unit,
-    navigateToRecord: () -> Unit,
+    navigateComplete: () -> Unit,
+    navigateToLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -96,8 +96,8 @@ fun EditMainRoute(
         EditType.EDIT -> EditMainScreen(
             topBarTitle = EditType.EDIT.title,
             navigateUp = navigateUp,
-            navigateToFinal = navigateToFinal,
-            navigateToRecord = navigateToRecord,
+            navigateComplete = navigateComplete,
+            navigateToLocation = navigateToLocation,
             viewModel = viewModel,
             modifier = modifier,
         )
@@ -105,8 +105,8 @@ fun EditMainRoute(
         EditType.ADD -> EditMainScreen(
             topBarTitle = EditType.ADD.title,
             navigateUp = navigateUp,
-            navigateToFinal = navigateToFinal,
-            navigateToRecord = navigateToRecord,
+            navigateComplete = navigateComplete,
+            navigateToLocation = navigateToLocation,
             viewModel = viewModel,
             modifier = modifier,
         )
@@ -117,8 +117,8 @@ fun EditMainRoute(
 private fun EditMainScreen(
     topBarTitle: String,
     navigateUp: () -> Unit,
-    navigateToFinal: () -> Unit,
-    navigateToRecord: () -> Unit,
+    navigateComplete: () -> Unit,
+    navigateToLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -170,7 +170,7 @@ private fun EditMainScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable (onClick = navigateUp),
+                        .noRippleClickable(onClick = navigateUp),
                     tint = BongBaekTheme.colors.white,
                 )
             },
@@ -312,7 +312,7 @@ private fun EditMainScreen(
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = { /* TODO: 지도 추가 화면 이동 */ }
+                                    onClick = navigateToLocation,
                                 )
                         )
                     }
@@ -348,9 +348,7 @@ private fun EditMainScreen(
     }
 
     SaveButton(
-        onClick = {
-            // TODO: 저장 로직
-        },
+        onClick = navigateComplete,
         enabled = isFormFilled,
         modifier = Modifier
             .padding(
