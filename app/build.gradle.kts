@@ -44,6 +44,28 @@ android {
             "USER_TOKEN",
             properties.getProperty("user.token")
         )
+
+        val kakaoKey = properties["kakao.key"].toString()
+
+        buildTypes {
+            getByName("debug") {
+                buildConfigField(
+                    "String",
+                    "KAKAO_KEY",
+                    "\"$kakaoKey\""
+                )
+            }
+
+            getByName("release") {
+                buildConfigField(
+                    "String",
+                    "KAKAO_KEY",
+                    "\"$kakaoKey\""
+                )
+            }
+        }
+
+        manifestPlaceholders["KAKAO_KEY"] = kakaoKey
     }
 
     buildTypes {
@@ -100,4 +122,7 @@ dependencies {
     implementation(libs.advanced.bottom.sheet)
 
     implementation(libs.accompanist.systemuicontroller)
+
+    // Kakao
+    implementation(libs.kakao.user)
 }
