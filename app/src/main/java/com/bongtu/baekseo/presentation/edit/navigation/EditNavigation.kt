@@ -17,7 +17,6 @@ import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditType
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import kotlinx.serialization.Serializable
-import timber.log.Timber
 
 fun NavController.navigateToEdit(navOptions: NavOptions? = null) =
     navigate(Edit, navOptions)
@@ -56,6 +55,7 @@ fun NavGraphBuilder.editGraph(
 fun NavGraphBuilder.nestedEditGraph(
     editType: EditType,
     navigateUp: () -> Unit,
+    nestedNavigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
     navigateToMain: () -> Unit,
@@ -75,7 +75,7 @@ fun NavGraphBuilder.nestedEditGraph(
 
     composable<Location> {
         EditLocationRoute(
-            navigateUp = navigateToMain, // TODO: Edit Main 이동
+            navigateUp = nestedNavigateUp,
             navigateToEdit = navigateToMain,
             viewModel = viewModel,
             modifier = modifier,

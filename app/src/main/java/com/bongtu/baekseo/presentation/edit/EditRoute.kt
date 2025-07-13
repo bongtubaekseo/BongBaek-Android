@@ -37,6 +37,7 @@ fun EditRoute(
         nestedEditGraph(
             editType = editType,
             navigateUp = navigateUp,
+            nestedNavigateUp = navController::navigateUp,
             navigateComplete = navigateComplete,
             viewModel = viewModel,
             navigateToMain = {
