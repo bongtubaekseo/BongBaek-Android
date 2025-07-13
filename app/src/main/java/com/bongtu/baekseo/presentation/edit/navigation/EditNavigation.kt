@@ -33,7 +33,6 @@ fun NavGraphBuilder.editGraph(
     composable<Edit> { backStackEntry ->
         val previousDestination = navController.previousBackStackEntry?.destination
 
-        Timber.tag("hihi").d(previousDestination?.route)
         val (editType, navigateComplete) = when {
             previousDestination?.hasRoute(Detail::class) == true ->
                 EditType.EDIT to navigateToDetail
