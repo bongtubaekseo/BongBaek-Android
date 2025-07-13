@@ -5,7 +5,7 @@ import androidx.compose.runtime.Immutable
 class OnBoardingContract {
     @Immutable
     data class OnBoardingState(
-        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle
+        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
     )
 
     data class OnBoardingUiState(
