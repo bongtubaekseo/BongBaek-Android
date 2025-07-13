@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
+import com.bongtu.baekseo.presentation.edit.type.EditType
 import com.bongtu.baekseo.presentation.recommend.RecommendFinalRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendIntroScreen
 import com.bongtu.baekseo.presentation.recommend.RecommendMainRoute
@@ -23,13 +24,13 @@ fun NavGraphBuilder.recommendGraph(
     navigateToUp: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToRecord: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditType) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Recommend> {
         RecommendRoute(
             navigateToUp = navigateToUp,
-            navigateToEdit = navigateToEdit,
+            navigateToEdit = { navigateToEdit(EditType.EDIT) },
             navigateToHome = navigateToHome,
             navigateToRecord = navigateToRecord,
             modifier = modifier,
