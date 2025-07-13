@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.repositoryimpl.auth
 
 import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
-import com.bongtu.baekseo.data.dto.oauth.PostKakaoLoginRequest
+import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.auth.KakaoLogin
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
