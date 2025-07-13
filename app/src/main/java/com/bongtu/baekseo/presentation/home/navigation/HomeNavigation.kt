@@ -13,6 +13,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(Home
 
 fun NavGraphBuilder.homeGraph(
     setBottomBarVisible: (Boolean) -> Unit,
+    navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -20,6 +21,7 @@ fun NavGraphBuilder.homeGraph(
         HomeRoute(
             setBottomBarVisible = setBottomBarVisible,
             navigateToRecommend = navigateToRecommend,
+            navigateToRecord = navigateToRecord,
             modifier = modifier,
         )
     }

@@ -61,7 +61,7 @@ import java.time.LocalDate
 
 @Composable
 fun HomeMainRoute(
-    navigateToEdit: () -> Unit,
+    navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
@@ -80,7 +80,7 @@ fun HomeMainRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     NavigateToSchedule -> navigateToSchedule()
-                    NavigateToEdit -> navigateToEdit()
+                    NavigateToEdit -> navigateToRecord()
                     NavigateToRecommend -> navigateToRecommend()
                 }
             }
@@ -88,7 +88,7 @@ fun HomeMainRoute(
 
     HomeMainScreen(
         uiState = uiState,
-        navigateToEdit = navigateToEdit,
+        navigateToRecord = navigateToRecord,
         navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
         modifier = modifier,
@@ -98,7 +98,7 @@ fun HomeMainRoute(
 @Composable
 fun HomeMainScreen(
     uiState: HomeState,
-    navigateToEdit: () -> Unit,
+    navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
@@ -120,7 +120,7 @@ fun HomeMainScreen(
             HomeMainSuccessScreen(
                 items = uiState.homeLoadState.data,
                 name = uiState.name,
-                navigateToEdit = navigateToEdit,
+                navigateToRecord = navigateToRecord,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
                 modifier = modifier,
@@ -133,7 +133,7 @@ fun HomeMainScreen(
 fun HomeMainSuccessScreen(
     items: ImmutableList<HomeEvent>,
     name: String,
-    navigateToEdit: () -> Unit,
+    navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier
@@ -179,7 +179,7 @@ fun HomeMainSuccessScreen(
 
         if (items.isEmpty()) {
             HomePageEmptyCard(
-                onBadgeClick = navigateToEdit,
+                onBadgeClick = navigateToRecord,
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .padding(horizontal = 20.dp),
@@ -306,7 +306,7 @@ fun HomeMainSuccessScreen(
 
             if (items.isEmpty()) {
                 HomeScheduleEmptyCard(
-                    onBadgeClick = navigateToEdit,
+                    onBadgeClick = navigateToRecord,
                     modifier = Modifier.padding(bottom = 40.dp),
                 )
             }
@@ -372,7 +372,7 @@ private fun HomeMainSuccessScreenPreview() {
         HomeMainSuccessScreen(
             items = items,
             name = "",
-            navigateToEdit = {},
+            navigateToRecord = {},
             navigateToRecommend = {},
             navigateToSchedule = {},
         )
