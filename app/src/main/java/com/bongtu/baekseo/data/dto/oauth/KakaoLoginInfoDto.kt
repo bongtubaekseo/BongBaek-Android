@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.data.dto.auath
+package com.bongtu.baekseo.data.dto.oauth
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
