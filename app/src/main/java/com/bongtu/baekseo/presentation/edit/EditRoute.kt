@@ -16,7 +16,6 @@ import com.bongtu.baekseo.presentation.edit.type.EditType
 fun EditRoute(
     navigateUp: () -> Unit,
     editType: EditType,
-    setBottomBarVisible: (Boolean) -> Unit,
     navigateToFinal: () -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,

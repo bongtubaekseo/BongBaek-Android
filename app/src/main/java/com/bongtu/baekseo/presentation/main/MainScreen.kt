@@ -176,7 +176,6 @@ private fun MainNavHost(
 
         editGraph(
             navigateToUp = navigator::navigateUp,
-            setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToFinal = {
                 navigator.navController.navigate(
                     route = RecommendRoute.Final,

@@ -21,7 +21,6 @@ fun NavController.navigateToEdit(editType: EditType, navOptions: NavOptions? = n
 
 fun NavGraphBuilder.editGraph(
     navigateToUp: () -> Unit,
-    setBottomBarVisible: (Boolean) -> Unit,
     navigateToFinal: () -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
@@ -33,7 +32,6 @@ fun NavGraphBuilder.editGraph(
         EditRoute(
             navigateUp = navigateToUp,
             editType = navArgs.editType,
-            setBottomBarVisible = setBottomBarVisible,
             navigateToFinal = navigateToFinal,
             navigateToRecord = navigateToRecord,
             modifier = modifier,
