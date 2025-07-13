@@ -158,7 +158,7 @@ private fun MainNavHost(
         editGraph(
             navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
-            navigateToFinal = navigator::navigateUp,
+            navigateToFinal = navigator::navigateUp,        // TODO: 네비 방식 점검 필요
             navigateToDetail = {
                 navigator.navController.navigateToDetail(
                     navOptions = navOptions {
