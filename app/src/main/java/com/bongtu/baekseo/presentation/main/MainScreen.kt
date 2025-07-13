@@ -13,7 +13,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
-import com.bongtu.baekseo.presentation.home.navigation.Home
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
@@ -107,6 +106,9 @@ private fun MainNavHost(
 
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
+            navigateToRecord = {
+                navigator.navController.navigateToRecord()
+            },
             navigateToRecommend = {
                 navigator.navController.navigateToRecommend()
             },
