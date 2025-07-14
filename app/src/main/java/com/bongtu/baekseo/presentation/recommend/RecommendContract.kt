@@ -4,6 +4,9 @@ import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.data.model.map.Place
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 class RecommendContract {
     @Immutable
@@ -19,7 +22,9 @@ class RecommendContract {
         val eventType: EventType? = null,
         val eventDate: String = "",
         val isEventParticipated: Boolean? = null,
-        val eventLocation: Pair<Double, Double>? = null,
+        val searchResult: ImmutableList<Place> = persistentListOf(),
+        val latitude: Double = 0.0,
+        val longitude: Double = 0.0,
         val expense: Int = 0,
     )
 

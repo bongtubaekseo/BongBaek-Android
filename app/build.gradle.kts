@@ -13,6 +13,9 @@ plugins {
 val properties = Properties().apply {
     load(project.rootProject.file("local.properties").inputStream())
 }
+val kakaoApiKey = properties.getProperty("kakao.api.key")
+val kakaoNativeKey = properties.getProperty("kakao.native.key")
+val kakaoBaseUrl = properties.getProperty("kakao.base.url")
 
 android {
     namespace = "com.bongtu.baekseo"
@@ -27,54 +30,30 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField(
-            "String",
-            "DUMMY_URL",
-            properties.getProperty("dummy.url")
-        )
+        buildConfigField("String", "DUMMY_URL", properties.getProperty("dummy.url"))
+        buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
+        buildConfigField("String", "USER_TOKEN", properties.getProperty("user.token"))
 
-        buildConfigField(
-            "String",
-            "BASE_URL",
-            properties.getProperty("base.url")
-        )
-
-        buildConfigField(
-            "String",
-            "USER_TOKEN",
-            properties.getProperty("user.token")
-        )
-
-        val kakaoKey = properties["kakao.key"].toString()
-
-        buildTypes {
-            getByName("debug") {
-                buildConfigField(
-                    "String",
-                    "KAKAO_KEY",
-                    "\"$kakaoKey\""
-                )
-            }
-
-            getByName("release") {
-                buildConfigField(
-                    "String",
-                    "KAKAO_KEY",
-                    "\"$kakaoKey\""
-                )
-            }
-        }
-
-        manifestPlaceholders["KAKAO_KEY"] = kakaoKey
+        manifestPlaceholders["KAKAO_KEY"] = kakaoNativeKey
     }
 
     buildTypes {
+        debug {
+            isDebuggable = true
+            buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
+            buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
+            buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
+        }
+
         release {
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
+            buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
+            buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
         }
     }
     compileOptions {
@@ -125,4 +104,5 @@ dependencies {
 
     // Kakao
     implementation(libs.kakao.user)
+    implementation(libs.kakao.map)
 }

@@ -38,6 +38,7 @@ import com.bongtu.baekseo.R.string.button_next
 import com.bongtu.baekseo.R.string.recommendation_event_date_description
 import com.bongtu.baekseo.R.string.recommendation_event_date_title
 import com.bongtu.baekseo.R.string.recommendation_event_date_topbar
+import com.bongtu.baekseo.R.string.recommendation_event_location_button
 import com.bongtu.baekseo.R.string.recommendation_event_location_description
 import com.bongtu.baekseo.R.string.recommendation_event_location_skip
 import com.bongtu.baekseo.R.string.recommendation_event_location_title
@@ -118,6 +119,7 @@ fun RecommendMainRoute(
         onDateChange = viewModel::updateEventDate,
         onParticipationSelect = viewModel::updateIsEventParticipated,
         onLocationSelect = viewModel::updateEventLocation,
+        onSearchPlace = viewModel::searchPlaces,
         checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
     )
@@ -138,7 +140,8 @@ private fun RecommendMainScreen(
     onEventSelect: (EventType) -> Unit,
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
-    onLocationSelect: (Pair<Double, Double>) -> Unit, // TODO: 지도 구현 후 연결 필요
+    onLocationSelect: (Pair<Double, Double>) -> Unit,
+    onSearchPlace: (String) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -169,6 +172,12 @@ private fun RecommendMainScreen(
             recommendation_event_location_description,
         )
     }
+    val buttonTitleRes = remember(uiState.pageIndex) {
+        when (uiState.pageIndex) {
+            4 -> recommendation_event_location_button
+            else -> button_next
+        }
+    }
     val scrollState = rememberScrollState()
     val isButtonEnabled = remember(
         uiState.pageIndex,
@@ -181,7 +190,8 @@ private fun RecommendMainScreen(
         uiState.eventType,
         uiState.eventDate,
         uiState.isEventParticipated,
-        uiState.eventLocation,
+        uiState.longitude,
+        uiState.latitude,
     ) { checkButtonEnabled() }
 
     Column(
@@ -222,7 +232,10 @@ private fun RecommendMainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(scrollState),
+                .then(
+                    if (uiState.pageIndex == 1) Modifier.verticalScroll(scrollState)
+                    else Modifier
+                ),
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -241,7 +254,10 @@ private fun RecommendMainScreen(
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.gray500,
                         modifier = Modifier
-                            .noRippleClickable(navigateToResult),
+                            .noRippleClickable {
+                                onLocationSelect(Pair(0.0, 0.0))
+                                navigateToResult()
+                            },
                     )
                 }
             }
@@ -302,8 +318,13 @@ private fun RecommendMainScreen(
                     }
 
                     4 -> RecommendEventLocationContent(
+                        latitude = uiState.latitude,
+                        longitude = uiState.longitude,
                         searchValue = searchValue,
                         onSearchValueChange = { searchValue = it },
+                        onSearchClick = {
+                            onSearchPlace(searchValue)
+                        }
                     )
                 }
             }
@@ -311,7 +332,7 @@ private fun RecommendMainScreen(
             Spacer(modifier = Modifier.weight(1f))
 
             BongBaekButton(
-                title = stringResource(button_next),
+                title = stringResource(buttonTitleRes),
                 onClick = {
                     if (uiState.pageIndex == 4) navigateToResult()
                     else onPageIndexChange(uiState.pageIndex + 1)
@@ -348,6 +369,7 @@ private fun RecommendScreenPreview() {
             onDateChange = {},
             onParticipationSelect = {},
             onLocationSelect = {},
+            onSearchPlace = {},
             checkButtonEnabled = { true },
         )
     }
