@@ -3,12 +3,15 @@ package com.bongtu.baekseo.core.network.di
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.BuildConfig.BASE_URL
 import com.bongtu.baekseo.BuildConfig.DUMMY_URL
+import com.bongtu.baekseo.BuildConfig.KAKAO_BASE_URL
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.network.HeaderInterceptor
+import com.bongtu.baekseo.core.network.KakaoHeaderInterceptor
 import com.bongtu.baekseo.core.network.isJsonArray
 import com.bongtu.baekseo.core.network.isJsonObject
 import com.bongtu.baekseo.core.network.qualifier.Dummy
 import com.bongtu.baekseo.core.network.qualifier.JWT
+import com.bongtu.baekseo.core.network.qualifier.Kakao
 import com.bongtu.baekseo.core.network.qualifier.NoAuth
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -72,6 +75,11 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    @Kakao
+    fun provideKakaoHeaderInterceptor(): Interceptor = KakaoHeaderInterceptor()
+
+    @Provides
+    @Singleton
     @JWT
     fun provideOkHttpClient(
         loggingInterceptor: Interceptor,
@@ -88,6 +96,17 @@ object NetworkModule {
         loggingInterceptor: Interceptor,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
+        .build()
+
+    @Provides
+    @Singleton
+    @Kakao
+    fun provideKakaoOkHttpClient(
+        loggingInterceptor: Interceptor,
+        @Kakao kakaoHeaderInterceptor: Interceptor,
+    ): OkHttpClient = OkHttpClient.Builder()
+        .addInterceptor(loggingInterceptor)
+        .addInterceptor(kakaoHeaderInterceptor)
         .build()
 
     @Provides
@@ -109,6 +128,18 @@ object NetworkModule {
         factory: Converter.Factory,
     ): Retrofit = Retrofit.Builder()
         .baseUrl(BASE_URL)
+        .client(client)
+        .addConverterFactory(factory)
+        .build()
+
+    @Provides
+    @Singleton
+    @Kakao
+    fun provideKakaoMapRetrofit(
+        @Kakao client: OkHttpClient,
+        factory: Converter.Factory,
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(KAKAO_BASE_URL)
         .client(client)
         .addConverterFactory(factory)
         .build()
