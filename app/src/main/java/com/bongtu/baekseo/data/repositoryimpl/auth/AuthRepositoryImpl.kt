@@ -18,7 +18,7 @@ class AuthRepositoryImpl @Inject constructor(
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postKakaoLogin(
             request = PostKakaoLoginRequest(
-                accessToken = accessToken
+                accessToken = accessToken,
             )
         )
     }.mapCatching { response ->
@@ -29,7 +29,7 @@ class AuthRepositoryImpl @Inject constructor(
         kakaoId: Long,
         memberName: String,
         memberBirthday: String,
-        memberIncome: String
+        memberIncome: String,
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postSignUp(
             request = PostSignUpRequest(
