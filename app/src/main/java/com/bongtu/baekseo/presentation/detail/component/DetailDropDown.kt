@@ -67,8 +67,8 @@ import java.time.LocalDate
 @Composable
 fun DetailDropDown(
     event: RecordEvent,
-    modifier: Modifier = Modifier,
     attendLabel: String,
+    modifier: Modifier = Modifier,
     location: String? = null,
     address: String? = null,
 ) {
