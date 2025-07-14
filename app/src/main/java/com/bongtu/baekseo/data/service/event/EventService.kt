@@ -8,12 +8,12 @@ import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface EventService {
-    @POST("events")
+    @POST("/api/v1/events")
     suspend fun postEventInfo(
         @Body request: PostEventInfoRequest,
     ): BaseResponse<Unit>
 
-    @POST("events/cost")
+    @POST("/api/v1/events/cost")
     suspend fun postEventCost(
         @Body request: PostEventCostRequest,
     ): BaseResponse<PostEventCostResponse>
