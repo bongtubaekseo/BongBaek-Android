@@ -119,6 +119,7 @@ fun RecommendMainRoute(
         onDateChange = viewModel::updateEventDate,
         onParticipationSelect = viewModel::updateIsEventParticipated,
         onLocationSelect = viewModel::updateEventLocation,
+        onSearchPlace = viewModel::searchPlaces,
         checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
     )
@@ -140,6 +141,7 @@ private fun RecommendMainScreen(
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
     onLocationSelect: (Pair<Double, Double>) -> Unit,
+    onSearchPlace: (String) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -316,10 +318,13 @@ private fun RecommendMainScreen(
                     }
 
                     4 -> RecommendEventLocationContent(
-                        locationY = uiState.latitude,
-                        locationX = uiState.longitude,
+                        latitude = uiState.latitude,
+                        longitude = uiState.longitude,
                         searchValue = searchValue,
                         onSearchValueChange = { searchValue = it },
+                        onSearchClick = {
+                            onSearchPlace(searchValue)
+                        }
                     )
                 }
             }
@@ -364,6 +369,7 @@ private fun RecommendScreenPreview() {
             onDateChange = {},
             onParticipationSelect = {},
             onLocationSelect = {},
+            onSearchPlace = {},
             checkButtonEnabled = { true },
         )
     }
