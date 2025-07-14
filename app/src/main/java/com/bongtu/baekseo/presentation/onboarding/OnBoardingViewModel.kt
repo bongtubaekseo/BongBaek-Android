@@ -24,7 +24,6 @@ import javax.inject.Inject
 class OnBoardingViewModel @Inject constructor(
     private val usernameDataStore: UsernameDataStore,
     private val authRepository: AuthRepository,
-    private val tokenDataStore: TokenDataStore,
     private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
 ) : ViewModel() {
     private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
