@@ -61,10 +61,6 @@ class OnBoardingViewModel @Inject constructor(
             setKakaoLoginUseCase.invoke(token)
                 .onSuccess { response ->
                     updateKakaoId(response.kakaoId)
-                    tokenDataStore.setTokens(
-                        accessToken = response.accessToken,
-                        refreshToken = response.refreshToken,
-                    )
                     if (response.isCompletedSignUp) {
                         _sideEffect.emit(NavigateToHome)
                     } else {
