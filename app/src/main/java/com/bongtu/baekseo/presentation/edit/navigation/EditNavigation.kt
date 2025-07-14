@@ -6,6 +6,7 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.toRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.edit.EditLocationRoute
@@ -25,16 +26,16 @@ fun NavGraphBuilder.editGraph(
     navController: NavController,
     navigateToUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToDetail: () -> Unit,
+    navigateToDetail: (String) -> Unit,
     navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Edit> { backStackEntry ->
         val previousDestination = navController.previousBackStackEntry?.destination
 
-        val (editType, navigateComplete) = when {
+        var (editType, navigateComplete) = when {
             previousDestination?.hasRoute(Detail::class) == true ->
-                EditType.EDIT to navigateToDetail
+                EditType.EDIT to { navigateToDetail("") }       // TODO: Caching 데이터 사용
 
             previousDestination?.hasRoute(Recommend::class) == true ->
                 EditType.EDIT to navigateToFinal

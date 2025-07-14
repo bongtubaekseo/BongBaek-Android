@@ -48,6 +48,7 @@ import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -59,13 +60,13 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
-import com.bongtu.baekseo.presentation.record.type.AttendType
 import java.time.LocalDate
 
 private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 fun DetailRoute(
+    eventId: String,    // TODO: eventId fetch
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
