@@ -15,6 +15,5 @@ import javax.inject.Singleton
 object AuthServiceModule {
     @Provides
     @Singleton
-    @JWT
-    fun provideAuthService(retrofit: Retrofit): AuthService = retrofit.create()
+    fun provideAuthService(@JWT retrofit: Retrofit): AuthService = retrofit.create()
 }
