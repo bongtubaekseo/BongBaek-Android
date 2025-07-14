@@ -8,6 +8,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
+import com.bongtu.baekseo.presentation.edit.type.EditType
 import com.bongtu.baekseo.presentation.recommend.RecommendFinalRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendIntroScreen
 import com.bongtu.baekseo.presentation.recommend.RecommendMainRoute
