@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.domain.usecase
+package com.bongtu.baekseo.domain.usecase.auth
 
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore

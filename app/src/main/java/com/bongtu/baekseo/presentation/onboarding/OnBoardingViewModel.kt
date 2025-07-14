@@ -3,11 +3,10 @@ package com.bongtu.baekseo.presentation.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
-import com.bongtu.baekseo.domain.usecase.SetKakaoLoginUseCase
+import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState

@@ -2,9 +2,7 @@ package com.bongtu.baekseo.presentation.splash
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.local.datastore.TokenDataStore
-import com.bongtu.baekseo.data.repository.auth.AuthRepository
-import com.bongtu.baekseo.domain.usecase.CheckAutoLoginUseCase
+import com.bongtu.baekseo.domain.usecase.auth.CheckAutoLoginUseCase
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
