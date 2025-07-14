@@ -32,6 +32,8 @@ import com.kakao.vectormap.label.LabelStyles
 import timber.log.Timber
 
 private const val MAP_RATIO = 320 / 312f
+private const val DEFAULT_LATITUDE = 37.5665
+private const val DEFAULT_LONGITUDE = 126.9780
 
 @Composable
 fun RecommendEventLocationContent(
@@ -44,7 +46,7 @@ fun RecommendEventLocationContent(
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
-    val defaultPosition = LatLng.from(37.5665, 126.9780)
+    val defaultPosition = LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     val kakaoMapState = remember { mutableStateOf<KakaoMap?>(null) }
 
     LaunchedEffect(latitude, longitude, kakaoMapState.value) {
