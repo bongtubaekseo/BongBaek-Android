@@ -97,7 +97,7 @@ fun EditLocationScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable (onClick = navigateUp),
+                        .noRippleClickable(onClick = navigateUp),
                     tint = BongBaekTheme.colors.white,
                 )
             },
@@ -169,7 +169,6 @@ fun EditLocationScreen(
                         selectedItem = selectedSearchItem,
                         onDismissRequest = { expanded = false },
                         onItemSelected = onSearchItemSelected,
-                        modifier = Modifier,
                     )
                 }
 
