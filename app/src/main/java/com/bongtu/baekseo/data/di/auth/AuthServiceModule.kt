@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.data.di.auth
 
+import com.bongtu.baekseo.core.network.qualifier.JWT
 import com.bongtu.baekseo.data.service.auth.AuthService
 import dagger.Module
 import dagger.Provides
@@ -14,5 +15,6 @@ import javax.inject.Singleton
 object AuthServiceModule {
     @Provides
     @Singleton
+    @JWT
     fun provideAuthService(retrofit: Retrofit): AuthService = retrofit.create()
 }
