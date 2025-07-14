@@ -23,10 +23,10 @@ class OnBoardingContract {
     sealed class OnBoardingSideEffect {
         data object NavigateToHome : OnBoardingSideEffect()
     }
-}
 
-sealed interface SocialLoginState {
-    data object Success : SocialLoginState
-    data object Fail : SocialLoginState
-    data object Idle : SocialLoginState
+    sealed class SocialLoginState {
+        data object Success : SocialLoginState()
+        data object Fail : SocialLoginState()
+        data object Idle : SocialLoginState()
+    }
 }
