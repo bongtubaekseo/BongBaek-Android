@@ -11,6 +11,6 @@ class ScheduleContract {
     data class ScheduleState(
         val scheduleLoadState: UiState<ImmutableList<ScheduleEvent>> = UiState.Loading,
         val eventCategoryType: EventCategoryType = EventCategoryType.ALL,
-        val name: String = ""
+        val name: String = "",
     )
 }
