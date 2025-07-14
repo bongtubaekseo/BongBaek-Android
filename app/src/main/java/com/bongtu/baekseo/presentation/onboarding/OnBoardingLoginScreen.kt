@@ -34,7 +34,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
@@ -49,6 +51,7 @@ import com.bongtu.baekseo.R.string.onboarding_title_white
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
 import com.bongtu.baekseo.presentation.onboarding.type.OnBoardingType
@@ -64,6 +67,16 @@ fun OnBoardingRoute(
     var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
     val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome()
+                }
+            }
+    }
 
     LaunchedEffect(socialLoginState) {
         when (socialLoginState) {
@@ -148,7 +161,6 @@ fun OnBoardingLoginScreen(
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
-
 
     Column(
         modifier = modifier
