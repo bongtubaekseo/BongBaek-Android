@@ -38,7 +38,7 @@ fun EditRoute(
             navigateUp = navigateUp,
             nestedNavigateUp = navController::navigateUp,
             navigateComplete = navigateComplete,
-            viewModel = viewModel,
+            navigateToLocation = { navController.navigate(EditRoute.Location) },
             navigateToMain = {
                 navController.navigate(
                     route = EditRoute.Main,
@@ -50,7 +50,7 @@ fun EditRoute(
                     },
                 )
             },
-            navigateToLocation = { navController.navigate(EditRoute.Location) },
+            viewModel = viewModel,
             modifier = modifier,
         )
     }
