@@ -35,7 +35,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_down
@@ -85,27 +84,42 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
-fun EditRoute(
+fun EditMainRoute(
+    editType: EditType,
+    navigateUp: () -> Unit,
+    navigateComplete: () -> Unit,
+    navigateToLocation: () -> Unit,
+    viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: previousBackStackEntry?.destination?.route 로 분기 처리 예정
-    val editType = EditType.EDIT
     when (editType) {
-        EditType.EDIT -> EditScreen(
+        EditType.EDIT -> EditMainScreen(
             topBarTitle = EditType.EDIT.title,
+            navigateUp = navigateUp,
+            navigateComplete = navigateComplete,
+            navigateToLocation = navigateToLocation,
+            viewModel = viewModel,
             modifier = modifier,
         )
 
-        EditType.ADD -> EditScreen(
+        EditType.ADD -> EditMainScreen(
             topBarTitle = EditType.ADD.title,
+            navigateUp = navigateUp,
+            navigateComplete = navigateComplete,
+            navigateToLocation = navigateToLocation,
+            viewModel = viewModel,
             modifier = modifier,
         )
     }
 }
 
 @Composable
-private fun EditScreen(
+private fun EditMainScreen(
     topBarTitle: String,
+    navigateUp: () -> Unit,
+    navigateComplete: () -> Unit,
+    navigateToLocation: () -> Unit,
+    viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
     // TODO: UiState 사용 예정
@@ -156,9 +170,7 @@ private fun EditScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable {
-                            // TODO: navigateUp 예정
-                        },
+                        .noRippleClickable(onClick = navigateUp),
                     tint = BongBaekTheme.colors.white,
                 )
             },
@@ -273,6 +285,7 @@ private fun EditScreen(
                             dialogDate = date
                             isDatePickerDialogVisible = true
                         },
+                    isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
@@ -300,7 +313,7 @@ private fun EditScreen(
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = { /* TODO: 지도 추가 화면 이동 */ }
+                                    onClick = navigateToLocation,
                                 )
                         )
                     }
@@ -336,9 +349,7 @@ private fun EditScreen(
     }
 
     SaveButton(
-        onClick = {
-            // TODO: 저장 로직
-        },
+        onClick = navigateComplete,
         enabled = isFormFilled,
         modifier = Modifier
             .padding(
@@ -499,15 +510,5 @@ private fun SaveButton(
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
         }
-    }
-}
-
-@Preview
-@Composable
-private fun EditScreenPreview() {
-    BongBaekTheme {
-        EditScreen(
-            topBarTitle = EditType.EDIT.title,
-        )
     }
 }
