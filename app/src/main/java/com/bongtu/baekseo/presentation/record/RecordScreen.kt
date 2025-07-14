@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -37,7 +38,9 @@ fun RecordRoute(
         BackHandler { viewModel.updateDeleteModeCancel() }
     }
 
-    LaunchedEffect(uiState.isDeleteMode) { setBottomBarVisible(!uiState.isDeleteMode) }
+    LaunchedEffect(uiState.isDeleteMode) {
+        setBottomBarVisible(!uiState.isDeleteMode)
+    }
 
     LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
 
@@ -68,7 +71,9 @@ private fun RecordScreen(
     onDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val isDeleteButtonEnabled = uiState.selectedDeleteEventIds.isNotEmpty()
+    val isDeleteButtonEnabled = remember(uiState.selectedDeleteEventIds) {
+        uiState.selectedDeleteEventIds.isNotEmpty()
+    }
 
     Column(
         modifier = modifier
