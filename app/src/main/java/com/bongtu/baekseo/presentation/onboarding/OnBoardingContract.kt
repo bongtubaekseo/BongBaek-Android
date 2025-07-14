@@ -6,13 +6,9 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 
 class OnBoardingContract {
     @Immutable
-    data class OnBoardingState(
-        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
-    )
-
-    @Immutable
     data class OnBoardingUiState(
         val loadState: UiState<Nothing> = UiState.Empty,
+        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
         val kakaoId: Long = 0L,
         val name: String = "",
         val birth: String = "",
@@ -24,9 +20,10 @@ class OnBoardingContract {
         data object NavigateToHome : OnBoardingSideEffect()
     }
 
-    sealed class SocialLoginState {
-        data object Success : SocialLoginState()
-        data object Fail : SocialLoginState()
-        data object Idle : SocialLoginState()
-    }
+}
+
+sealed interface SocialLoginState {
+    data object Success : SocialLoginState
+    data object Fail : SocialLoginState
+    data object Idle : SocialLoginState
 }
