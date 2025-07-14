@@ -85,9 +85,9 @@ fun RecommendDateCard(
                 onValueChange = onTextChange,
                 onDismissRequest = {
                     isDialogOpen = false
+                    onTextChange("")
                 },
                 onConfirmClick = onConfirmClick,
-                // TODO: Date 검증 후 date에 값 update 해주기
             )
         }
     }
