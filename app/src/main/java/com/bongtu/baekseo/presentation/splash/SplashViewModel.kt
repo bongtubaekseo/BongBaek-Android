@@ -17,8 +17,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SplashViewModel @Inject constructor(
-    private val tokenDataStore: TokenDataStore,
-    private val authRepository: AuthRepository,
     private val checkAutoLoginUseCase: CheckAutoLoginUseCase,
 ) : ViewModel() {
     private val _sideEffect = MutableSharedFlow<SplashSideEffect>()
