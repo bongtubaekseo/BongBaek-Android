@@ -11,6 +11,7 @@ import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,6 +21,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+@HiltViewModel
 class ScheduleViewModel @Inject constructor(
     // TODO: Repository 주입
     private val usernameDataStore: UsernameDataStore,
