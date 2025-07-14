@@ -77,7 +77,9 @@ fun EditLocationScreen(
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val isEmptySearchItems = searchItems.isEmpty()
+    val isEmptySearchItems = remember(searchItems) {
+        searchItems.isEmpty()
+    }
 
     Column(
         modifier = modifier
