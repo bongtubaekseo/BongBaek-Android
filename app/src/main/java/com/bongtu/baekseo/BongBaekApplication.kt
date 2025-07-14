@@ -3,6 +3,7 @@ package com.bongtu.baekseo
 import android.app.Application
 import androidx.appcompat.app.AppCompatDelegate
 import com.kakao.sdk.common.KakaoSdk
+import com.kakao.vectormap.KakaoMapSdk
 import dagger.hilt.android.HiltAndroidApp
 import timber.log.Timber
 
@@ -25,6 +26,7 @@ class BongBaekApplication : Application() {
     }
 
     private fun initKakaoSdk() {
-        KakaoSdk.init(this, BuildConfig.KAKAO_KEY)
+        KakaoSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
+        KakaoMapSdk.init(this, BuildConfig.KAKAO_NATIVE_KEY)
     }
 }

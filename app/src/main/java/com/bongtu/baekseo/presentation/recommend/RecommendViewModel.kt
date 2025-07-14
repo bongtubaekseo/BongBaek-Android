@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
     // TODO: Repository 주입
+    private val kakaoMapRepository: KakaoMapRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RecommendUiState())
     val uiState = _uiState.asStateFlow()
@@ -68,7 +70,10 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateEventLocation(newEventLocation: Pair<Double, Double>) = _uiState.update {
-        it.copy(eventLocation = newEventLocation)
+        it.copy(
+            latitude = newEventLocation.first,
+            longitude = newEventLocation.second,
+        )
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {
@@ -81,7 +86,7 @@ class RecommendViewModel @Inject constructor(
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null
-                else -> eventLocation != null
+                else -> latitude != 0.0 && longitude != 0.0
             }
         }
     }
@@ -89,6 +94,16 @@ class RecommendViewModel @Inject constructor(
     fun fetchExpense() = viewModelScope.launch {
         // TODO: Repository 연결(경조사비 추천 GET 요청)
         _sideEffect.emit(MainSideEffect.NavigateToResult)
+    }
+
+    fun searchPlaces(query: String) = viewModelScope.launch {
+        kakaoMapRepository.searchPlaces(query).onSuccess {
+            _uiState.update {
+                it.copy(
+                    searchResult = it.searchResult,
+                )
+            }
+        }
     }
 
     fun saveEventInformation() = viewModelScope.launch {
