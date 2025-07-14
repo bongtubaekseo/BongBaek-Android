@@ -87,21 +87,19 @@ class OnBoardingViewModel @Inject constructor(
         }
     }
 
-    private fun updateOnBoardingUiState(value: UiState<Nothing>) {
+    private fun updateOnBoardingUiState(value: UiState<Nothing>) =
         _uiState.update { currentState ->
             currentState.copy(
                 loadState = value,
             )
         }
-    }
 
     private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
         it.copy(kakaoId = newKakaoId)
     }
 
-    private fun saveUsername(name: String) {
+    private fun saveUsername(name: String) =
         viewModelScope.launch {
             usernameDataStore.setUsername(name)
         }
-    }
 }
