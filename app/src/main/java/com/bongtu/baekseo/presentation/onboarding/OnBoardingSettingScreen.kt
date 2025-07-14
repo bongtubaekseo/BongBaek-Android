@@ -212,7 +212,6 @@ fun OnBoardingSettingScreen(
             BongBaekButton(
                 title = stringResource(id = button_start_service),
                 onClick = {
-                    viewModel.saveUsername(uiState.name)
                     viewModel.postSignUp()
                 },
                 buttonType = ButtonType.PRIMARY,

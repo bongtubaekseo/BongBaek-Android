@@ -6,6 +6,7 @@ import com.bongtu.baekseo.data.model.auth.KakaoLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
 
 fun PostKakaoLoginResponse.toModel() = KakaoLogin(
+    name = name,
     accessToken = token?.accessToken ?: "",
     refreshToken = token?.refreshToken ?: "",
     isCompletedSignUp = isCompletedSignUp,

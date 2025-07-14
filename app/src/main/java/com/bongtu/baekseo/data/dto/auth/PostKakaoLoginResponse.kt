@@ -5,6 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PostKakaoLoginResponse (
+    @SerialName("name")
+    val name: String,
     @SerialName("token")
     val token: TokenInfo? = null,
     @SerialName("isCompletedSignUp")

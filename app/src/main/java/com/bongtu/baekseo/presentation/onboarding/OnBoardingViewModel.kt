@@ -37,13 +37,6 @@ class OnBoardingViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<OnBoardingSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun saveUsername(name: String) {
-        viewModelScope.launch {
-            usernameDataStore.setUsername(name)
-            _sideEffect.emit(NavigateToHome)
-        }
-    }
-
     fun updateName(newName: String) = _uiState.update {
         it.copy(name = newName)
     }
@@ -92,8 +85,9 @@ class OnBoardingViewModel @Inject constructor(
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth.toFormattedDate(),
                 memberIncome = uiState.value.income,
-            ).onSuccess {
+            ).onSuccess { response ->
                 _sideEffect.emit(NavigateToHome)
+                saveUsername(response.name)
             }.onFailure {
                 updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
@@ -110,5 +104,11 @@ class OnBoardingViewModel @Inject constructor(
 
     private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
         it.copy(kakaoId = newKakaoId)
+    }
+
+    private fun saveUsername(name: String) {
+        viewModelScope.launch {
+            usernameDataStore.setUsername(name)
+        }
     }
 }

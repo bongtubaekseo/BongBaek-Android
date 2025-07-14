@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -36,7 +35,6 @@ import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import java.time.LocalDate
 
 @Composable
@@ -50,6 +48,7 @@ fun ScheduleRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchScheduleEvent()
+        viewModel.getUsername()
     }
 
     DisposableEffect(Unit) {
@@ -80,7 +79,7 @@ private fun ScheduleScreen(
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(
-            title = stringResource(id = schedule_title, "봉백"),
+            title = stringResource(id = schedule_title, uiState.name),
             topBarType = TopBarType.LEADING_ICON,
             leadingIcon = {
                 Icon(
