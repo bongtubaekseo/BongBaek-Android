@@ -107,7 +107,7 @@ fun RecommendMainRoute(
     RecommendMainScreen(
         uiState = uiState,
         onBackClick = onBackClick,
-        navigateToResult = navigateToResult, // TODO: ViewModel API 호출 함수로 변경
+        fetchExpense = viewModel::fetchExpense,
         onPageIndexChange = viewModel::updatePageIndex,
         onNameChange = viewModel::updateName,
         onNicknameChange = viewModel::updateNickname,
@@ -129,7 +129,7 @@ fun RecommendMainRoute(
 private fun RecommendMainScreen(
     uiState: RecommendUiState,
     onBackClick: () -> Unit,
-    navigateToResult: () -> Unit,
+    fetchExpense: () -> Unit,
     onPageIndexChange: (Int) -> Unit,
     onNameChange: (String) -> Unit,
     onNicknameChange: (String) -> Unit,
@@ -256,7 +256,7 @@ private fun RecommendMainScreen(
                         modifier = Modifier
                             .noRippleClickable {
                                 onLocationSelect(Pair(0.0, 0.0))
-                                navigateToResult()
+                                fetchExpense()
                             },
                     )
                 }
@@ -307,6 +307,7 @@ private fun RecommendMainScreen(
                                 onTextChange = { text = it },
                                 onConfirmClick = {
                                     onDateChange(text)
+                                    text = ""
                                 },
                             )
 
@@ -334,7 +335,7 @@ private fun RecommendMainScreen(
             BongBaekButton(
                 title = stringResource(buttonTitleRes),
                 onClick = {
-                    if (uiState.pageIndex == 4) navigateToResult()
+                    if (uiState.pageIndex == 4) fetchExpense()
                     else onPageIndexChange(uiState.pageIndex + 1)
                 },
                 buttonType = ButtonType.PRIMARY,
@@ -357,7 +358,7 @@ private fun RecommendScreenPreview() {
         RecommendMainScreen(
             uiState = RecommendUiState(),
             onBackClick = {},
-            navigateToResult = {},
+            fetchExpense = {},
             onPageIndexChange = {},
             onNameChange = {},
             onNicknameChange = {},
