@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
@@ -152,6 +153,15 @@ private fun MainNavHost(
         detailGraph(
             navigateUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
+            navigateToRecord = {
+                navigator.navController.navigateToRecord(
+                    navOptions = navOptions {
+                        popUpTo<Detail> {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
             modifier = modifier,
         )
 
@@ -159,8 +169,9 @@ private fun MainNavHost(
             navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
             navigateToFinal = navigator::navigateUp,        // TODO: 네비 방식 점검 필요
-            navigateToDetail = {
+            navigateToDetail = { eventId ->
                 navigator.navController.navigateToDetail(
+                    eventId = eventId,
                     navOptions = navOptions {
                         popUpTo<Edit> {
                             inclusive = true
