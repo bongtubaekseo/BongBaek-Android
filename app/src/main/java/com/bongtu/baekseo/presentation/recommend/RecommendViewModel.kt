@@ -112,7 +112,7 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateButtonState(): Boolean {
-        with(_uiState.value) {
+        with(uiState.value) {
             return when (pageIndex) {
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
                         && nameError == null && nicknameError == null
