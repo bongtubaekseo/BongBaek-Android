@@ -27,6 +27,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
@@ -127,7 +128,7 @@ private fun ScheduleScreen(
 
             is UiState.Success -> {
                 ScheduleListContent(
-                    scheduleEventList = uiState.scheduleLoadState.data,
+                    scheduleEventList = uiState.scheduleLoadState.data.events,
                     onCardClick = {
                         // TODO: Card 클릭 이벤트
                     },
@@ -142,67 +143,73 @@ private fun ScheduleScreen(
 @Preview
 @Composable
 private fun ScheduleScreenPreview() {
+    val events = persistentListOf(
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.09.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.08.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.07.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.06.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.05.11 (목)",
+        ),
+    )
+
     BongBaekTheme {
         ScheduleScreen(
             uiState = ScheduleState(
                 scheduleLoadState = UiState.Success(
-                    persistentListOf(
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.02.11 (목)",
-                        ),
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.09.11 (목)",
-                        ),
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.08.11 (목)",
-                        ),
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.07.11 (목)",
-                        ),
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.06.11 (목)",
-                        ),
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostName = "공승준",
-                            hostNickname = "초록승준",
-                            eventCategory = "결혼식",
-                            relationship = "친구",
-                            cost = 10000,
-                            eventDate = "2025.05.11 (목)",
-                        ),
-                    ),
-                ),
+                    data = PageScheduleEvent(
+                        events = events,
+                        currentPage = 0,
+                        isLast = false
+                    )
+                )
             ),
             onCategoryClick = {},
             onBackClick = {},

@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
-import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,32 +27,39 @@ class ScheduleViewModel @Inject constructor(
 
     fun fetchScheduleEvent() {
         viewModelScope.launch {
-            if (!uiState.value.isLastPage) {
-                eventRepository.getScheduleEvents(
-                    page = uiState.value.page,
-                    category = uiState.value.eventCategoryType.label,
-                ).onSuccess { response ->
-                    val updatedList =
-                        if (uiState.value.page == 0) response else uiState.value.eventList + response
+            eventRepository.getScheduleEvents(
+                page = uiState.value.page,
+                category = uiState.value.eventCategoryType.label,
+            ).onSuccess { response ->
+                val newEvents = response.events
+                val updatedList =
+                    if (uiState.value.page == 0) newEvents else uiState.value.eventList + newEvents
 
-                    _uiState.update { currentState ->
-                        currentState.copy(
-                            scheduleLoadState = UiState.Success(updatedList.toPersistentList()),
-                            eventList = updatedList.toPersistentList(),
-                        )
-                    }
-
-                    if (response.isEmpty()) {
-                        updateScheduleUiState(UiState.Empty)
-                    }
-                }.onFailure {
-                    updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        scheduleLoadState = if (updatedList.isEmpty()) {
+                            UiState.Empty
+                        } else {
+                            UiState.Success(
+                                PageScheduleEvent(
+                                    events = updatedList.toPersistentList(),
+                                    currentPage = response.currentPage,
+                                    isLast = response.isLast,
+                                )
+                            )
+                        },
+                        eventList = updatedList.toPersistentList(),
+                        isLastPage = response.isLast,
+                        page = response.currentPage,
+                    )
                 }
+            }.onFailure {
+                updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
     }
 
-    private fun updateScheduleUiState(value: UiState<ImmutableList<ScheduleEvent>>) =
+    private fun updateScheduleUiState(value: UiState<PageScheduleEvent>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
@@ -67,6 +74,8 @@ class ScheduleViewModel @Inject constructor(
                 currentState.copy(
                     page = 0,
                     eventCategoryType = eventCategoryType,
+                    eventList = persistentListOf(),
+                    isLastPage = false,
                 )
             }
             fetchScheduleEvent()

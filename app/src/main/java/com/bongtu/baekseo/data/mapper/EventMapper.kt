@@ -2,18 +2,20 @@ package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
 import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
-import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import kotlinx.collections.immutable.toImmutableList
 
 fun Host.toDto() = HostInfoDto(
     hostName = name,
@@ -67,4 +69,12 @@ fun GetScheduleEventsResponse.Event.toModel() = ScheduleEvent(
     relationship = eventInfo.relationship,
     cost = eventInfo.cost,
     eventDate = eventInfo.eventDate,
+)
+
+fun GetScheduleEventsResponse.toModel() = PageScheduleEvent(
+    events = events.map {
+        it.toModel()
+    }.toImmutableList(),
+    currentPage = currentPage,
+    isLast = isLast,
 )

@@ -6,7 +6,7 @@ import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
-import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 
 interface EventRepository {
@@ -28,5 +28,5 @@ interface EventRepository {
     suspend fun getScheduleEvents(
         page: Int,
         category: String? = null,
-    ): Result<ImmutableList<ScheduleEvent>>
+    ): Result<PageScheduleEvent>
 }
