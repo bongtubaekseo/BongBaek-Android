@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchHomeEvent() {
         viewModelScope.launch {
-            eventRepository.postHomeEvents()
+            eventRepository.getHomeEvents()
                 .onSuccess { response ->
                     updateHomeUiState(
                         value = UiState.Success(response)
@@ -43,13 +43,14 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    private fun updateHomeUiState(value: UiState<ImmutableList<HomeEvent>>) {
-        _uiState.update { currentState ->
-            currentState.copy(
-                homeLoadState = value,
-            )
+    private fun updateHomeUiState(value: UiState<ImmutableList<HomeEvent>>) =
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    homeLoadState = value,
+                )
+            }
         }
-    }
 
     fun getUsername() {
         viewModelScope.launch {
