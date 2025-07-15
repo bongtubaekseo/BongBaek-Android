@@ -197,6 +197,9 @@ private fun MainNavHost(
                     }
                 )
             },
+            navigateToSchedule = {
+                // TODO: schedule navigate
+            },
             modifier = modifier,
         )
     }
