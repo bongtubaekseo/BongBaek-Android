@@ -15,6 +15,7 @@ import com.bongtu.baekseo.presentation.edit.EditViewModel
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
+import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToEdit(navOptions: NavOptions? = null) =
@@ -36,9 +37,9 @@ fun NavGraphBuilder.editGraph(
             previousDestination?.hasRoute(Detail::class) == true -> {
                 EditEntryType.FROM_DETAIL
             }
-//            previousDestination?.hasRoute(Result::class) == true -> {         // TODO: 중첩 네비 분리 후 활성화
-//                EditEntryType.FROM_RESULT
-//            }
+            previousDestination?.hasRoute(RecommendResult::class) == true -> {
+                EditEntryType.FROM_RESULT
+            }
 //            previousDestination?.hasRoute(Schedule::class) == true -> {      // TODO: 중첩 네비 분리 후 활성화
 //                EditEntryType.FROM_SCHEDULE
 //            }
@@ -53,7 +54,6 @@ fun NavGraphBuilder.editGraph(
             EditEntryType.FROM_DETAIL -> {
                 { navigateToDetail("") }                // TODO: Caching 데이터 사용
             }
-
             EditEntryType.FROM_RESULT -> navigateToFinal
         }
 
