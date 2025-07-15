@@ -15,7 +15,6 @@ import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSide
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -134,8 +133,8 @@ class RecommendViewModel @Inject constructor(
                     longitude = longitude,
                 ),
                 highAccuracy = HighAccuracy(
-                    contactFrequency = if (isHighAccuracy) contactFrequency.roundToInt() else DEFAULT_WEIGHT,
-                    meetFrequency = if (isHighAccuracy) meetFrequency.roundToInt() else DEFAULT_WEIGHT,
+                    contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
+                    meetFrequency = if (isHighAccuracy) mapFrequencyToScale(meetFrequency) else DEFAULT_WEIGHT,
                 )
             ).onSuccess { response ->
                 _uiState.update {
@@ -191,8 +190,8 @@ class RecommendViewModel @Inject constructor(
                     longitude = longitude,
                 ),
                 highAccuracy = HighAccuracy(
-                    contactFrequency = if (isHighAccuracy) contactFrequency.roundToInt() else DEFAULT_WEIGHT,
-                    meetFrequency = if (isHighAccuracy) meetFrequency.roundToInt() else DEFAULT_WEIGHT,
+                    contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
+                    meetFrequency = if (isHighAccuracy) mapFrequencyToScale(meetFrequency) else DEFAULT_WEIGHT,
                 )
             )
         }.onSuccess { response ->
@@ -207,5 +206,6 @@ class RecommendViewModel @Inject constructor(
     companion object {
         private const val DEFAULT_WEIGHT = 3
         private const val DEBOUNCE_DELAY = 500L
+        private fun mapFrequencyToScale(value: Float) = (value * 4 + 1).roundToInt().coerceIn(1, 5)
     }
 }
