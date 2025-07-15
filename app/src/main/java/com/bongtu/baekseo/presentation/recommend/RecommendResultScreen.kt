@@ -38,6 +38,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import com.bongtu.baekseo.presentation.recommend.component.RecommendExpenseCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendResultContent
 import kotlinx.coroutines.flow.filterIsInstance
@@ -70,9 +71,8 @@ fun RecommendResultRoute(
     }
 
     RecommendResultScreen(
-        expense = uiState.expense,
-        eventType = uiState.eventType!!,
-        onConfirmClick = navigateToFinal,
+        uiState = uiState,
+        onConfirmClick = viewModel::saveEventInformation,
         onEditClick = navigateToEdit,
         modifier = modifier,
     )
@@ -80,8 +80,7 @@ fun RecommendResultRoute(
 
 @Composable
 private fun RecommendResultScreen(
-    expense: Int,
-    eventType: EventType,
+    uiState: RecommendUiState,
     onConfirmClick: () -> Unit,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -133,8 +132,8 @@ private fun RecommendResultScreen(
                 }
 
                 RecommendExpenseCard(
-                    event = eventType,
-                    expense = expense,
+                    event = uiState.eventType!!,
+                    expense = uiState.expense,
                     isLottieEnded = isLottieEnded,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -143,7 +142,9 @@ private fun RecommendResultScreen(
             }
 
             RecommendResultContent(
-                expense = expense,
+                expense = uiState.expense,
+                minExpense = uiState.minExpense,
+                maxExpense = uiState.maxExpense,
                 isLottieEnded = isLottieEnded,
                 onConfirmClick = onConfirmClick,
                 onEditClick = onEditClick,
@@ -158,8 +159,7 @@ private fun RecommendResultScreen(
 private fun RecommendResultScreenPreview() {
     BongBaekTheme {
         RecommendResultScreen(
-            expense = 125_000,
-            eventType = EventType.WEDDING,
+            uiState = RecommendUiState(),
             onConfirmClick = {},
             onEditClick = {},
         )

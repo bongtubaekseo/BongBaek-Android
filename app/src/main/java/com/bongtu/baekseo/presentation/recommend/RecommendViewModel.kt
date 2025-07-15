@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -85,8 +86,7 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateEventDate(newEventDate: String) = _uiState.update {
-        val formattedDate = "${newEventDate.substring(0, 2)}/${newEventDate.substring(2, 4)}/${newEventDate.substring(4)}"
-        it.copy(eventDate = formattedDate)
+        it.copy(eventDate = newEventDate)
     }
 
     fun updateIsEventParticipated(newIsEventParticipated: Boolean) = _uiState.update {
@@ -180,7 +180,7 @@ class RecommendViewModel @Inject constructor(
                     relationType = relationType!!.label,
                     cost = expense,
                     isEventParticipated = isEventParticipated!!,
-                    eventDate = eventDate.replace("/", "-"),
+                    eventDate = eventDate.toFormattedDate(),
                     note = "",
                 ),
                 location = Location(
