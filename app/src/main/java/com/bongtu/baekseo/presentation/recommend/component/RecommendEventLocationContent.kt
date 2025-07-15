@@ -33,7 +33,6 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import timber.log.Timber
 
 private const val MAP_RATIO = 320 / 312f
@@ -42,8 +41,8 @@ private const val DEFAULT_LONGITUDE = 126.9780
 
 @Composable
 fun RecommendEventLocationContent(
-    latitude: Double,
-    longitude: Double,
+    selectedPlace: Place?,
+    onPlaceSelect: (Place) -> Unit,
     searchValue: String,
     onSearchValueChange: (String) -> Unit,
     searchResult: ImmutableList<Place>,
@@ -85,13 +84,16 @@ fun RecommendEventLocationContent(
                 )
 
                 if (searchResult.isNotEmpty()) {
-                    BongBaekDropdownMenu(
+                    BongBaekDropdownMenu<Place>(
                         expanded = true,
-                        items = searchResult.map { it.name }.toPersistentList(),
-                        maxItemSize = 5,
-                        selectedItem = "",
+                        items = searchResult,
+                        maxItemSize = 3,
+                        selectedItem = selectedPlace,
                         onDismissRequest = { },
-                        onItemSelected = { }
+                        onItemSelect = { place ->
+                            onPlaceSelect(place)
+                        },
+                        label = { it.name },
                     )
                 }
             }
@@ -141,8 +143,8 @@ private fun RecommendEventLocationContentPreview() {
 
     BongBaekTheme {
         RecommendEventLocationContent(
-            latitude = 0.0,
-            longitude = 0.0,
+            selectedPlace = null,
+            onPlaceSelect = {},
             searchValue = searchValue,
             onSearchValueChange = { searchValue = it },
             searchResult = persistentListOf(),
