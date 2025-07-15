@@ -13,7 +13,7 @@ class EditContract {
         val eventCategory: String = "",
         val relationship: String = "",
         val cost: String = "",
-        val isEventParticipated: Boolean = false,
+        val attendLabel: String = "",
         val eventDate: String = "",
         val note: String = "",
         val locationInfo: Location? = null,
