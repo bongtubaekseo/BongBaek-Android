@@ -13,19 +13,11 @@ data class FetchHomeEventsResponse(
         @SerialName("eventId")
         val eventId: String,
         @SerialName("hostInfo")
-        val hostInfo: HostInfo,
+        val hostInfo: HostInfoDto,
         @SerialName("eventInfo")
         val eventInfo: EventInfo,
         @SerialName("locationInfo")
         val locationInfo: LocationInfo,
-    )
-
-    @Serializable
-    data class HostInfo(
-        @SerialName("hostName")
-        val hostName: String,
-        @SerialName("hostNickname")
-        val hostNickname: String,
     )
 
     @Serializable
