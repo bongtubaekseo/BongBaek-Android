@@ -43,7 +43,7 @@ fun NavGraphBuilder.recommendGraph(
         composable<RecommendIntro> {
             RecommendIntroScreen(
                 navigateToUp = navigateToUp,
-                navigateToNext = { navController.navigateToRecommendMain() },
+                navigateToMain = navController::navigateToRecommendMain,
                 modifier = modifier,
             )
         }
@@ -53,7 +53,7 @@ fun NavGraphBuilder.recommendGraph(
 
             RecommendMainRoute(
                 navigateToUp = navController::navigateUp,
-                navigateToResult = { navController.navigateToRecommendResult() },
+                navigateToResult = navController::navigateToRecommendResult,
                 viewModel = viewModel,
                 modifier = modifier,
             )
@@ -63,7 +63,7 @@ fun NavGraphBuilder.recommendGraph(
             val viewModel = backStackEntry.sharedViewModel<RecommendViewModel>(navController)
 
             RecommendResultRoute(
-                navigateToFinal = { navController.navigateToRecommendFinal() },
+                navigateToFinal = navController::navigateToRecommendFinal,
                 navigateToEdit = navigateToEdit,
                 viewModel = viewModel,
                 modifier = modifier,
