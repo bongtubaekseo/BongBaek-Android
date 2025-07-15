@@ -121,8 +121,6 @@ fun BongBaekDatePickerDialog(
 
                 AnimatedVisibility(
                     visible = hasInput && !isValid,
-                    enter = EnterTransition.None,
-                    exit = ExitTransition.None,
                     modifier = Modifier.padding(top = 6.dp),
                 ) {
                     Row(
@@ -172,8 +170,8 @@ fun BongBaekDatePickerDialog(
                             )
                             .noRippleClickable {
                                 if (isValid) {
-                                    onDismissRequest()
                                     onConfirmClick()
+                                    onDismissRequest()
                                 }
                             },
                         contentAlignment = Alignment.Center,

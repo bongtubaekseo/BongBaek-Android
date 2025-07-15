@@ -2,8 +2,6 @@ package com.bongtu.baekseo.presentation.recommend
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -21,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.raw.lottie_envelope
+import com.bongtu.baekseo.R.raw.lottie_success
 import com.bongtu.baekseo.R.string.recommendation_record_description
 import com.bongtu.baekseo.R.string.recommendation_record_title
 import com.bongtu.baekseo.R.string.recommendation_record_topbar
@@ -43,7 +41,7 @@ fun RecommendFinalRoute(
     BackHandler {
         // 뒤로가기 버튼 방지 TODO: 뭔가 더 깔끔한 방법 찾아야 할 듯
     }
-    
+
     RecommendFinalScreen(
         onHomeButtonClick = navigateToHome,
         onRecordButtonClick = navigateToRecord,
@@ -57,37 +55,32 @@ private fun RecommendFinalScreen(
     onRecordButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    Box(
+    Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .padding(
-                horizontal = 20.dp,
-            )
             .systemBarsPadding(),
     ) {
         BongBaekTopBar(
             title = stringResource(recommendation_record_topbar),
             topBarType = TopBarType.TEXT_ONLY_CENTER,
+        )
+
+        LottieFiniteOverlay(
+            lottieRes = lottie_success,
             modifier = Modifier
-                .align(Alignment.TopCenter),
+                .aspectRatio(1f)
+                .clipToBounds()
+                .padding(bottom = 30.dp),
         )
 
         Column(
             modifier = Modifier
-                .align(Alignment.Center),
+                .padding(
+                    horizontal = 20.dp,
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            LottieFiniteOverlay(
-                lottieRes = lottie_envelope, // TODO: Lottie 수정
-                modifier = Modifier
-                    .padding(horizontal = 100.dp)
-                    .aspectRatio(1f)
-                    .clipToBounds(),
-            )
-
-            Spacer(modifier = Modifier.height(30.dp))
-
             Text(
                 text = stringResource(recommendation_record_title),
                 style = BongBaekTheme.typography.headBold24,
@@ -103,13 +96,9 @@ private fun RecommendFinalScreen(
                 color = BongBaekTheme.colors.gray300,
                 textAlign = TextAlign.Center,
             )
-        }
 
-        Column(
-            modifier = Modifier
-                .align(Alignment.BottomCenter),
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
+            Spacer(modifier = Modifier.weight(1f))
+
             BongBaekButton(
                 title = stringResource(recommendation_to_home),
                 onClick = onHomeButtonClick,
@@ -117,6 +106,9 @@ private fun RecommendFinalScreen(
                 modifier = Modifier
                     .fillMaxWidth(),
             )
+
+            Spacer(modifier = Modifier.height(10.dp))
+
             BongBaekButton(
                 title = stringResource(recommendation_to_record),
                 onClick = onRecordButtonClick,

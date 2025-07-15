@@ -30,6 +30,7 @@ import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.textfield.RoundedBoxTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateTextFieldFormat
 
 @Composable
 fun RecommendDateCard(
@@ -76,6 +77,7 @@ fun RecommendDateCard(
             onClick = {
                 isDialogOpen = true
             },
+            visualTransformation = DateTextFieldFormat(),
         )
 
         if (isDialogOpen) {
@@ -85,9 +87,9 @@ fun RecommendDateCard(
                 onValueChange = onTextChange,
                 onDismissRequest = {
                     isDialogOpen = false
+                    onTextChange("")
                 },
                 onConfirmClick = onConfirmClick,
-                // TODO: Date 검증 후 date에 값 update 해주기
             )
         }
     }
