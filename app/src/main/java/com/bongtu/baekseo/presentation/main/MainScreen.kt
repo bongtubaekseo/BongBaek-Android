@@ -122,6 +122,7 @@ private fun MainNavHost(
         )
 
         recommendGraph(
+            navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
             navigateToHome = {
                 navigator.navController.navigateToHome(
