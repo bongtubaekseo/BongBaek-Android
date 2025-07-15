@@ -120,16 +120,19 @@ class RecommendViewModel @Inject constructor(
                     contactFrequency = if (isHighAccuracy) contactFrequency.roundToInt() else DEFAULT_WEIGHT,
                     meetFrequency = if (isHighAccuracy) meetFrequency.roundToInt() else DEFAULT_WEIGHT,
                 )
-            ).onSuccess {
+            ).onSuccess { response ->
                 _uiState.update {
                     it.copy(
-                        expense = it.expense,
+                        expense = response.cost,
+                        minExpense = response.min,
+                        maxExpense = response.max,
                     )
                 }
-                Timber.d("fetchExpense: $it")
+                Timber.d("fetchExpense: $response")
                 _sideEffect.emit(MainSideEffect.NavigateToResult)
             }.onFailure {
                 // TODO: 실패 처리
+                Timber.d("fetchExpense: $it")
             }
         }
     }
