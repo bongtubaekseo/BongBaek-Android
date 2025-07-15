@@ -72,11 +72,10 @@ fun DetailDropDown(
 ) {
     var isDetailVisible by remember { mutableStateOf(false) }
     val attendType = remember(event.isEventParticipated) {
-        if (event.isEventParticipated) {
+        if (event.isEventParticipated)
             AttendType.ATTEND
-        } else {
+        else
             AttendType.ABSENT
-        }
     }
     val eventDate = event.eventDate.toFormattedShortEnglishDate()
 
