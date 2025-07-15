@@ -28,20 +28,18 @@ import com.bongtu.baekseo.R.string.recommendation_name_placeholder
 import com.bongtu.baekseo.R.string.recommendation_name_title
 import com.bongtu.baekseo.R.string.recommendation_nickname_placeholder
 import com.bongtu.baekseo.core.designsystem.component.textfield.RoundedBoxTextField
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
 fun RecommendTextFieldCard(
     name: String,
     onNameChange: (String) -> Unit,
+    nameError: String?,
     nickname: String,
     onNicknameChange: (String) -> Unit,
+    nicknameError: String?,
     modifier: Modifier = Modifier,
 ) {
-    var nameValidateResult: TextFieldValidateResult by remember { mutableStateOf(TextFieldValidateResult.Default) }
-    var nicknameValidateResult: TextFieldValidateResult by remember { mutableStateOf(TextFieldValidateResult.Default) }
-
     Column(
         modifier = modifier
             .background(
@@ -73,11 +71,8 @@ fun RecommendTextFieldCard(
         RoundedBoxTextField(
             text = name,
             placeholder = stringResource(recommendation_name_placeholder),
+            errorText = nameError,
             onTextChange = onNameChange,
-            onInputDone = {
-                nameValidateResult = TextFieldValidateResult.validate(name)
-            },
-            validateResult = nameValidateResult,
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -85,12 +80,8 @@ fun RecommendTextFieldCard(
         RoundedBoxTextField(
             text = nickname,
             placeholder = stringResource(recommendation_nickname_placeholder),
+            errorText = nicknameError,
             onTextChange = onNicknameChange,
-            onInputDone = {
-                nicknameValidateResult = TextFieldValidateResult.validate(nickname)
-            },
-            validateResult = nicknameValidateResult,
-            // TODO 검증로직 추가 필요 + 검증 방식 수정 필요
         )
     }
 }
@@ -109,8 +100,10 @@ private fun RecommendTextFieldCardPreview() {
             RecommendTextFieldCard(
                 name = name,
                 onNameChange = { name = it },
+                nameError = null,
                 nickname = nickname,
                 onNicknameChange = { nickname = it },
+                nicknameError = null,
             )
         }
     }

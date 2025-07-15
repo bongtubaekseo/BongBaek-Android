@@ -33,8 +33,10 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 fun RecommendRelationTypeContent(
     name: String,
     onNameChange: (String) -> Unit,
+    nameError: String?,
     nickname: String,
     onNicknameChange: (String) -> Unit,
+    nicknameError: String?,
     selectedRelation: RelationType?,
     onRelationSelect: (RelationType) -> Unit,
     isChecked: Boolean,
@@ -51,8 +53,10 @@ fun RecommendRelationTypeContent(
         RecommendTextFieldCard(
             name = name,
             onNameChange = onNameChange,
+            nameError = nameError,
             nickname = nickname,
             onNicknameChange = onNicknameChange,
+            nicknameError = nicknameError,
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -124,8 +128,10 @@ private fun RecommendRelationTypeContentPreview() {
             onRelationSelect = { selectedRelation = it },
             name = name,
             onNameChange = { name = it },
+            nameError = null,
             nickname = nickname,
             onNicknameChange = { nickname = it },
+            nicknameError = null,
             isChecked = isChecked,
             onCheckBoxClick = { isChecked = it },
             contactFrequency = contactFrequency,

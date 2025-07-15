@@ -4,11 +4,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
@@ -58,11 +60,17 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) = _uiState.update {
-        it.copy(name = newName)
+        it.copy(
+            name = newName,
+            nameError = validateName(newName),
+        )
     }
 
     fun updateNickname(newNickname: String) = _uiState.update {
-        it.copy(nickname = newNickname)
+        it.copy(
+            nickname = newNickname,
+            nicknameError = validateName(newNickname),
+        )
     }
 
     fun updateRelationType(newRelationType: RelationType) = _uiState.update {
@@ -93,11 +101,8 @@ class RecommendViewModel @Inject constructor(
         it.copy(isEventParticipated = newIsEventParticipated)
     }
 
-    fun updateEventLocation(newEventLocation: Pair<Double, Double>) = _uiState.update {
-        it.copy(
-            latitude = newEventLocation.first,
-            longitude = newEventLocation.second,
-        )
+    fun updateEventLocation(newLocation: Place?) = _uiState.update {
+        it.copy(selectedPlace = newLocation)
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {
@@ -105,12 +110,14 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateButtonState(): Boolean {
-        with(_uiState.value) {
+        with(uiState.value) {
             return when (pageIndex) {
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
+                        && nameError == null && nicknameError == null
+
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null
-                else -> latitude != 0.0 && longitude != 0.0
+                else -> selectedPlace != null
             }
         }
     }
@@ -127,10 +134,10 @@ class RecommendViewModel @Inject constructor(
                     note = "",
                 ),
                 location = Location(
-                    location = location,
-                    address = address,
-                    latitude = latitude,
-                    longitude = longitude,
+                    location = selectedPlace?.name.orEmpty(),
+                    address = selectedPlace?.address.orEmpty(),
+                    latitude = selectedPlace?.latitude ?: 0.0,
+                    longitude = selectedPlace?.longitude ?: 0.0,
                 ),
                 highAccuracy = HighAccuracy(
                     contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
@@ -185,10 +192,10 @@ class RecommendViewModel @Inject constructor(
                     note = "",
                 ),
                 location = Location(
-                    location = location,
-                    address = address,
-                    latitude = latitude,
-                    longitude = longitude,
+                    location = selectedPlace?.name.orEmpty(),
+                    address = selectedPlace?.address.orEmpty(),
+                    latitude = selectedPlace?.latitude ?: 0.0,
+                    longitude = selectedPlace?.longitude ?: 0.0,
                 ),
                 highAccuracy = HighAccuracy(
                     contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
