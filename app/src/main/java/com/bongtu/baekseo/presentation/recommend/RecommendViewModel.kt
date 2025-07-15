@@ -195,10 +195,12 @@ class RecommendViewModel @Inject constructor(
                     meetFrequency = if (isHighAccuracy) meetFrequency.roundToInt() else DEFAULT_WEIGHT,
                 )
             )
-        }.onSuccess {
+        }.onSuccess { response ->
+            Timber.d("saveEventInformation: $response")
             _sideEffect.emit(ResultSideEffect.NavigateToFinal)
         }.onFailure {
             // TODO: 실패 처리
+            Timber.d("saveEventInformation: $it")
         }
     }
 
