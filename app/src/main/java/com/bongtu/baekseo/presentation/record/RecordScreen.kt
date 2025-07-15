@@ -38,12 +38,12 @@ fun RecordRoute(
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
     innerPadding: PaddingValues,
-    bottomPadding: Dp,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val bottomPadding = innerPadding.calculateBottomPadding()
 
     if (uiState.isDeleteMode) {
         BackHandler { viewModel.updateDeleteModeCancel() }

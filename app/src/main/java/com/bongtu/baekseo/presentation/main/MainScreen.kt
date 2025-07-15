@@ -156,7 +156,6 @@ private fun MainNavHost(
             },
             navigateToAdd = navigator.navController::navigateToEdit,
             innerPadding = innerPadding,
-            bottomPadding = innerPadding.calculateBottomPadding(),
             modifier = modifier,
         )
 
