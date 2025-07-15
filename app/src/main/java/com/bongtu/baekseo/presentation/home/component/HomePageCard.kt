@@ -32,15 +32,12 @@ import com.bongtu.baekseo.R.drawable.img_black_alarm
 import com.bongtu.baekseo.R.drawable.img_home_card_multiple
 import com.bongtu.baekseo.R.drawable.img_home_card_single
 import com.bongtu.baekseo.R.string.badge_schedule_empty
-import com.bongtu.baekseo.R.string.home_card_date
 import com.bongtu.baekseo.R.string.home_page_card_description
 import com.bongtu.baekseo.R.string.home_page_card_empty
 import com.bongtu.baekseo.R.string.home_page_card_title
-import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import java.time.LocalDate
 
 private const val SINGLE_RATIO = 320 / 250f
 private const val MULTIPLE_RATIO = 308 / 250f
@@ -50,17 +47,14 @@ private const val POSTPOSITION_E = "이"
 @Composable
 fun HomePageSingleCard(
     hostname: String,
-    eventType: EventType,
-    eventDate: LocalDate,
+    eventType: String,
+    eventDate: String,
     daysLeft: Int,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateWithDay()
+    val date = eventDate.toFormattedDateWithDay()
     val postposition = remember(eventType) {
-        when (eventType) {
-            EventType.FIRST_BD -> POSTPOSITION_GA
-            else -> POSTPOSITION_E
-        }
+        if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
 
     Box(
@@ -85,7 +79,7 @@ fun HomePageSingleCard(
                 text = stringResource(
                     home_page_card_title,
                     hostname,
-                    eventType.label,
+                    eventType,
                     postposition,
                     daysLeft
                 ),
@@ -103,7 +97,7 @@ fun HomePageSingleCard(
         }
 
         HomePageCardDate(
-            date = stringResource(home_card_date, date, weekDay),
+            date = date,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
@@ -117,17 +111,14 @@ fun HomePageSingleCard(
 @Composable
 fun HomePageMultipleCard(
     hostname: String,
-    eventType: EventType,
-    eventDate: LocalDate,
+    eventType: String,
+    eventDate: String,
     daysLeft: Int,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateWithDay()
+    val date = eventDate.toFormattedDateWithDay()
     val postposition = remember(eventType) {
-        when (eventType) {
-            EventType.FIRST_BD -> POSTPOSITION_GA
-            else -> POSTPOSITION_E
-        }
+        if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
 
     Box(
@@ -152,7 +143,7 @@ fun HomePageMultipleCard(
                 text = stringResource(
                     home_page_card_title,
                     hostname,
-                    eventType.label,
+                    eventType,
                     postposition,
                     daysLeft
                 ),
@@ -170,7 +161,7 @@ fun HomePageMultipleCard(
         }
 
         HomePageCardDate(
-            date = stringResource(home_card_date, date, weekDay),
+            date = date,
             modifier = Modifier
                 .align(Alignment.BottomStart)
                 .padding(
@@ -275,16 +266,16 @@ private fun HomePageCardPreview() {
         ) {
             HomePageSingleCard(
                 hostname = "헤헤",
-                eventType = EventType.WEDDING,
+                eventType = "생일",
                 daysLeft = 10,
-                eventDate = LocalDate.of(2025, 2, 11),
+                eventDate = "2025.02.11 (목)",
             )
 
             HomePageMultipleCard(
                 hostname = "헤헤",
-                eventType = EventType.FIRST_BD,
+                eventType = "생일",
                 daysLeft = 10,
-                eventDate = LocalDate.of(2025, 2, 11),
+                eventDate = "2025.02.11 (목)",
             )
         }
     }

@@ -37,10 +37,9 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToSchedule
@@ -52,13 +51,8 @@ import com.bongtu.baekseo.presentation.home.component.HomeRecommendCard
 import com.bongtu.baekseo.presentation.home.component.HomeScheduleCard
 import com.bongtu.baekseo.presentation.home.component.HomeScheduleEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeTopBar
-import com.bongtu.baekseo.presentation.home.model.HomeEvent
-import com.bongtu.baekseo.presentation.home.model.HomeEventInfo
-import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
-import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 @Composable
 fun HomeMainRoute(
@@ -213,19 +207,19 @@ fun HomeMainSuccessScreen(
                     when (items.size) {
                         1 -> {
                             HomePageSingleCard(
-                                hostname = item.hostInfo.hostName,
-                                eventType = item.eventInfo.eventCategory,
-                                daysLeft = item.eventInfo.dDay,
-                                eventDate = item.eventInfo.eventDate,
+                                hostname = item.hostName,
+                                eventType = item.eventCategory,
+                                daysLeft = item.dDay,
+                                eventDate = item.eventDate,
                             )
                         }
 
                         else -> {
                             HomePageMultipleCard(
-                                hostname = item.hostInfo.hostName,
-                                eventType = item.eventInfo.eventCategory,
-                                daysLeft = item.eventInfo.dDay,
-                                eventDate = item.eventInfo.eventDate,
+                                hostname = item.hostName,
+                                eventType = item.eventCategory,
+                                daysLeft = item.dDay,
+                                eventDate = item.eventDate,
                             )
                         }
                     }
@@ -321,52 +315,37 @@ fun HomeMainSuccessScreen(
 private fun HomeMainSuccessScreenPreview() {
     val items = persistentListOf(
         HomeEvent(
-            eventId = "1",
-            hostInfo = HomeHostInfo(
-                hostName = "공승준",
-                hostNickname = "초록승준",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.WEDDING,
-                relationship = RelationType.FRIEND,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
+            eventId = "eventId1",
+            hostName = "헤헤",
+            hostNickname = "초록승준",
+            eventCategory = "생일",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11",
+            dDay = 1,
+            location = "강남",
         ),
         HomeEvent(
-            eventId = "2",
-            hostInfo = HomeHostInfo(
-                hostName = "김종명",
-                hostNickname = "봉준호",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.FIRST_BD,
-                relationship = RelationType.NEIGHBOR,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
+            eventId = "eventId2",
+            hostName = "헤헤",
+            hostNickname = "초록승준",
+            eventCategory = "생일",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11",
+            dDay = 1,
+            location = "강남",
         ),
         HomeEvent(
-            eventId = "3",
-            hostInfo = HomeHostInfo(
-                hostName = "김혜정",
-                hostNickname = "메정",
-            ),
-            eventInfo = HomeEventInfo(
-                eventCategory = EventType.BIRTHDAY,
-                relationship = RelationType.ALUMNI,
-                cost = 10000,
-                eventDate = LocalDate.of(2025, 2, 11),
-            ),
-            locationInfo = HomeLocationInfo(
-                location = "강남구 테헤란로 강남 웨딩홀"
-            ),
+            eventId = "eventId3",
+            hostName = "헤헤",
+            hostNickname = "초록승준",
+            eventCategory = "생일",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11",
+            dDay = 1,
+            location = "강남",
         ),
     )
 
