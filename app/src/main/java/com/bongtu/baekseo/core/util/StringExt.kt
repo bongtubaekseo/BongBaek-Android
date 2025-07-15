@@ -24,3 +24,22 @@ fun String.toFormattedDateWithDay(): String {
     val day = parsedDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN)
     return "$date ($day)"
 }
+
+/**
+ * yyyy-mm-dd -> yyyy.mm.dd, (day)
+ */
+fun String.toFormattedDateAndDay(): Pair<String, String> {
+    val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+    val date = localDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
+    val day = localDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN) // "수"
+    return date to day
+}
+
+/**
+ * yyyy-mm-dd -> "MMM dd, yyyy"
+ */
+fun String.toFormattedShortEnglishDate(): String {
+    val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+    val date = localDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH))
+    return date
+}
