@@ -36,7 +36,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
@@ -60,6 +62,8 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
+import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
 import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
 
@@ -75,13 +79,25 @@ fun DetailRoute(
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) { viewModel.fetchDetailEvent() }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToEdit -> navigateToEdit()
+                    is NavigateToRecord -> navigateToRecord()
+                }
+            }
+    }
 
     DetailScreen(
         uiState = uiState,
         onBackButtonClick = navigateUp,
-        onEditButtonClick = navigateToEdit,
+        onEditButtonClick = viewModel::navigateToEdit,
+        onRemoveButtonClick = viewModel::removeDetailEvent,
         modifier = modifier,
     )
 }
@@ -91,6 +107,7 @@ private fun DetailScreen(
     uiState: DetailUiState,
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
+    onRemoveButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -142,7 +159,7 @@ private fun DetailScreen(
             is UiState.Success -> {
                 DetailContent(
                     event = uiState.loadState.data,
-                    onDeleteButtonClick = { /* TODO: 단일 삭제 후 navigate record */},
+                    onDeleteButtonClick = onRemoveButtonClick,
                     modifier = Modifier
                         .weight(1f),
                 )
@@ -414,6 +431,7 @@ private fun RecordDetailScreenPreview() {
             uiState = DetailUiState(),
             onBackButtonClick = {},
             onEditButtonClick = {},
+            onRemoveButtonClick = {},
         )
     }
 }

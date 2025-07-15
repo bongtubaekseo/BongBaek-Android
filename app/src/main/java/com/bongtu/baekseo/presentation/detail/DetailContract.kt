@@ -9,4 +9,9 @@ class DetailContract {
     data class DetailUiState(
         val loadState: UiState<DetailEvent> = UiState.Loading,
     )
+
+    sealed class DetailSideEffect {
+        data object NavigateToRecord : DetailSideEffect()
+        data object NavigateToEdit: DetailSideEffect()
+    }
 }
