@@ -5,7 +5,7 @@ package com.bongtu.baekseo.core.util
  * 이름 및 닉네임에는 validateName을, 금액 필드에는 validateCost를 사용하면 됩니다.
  */
 object TextFieldValidator {
-    private val specialCharRegex = Regex("[!@#$%^&*(),.?\":{}|<>]")
+    private val specialCharRegex = "[!@#$%^&*(),.?\":{}|<>]".toRegex()
 
     fun validateName(name: String) = when {
         specialCharRegex.containsMatchIn(name) -> "특수문자는 사용할 수 없어요."
