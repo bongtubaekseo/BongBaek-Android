@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
@@ -58,11 +59,17 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateName(newName: String) = _uiState.update {
-        it.copy(name = newName)
+        it.copy(
+            name = newName,
+            nameError = validateName(newName),
+        )
     }
 
     fun updateNickname(newNickname: String) = _uiState.update {
-        it.copy(nickname = newNickname)
+        it.copy(
+            nickname = newNickname,
+            nicknameError = validateName(newNickname),
+        )
     }
 
     fun updateRelationType(newRelationType: RelationType) = _uiState.update {
@@ -108,6 +115,7 @@ class RecommendViewModel @Inject constructor(
         with(_uiState.value) {
             return when (pageIndex) {
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
+                        && nameError == null && nicknameError == null
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null
                 else -> latitude != 0.0 && longitude != 0.0
