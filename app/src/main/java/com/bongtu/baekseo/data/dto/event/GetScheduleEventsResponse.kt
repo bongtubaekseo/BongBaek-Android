@@ -20,7 +20,6 @@ data class GetScheduleEventsResponse(
         val hostInfo: HostInfoDto,
         @SerialName("eventInfo")
         val eventInfo: EventInfo,
-
     )
 
     @Serializable
