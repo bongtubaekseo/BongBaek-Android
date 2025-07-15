@@ -34,6 +34,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
@@ -48,19 +50,17 @@ import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.core.util.toFormattedDateAndDay
+import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
 import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
-import com.bongtu.baekseo.presentation.record.type.AttendType
-import java.time.LocalDate
 
 private const val MEMO_RATIO = 320f / 152f
 
@@ -71,8 +71,12 @@ fun DetailRoute(
     navigateToEdit: () -> Unit,
     navigateToRecord: () -> Unit,   // TODO: 삭제시 호출
     modifier: Modifier = Modifier,
+    viewModel: DetailViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
     DetailScreen(
+        uiState = uiState,
         onBackButtonClick = navigateUp,
         onEditButtonClick = navigateToEdit,
         modifier = modifier,
@@ -81,39 +85,11 @@ fun DetailRoute(
 
 @Composable
 private fun DetailScreen(
+    uiState: DetailUiState,
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    /* TODO: state 수정 예정 임시 더미 데이터 사용 */
-    val event = RecordEvent(
-        eventId = "eventId",
-        hostName = "김봉백",
-        hostNickName = "봉봉",
-        category = EventType.WEDDING.label,
-        relationship = RelationType.FAMILY.label,
-        cost = 50000,
-        eventDate = LocalDate.of(2024, 6, 10),
-    )
-    val (location, address) = "주소" to "주소"                                // TODO: RecordEvent 수정 예정
-    val (attendLabel, note) = AttendType.ATTEND.label to null as String? // TODO: RecordEvent 수정 예정
-
-    val (noteText, noteTextColor, noteBackgroundColor) = if (note.isNullOrBlank()) {
-        Triple(
-            stringResource(record_detail_memo_placeholder),
-            BongBaekTheme.colors.gray500,
-            BongBaekTheme.colors.gray800
-        )
-    } else {
-        Triple(
-            note,
-            BongBaekTheme.colors.white,
-            BongBaekTheme.colors.gray750
-        )
-    }
-
-    var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -147,83 +123,25 @@ private fun DetailScreen(
             },
         )
 
-        Column(
-            modifier = Modifier
-                .weight(1f)
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState()),
-        ) {
-            RecordDetailTitleCard(
-                title = stringResource(
-                    record_detail_title_card_title, event.hostName, event.category
-                ),
-                eventDate = LocalDate.of(2024, 8, 10),
-                modifier = Modifier.padding(vertical = 20.dp),
-            )
-
-            RecordDetailCostCard(
-                cost = event.cost,
-            )
-
-            DetailDropDown(
-                event = event,
-                attendLabel = attendLabel,
-                location = location,
-                address = address,
-                modifier = Modifier.padding(vertical = 20.dp),
-            )
-
-            Text(
-                text = stringResource(record_detail_memo_title),
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold18,
-                modifier = Modifier
-                    .padding(
-                        bottom = 10.dp,
-                    )
-                    .fillMaxWidth(),
-            )
-
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(shape = RoundedCornerShape(size = 10.dp))
-                    .background(color = noteBackgroundColor)
-                    .aspectRatio(MEMO_RATIO),
-                contentAlignment = Alignment.TopStart,
-            ) {
-                Text(
-                    text = noteText,
-                    color = noteTextColor,
-                    style = BongBaekTheme.typography.body2Regular16,
-                    modifier = Modifier.padding(
-                        horizontal = 20.dp,
-                        vertical = 16.dp,
-                    ),
-                )
+        when (uiState.loadState) {
+            is UiState.Empty -> {
+                // TODO: 빈 화면 없어도 될 듯?
             }
 
-            Spacer(modifier = Modifier.weight(1f))
+            is UiState.Failure -> {
+                // TODO: 에러 상태 화면
+            }
 
-            BongBaekButton(
-                title = stringResource(record_detail_delete),
-                onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
-                buttonType = ButtonType.DELETE,
-                modifier = Modifier
-                    .padding(top = 65.dp, bottom = 40.dp)
-                    .fillMaxWidth()
-                    .border(
-                        width = 1.dp,
-                        color = BongBaekTheme.colors.secondaryRed,
-                        shape = RoundedCornerShape(10.dp),
-                    ),
-            )
+            is UiState.Loading -> {
+                // TODO: 로딩 상태 화면
+            }
 
-            if (isDeleteAlertDialogVisible) {
-                RecordDeleteAlertDialog(
-                    onDismissRequest = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
-                    onDeleteClick = { /* TODO: 삭제 로직 구현*/ },
+            is UiState.Success -> {
+                DetailContent(
+                    event = uiState.loadState.data,
+                    onDeleteButtonClick = { /* TODO: 단일 삭제 후 navigate record */},
+                    modifier = Modifier
+                        .weight(1f),
                 )
             }
         }
@@ -231,12 +149,111 @@ private fun DetailScreen(
 }
 
 @Composable
-fun RecordDetailTitleCard(
-    title: String,
-    eventDate: LocalDate,
+private fun DetailContent(
+    event: DetailEvent,
+    onDeleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateWithDay()
+    var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
+    val (noteText, noteTextColor, noteBackgroundColor) = if (event.note.isNullOrBlank()) {
+        Triple(
+            stringResource(record_detail_memo_placeholder),
+            BongBaekTheme.colors.gray500,
+            BongBaekTheme.colors.gray800
+        )
+    } else {
+        Triple(
+            event.note,
+            BongBaekTheme.colors.white,
+            BongBaekTheme.colors.gray750
+        )
+    }
+
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = 20.dp)
+            .verticalScroll(rememberScrollState()),
+    ) {
+        RecordDetailTitleCard(
+            title = stringResource(
+                record_detail_title_card_title, event.hostName, event.eventCategory
+            ),
+            eventDate = event.eventDate,
+            modifier = Modifier.padding(vertical = 20.dp),
+        )
+
+        RecordDetailCostCard(
+            cost = event.cost,
+        )
+
+        DetailDropDown(
+            event = event,
+            modifier = Modifier.padding(vertical = 20.dp),
+        )
+
+        Text(
+            text = stringResource(record_detail_memo_title),
+            color = BongBaekTheme.colors.white,
+            style = BongBaekTheme.typography.titleSemiBold18,
+            modifier = Modifier
+                .padding(
+                    bottom = 10.dp,
+                )
+                .fillMaxWidth(),
+        )
+
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(shape = RoundedCornerShape(size = 10.dp))
+                .background(color = noteBackgroundColor)
+                .aspectRatio(MEMO_RATIO),
+            contentAlignment = Alignment.TopStart,
+        ) {
+            Text(
+                text = noteText,
+                color = noteTextColor,
+                style = BongBaekTheme.typography.body2Regular16,
+                modifier = Modifier.padding(
+                    horizontal = 20.dp,
+                    vertical = 16.dp,
+                ),
+            )
+        }
+
+        Spacer(modifier = Modifier.weight(1f))
+
+        BongBaekButton(
+            title = stringResource(record_detail_delete),
+            onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
+            buttonType = ButtonType.DELETE,
+            modifier = Modifier
+                .padding(top = 65.dp, bottom = 40.dp)
+                .fillMaxWidth()
+                .border(
+                    width = 1.dp,
+                    color = BongBaekTheme.colors.secondaryRed,
+                    shape = RoundedCornerShape(10.dp),
+                ),
+        )
+
+        if (isDeleteAlertDialogVisible) {
+            RecordDeleteAlertDialog(
+                onDismissRequest = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
+                onDeleteClick = onDeleteButtonClick,
+            )
+        }
+    }
+}
+
+@Composable
+fun RecordDetailTitleCard(
+    title: String,
+    eventDate: String,
+    modifier: Modifier = Modifier,
+) {
+    val (date, weekDay) = eventDate.toFormattedDateAndDay()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -391,6 +408,7 @@ private fun RecordDeleteAlertDialog(
 private fun RecordDetailScreenPreview() {
     BongBaekTheme {
         DetailScreen(
+            uiState = DetailUiState(),
             onBackButtonClick = {},
             onEditButtonClick = {},
         )

@@ -54,10 +54,11 @@ import com.bongtu.baekseo.R.string.record_detail_location_title
 import com.bongtu.baekseo.R.string.record_detail_name_title
 import com.bongtu.baekseo.R.string.record_detail_nickname_title
 import com.bongtu.baekseo.R.string.record_detail_relation_title
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedShortMonth
-import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.core.util.toFormattedShortEnglishDate
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingChip
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingText
@@ -66,13 +67,18 @@ import java.time.LocalDate
 
 @Composable
 fun DetailDropDown(
-    event: RecordEvent,
-    attendLabel: String,
+    event: DetailEvent,
     modifier: Modifier = Modifier,
-    location: String? = null,
-    address: String? = null,
 ) {
     var isDetailVisible by remember { mutableStateOf(false) }
+    val attendType = remember(event.isEventParticipated) {
+        if (event.isEventParticipated) {
+            AttendType.ATTEND
+        } else {
+            AttendType.ABSENT
+        }
+    }
+    val eventDate = event.eventDate.toFormattedShortEnglishDate()
 
     val recordDetailItems = persistentListOf(
         Triple(
@@ -83,7 +89,7 @@ fun DetailDropDown(
         Triple(
             ic_nickname,
             record_detail_nickname_title,
-            TrailingText(event.hostNickName)
+            TrailingText(event.hostNickname)
         ),
         Triple(
             ic_relation,
@@ -93,7 +99,7 @@ fun DetailDropDown(
         Triple(
             ic_event,
             record_detail_event_title,
-            TrailingChip(event.category)
+            TrailingChip(event.eventCategory)
         ),
         Triple(
             ic_coin,
@@ -103,12 +109,12 @@ fun DetailDropDown(
         Triple(
             ic_check_gray,
             record_detail_is_attend_title,
-            TrailingChip(attendLabel)
+            TrailingChip(attendType.label)
         ),
         Triple(
             ic_calendar,
             record_detail_calendar_title,
-            TrailingChip(event.eventDate.toFormattedShortMonth())
+            TrailingChip(eventDate)
         ),
         Triple(
             ic_location,
@@ -173,11 +179,12 @@ fun DetailDropDown(
                     )
                 }
 
-                // TODO: Location Info field 로 변경 예정
-                if (location != null && address != null) {
+                event.locationInfo?.let { data ->
                     DetailDropDownLocationContent(
-                        location = location,
-                        address = address,
+                        location = data.location,
+                        address = data.address,
+                        latitude = data.latitude,
+                        longitude = data.longitude,
                     )
                 }
             }
@@ -257,8 +264,10 @@ private const val MAP_RATIO = 280f / 180f
 
 @Composable
 private fun DetailDropDownLocationContent(
-    location: String,      // TODO: field 수정 예정 LatLng
+    location: String,
     address: String,
+    latitude: Double,   // TODO: 지도 연결시 사용
+    longitude: Double,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -310,18 +319,18 @@ private fun DetailDropDownLocationContent(
 private fun DetailDropDownPreview() {
     BongBaekTheme {
         DetailDropDown(
-            event = RecordEvent(
-                eventId = "",
+            event = DetailEvent(
+                eventId = "eventId",
                 hostName = "김봉백",
-                hostNickName = "봉봉",
-                relationship = "가족/친척",
-                category = "결혼식",
-                cost = 100000,
-                eventDate = LocalDate.of(2024, 10, 5),
-            ),
-            attendLabel = "참석",
-            location = "서울특별시 강남구 예식장",
-            address = "서울특별시 강남구 예식장",
+                hostNickname = "봉봉",
+                eventCategory = "생일",
+                relationship = "친구",
+                cost = 50000,
+                isEventParticipated = true,
+                eventDate = LocalDate.of(2024, 6, 10).toString(),
+                note = null,
+                locationInfo = null,
+            )
         )
     }
 }
