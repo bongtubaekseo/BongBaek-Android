@@ -18,6 +18,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
@@ -28,7 +29,6 @@ import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
-import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import java.time.LocalDate
 
@@ -63,15 +63,15 @@ fun RecordRoute(
         setBottomBarVisible(!uiState.isDeleteMode)
     }
 
-    LaunchedEffect(Unit) { viewModel.fetchRecordEvent(EventCategoryType.ALL) }
+    LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
 
     RecordScreen(
         uiState = uiState,
         innerPadding = innerPadding,
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
-        onTabClick = viewModel::updateAttendType,
-        onCategoryClick = viewModel::fetchRecordEvent,
+        onTabClick = viewModel::selectAttendType,
+        onCategoryClick = viewModel::selectEventCategory,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,

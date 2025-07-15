@@ -31,11 +31,9 @@ class RecordViewModel @Inject constructor(
 
     private val _page = MutableStateFlow(0)  // TODO: 무한 스크롤 페이지 state
 
-    fun fetchRecordEvent(categoryType: EventCategoryType) {
+    fun fetchRecordEvent() {
         // TODO: categoryType 이 ALL 이면 쿼리 스트링 x
         // TODO("서버 통신 연결")
-        updateEventType(categoryType)
-        updatePage(0)
 
         updateRecordUiState(
             value = UiState.Success(
@@ -128,7 +126,7 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateAttendType(newAttendType: AttendType) =
+    private fun updateAttendType(newAttendType: AttendType) =
         _uiState.update { currentState ->
             currentState.copy(
                 attendType = newAttendType,
@@ -172,6 +170,19 @@ class RecordViewModel @Inject constructor(
                 }
             )
         }
+
+    fun selectEventCategory(newCategoryType: EventCategoryType) {
+        updateEventType(newCategoryType)
+        updatePage(0)
+        fetchRecordEvent()
+    }
+
+    fun selectAttendType(newAttendType: AttendType) {
+        updateAttendType(newAttendType)
+        updateEventType(EventCategoryType.ALL)
+        updatePage(0)
+        fetchRecordEvent()
+    }
 
     fun navigateToDetail(eventId: String) = viewModelScope.launch {
         _sideEffect.emit(RecordSideEffect.NavigateToDetail(eventId))
