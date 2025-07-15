@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
                     )
                 }
                 .onFailure {
-                    // TODO: 추후 처리
+                    updateHomeUiState(UiState.Failure(it.message ?: "Unknown Error"))
                 }
         }
     }
