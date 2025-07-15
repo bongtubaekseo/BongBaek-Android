@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
-import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.PostHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
 import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
@@ -45,7 +45,7 @@ fun PostEventCostResponse.toModel() = Cost(
     max = range.max,
 )
 
-fun FetchHomeEventsResponse.Event.toModel() = HomeEvent(
+fun PostHomeEventsResponse.Event.toModel() = HomeEvent(
     eventId = eventId,
     hostName = hostInfo.hostName,
     hostNickname = hostInfo.hostNickname,

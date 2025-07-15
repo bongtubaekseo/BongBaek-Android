@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FetchHomeEventsResponse(
+data class PostHomeEventsResponse(
     @SerialName("events")
     val events: List<Event>
 ) {
