@@ -58,6 +58,7 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
@@ -144,7 +145,7 @@ private fun RecommendMainScreen(
     onEventSelect: (EventType) -> Unit,
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
-    onLocationSelect: (Pair<Double, Double>) -> Unit,
+    onLocationSelect: (Place?) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
@@ -192,8 +193,7 @@ private fun RecommendMainScreen(
         uiState.eventType,
         uiState.eventDate,
         uiState.isEventParticipated,
-        uiState.longitude,
-        uiState.latitude,
+        uiState.selectedPlace,
     ) { checkButtonEnabled() }
 
     Column(
@@ -257,7 +257,7 @@ private fun RecommendMainScreen(
                         color = BongBaekTheme.colors.gray500,
                         modifier = Modifier
                             .noRippleClickable {
-                                onLocationSelect(Pair(0.0, 0.0))
+                                onLocationSelect(null)
                                 fetchExpense()
                             },
                     )
@@ -282,8 +282,10 @@ private fun RecommendMainScreen(
                     1 -> RecommendRelationTypeContent(
                         name = uiState.name,
                         onNameChange = onNameChange,
+                        nameError = uiState.nameError,
                         nickname = uiState.nickname,
                         onNicknameChange = onNicknameChange,
+                        nicknameError = uiState.nicknameError,
                         selectedRelation = uiState.relationType,
                         onRelationSelect = onRelationSelect,
                         isChecked = uiState.isHighAccuracy,
@@ -321,8 +323,8 @@ private fun RecommendMainScreen(
                     }
 
                     4 -> RecommendEventLocationContent(
-                        latitude = uiState.latitude,
-                        longitude = uiState.longitude,
+                        selectedPlace = uiState.selectedPlace,
+                        onPlaceSelect = onLocationSelect,
                         searchValue = searchTerm,
                         onSearchValueChange = onSearchTermChange,
                         searchResult = uiState.searchResult,

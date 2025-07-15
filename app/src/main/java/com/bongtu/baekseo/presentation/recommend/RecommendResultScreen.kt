@@ -87,8 +87,8 @@ private fun RecommendResultScreen(
 ) {
     var isLottieEnded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
-    val displayLocation = uiState.location
-        .takeIf { it.isNotBlank() } ?: stringResource(recommendation_result_location_blank)
+    val displayLocation = uiState.selectedPlace?.name
+        ?: stringResource(recommendation_result_location_blank)
 
     Column(
         modifier = modifier

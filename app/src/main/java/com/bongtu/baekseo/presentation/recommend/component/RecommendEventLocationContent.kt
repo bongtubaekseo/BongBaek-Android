@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import com.bongtu.baekseo.R
+import com.bongtu.baekseo.R.drawable.img_map_marker
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -33,7 +33,6 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import timber.log.Timber
 
 private const val MAP_RATIO = 320 / 312f
@@ -42,8 +41,8 @@ private const val DEFAULT_LONGITUDE = 126.9780
 
 @Composable
 fun RecommendEventLocationContent(
-    latitude: Double,
-    longitude: Double,
+    selectedPlace: Place?,
+    onPlaceSelect: (Place) -> Unit,
     searchValue: String,
     onSearchValueChange: (String) -> Unit,
     searchResult: ImmutableList<Place>,
@@ -54,22 +53,22 @@ fun RecommendEventLocationContent(
     val defaultPosition = LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     val kakaoMapState = remember { mutableStateOf<KakaoMap?>(null) }
 
-    LaunchedEffect(latitude, longitude, kakaoMapState.value) {
+    LaunchedEffect(selectedPlace, kakaoMapState.value) {
         kakaoMapState.value?.let { map ->
-            val position = LatLng.from(latitude, longitude)
+            val position = selectedPlace?.let {
+                LatLng.from(it.latitude, it.longitude)
+            } ?: defaultPosition
             map.moveCamera(CameraUpdateFactory.newCenterPosition(position))
 
             val layer = map.labelManager?.layer
             layer?.removeAll()
 
+            val labelStyle = LabelStyle.from(img_map_marker)
             val style = map.labelManager?.addLabelStyles(
-                LabelStyles.from(
-                    "myStyleId",
-                    LabelStyle.from(R.drawable.img_map_marker)
-                )
+                LabelStyles.from("myStyleId", labelStyle)
             )
             layer?.addLabel(LabelOptions.from(position).setStyles(style))
-            Timber.tag("KakaoMap").d("Map updated with new location: ($latitude, $longitude)")
+            Timber.d("Map updated: ($position)")
         }
     }
 
@@ -85,13 +84,16 @@ fun RecommendEventLocationContent(
                 )
 
                 if (searchResult.isNotEmpty()) {
-                    BongBaekDropdownMenu(
+                    BongBaekDropdownMenu<Place>(
                         expanded = true,
-                        items = searchResult.map { it.name }.toPersistentList(),
-                        maxItemSize = 5,
-                        selectedItem = "",
+                        items = searchResult,
+                        maxItemSize = 3,
+                        selectedItem = selectedPlace,
                         onDismissRequest = { },
-                        onItemSelected = { }
+                        onItemSelect = { place ->
+                            onPlaceSelect(place)
+                        },
+                        label = { it.name },
                     )
                 }
             }
@@ -112,11 +114,12 @@ fun RecommendEventLocationContent(
                         object : KakaoMapReadyCallback() {
                             override fun onMapReady(kakaoMap: KakaoMap) {
                                 Timber.tag("KakaoMap").d("Map ready")
+                                kakaoMapState.value = kakaoMap
                                 val cameraUpdate =
                                     CameraUpdateFactory.newCenterPosition(defaultPosition)
                                 kakaoMap.moveCamera(cameraUpdate)
 
-                                val labelStyle = LabelStyle.from(R.drawable.img_map_marker)
+                                val labelStyle = LabelStyle.from(img_map_marker)
                                 val labelStyles = LabelStyles.from("myStyleId", labelStyle)
                                 val appliedStyles =
                                     kakaoMap.labelManager?.addLabelStyles(labelStyles)
@@ -141,8 +144,8 @@ private fun RecommendEventLocationContentPreview() {
 
     BongBaekTheme {
         RecommendEventLocationContent(
-            latitude = 0.0,
-            longitude = 0.0,
+            selectedPlace = null,
+            onPlaceSelect = {},
             searchValue = searchValue,
             onSearchValueChange = { searchValue = it },
             searchResult = persistentListOf(),
