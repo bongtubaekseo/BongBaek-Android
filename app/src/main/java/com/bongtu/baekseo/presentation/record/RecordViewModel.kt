@@ -3,11 +3,11 @@ package com.bongtu.baekseo.presentation.record
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.data.repository.DummyRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
-import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -29,8 +29,14 @@ class RecordViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<RecordSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun fetchRecordEvent() {
+    private val _page = MutableStateFlow(0)  // TODO: 무한 스크롤 페이지 state
+
+    fun fetchRecordEvent(categoryType: EventCategoryType) {
+        // TODO: categoryType 이 ALL 이면 쿼리 스트링 x
         // TODO("서버 통신 연결")
+        updateEventType(categoryType)
+        updatePage(0)
+
         updateRecordUiState(
             value = UiState.Success(
                 listOf(
@@ -129,12 +135,17 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateEventType(eventCategoryType: EventCategoryType) =
+    private fun updateEventType(eventCategoryType: EventCategoryType) =
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
             )
         }
+
+    private fun updatePage(newPage: Int) {
+        _page.value = newPage
+    }
+
 
     fun updateDeleteMode() =
         _uiState.update { currentState ->
