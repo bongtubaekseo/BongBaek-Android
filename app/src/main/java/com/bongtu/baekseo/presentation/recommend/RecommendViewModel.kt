@@ -154,12 +154,13 @@ class RecommendViewModel @Inject constructor(
     }
 
     private fun searchPlaces() = viewModelScope.launch {
-        kakaoMapRepository.searchPlaces(searchTerm.value).onSuccess {
+        kakaoMapRepository.searchPlaces(searchTerm.value).onSuccess { response ->
             _uiState.update {
                 it.copy(
-                    searchResult = it.searchResult,
+                    searchResult = response,
                 )
             }
+            Timber.d("searchPlaces: $response")
         }.onFailure {
             // TODO: 실패 처리
             Timber.d("searchPlaces: $it")
