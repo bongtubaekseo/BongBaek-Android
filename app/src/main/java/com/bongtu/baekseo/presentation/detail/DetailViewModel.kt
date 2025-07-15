@@ -27,7 +27,8 @@ class DetailViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<DetailSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun fetchDetailEvent() {
+    fun fetchDetailEvent(eventId: String) {
+        // TODO: 상세 정보 API 호출
         updateDetailEvent(
             value = UiState.Success(
                 DetailEvent(
