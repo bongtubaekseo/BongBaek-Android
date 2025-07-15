@@ -162,13 +162,14 @@ fun EditLocationScreen(
                         )
                     }
                 } else {
-                    BongBaekDropdownMenu(
+                    BongBaekDropdownMenu<String>(
                         expanded = expanded,
                         items = searchItems,
                         maxItemSize = 3,
                         selectedItem = selectedSearchItem,
                         onDismissRequest = { expanded = false },
-                        onItemSelected = onSearchItemSelected,
+                        onItemSelect = onSearchItemSelected,
+                        label = { it },
                     )
                 }
 

@@ -135,8 +135,13 @@ private fun EditMainScreen(
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList() // TODO: 타입 위치 변경 예정
 
-    val isFormFilled =
-        name.isNotBlank() && nickName.isNotBlank() && relationSelectedItem.isNotBlank() && eventSelectedItem.isNotBlank() && cost.isNotBlank() && attendanceSelectedItem.isNotBlank() && date.isNotBlank()
+    val isFormFilled = name.isNotBlank()
+            && nickName.isNotBlank()
+            && relationSelectedItem.isNotBlank()
+            && eventSelectedItem.isNotBlank()
+            && cost.isNotBlank()
+            && attendanceSelectedItem.isNotBlank()
+            && date.isNotBlank()
 
     Column(
         modifier = modifier
@@ -222,14 +227,17 @@ private fun EditMainScreen(
                 )
 
                 FormFieldItem(
-                    iconRes = ic_event, labelRes = edit_event_title, content = {
+                    iconRes = ic_event,
+                    labelRes = edit_event_title,
+                    content = {
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
                             selectedItem = eventSelectedItem,
                             onItemSelected = { eventSelectedItem = it },
                         )
-                    })
+                    }
+                )
 
                 EditCostLabelTextField(
                     text = cost,
@@ -244,57 +252,71 @@ private fun EditMainScreen(
                 )
 
                 FormFieldItem(
-                    iconRes = ic_check_gray, labelRes = edit_is_attend_title, content = {
+                    iconRes = ic_check_gray,
+                    labelRes = edit_is_attend_title,
+                    content = {
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
                             selectedItem = attendanceSelectedItem,
                             onItemSelected = { attendanceSelectedItem = it },
                         )
-                    })
+                    }
+                )
 
                 LabelTextField(
                     labelImage = ic_calendar,
                     labelName = stringResource(id = edit_date_title),
                     text = date,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
-                    modifier = Modifier.noRippleClickable {
-                        dialogDate = date
-                        isDatePickerDialogVisible = true
-                    },
+                    modifier = Modifier
+                        .noRippleClickable {
+                            dialogDate = date
+                            isDatePickerDialogVisible = true
+                        },
                     isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
                 )
 
-                FormFieldItem(iconRes = ic_location, labelRes = edit_location_title, content = {
-                    if (location != null) {  // TODO: LocationInfo 변경 예정
-                        EditLocationContent(
-                            location = location.toString(),
-                            address = "",
+                FormFieldItem(
+                    iconRes = ic_location,
+                    labelRes = edit_location_title,
+                    content = {
+                        if (location != null) {  // TODO: LocationInfo 변경 예정
+                            EditLocationContent(
+                                location = location.toString(),
+                                address = "",
+                            )
+                        }
+                    },
+                    isRequired = false,
+                    trailing = {
+                        Text(
+                            text = stringResource(
+                                if (location == null) edit_location_add_text
+                                else edit_location_edit_text
+                            ),
+                            style = BongBaekTheme.typography.body2Regular14,
+                            color = BongBaekTheme.colors.gray300,
+                            modifier = Modifier
+                                .noRippleClickable(
+                                    onClick = navigateToLocation,
+                                )
                         )
                     }
-                }, isRequired = false, trailing = {
-                    Text(
-                        text = stringResource(
-                            if (location == null) edit_location_add_text
-                            else edit_location_edit_text
-                        ),
-                        style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.gray300,
-                        modifier = Modifier.noRippleClickable(
-                            onClick = navigateToLocation,
-                        )
-                    )
-                })
+                )
             }
 
             EditMemoContent(
-                text = memo, onTextChange = { memo = it }, modifier = Modifier.padding(
-                    top = 20.dp,
-                    bottom = 160.dp,
-                )
+                text = memo,
+                onTextChange = { memo = it },
+                modifier = Modifier
+                    .padding(
+                        top = 20.dp,
+                        bottom = 160.dp,
+                    )
             )
         }
         if (isDatePickerDialogVisible) {
@@ -342,13 +364,15 @@ private fun FormFieldItem(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier.padding(bottom = 12.dp),
+            modifier = Modifier
+                .padding(bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = iconRes),
                 contentDescription = null,
-                modifier = Modifier.height(16.dp),
+                modifier = Modifier
+                    .height(16.dp),
                 tint = Color.Unspecified,
             )
 
@@ -438,8 +462,10 @@ private fun FormFieldDropDown(
         maxItemSize = menuItems.size,
         selectedItem = selectedItem,
         onDismissRequest = { expanded = false },
-        onItemSelected = { onItemSelected(it) },
-        modifier = Modifier.padding(top = 12.dp),
+        onItemSelect = { onItemSelected(it) },
+        label = { it },
+        modifier = Modifier
+            .padding(top = 12.dp),
     )
 }
 
@@ -451,11 +477,13 @@ private fun SaveButton(
     shape: Shape = RoundedCornerShape(10.dp),
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier
+            .fillMaxSize(),
         contentAlignment = Alignment.BottomCenter,
     ) {
         Button(
-            modifier = modifier.fillMaxWidth(),
+            modifier = modifier
+                .fillMaxWidth(),
             onClick = onClick,
             enabled = enabled,
             shape = shape,
