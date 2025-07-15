@@ -268,7 +268,7 @@ private fun DetailContent(
 }
 
 @Composable
-fun RecordDetailTitleCard(
+private fun RecordDetailTitleCard(
     title: String,
     eventDate: String,
     modifier: Modifier = Modifier,
