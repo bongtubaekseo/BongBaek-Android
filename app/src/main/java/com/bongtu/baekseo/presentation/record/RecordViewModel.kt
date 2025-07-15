@@ -7,6 +7,8 @@ import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.data.repository.DummyRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -185,10 +187,10 @@ class RecordViewModel @Inject constructor(
     }
 
     fun navigateToDetail(eventId: String) = viewModelScope.launch {
-        _sideEffect.emit(RecordSideEffect.NavigateToDetail(eventId))
+        _sideEffect.emit(NavigateToDetail(eventId))
     }
 
     fun navigateToAdd() = viewModelScope.launch {
-        _sideEffect.emit(RecordSideEffect.NavigateToAdd)
+        _sideEffect.emit(NavigateToAdd)
     }
 }
