@@ -3,24 +3,32 @@ package com.bongtu.baekseo.presentation.record
 import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.RecordEvent
-import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
-import com.bongtu.baekseo.presentation.record.type.AttendType
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import java.time.LocalDate
 
@@ -29,13 +37,26 @@ fun RecordRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
+    innerPadding: PaddingValues,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     if (uiState.isDeleteMode) {
         BackHandler { viewModel.updateDeleteModeCancel() }
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToDetail -> navigateToDetail(sideEffect.eventId)
+                    is NavigateToAdd -> navigateToAdd()
+                }
+            }
     }
 
     LaunchedEffect(uiState.isDeleteMode) {
@@ -46,21 +67,30 @@ fun RecordRoute(
 
     RecordScreen(
         uiState = uiState,
-        navigateToDetail = navigateToDetail,
-        navigateToAdd = navigateToAdd,
+        innerPadding = innerPadding,
+        navigateToDetail = viewModel::navigateToDetail,
+        navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::updateAttendType,
         onCategoryClick = viewModel::updateEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
         onDeleteClick = viewModel::fetchSelectedDeleteEventIds,
-        modifier = modifier,
+        modifier = modifier
+            .then(
+                if (uiState.isDeleteMode) {
+                    Modifier
+                } else {
+                    Modifier.padding(bottom = bottomPadding)
+                }
+            ),
     )
 }
 
 @Composable
 private fun RecordScreen(
-    uiState: RecordState,
+    uiState: RecordUiState,
+    innerPadding: PaddingValues,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
     onTabClick: (AttendType) -> Unit,
@@ -78,6 +108,13 @@ private fun RecordScreen(
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900)
+            .then(
+                if (uiState.isDeleteMode) {
+                    Modifier.padding(innerPadding)
+                } else {
+                    Modifier.statusBarsPadding()
+                }
+            )
     ) {
         RecordTopBar(
             isDeleteMode = uiState.isDeleteMode,
@@ -131,7 +168,7 @@ private fun RecordScreen(
 private fun RecordDefaultScreenPreview() {
     BongBaekTheme {
         RecordScreen(
-            uiState = RecordState(
+            uiState = RecordUiState(
                 recordLoadState = UiState.Success(
                     listOf(
                         RecordEvent(
@@ -208,6 +245,7 @@ private fun RecordDefaultScreenPreview() {
             onDeleteClick = {},
             navigateToDetail = {},
             navigateToAdd = {},
+            innerPadding = PaddingValues(),
             modifier = Modifier,
         )
     }

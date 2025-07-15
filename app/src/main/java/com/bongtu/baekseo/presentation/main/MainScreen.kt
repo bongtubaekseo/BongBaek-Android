@@ -143,7 +143,7 @@ private fun MainNavHost(
                     }
                 )
             },
-            navigateToEdit = navigator.navController::navigateToEdit,
+            navigateToEdit = navigator.navController::navigateToEdit, // TODO: Caching
             modifier = modifier,
         )
 
@@ -155,12 +155,14 @@ private fun MainNavHost(
                 )
             },
             navigateToAdd = navigator.navController::navigateToEdit,
+            innerPadding = innerPadding,
+            bottomPadding = innerPadding.calculateBottomPadding(),
             modifier = modifier,
         )
 
         detailGraph(
             navigateUp = navigator::navigateUp,
-            navigateToEdit = navigator.navController::navigateToEdit,
+            navigateToEdit = navigator.navController::navigateToEdit,  // TODO: Caching
             navigateToRecord = {
                 navigator.navController.navigateToRecord(
                     navOptions = navOptions {
@@ -184,7 +186,7 @@ private fun MainNavHost(
                         popUpTo<Edit> {
                             inclusive = true
                         }
-                    }
+                    },
                 )
             },
             navigateToRecord = {
