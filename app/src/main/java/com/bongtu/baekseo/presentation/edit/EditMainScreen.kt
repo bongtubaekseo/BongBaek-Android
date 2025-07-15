@@ -63,6 +63,7 @@ import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
 import com.bongtu.baekseo.R.string.edit_save_button
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -79,7 +80,6 @@ import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
 import com.bongtu.baekseo.presentation.edit.type.EditType
-import com.bongtu.baekseo.presentation.record.type.AttendType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
