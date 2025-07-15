@@ -11,6 +11,7 @@ import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -53,13 +54,29 @@ class EventRepositoryImpl @Inject constructor(
         response.data.toModel()
     }
 
-    override suspend fun postHomeEvents(): Result<ImmutableList<HomeEvent>> = runCatching {
-        eventDataSource.postHomeEvents()
+    override suspend fun getHomeEvents(): Result<ImmutableList<HomeEvent>> = runCatching {
+        eventDataSource.getHomeEvents()
     }.mapCatching { response ->
         response.data.events.map {
             it.toModel()
         }.toImmutableList()
     }.recoverCatching {
         emptyList<HomeEvent>().toImmutableList()
+    }
+
+    override suspend fun getScheduleEvents(
+        page: Int,
+        category: String?,
+    ): Result<ImmutableList<ScheduleEvent>> = runCatching {
+        eventDataSource.getScheduleEvents(
+            page = page,
+            category = category,
+        )
+    }.mapCatching { response ->
+        response.data.events.map {
+            it.toModel()
+        }.toImmutableList()
+    }.recoverCatching {
+        emptyList<ScheduleEvent>().toImmutableList()
     }
 }

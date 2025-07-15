@@ -1,17 +1,19 @@
 package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
-import com.bongtu.baekseo.data.dto.event.PostHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
 import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
+import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 
 fun Host.toDto() = HostInfoDto(
     hostName = name,
@@ -45,7 +47,7 @@ fun PostEventCostResponse.toModel() = Cost(
     max = range.max,
 )
 
-fun PostHomeEventsResponse.Event.toModel() = HomeEvent(
+fun GetHomeEventsResponse.Event.toModel() = HomeEvent(
     eventId = eventId,
     hostName = hostInfo.hostName,
     hostNickname = hostInfo.hostNickname,
@@ -55,4 +57,14 @@ fun PostHomeEventsResponse.Event.toModel() = HomeEvent(
     eventDate = eventInfo.eventDate,
     dDay = eventInfo.dDay,
     location = locationInfo.location,
+)
+
+fun GetScheduleEventsResponse.Event.toModel() = ScheduleEvent(
+    eventId = eventId,
+    hostName = hostInfo.hostName,
+    hostNickname = hostInfo.hostNickname,
+    eventCategory = eventInfo.eventCategory,
+    relationship = eventInfo.relationship,
+    cost = eventInfo.cost,
+    eventDate = eventInfo.eventDate,
 )

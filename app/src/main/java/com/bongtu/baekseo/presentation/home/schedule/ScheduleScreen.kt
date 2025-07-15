@@ -21,21 +21,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 @Composable
 fun ScheduleRoute(
@@ -47,7 +42,10 @@ fun ScheduleRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchScheduleEvent()
+        viewModel.fetchScheduleEvent(
+            page = 0,
+            category = null,
+        )
         viewModel.getUsername()
     }
 
@@ -135,81 +133,57 @@ private fun ScheduleScreenPreview() {
                     persistentListOf(
                         ScheduleEvent(
                             eventId = "1",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "공승준",
-                                hostNickname = "초록승준",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.WEDDING,
-                                relationship = RelationType.FRIEND,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 3, 11),
-                            ),
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.02.11 (목)",
                         ),
                         ScheduleEvent(
-                            eventId = "2",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김종명",
-                                hostNickname = "봉준호",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.FIRST_BD,
-                                relationship = RelationType.NEIGHBOR,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 2, 11),
-                            ),
+                            eventId = "1",
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.09.11 (목)",
                         ),
                         ScheduleEvent(
-                            eventId = "3",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김헤정",
-                                hostNickname = "메정",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.BIRTHDAY,
-                                relationship = RelationType.ALUMNI,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 1, 11),
-                            ),
+                            eventId = "1",
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.08.11 (목)",
                         ),
                         ScheduleEvent(
-                            eventId = "4",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "공승준",
-                                hostNickname = "초록승준",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.WEDDING,
-                                relationship = RelationType.FRIEND,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 6, 11),
-                            ),
+                            eventId = "1",
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.07.11 (목)",
                         ),
                         ScheduleEvent(
-                            eventId = "5",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김종명",
-                                hostNickname = "봉준호",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.FIRST_BD,
-                                relationship = RelationType.NEIGHBOR,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 8, 11),
-                            ),
+                            eventId = "1",
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.06.11 (목)",
                         ),
                         ScheduleEvent(
-                            eventId = "6",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김헤정",
-                                hostNickname = "메정",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.BIRTHDAY,
-                                relationship = RelationType.ALUMNI,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 8, 11),
-                            ),
+                            eventId = "1",
+                            hostName = "공승준",
+                            hostNickname = "초록승준",
+                            eventCategory = "결혼식",
+                            relationship = "친구",
+                            cost = 10000,
+                            eventDate = "2025.05.11 (목)",
                         ),
                     ),
                 ),
