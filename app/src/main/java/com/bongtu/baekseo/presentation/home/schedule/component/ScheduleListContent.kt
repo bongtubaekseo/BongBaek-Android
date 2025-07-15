@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -23,15 +25,18 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateWithDayPair
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.home.schedule.ScheduleViewModel
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
 import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
@@ -42,6 +47,8 @@ import kotlinx.collections.immutable.persistentListOf
 fun ScheduleListContent(
     scheduleEventList: ImmutableList<ScheduleEvent>,
     onCardClick: (String) -> Unit,
+    lazyListState: LazyListState,
+    viewModel: ScheduleViewModel,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
@@ -49,6 +56,7 @@ fun ScheduleListContent(
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
+        state = lazyListState,
         contentPadding = PaddingValues(horizontal = 20.dp),
     ) {
         itemsIndexed(yearMonthEventItems) { index, item ->
@@ -122,6 +130,13 @@ fun ScheduleListContent(
             }
         }
     }
+
+    lazyListState.OnBottomReached(
+        buffer = 3,
+        onLoadMore = {
+            viewModel.updatePage()
+        }
+    )
 }
 
 @Composable
@@ -269,6 +284,8 @@ private fun ScheduleListContentPreview() {
                 ),
             ),
             onCardClick = {},
+            lazyListState = rememberLazyListState(),
+            viewModel = hiltViewModel(),
         )
     }
 }

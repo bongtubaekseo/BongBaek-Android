@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -40,12 +42,10 @@ fun ScheduleRoute(
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lazyListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
-        viewModel.fetchScheduleEvent(
-            page = uiState.page,
-            category = uiState.eventCategoryType.label,
-        )
+        viewModel.fetchScheduleEvent()
         viewModel.getUsername()
     }
 
@@ -60,6 +60,8 @@ fun ScheduleRoute(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
         onBackClick = onBackClick,
+        lazyListState = lazyListState,
+        viewModel = viewModel,
         modifier = modifier,
     )
 }
@@ -69,6 +71,8 @@ private fun ScheduleScreen(
     uiState: ScheduleState,
     onCategoryClick: (EventCategoryType) -> Unit,
     onBackClick: () -> Unit,
+    lazyListState: LazyListState,
+    viewModel: ScheduleViewModel,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -117,6 +121,8 @@ private fun ScheduleScreen(
                     onCardClick = {
                         // TODO: Card 클릭 이벤트
                     },
+                    lazyListState = lazyListState,
+                    viewModel = viewModel,
                 )
             }
         }
@@ -190,6 +196,8 @@ private fun ScheduleScreenPreview() {
             ),
             onCategoryClick = {},
             onBackClick = {},
+            lazyListState = rememberLazyListState(),
+            viewModel = hiltViewModel(),
             modifier = Modifier,
         )
     }

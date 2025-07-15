@@ -10,6 +10,7 @@ import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleSt
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -24,17 +25,25 @@ class ScheduleViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ScheduleState())
     val uiState = _uiState.asStateFlow()
 
-    fun fetchScheduleEvent(page: Int, category: String? = null) {
+    fun fetchScheduleEvent() {
         viewModelScope.launch {
-            eventRepository.getScheduleEvents(
-                page = page,
-                category = category,
-            ).onSuccess { response ->
-                updateScheduleUiState(
-                    value = UiState.Success(response)
-                )
-            }.onFailure {
-                updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            if (!uiState.value.isLastPage) {
+                eventRepository.getScheduleEvents(
+                    page = uiState.value.page,
+                    category = uiState.value.eventCategoryType.label,
+                ).onSuccess { response ->
+                    val updatedList =
+                        if (uiState.value.page == 0) response else uiState.value.eventList + response
+
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            scheduleLoadState = UiState.Success(updatedList.toPersistentList()),
+                            eventList = updatedList.toPersistentList(),
+                        )
+                    }
+                }.onFailure {
+                    updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
+                }
             }
         }
     }
@@ -52,10 +61,21 @@ class ScheduleViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
+                    page = 0,
                     eventCategoryType = eventCategoryType,
                 )
             }
-            fetchScheduleEvent(page = 0, category = eventCategoryType.label)
+            fetchScheduleEvent()
+        }
+
+    fun updatePage() =
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    page = uiState.value.page + 1,
+                )
+            }
+            fetchScheduleEvent()
         }
 
     fun getUsername() =
