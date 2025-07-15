@@ -30,14 +30,15 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.raw.lottie_envelope
+import com.bongtu.baekseo.R.string.recommendation_result_location_blank
 import com.bongtu.baekseo.R.string.recommendation_result_topbar
-import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import com.bongtu.baekseo.presentation.recommend.component.RecommendExpenseCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendResultContent
 import kotlinx.coroutines.flow.filterIsInstance
@@ -70,9 +71,8 @@ fun RecommendResultRoute(
     }
 
     RecommendResultScreen(
-        expense = uiState.expense,
-        eventType = uiState.eventType!!,
-        onConfirmClick = navigateToFinal,
+        uiState = uiState,
+        onConfirmClick = viewModel::saveEventInformation,
         onEditClick = navigateToEdit,
         modifier = modifier,
     )
@@ -80,14 +80,15 @@ fun RecommendResultRoute(
 
 @Composable
 private fun RecommendResultScreen(
-    expense: Int,
-    eventType: EventType,
+    uiState: RecommendUiState,
     onConfirmClick: () -> Unit,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isLottieEnded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
+    val displayLocation = uiState.location
+        .takeIf { it.isNotBlank() } ?: stringResource(recommendation_result_location_blank)
 
     Column(
         modifier = modifier
@@ -133,8 +134,8 @@ private fun RecommendResultScreen(
                 }
 
                 RecommendExpenseCard(
-                    event = eventType,
-                    expense = expense,
+                    event = uiState.eventType!!,
+                    expense = uiState.expense,
                     isLottieEnded = isLottieEnded,
                     modifier = Modifier
                         .align(Alignment.Center)
@@ -143,7 +144,11 @@ private fun RecommendResultScreen(
             }
 
             RecommendResultContent(
-                expense = expense,
+                expense = uiState.expense,
+                minExpense = uiState.minExpense,
+                maxExpense = uiState.maxExpense,
+                event = uiState.eventType!!.label,
+                location = displayLocation,
                 isLottieEnded = isLottieEnded,
                 onConfirmClick = onConfirmClick,
                 onEditClick = onEditClick,
@@ -158,8 +163,7 @@ private fun RecommendResultScreen(
 private fun RecommendResultScreenPreview() {
     BongBaekTheme {
         RecommendResultScreen(
-            expense = 125_000,
-            eventType = EventType.WEDDING,
+            uiState = RecommendUiState(),
             onConfirmClick = {},
             onEditClick = {},
         )

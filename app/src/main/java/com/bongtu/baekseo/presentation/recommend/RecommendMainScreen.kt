@@ -78,6 +78,7 @@ fun RecommendMainRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackClick: () -> Unit = {
         if (uiState.pageIndex == 1) navigateToUp()
@@ -106,8 +107,10 @@ fun RecommendMainRoute(
 
     RecommendMainScreen(
         uiState = uiState,
+        searchTerm = searchTerm,
+        onSearchTermChange = viewModel::updateSearchTerm,
         onBackClick = onBackClick,
-        navigateToResult = navigateToResult, // TODO: ViewModel API 호출 함수로 변경
+        fetchExpense = viewModel::fetchExpense,
         onPageIndexChange = viewModel::updatePageIndex,
         onNameChange = viewModel::updateName,
         onNicknameChange = viewModel::updateNickname,
@@ -119,7 +122,6 @@ fun RecommendMainRoute(
         onDateChange = viewModel::updateEventDate,
         onParticipationSelect = viewModel::updateIsEventParticipated,
         onLocationSelect = viewModel::updateEventLocation,
-        onSearchPlace = viewModel::searchPlaces,
         checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
     )
@@ -128,8 +130,10 @@ fun RecommendMainRoute(
 @Composable
 private fun RecommendMainScreen(
     uiState: RecommendUiState,
+    searchTerm: String,
+    onSearchTermChange: (String) -> Unit,
     onBackClick: () -> Unit,
-    navigateToResult: () -> Unit,
+    fetchExpense: () -> Unit,
     onPageIndexChange: (Int) -> Unit,
     onNameChange: (String) -> Unit,
     onNicknameChange: (String) -> Unit,
@@ -141,12 +145,10 @@ private fun RecommendMainScreen(
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
     onLocationSelect: (Pair<Double, Double>) -> Unit,
-    onSearchPlace: (String) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     var text by remember { mutableStateOf("") }
-    var searchValue by remember { mutableStateOf("") }
     val (topbarRes, titleRes, descRes) = when (uiState.pageIndex) {
         1 -> Triple(
             recommendation_relation_topbar,
@@ -256,7 +258,7 @@ private fun RecommendMainScreen(
                         modifier = Modifier
                             .noRippleClickable {
                                 onLocationSelect(Pair(0.0, 0.0))
-                                navigateToResult()
+                                fetchExpense()
                             },
                     )
                 }
@@ -307,6 +309,7 @@ private fun RecommendMainScreen(
                                 onTextChange = { text = it },
                                 onConfirmClick = {
                                     onDateChange(text)
+                                    text = ""
                                 },
                             )
 
@@ -320,11 +323,9 @@ private fun RecommendMainScreen(
                     4 -> RecommendEventLocationContent(
                         latitude = uiState.latitude,
                         longitude = uiState.longitude,
-                        searchValue = searchValue,
-                        onSearchValueChange = { searchValue = it },
-                        onSearchClick = {
-                            onSearchPlace(searchValue)
-                        }
+                        searchValue = searchTerm,
+                        onSearchValueChange = onSearchTermChange,
+                        searchResult = uiState.searchResult,
                     )
                 }
             }
@@ -334,7 +335,7 @@ private fun RecommendMainScreen(
             BongBaekButton(
                 title = stringResource(buttonTitleRes),
                 onClick = {
-                    if (uiState.pageIndex == 4) navigateToResult()
+                    if (uiState.pageIndex == 4) fetchExpense()
                     else onPageIndexChange(uiState.pageIndex + 1)
                 },
                 buttonType = ButtonType.PRIMARY,
@@ -356,8 +357,10 @@ private fun RecommendScreenPreview() {
     BongBaekTheme {
         RecommendMainScreen(
             uiState = RecommendUiState(),
+            searchTerm = "",
+            onSearchTermChange = {},
             onBackClick = {},
-            navigateToResult = {},
+            fetchExpense = {},
             onPageIndexChange = {},
             onNameChange = {},
             onNicknameChange = {},
@@ -369,7 +372,6 @@ private fun RecommendScreenPreview() {
             onDateChange = {},
             onParticipationSelect = {},
             onLocationSelect = {},
-            onSearchPlace = {},
             checkButtonEnabled = { true },
         )
     }

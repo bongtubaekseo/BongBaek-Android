@@ -13,6 +13,6 @@ data class PostEventCostRequest(
     val attended: Boolean,
     @SerialName("locationInfo")
     val locationInfo: LocationInfoDto,
-    @SerialName("HighAccuracy")
+    @SerialName("highAccuracy")
     val highAccuracy: HighAccuracyDto,
 )

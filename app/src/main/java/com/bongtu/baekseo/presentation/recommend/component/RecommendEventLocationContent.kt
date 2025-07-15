@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.presentation.recommend.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -18,8 +18,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.bongtu.baekseo.R
+import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.data.model.map.Place
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
@@ -29,6 +31,9 @@ import com.kakao.vectormap.camera.CameraUpdateFactory
 import com.kakao.vectormap.label.LabelOptions
 import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import timber.log.Timber
 
 private const val MAP_RATIO = 320 / 312f
@@ -41,7 +46,7 @@ fun RecommendEventLocationContent(
     longitude: Double,
     searchValue: String,
     onSearchValueChange: (String) -> Unit,
-    onSearchClick: () -> Unit,
+    searchResult: ImmutableList<Place>,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -69,16 +74,28 @@ fun RecommendEventLocationContent(
     }
 
     Column(
-        modifier = modifier
-            .clickable {
-                onSearchClick()
-            },
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        SearchTextField(
-            text = searchValue,
-            onTextChange = onSearchValueChange,
-        )
+        Box {
+            Column {
+                SearchTextField(
+                    text = searchValue,
+                    onTextChange = onSearchValueChange,
+                )
+
+                if (searchResult.isNotEmpty()) {
+                    BongBaekDropdownMenu(
+                        expanded = true,
+                        items = searchResult.map { it.name }.toPersistentList(),
+                        maxItemSize = 5,
+                        selectedItem = "",
+                        onDismissRequest = { },
+                        onItemSelected = { }
+                    )
+                }
+            }
+        }
 
         AndroidView(
             modifier = Modifier
@@ -128,7 +145,7 @@ private fun RecommendEventLocationContentPreview() {
             longitude = 0.0,
             searchValue = searchValue,
             onSearchValueChange = { searchValue = it },
-            onSearchClick = {},
+            searchResult = persistentListOf(),
         )
     }
 }
