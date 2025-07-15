@@ -5,9 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,11 +17,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,12 +28,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
@@ -63,7 +61,6 @@ import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
-import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
@@ -77,7 +74,9 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.data.model.map.Place
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToComplete
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToLocation
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
@@ -86,6 +85,7 @@ import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun EditMainRoute(
@@ -101,6 +101,18 @@ fun EditMainRoute(
     val nicknameValidate by viewModel.nickNameValidate.collectAsStateWithLifecycle()
     val costValidate by viewModel.costValidate.collectAsStateWithLifecycle()
 
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<EditSideEffect.EditMainSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToComplete -> navigateComplete()
+                    is NavigateToLocation -> navigateToLocation()
+                }
+            }
+    }
+
     EditMainScreen(
         editEntryType = editEntryType,
         uiState = uiState,
@@ -108,8 +120,7 @@ fun EditMainRoute(
         nickNameValidateResult = nicknameValidate,
         costValidateResult = costValidate,
         navigateUp = navigateUp,
-        navigateComplete = navigateComplete,
-        navigateToLocation = navigateToLocation,
+        navigateToLocation = viewModel::navigateToLocation,
         onNameChange = viewModel::updateName,
         onNicknameChange = viewModel::updateNickname,
         onRelationSelect = viewModel::updateRelationship,
@@ -117,9 +128,9 @@ fun EditMainRoute(
         onCostChange = viewModel::updateCost,
         onAttendSelect = viewModel::updateAttendLabel,
         onDateChange = viewModel::updateEventDate,
-        onLocationSelect = viewModel::updateLocation,
         onNoteChange = viewModel::updateNote,
         checkIsFormFilled = viewModel::updateButtonState,
+        onSubmitEventButtonClick = { viewModel.submitEventInformation(editEntryType) },
         modifier = modifier,
     )
 }
@@ -132,7 +143,6 @@ private fun EditMainScreen(
     nickNameValidateResult: TextFieldValidateResult,
     costValidateResult: TextFieldValidateResult,
     navigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
     onNameChange: (String) -> Unit,
     onNicknameChange: (String) -> Unit,
@@ -141,9 +151,9 @@ private fun EditMainScreen(
     onCostChange: (String) -> Unit,
     onAttendSelect: (String) -> Unit,
     onDateChange: (String) -> Unit,
-    onLocationSelect: (Place?) -> Unit,
     onNoteChange: (String) -> Unit,
     checkIsFormFilled: () -> Boolean,
+    onSubmitEventButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var text by remember { mutableStateOf("") }
@@ -303,9 +313,7 @@ private fun EditMainScreen(
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
-                                .noRippleClickable(
-                                    onClick = navigateToLocation,
-                                )
+                                .noRippleClickable(navigateToLocation),
                         )
                     }
                 )
@@ -339,7 +347,7 @@ private fun EditMainScreen(
     }
 
     EditSaveButton(
-        onClick = navigateComplete,
+        onClick = onSubmitEventButtonClick,
         enabled = isFormFilled,
         modifier = Modifier
             .padding(
