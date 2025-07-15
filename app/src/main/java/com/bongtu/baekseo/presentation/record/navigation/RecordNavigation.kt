@@ -1,6 +1,8 @@
 package com.bongtu.baekseo.presentation.record.navigation
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -15,6 +17,8 @@ fun NavGraphBuilder.recordGraph(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToAdd: () -> Unit,
     navigateToDetail: (String) -> Unit,
+    innerPadding: PaddingValues,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     composable<Record> {
@@ -22,6 +26,8 @@ fun NavGraphBuilder.recordGraph(
             setBottomBarVisible = setBottomBarVisible,
             navigateToDetail = navigateToDetail,
             navigateToAdd = navigateToAdd,
+            innerPadding = innerPadding,
+            bottomPadding = bottomPadding,
             modifier = modifier,
         )
     }
