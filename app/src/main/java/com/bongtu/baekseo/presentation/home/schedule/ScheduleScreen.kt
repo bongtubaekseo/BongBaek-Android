@@ -111,7 +111,9 @@ private fun ScheduleScreen(
                 ScheduleEmptyContent(
                     eventType = uiState.eventCategoryType.label,
                     onButtonClick = navigateToEdit,
-                    modifier = Modifier.padding(top = 58.dp),
+                    modifier = Modifier
+                        .padding(top = 58.dp)
+                        .padding(horizontal = 20.dp),
                 )
             }
 
