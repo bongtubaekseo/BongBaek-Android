@@ -63,7 +63,7 @@ fun RecordRoute(
         setBottomBarVisible(!uiState.isDeleteMode)
     }
 
-    LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
+    LaunchedEffect(Unit) { viewModel.fetchRecordEvent(EventCategoryType.ALL) }
 
     RecordScreen(
         uiState = uiState,
@@ -71,7 +71,7 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::updateAttendType,
-        onCategoryClick = viewModel::updateEventType,
+        onCategoryClick = viewModel::fetchRecordEvent,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
