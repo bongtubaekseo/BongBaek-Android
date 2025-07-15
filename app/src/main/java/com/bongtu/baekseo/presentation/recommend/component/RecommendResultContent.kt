@@ -59,14 +59,13 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import java.text.DecimalFormat
 
-private const val MIN_AMOUNT = 50_000
-private const val MAX_AMOUNT = 200_000
-
 @Composable
 fun RecommendResultContent(
     expense: Int,
     minExpense: Int,
     maxExpense: Int,
+    event: String,
+    location: String,
     isLottieEnded: Boolean,
     onConfirmClick: () -> Unit,
     onEditClick: () -> Unit,
@@ -95,14 +94,14 @@ fun RecommendResultContent(
             RecommendEventInfoCard(
                 iconRes = ic_event,
                 titleRes = recommendation_result_event_type,
-                value = "결혼식", // TODO: 실제 value로 대체
+                value = event,
                 modifier = Modifier.weight(1f),
             )
 
             RecommendEventInfoCard(
                 iconRes = ic_location,
                 titleRes = recommendation_result_location,
-                value = "강남 웨딩홀웨딩홀웨딩홀웨딩홀",
+                value = location,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -361,6 +360,8 @@ private fun RecommendResultContentPreview() {
             expense = 125_000,
             minExpense = 50_000,
             maxExpense = 125_000,
+            event = "",
+            location = "",
             isLottieEnded = isLottieEnded,
             onConfirmClick = {},
             onEditClick = {},
