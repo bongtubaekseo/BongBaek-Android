@@ -12,13 +12,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.data.model.map.Place
 
 private const val MAP_RATIO = 280f / 180f
 
 @Composable
 fun EditLocationContent(
-    location: String?,      // TODO: LocationInfo 변경 예정
-    address: String?,
+    place: Place,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -50,14 +50,14 @@ fun EditLocationContent(
                 ),
         ) {
             Text(
-                text = location ?: "",
+                text = place.name,
                 style = BongBaekTheme.typography.body1Medium16,
                 color = BongBaekTheme.colors.white,
                 modifier = Modifier
                     .padding(bottom = 2.dp),
             )
             Text(
-                text = address ?: "",
+                text = place.address,
                 style = BongBaekTheme.typography.body2Regular14,
                 color = BongBaekTheme.colors.gray400,
             )

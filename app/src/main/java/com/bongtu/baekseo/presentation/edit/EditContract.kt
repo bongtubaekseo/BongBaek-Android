@@ -2,7 +2,6 @@ package com.bongtu.baekseo.presentation.edit
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.model.map.Place
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -12,9 +11,7 @@ class EditContract {
     data class EditUiState(
         val submitState: UiState<Unit> = UiState.Empty,
         val name: String = "",
-        val nameError: String? = null,
         val nickname: String = "",
-        val nicknameError: String? = null,
         val eventCategory: String = "",
         val relationship: String = "",
         val cost: String = "",

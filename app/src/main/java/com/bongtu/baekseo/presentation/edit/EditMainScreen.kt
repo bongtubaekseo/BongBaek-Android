@@ -36,6 +36,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
@@ -76,9 +77,12 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.map.Place
+import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
+import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -92,12 +96,30 @@ fun EditMainRoute(
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val nameValidate by viewModel.nameValidate.collectAsStateWithLifecycle()
+    val nicknameValidate by viewModel.nickNameValidate.collectAsStateWithLifecycle()
+    val costValidate by viewModel.costValidate.collectAsStateWithLifecycle()
+
     EditMainScreen(
         editEntryType = editEntryType,
+        uiState = uiState,
+        nameValidateResult = nameValidate,
+        nickNameValidateResult = nicknameValidate,
+        costValidateResult = costValidate,
         navigateUp = navigateUp,
         navigateComplete = navigateComplete,
         navigateToLocation = navigateToLocation,
-        viewModel = viewModel,
+        onNameChange = viewModel::updateName,
+        onNicknameChange = viewModel::updateNickname,
+        onRelationSelect = viewModel::updateRelationship,
+        onEventSelect = viewModel::updateEventCategory,
+        onCostChange = viewModel::updateCost,
+        onAttendSelect = viewModel::updateAttendLabel,
+        onDateChange = viewModel::updateEventDate,
+        onLocationSelect = viewModel::updateLocation,
+        onNoteChange = viewModel::updateNote,
+        checkIsFormFilled = viewModel::updateButtonState,
         modifier = modifier,
     )
 }
@@ -105,43 +127,43 @@ fun EditMainRoute(
 @Composable
 private fun EditMainScreen(
     editEntryType: EditEntryType,
+    uiState: EditUiState,
+    nameValidateResult: TextFieldValidateResult,
+    nickNameValidateResult: TextFieldValidateResult,
+    costValidateResult: TextFieldValidateResult,
     navigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
-    viewModel: EditViewModel,
+    onNameChange: (String) -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onRelationSelect: (String) -> Unit,
+    onEventSelect: (String) -> Unit,
+    onCostChange: (String) -> Unit,
+    onAttendSelect: (String) -> Unit,
+    onDateChange: (String) -> Unit,
+    onLocationSelect: (Place?) -> Unit,
+    onNoteChange: (String) -> Unit,
+    checkIsFormFilled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: UiState 사용 예정
-    var name by remember { mutableStateOf("") }
-    var nickName by remember { mutableStateOf("") }
-    var relationSelectedItem by remember { mutableStateOf("") }
-    var eventSelectedItem by remember { mutableStateOf("") }
-    var cost by remember { mutableStateOf("") }
-    var attendanceSelectedItem by remember { mutableStateOf("") }
-
-    var date by remember { mutableStateOf("") }
-    var dialogDate by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-
-    var location by remember { mutableStateOf(null) } // TODO: LocationInfo 변경 예정
-    var memo by remember { mutableStateOf("") }
-    var validateResult: TextFieldValidateResult by remember {
-        mutableStateOf(
-            TextFieldValidateResult.Default
-        )
-    }
 
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
-    val attendOptions = AttendType.entries.map { it.label }.toImmutableList() // TODO: 타입 위치 변경 예정
+    val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isFormFilled = name.isNotBlank()
-            && nickName.isNotBlank()
-            && relationSelectedItem.isNotBlank()
-            && eventSelectedItem.isNotBlank()
-            && cost.isNotBlank()
-            && attendanceSelectedItem.isNotBlank()
-            && date.isNotBlank()
+    val isFormFilled = remember(
+        uiState.name,
+        uiState.nickname,
+        uiState.relationship,
+        uiState.eventCategory,
+        uiState.cost,
+        uiState.attendLabel,
+        uiState.eventDate,
+    ) {
+        checkIsFormFilled()
+    }
 
     Column(
         modifier = modifier
@@ -183,33 +205,21 @@ private fun EditMainScreen(
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
                     labelImage = ic_person,
-                    text = name,
+                    text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = validateResult,
-                    onTextChange = {
-                        name = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    validateResult = nameValidateResult,
+                    onTextChange = onNameChange,
                     isRequired = true,
                 )
 
                 LabelTextField(
                     labelName = stringResource(id = edit_nickname_title),
                     labelImage = ic_nickname,
-                    text = nickName,
+                    text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    validateResult = validateResult,
-                    onTextChange = {
-                        nickName = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    validateResult = nickNameValidateResult,
+                    onTextChange = onNicknameChange,
                     isRequired = true,
                 )
 
@@ -220,8 +230,8 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_relation_dropdown_placeholder),
                             menuItems = relations,
-                            selectedItem = relationSelectedItem,
-                            onItemSelected = { relationSelectedItem = it },
+                            selectedItem = uiState.relationship,
+                            onItemSelected = onRelationSelect,
                         )
                     },
                 )
@@ -233,22 +243,16 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
-                            selectedItem = eventSelectedItem,
-                            onItemSelected = { eventSelectedItem = it },
+                            selectedItem = uiState.eventCategory,
+                            onItemSelected = onEventSelect,
                         )
                     }
                 )
 
                 EditCostLabelTextField(
-                    text = cost,
-                    validateResult = validateResult,
-                    onTextChange = {
-                        cost = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    text = uiState.cost,
+                    validateResult = costValidateResult,
+                    onTextChange = onCostChange,
                 )
 
                 FormFieldItem(
@@ -258,8 +262,8 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
-                            selectedItem = attendanceSelectedItem,
-                            onItemSelected = { attendanceSelectedItem = it },
+                            selectedItem = uiState.attendLabel,
+                            onItemSelected = onAttendSelect,
                         )
                     }
                 )
@@ -267,11 +271,10 @@ private fun EditMainScreen(
                 LabelTextField(
                     labelImage = ic_calendar,
                     labelName = stringResource(id = edit_date_title),
-                    text = date,
+                    text = uiState.eventDate,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            dialogDate = date
                             isDatePickerDialogVisible = true
                         },
                     isRequired = true,
@@ -284,10 +287,9 @@ private fun EditMainScreen(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
                     content = {
-                        if (location != null) {  // TODO: LocationInfo 변경 예정
+                        if (uiState.selectedPlace != null) {
                             EditLocationContent(
-                                location = location.toString(),
-                                address = "",
+                                place = uiState.selectedPlace,
                             )
                         }
                     },
@@ -295,7 +297,7 @@ private fun EditMainScreen(
                     trailing = {
                         Text(
                             text = stringResource(
-                                if (location == null) edit_location_add_text
+                                if (uiState.selectedPlace == null) edit_location_add_text
                                 else edit_location_edit_text
                             ),
                             style = BongBaekTheme.typography.body2Regular14,
@@ -310,8 +312,8 @@ private fun EditMainScreen(
             }
 
             EditMemoContent(
-                text = memo,
-                onTextChange = { memo = it },
+                text = uiState.note,
+                onTextChange = onNoteChange,
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
@@ -322,22 +324,21 @@ private fun EditMainScreen(
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.DATE,
-                value = dialogDate,
-                onValueChange = {
-                    dialogDate = it
-                },
+                value = text,
+                onValueChange = { text = it },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
+                    text = ""
                 },
                 onConfirmClick = {
-                    isDatePickerDialogVisible = false
-                    date = dialogDate
+                    onDateChange(text)
+                    text = ""
                 },
             )
         }
     }
 
-    SaveButton(
+    EditSaveButton(
         onClick = navigateComplete,
         enabled = isFormFilled,
         modifier = Modifier
@@ -467,38 +468,4 @@ private fun FormFieldDropDown(
         modifier = Modifier
             .padding(top = 12.dp),
     )
-}
-
-@Composable
-private fun SaveButton(
-    onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(10.dp),
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter,
-    ) {
-        Button(
-            modifier = modifier
-                .fillMaxWidth(),
-            onClick = onClick,
-            enabled = enabled,
-            shape = shape,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BongBaekTheme.colors.primaryNormal,
-                contentColor = BongBaekTheme.colors.white,
-                disabledContainerColor = BongBaekTheme.colors.gray700,
-                disabledContentColor = BongBaekTheme.colors.gray500,
-            ),
-            contentPadding = PaddingValues(14.dp),
-        ) {
-            Text(
-                text = stringResource(edit_save_button),
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-        }
-    }
 }
