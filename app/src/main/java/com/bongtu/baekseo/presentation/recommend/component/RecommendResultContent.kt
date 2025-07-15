@@ -65,6 +65,8 @@ private const val MAX_AMOUNT = 200_000
 @Composable
 fun RecommendResultContent(
     expense: Int,
+    minExpense: Int,
+    maxExpense: Int,
     isLottieEnded: Boolean,
     onConfirmClick: () -> Unit,
     onEditClick: () -> Unit,
@@ -78,6 +80,8 @@ fun RecommendResultContent(
     ) {
         RecommendAmountCard(
             expense = expense,
+            minExpense = minExpense,
+            maxExpense = maxExpense,
             isLottieEnded = isLottieEnded,
             modifier = paddedModifier,
         )
@@ -166,10 +170,12 @@ fun RecommendResultContent(
 @Composable
 private fun RecommendAmountCard(
     expense: Int,
+    minExpense: Int,
+    maxExpense: Int,
     isLottieEnded: Boolean,
     modifier: Modifier = Modifier,
 ) {
-    val target = expense / MAX_AMOUNT.toFloat()
+    val target = remember { expense / maxExpense.toFloat() }
     var animatedProgress by remember { mutableFloatStateOf(0f) }
     val decimalFormatter = remember { DecimalFormat("#,###") }
     val bongBaekColors = BongBaekTheme.colors
@@ -230,7 +236,7 @@ private fun RecommendAmountCard(
             Text(
                 text = stringResource(
                     recommendation_result_amount_card_unit,
-                    decimalFormatter.format(MIN_AMOUNT)
+                    decimalFormatter.format(minExpense)
                 ),
                 style = BongBaekTheme.typography.captionRegular12,
                 color = BongBaekTheme.colors.gray400,
@@ -239,7 +245,7 @@ private fun RecommendAmountCard(
             Text(
                 text = stringResource(
                     recommendation_result_amount_card_unit,
-                    decimalFormatter.format(MAX_AMOUNT)
+                    decimalFormatter.format(maxExpense)
                 ),
                 style = BongBaekTheme.typography.captionRegular12,
                 color = BongBaekTheme.colors.gray400,
@@ -353,6 +359,8 @@ private fun RecommendResultContentPreview() {
 
         RecommendResultContent(
             expense = 125_000,
+            minExpense = 50_000,
+            maxExpense = 125_000,
             isLottieEnded = isLottieEnded,
             onConfirmClick = {},
             onEditClick = {},
