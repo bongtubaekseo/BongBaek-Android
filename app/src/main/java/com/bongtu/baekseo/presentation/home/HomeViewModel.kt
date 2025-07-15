@@ -31,7 +31,7 @@ class HomeViewModel @Inject constructor(
 
     fun fetchHomeEvent() {
         viewModelScope.launch {
-            eventRepository.fetchHomeEvents()
+            eventRepository.postHomeEvents()
                 .onSuccess { response ->
                     updateHomeUiState(
                         value = UiState.Success(response)

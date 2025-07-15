@@ -21,5 +21,5 @@ interface EventService {
     ): BaseResponse<PostEventCostResponse>
 
     @GET("api/v1/events/home")
-    suspend fun fetchHomeEvents() : BaseResponse<PostHomeEventsResponse>
+    suspend fun postHomeEvents() : BaseResponse<PostHomeEventsResponse>
 }

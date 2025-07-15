@@ -22,5 +22,5 @@ interface EventRepository {
         highAccuracy: HighAccuracy,
     ): Result<Cost>
 
-    suspend fun fetchHomeEvents(): Result<ImmutableList<HomeEvent>>
+    suspend fun postHomeEvents(): Result<ImmutableList<HomeEvent>>
 }

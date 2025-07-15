@@ -53,8 +53,8 @@ class EventRepositoryImpl @Inject constructor(
         response.data.toModel()
     }
 
-    override suspend fun fetchHomeEvents(): Result<ImmutableList<HomeEvent>> = runCatching {
-        eventDataSource.fetchHomeEvents()
+    override suspend fun postHomeEvents(): Result<ImmutableList<HomeEvent>> = runCatching {
+        eventDataSource.postHomeEvents()
     }.mapCatching { response ->
         response.data.events.map {
             it.toModel()

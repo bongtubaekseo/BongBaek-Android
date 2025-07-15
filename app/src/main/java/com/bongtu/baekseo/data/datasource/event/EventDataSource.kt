@@ -15,5 +15,5 @@ interface EventDataSource {
         request: PostEventCostRequest,
     ): BaseResponse<PostEventCostResponse>
 
-    suspend fun fetchHomeEvents(): BaseResponse<PostHomeEventsResponse>
+    suspend fun postHomeEvents(): BaseResponse<PostHomeEventsResponse>
 }

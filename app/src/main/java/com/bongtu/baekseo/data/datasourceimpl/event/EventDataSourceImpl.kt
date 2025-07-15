@@ -17,5 +17,5 @@ class EventDataSourceImpl @Inject constructor(
         request: PostEventCostRequest,
     ) = eventService.postEventCost(request)
 
-    override suspend fun fetchHomeEvents() = eventService.fetchHomeEvents()
+    override suspend fun postHomeEvents() = eventService.postHomeEvents()
 }
