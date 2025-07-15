@@ -6,7 +6,6 @@ import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.edit.EditLocationRoute
@@ -15,8 +14,8 @@ import com.bongtu.baekseo.presentation.edit.EditRoute
 import com.bongtu.baekseo.presentation.edit.EditViewModel
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
-import com.bongtu.baekseo.presentation.edit.type.EditType
-import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.edit.type.EditEntryType
+import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToEdit(navOptions: NavOptions? = null) =
@@ -28,25 +27,39 @@ fun NavGraphBuilder.editGraph(
     navigateToFinal: () -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToRecord: () -> Unit,
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Edit> { backStackEntry ->
         val previousDestination = navController.previousBackStackEntry?.destination
 
-        var (editType, navigateComplete) = when {
-            previousDestination?.hasRoute(Detail::class) == true ->
-                EditType.EDIT to { navigateToDetail("") }       // TODO: Caching 데이터 사용
+        val entryType: EditEntryType = when {
+            previousDestination?.hasRoute(Detail::class) == true -> {
+                EditEntryType.FROM_DETAIL
+            }
+            previousDestination?.hasRoute(RecommendResult::class) == true -> {
+                EditEntryType.FROM_RESULT
+            }
+//            previousDestination?.hasRoute(Schedule::class) == true -> {      // TODO: 중첩 네비 분리 후 활성화
+//                EditEntryType.FROM_SCHEDULE
+//            }
+            else -> {
+                EditEntryType.FROM_RECORD
+            }
+        }
 
-            previousDestination?.hasRoute(Recommend::class) == true ->
-                EditType.EDIT to navigateToFinal
-
-            else ->
-                EditType.ADD to navigateToRecord
+        val navigateComplete = when (entryType) {
+            EditEntryType.FROM_RECORD -> navigateToRecord
+            EditEntryType.FROM_SCHEDULE -> navigateToSchedule
+            EditEntryType.FROM_DETAIL -> {
+                { navigateToDetail("") }                // TODO: Caching 데이터 사용
+            }
+            EditEntryType.FROM_RESULT -> navigateToFinal
         }
 
         EditRoute(
+            editEntryType = entryType,
             navigateUp = navigateToUp,
-            editType = editType,
             navigateComplete = navigateComplete,
             modifier = modifier,
         )
@@ -54,7 +67,7 @@ fun NavGraphBuilder.editGraph(
 }
 
 fun NavGraphBuilder.nestedEditGraph(
-    editType: EditType,
+    editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     nestedNavigateUp: () -> Unit,
     navigateComplete: () -> Unit,
@@ -65,7 +78,7 @@ fun NavGraphBuilder.nestedEditGraph(
 ) {
     composable<Main> {
         EditMainRoute(
-            editType = editType,
+            editEntryType = editEntryType,
             navigateUp = navigateUp,
             navigateComplete = navigateComplete,
             navigateToLocation = navigateToLocation,

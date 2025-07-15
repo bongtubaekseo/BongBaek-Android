@@ -79,43 +79,32 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
-import com.bongtu.baekseo.presentation.edit.type.EditType
+import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun EditMainRoute(
-    editType: EditType,
+    editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
-    when (editType) {
-        EditType.EDIT -> EditMainScreen(
-            topBarTitle = EditType.EDIT.title,
-            navigateUp = navigateUp,
-            navigateComplete = navigateComplete,
-            navigateToLocation = navigateToLocation,
-            viewModel = viewModel,
-            modifier = modifier,
-        )
-
-        EditType.ADD -> EditMainScreen(
-            topBarTitle = EditType.ADD.title,
-            navigateUp = navigateUp,
-            navigateComplete = navigateComplete,
-            navigateToLocation = navigateToLocation,
-            viewModel = viewModel,
-            modifier = modifier,
-        )
-    }
+    EditMainScreen(
+        editEntryType = editEntryType,
+        navigateUp = navigateUp,
+        navigateComplete = navigateComplete,
+        navigateToLocation = navigateToLocation,
+        viewModel = viewModel,
+        modifier = modifier,
+    )
 }
 
 @Composable
 private fun EditMainScreen(
-    topBarTitle: String,
+    editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
@@ -162,7 +151,7 @@ private fun EditMainScreen(
             .systemBarsPadding(),
     ) {
         BongBaekTopBar(
-            title = topBarTitle,
+            title = editEntryType.editType.title,
             topBarType = TopBarType.LEADING_ICON,
             leadingIcon = {
                 Icon(

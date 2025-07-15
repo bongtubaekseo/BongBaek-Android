@@ -11,12 +11,12 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute
 import com.bongtu.baekseo.presentation.edit.navigation.nestedEditGraph
-import com.bongtu.baekseo.presentation.edit.type.EditType
+import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 
 @Composable
 fun EditRoute(
+    editEntryType: EditEntryType,       // TODO: 해당 Entry 로 API 호출 분기 예정
     navigateUp: () -> Unit,
-    editType: EditType,
     navigateComplete: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditViewModel = hiltViewModel(),
@@ -34,7 +34,7 @@ fun EditRoute(
             .fillMaxSize(),
     ) {
         nestedEditGraph(
-            editType = editType,
+            editEntryType = editEntryType,
             navigateUp = navigateUp,
             nestedNavigateUp = navController::navigateUp,
             navigateComplete = navigateComplete,
