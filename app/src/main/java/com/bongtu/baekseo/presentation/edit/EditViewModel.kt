@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.edit
 
 import androidx.lifecycle.ViewModel
 import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse.LocationInfo
+import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -72,7 +73,7 @@ class EditViewModel @Inject constructor(
             )
         }
 
-    fun updateLocationInfo(newLocationInfo: LocationInfo?) =
+    fun updateLocationInfo(newLocationInfo: Location?) =
         _uiState.update { currentState ->
             currentState.copy(
                 locationInfo = newLocationInfo,

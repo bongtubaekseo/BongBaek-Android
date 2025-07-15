@@ -2,7 +2,7 @@ package com.bongtu.baekseo.presentation.edit
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse.LocationInfo
+import com.bongtu.baekseo.data.model.event.Location
 
 class EditContract {
     @Immutable
@@ -16,6 +16,6 @@ class EditContract {
         val isEventParticipated: Boolean = false,
         val eventDate: String = "",
         val note: String = "",
-        val locationInfo: LocationInfo? = null,
+        val locationInfo: Location? = null,
     )
 }
