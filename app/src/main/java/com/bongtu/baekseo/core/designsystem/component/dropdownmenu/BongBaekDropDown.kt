@@ -43,16 +43,17 @@ import kotlinx.collections.immutable.persistentListOf
  * @param maxItemSize 아이템의 최대 개수(보여지는 아이템의 개수)
  * @param selectedItem 선택된 아이템
  * @param onDismissRequest 드롭 다운 메뉴가 닫힐 때 호출되는 콜백
- * @param onItemSelected 아이템이 선택될 때 호출되는 콜백
+ * @param onItemSelect 아이템이 선택될 때 호출되는 콜백
  */
 @Composable
-fun BongBaekDropdownMenu(
+fun <T> BongBaekDropdownMenu(
     expanded: Boolean,
-    items: ImmutableList<String>,
+    items: ImmutableList<T>,
     maxItemSize: Int,
-    selectedItem: String,
+    selectedItem: T?,
     onDismissRequest: () -> Unit,
-    onItemSelected: (String) -> Unit,
+    onItemSelect: (T) -> Unit,
+    label: (T) -> String,
     modifier: Modifier = Modifier,
 ) {
     val bongBaekColors = BongBaekTheme.colors
@@ -81,12 +82,13 @@ fun BongBaekDropdownMenu(
                     .verticalScroll(scrollState),
             ) {
                 items.forEachIndexed { index, item ->
-                    DropDownMenuItem(
+                    DropDownMenuItem<T>(
                         item = item,
                         index = index,
-                        selectedItem = selectedItem,
-                        onItemSelected = onItemSelected,
+                        isSelected = selectedItem == item,
+                        onItemSelected = onItemSelect,
                         onFirstItemMeasured = { itemHeightDp = it },
+                        label = label,
                     )
                 }
             }
@@ -95,22 +97,19 @@ fun BongBaekDropdownMenu(
 }
 
 @Composable
-private fun DropDownMenuItem(
-    item: String,
+private fun <T> DropDownMenuItem(
+    item: T,
     index: Int,
-    selectedItem: String,
-    onItemSelected: (String) -> Unit,
+    isSelected: Boolean?,
+    onItemSelected: (T) -> Unit,
     onFirstItemMeasured: (Dp) -> Unit,
+    label: (T) -> String,
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val density = LocalDensity.current
-
-    val (backgroundColor, textColor) = remember(selectedItem, item) {
-        if (selectedItem == item) {
-            bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
-        } else {
-            bongBaekColors.transparent to bongBaekColors.white
-        }
+    val (backgroundColor, textColor) = remember(isSelected) {
+        if (isSelected == true) bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
+        else bongBaekColors.transparent to bongBaekColors.white
     }
 
     Box(
@@ -131,7 +130,7 @@ private fun DropDownMenuItem(
         contentAlignment = Alignment.CenterStart,
     ) {
         Text(
-            text = item,
+            text = label(item),
             color = textColor,
             style = BongBaekTheme.typography.body1Medium16,
         )
@@ -153,15 +152,14 @@ private fun BongBaekDropdownMenuPreview() {
                 .fillMaxSize(),
             verticalArrangement = Arrangement.Center,
         ) {
-            BongBaekDropdownMenu(
+            BongBaekDropdownMenu<String>(
                 expanded = expanded,
                 items = dummyItems,
                 maxItemSize = 3,
                 selectedItem = selectedItem,
                 onDismissRequest = { expanded = false },
-                onItemSelected = {
-                    selectedItem = it
-                },
+                onItemSelect = { selectedItem = it },
+                label = { it },
                 modifier = Modifier,
             )
         }
