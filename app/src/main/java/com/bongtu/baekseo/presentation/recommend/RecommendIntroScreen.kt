@@ -44,7 +44,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 @Composable
 fun RecommendIntroScreen(
     navigateToUp: () -> Unit,
-    navigateToNext: () -> Unit, // TODO: 나중에 이름 바꾸기
+    navigateToMain: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -127,7 +127,7 @@ fun RecommendIntroScreen(
 
             BongBaekButton(
                 title = stringResource(recommendation_intro_start),
-                onClick = navigateToNext,
+                onClick = navigateToMain,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -143,7 +143,7 @@ private fun RecommendIntroScreenPreview() {
     BongBaekTheme {
         RecommendIntroScreen(
             navigateToUp = {},
-            navigateToNext = {},
+            navigateToMain = {},
         )
     }
 }
