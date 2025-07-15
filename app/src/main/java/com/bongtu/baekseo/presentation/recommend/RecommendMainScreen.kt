@@ -78,6 +78,7 @@ fun RecommendMainRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackClick: () -> Unit = {
         if (uiState.pageIndex == 1) navigateToUp()
@@ -106,6 +107,8 @@ fun RecommendMainRoute(
 
     RecommendMainScreen(
         uiState = uiState,
+        searchTerm = searchTerm,
+        onSearchTermChange = viewModel::updateSearchTerm,
         onBackClick = onBackClick,
         fetchExpense = viewModel::fetchExpense,
         onPageIndexChange = viewModel::updatePageIndex,
@@ -119,7 +122,6 @@ fun RecommendMainRoute(
         onDateChange = viewModel::updateEventDate,
         onParticipationSelect = viewModel::updateIsEventParticipated,
         onLocationSelect = viewModel::updateEventLocation,
-        onSearchPlace = viewModel::searchPlaces,
         checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
     )
@@ -128,6 +130,8 @@ fun RecommendMainRoute(
 @Composable
 private fun RecommendMainScreen(
     uiState: RecommendUiState,
+    searchTerm: String,
+    onSearchTermChange: (String) -> Unit,
     onBackClick: () -> Unit,
     fetchExpense: () -> Unit,
     onPageIndexChange: (Int) -> Unit,
@@ -141,12 +145,10 @@ private fun RecommendMainScreen(
     onDateChange: (String) -> Unit,
     onParticipationSelect: (Boolean) -> Unit,
     onLocationSelect: (Pair<Double, Double>) -> Unit,
-    onSearchPlace: (String) -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
     var text by remember { mutableStateOf("") }
-    var searchValue by remember { mutableStateOf("") }
     val (topbarRes, titleRes, descRes) = when (uiState.pageIndex) {
         1 -> Triple(
             recommendation_relation_topbar,
@@ -321,11 +323,9 @@ private fun RecommendMainScreen(
                     4 -> RecommendEventLocationContent(
                         latitude = uiState.latitude,
                         longitude = uiState.longitude,
-                        searchValue = searchValue,
-                        onSearchValueChange = { searchValue = it },
-                        onSearchClick = {
-                            onSearchPlace(searchValue)
-                        }
+                        searchValue = searchTerm,
+                        onSearchValueChange = onSearchTermChange,
+                        searchResult = uiState.searchResult,
                     )
                 }
             }
@@ -357,6 +357,8 @@ private fun RecommendScreenPreview() {
     BongBaekTheme {
         RecommendMainScreen(
             uiState = RecommendUiState(),
+            searchTerm = "",
+            onSearchTermChange = {},
             onBackClick = {},
             fetchExpense = {},
             onPageIndexChange = {},
@@ -370,7 +372,6 @@ private fun RecommendScreenPreview() {
             onDateChange = {},
             onParticipationSelect = {},
             onLocationSelect = {},
-            onSearchPlace = {},
             checkButtonEnabled = { true },
         )
     }
