@@ -51,8 +51,8 @@ fun BongBaekInnerTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isSingleLine: Boolean = true,
     cursorColor: Color = BongBaekTheme.colors.white,
-    suffix: (@Composable (() -> Unit))? = null,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    suffix: (@Composable (() -> Unit))? = null,
 ) {
     BasicTextField(
         value = text,

@@ -4,30 +4,54 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.data.model.event.Event
+import com.bongtu.baekseo.data.model.event.HighAccuracy
+import com.bongtu.baekseo.data.model.event.Host
+import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
+import kotlin.math.roundToInt
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
-    // TODO: Repository 주입
     private val kakaoMapRepository: KakaoMapRepository,
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RecommendUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _searchTerm = MutableStateFlow("")
+    val searchTerm = _searchTerm.asStateFlow()
+
     private val _sideEffect = MutableSharedFlow<RecommendSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            searchTerm.debounce(DEBOUNCE_DELAY).collect {
+                searchPlaces()
+            }
+        }
+    }
+
+    fun updateSearchTerm(searchTerm: String) = _searchTerm.update { searchTerm }
 
     fun updatePageIndex(newIndex: Int) = _uiState.update {
         it.copy(pageIndex = newIndex)
@@ -92,22 +116,97 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun fetchExpense() = viewModelScope.launch {
-        // TODO: Repository 연결(경조사비 추천 GET 요청)
-        _sideEffect.emit(MainSideEffect.NavigateToResult)
-    }
-
-    fun searchPlaces(query: String) = viewModelScope.launch {
-        kakaoMapRepository.searchPlaces(query).onSuccess {
-            _uiState.update {
-                it.copy(
-                    searchResult = it.searchResult,
+        with(uiState.value) {
+            eventRepository.postEventCost(
+                event = Event(
+                    eventType = eventType!!.label,
+                    relationType = relationType!!.label,
+                    cost = expense,
+                    isEventParticipated = isEventParticipated!!,
+                    eventDate = eventDate,
+                    note = "",
+                ),
+                location = Location(
+                    location = location,
+                    address = address,
+                    latitude = latitude,
+                    longitude = longitude,
+                ),
+                highAccuracy = HighAccuracy(
+                    contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
+                    meetFrequency = if (isHighAccuracy) mapFrequencyToScale(meetFrequency) else DEFAULT_WEIGHT,
                 )
+            ).onSuccess { response ->
+                _uiState.update {
+                    it.copy(
+                        expense = response.cost,
+                        minExpense = response.min,
+                        maxExpense = response.max,
+                    )
+                }
+                Timber.d("fetchExpense: $response")
+                _sideEffect.emit(NavigateToResult)
+            }.onFailure {
+                // TODO: 실패 처리
+                Timber.d("fetchExpense: $it")
             }
         }
     }
 
+    private fun searchPlaces() = viewModelScope.launch {
+        kakaoMapRepository.searchPlaces(searchTerm.value).onSuccess { response ->
+            _uiState.update {
+                it.copy(
+                    searchResult = response,
+                )
+            }
+            Timber.d("searchPlaces: $response")
+        }.onFailure {
+            // TODO: 실패 처리
+            Timber.d("searchPlaces: $it")
+        }
+    }
+
     fun saveEventInformation() = viewModelScope.launch {
-        // TODO: Repository 연결(경조사 정보 POST 요청)
-        _sideEffect.emit(ResultSideEffect.NavigateToFinal)
+        with(uiState.value) {
+            // TODO: 반복되는 부분은 추후 리팩토링해서 묶을 수 있게끔 설정
+            // TODO: null-assertion vs elvis 멘토링 이후에 리팩
+            eventRepository.postEventInfo(
+                host = Host(
+                    name = name,
+                    nickname = nickname,
+                ),
+                event = Event(
+                    eventType = eventType!!.label,
+                    relationType = relationType!!.label,
+                    cost = expense,
+                    isEventParticipated = isEventParticipated!!,
+                    eventDate = eventDate.toFormattedDate(),
+                    note = "",
+                ),
+                location = Location(
+                    location = location,
+                    address = address,
+                    latitude = latitude,
+                    longitude = longitude,
+                ),
+                highAccuracy = HighAccuracy(
+                    contactFrequency = if (isHighAccuracy) mapFrequencyToScale(contactFrequency) else DEFAULT_WEIGHT,
+                    meetFrequency = if (isHighAccuracy) mapFrequencyToScale(meetFrequency) else DEFAULT_WEIGHT,
+                )
+            )
+        }.onSuccess { response ->
+            Timber.d("saveEventInformation: $response")
+            _sideEffect.emit(NavigateToFinal)
+        }.onFailure {
+            // TODO: 실패 처리
+            Timber.d("saveEventInformation: $it")
+        }
+    }
+
+    companion object {
+        private const val DEFAULT_WEIGHT = 3
+        private const val DEBOUNCE_DELAY = 500L
+        private fun mapFrequencyToScale(value: Float) = (value * 4 + 1).roundToInt().coerceIn(1, 5)
     }
 }

@@ -33,7 +33,7 @@ data class PostEventCostResponse(
         @SerialName("category")
         val category: String,
         @SerialName("relationship")
-        val relationship: Boolean,
+        val relationship: String,
         @SerialName("attended")
         val attended: Boolean,
         @SerialName("contactFrequency")

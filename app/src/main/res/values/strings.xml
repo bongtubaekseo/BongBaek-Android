@@ -60,6 +60,7 @@
     <string name="recommendation_result_amount_card_unit">%s원</string>
     <string name="recommendation_result_event_type">경조사 종류</string>
     <string name="recommendation_result_location">장소</string>
+    <string name="recommendation_result_location_blank">미선택</string>
     <string name="recommendation_result_logic_title">이렇게 계산했어요</string>
     <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 친구 관계 (친밀도 보통)\n• 식사 참석 여부</string>
     <string name="recommendation_result_inform_title">참고해주세요!</string>
