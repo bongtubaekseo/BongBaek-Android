@@ -282,8 +282,10 @@ private fun RecommendMainScreen(
                     1 -> RecommendRelationTypeContent(
                         name = uiState.name,
                         onNameChange = onNameChange,
+                        nameError = uiState.nameError,
                         nickname = uiState.nickname,
                         onNicknameChange = onNicknameChange,
+                        nicknameError = uiState.nicknameError,
                         selectedRelation = uiState.relationType,
                         onRelationSelect = onRelationSelect,
                         isChecked = uiState.isHighAccuracy,
