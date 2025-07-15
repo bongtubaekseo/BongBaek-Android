@@ -2,7 +2,11 @@ package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.data.repository.auth.AuthRepository
+import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
@@ -18,6 +22,8 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val usernameDataStore: UsernameDataStore,
+    private val authRepository: AuthRepository,
+    private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
 ) : ViewModel() {
     private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
     val kakaoLoginState = _kakaoLoginState.asStateFlow()
@@ -28,13 +34,6 @@ class OnBoardingViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<OnBoardingSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun saveUsername(name: String) {
-        viewModelScope.launch {
-            usernameDataStore.setUsername(name)
-            _sideEffect.emit(NavigateToHome)
-        }
-    }
-
     fun updateName(newName: String) = _uiState.update {
         it.copy(name = newName)
     }
@@ -43,16 +42,12 @@ class OnBoardingViewModel @Inject constructor(
         it.copy(birth = newBirth)
     }
 
+    fun updateDialogBirth(newDialogBirth: String) = _uiState.update {
+        it.copy(dialogBirth = newDialogBirth)
+    }
+
     fun updateIncome(newIncome: String) = _uiState.update {
         it.copy(income = newIncome)
-    }
-
-    fun kakaoLoginSuccess() {
-        _kakaoLoginState.tryEmit(SocialLoginState.Success)
-    }
-
-    fun kakaoLoginFail() {
-        _kakaoLoginState.tryEmit(SocialLoginState.Fail)
     }
 
     fun setUiStateIdle() {
@@ -61,9 +56,50 @@ class OnBoardingViewModel @Inject constructor(
 
     fun loginWithKakao(token: String) {
         viewModelScope.launch {
-            _kakaoLoginState.update {
-                SocialLoginState.Success
+            setKakaoLoginUseCase.invoke(token)
+                .onSuccess { response ->
+                    updateKakaoId(response.kakaoId)
+                    if (response.isCompletedSignUp) {
+                        _sideEffect.emit(NavigateToHome)
+                    } else {
+                        _kakaoLoginState.tryEmit(SocialLoginState.Success)
+                    }
+                }
+                .onFailure {
+                    _kakaoLoginState.tryEmit(SocialLoginState.Fail)
+                }
+        }
+    }
+
+    fun postSignUp() {
+        viewModelScope.launch {
+            authRepository.postSignUp(
+                kakaoId = uiState.value.kakaoId,
+                memberName = uiState.value.name,
+                memberBirthday = uiState.value.birth.toFormattedDate(),
+                memberIncome = uiState.value.income,
+            ).onSuccess { response ->
+                _sideEffect.emit(NavigateToHome)
+                saveUsername(response.name)
+            }.onFailure {
+                updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
     }
+
+    private fun updateOnBoardingUiState(value: UiState<Nothing>) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                loadState = value,
+            )
+        }
+
+    private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
+        it.copy(kakaoId = newKakaoId)
+    }
+
+    private fun saveUsername(name: String) =
+        viewModelScope.launch {
+            usernameDataStore.setUsername(name)
+        }
 }

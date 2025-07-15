@@ -37,16 +37,17 @@ class OnBoardingLoginKakaoLauncher(
                     // 사용자가 카카오톡 설치 후 디바이스 권한 요청 화면에서 로그인을 취소한 경우
                     // 의도적인 로그인 취소로 보고 카카오 계정으로 로그인 시도 없이 로그인 취소로 처리
                     if (error is ClientError && error.reason == ClientErrorCause.Cancelled) {
+                        onError(error)
                         return@loginWithKakaoTalk
                     }
                 } else if (token != null) {
                     // 카카오톡으로 로그인 성공
                     Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.accessToken}")
                     onTokenReceived(token.accessToken)
-                } else {
-                    UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
                 }
             }
+        } else {
+            UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
         }
     }
 }

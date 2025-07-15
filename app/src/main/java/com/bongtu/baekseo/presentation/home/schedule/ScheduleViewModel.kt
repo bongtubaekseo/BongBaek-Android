@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +21,10 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
+@HiltViewModel
 class ScheduleViewModel @Inject constructor(
-
+    // TODO: Repository 주입
+    private val usernameDataStore: UsernameDataStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScheduleState())
     val uiState = _uiState.asStateFlow()
@@ -94,4 +98,14 @@ class ScheduleViewModel @Inject constructor(
                 )
             }
         }
+
+    fun getUsername() {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    name = usernameDataStore.getUsername()
+                )
+            }
+        }
+    }
 }
