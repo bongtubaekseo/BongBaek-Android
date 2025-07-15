@@ -47,8 +47,8 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun EditCostLabelTextField(
     text: String,
     onTextChange: (String) -> Unit,
-    onInputDone: (() -> Unit),
     modifier: Modifier = Modifier,
+    onInputDone: (() -> Unit)? = null,
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     visualTransformation: VisualTransformation = CostTextFieldFormat(),
 ) {
@@ -133,7 +133,7 @@ fun EditCostLabelTextField(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            onInputDone.invoke()
+                            onInputDone?.invoke()
                         },
                     ),
                     suffix = {

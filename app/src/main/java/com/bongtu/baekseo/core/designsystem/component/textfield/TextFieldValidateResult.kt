@@ -34,5 +34,14 @@ sealed class TextFieldValidateResult {
                 else -> Default
             }
         }
+
+        fun validateCost(cost: String) : TextFieldValidateResult {
+            val number = cost.toIntOrNull() ?: 0
+
+            return when {
+                number < 1 -> Error("1원 이상 적어주세요")
+                else -> Default
+            }
+        }
     }
 }
