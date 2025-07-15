@@ -1,16 +1,21 @@
 package com.bongtu.baekseo.presentation.record
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.RecordEvent
 import com.bongtu.baekseo.data.repository.DummyRepository
-import com.bongtu.baekseo.presentation.record.RecordContract.RecordState
-import com.bongtu.baekseo.presentation.record.type.AttendType
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
+import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -18,8 +23,11 @@ import javax.inject.Inject
 class RecordViewModel @Inject constructor(
     private val dummyRepository: DummyRepository,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(RecordState())
+    private val _uiState = MutableStateFlow(RecordUiState())
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<RecordSideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     fun fetchRecordEvent() {
         // TODO("서버 통신 연결")
@@ -153,4 +161,12 @@ class RecordViewModel @Inject constructor(
                 }
             )
         }
+
+    fun navigateToDetail(eventId: String) = viewModelScope.launch {
+        _sideEffect.emit(RecordSideEffect.NavigateToDetail(eventId))
+    }
+
+    fun navigateToAdd() = viewModelScope.launch {
+        _sideEffect.emit(RecordSideEffect.NavigateToAdd)
+    }
 }
