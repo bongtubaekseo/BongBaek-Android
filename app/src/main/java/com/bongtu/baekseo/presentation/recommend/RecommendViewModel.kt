@@ -15,16 +15,20 @@ import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSide
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.toPersistentList
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
 import kotlin.math.roundToInt
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
     private val kakaoMapRepository: KakaoMapRepository,
@@ -33,8 +37,21 @@ class RecommendViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(RecommendUiState())
     val uiState = _uiState.asStateFlow()
 
+    private val _searchTerm = MutableStateFlow("")
+    val searchTerm = _searchTerm.asStateFlow()
+
     private val _sideEffect = MutableSharedFlow<RecommendSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
+
+    init {
+        viewModelScope.launch {
+            searchTerm.debounce(DEBOUNCE_DELAY).collect {
+                searchPlaces()
+            }
+        }
+    }
+
+    fun updateSearchTerm(searchTerm: String) = _searchTerm.update { searchTerm }
 
     fun updatePageIndex(newIndex: Int) = _uiState.update {
         it.copy(pageIndex = newIndex)
@@ -137,14 +154,16 @@ class RecommendViewModel @Inject constructor(
         }
     }
 
-    fun searchPlaces(query: String) = viewModelScope.launch {
-        // TODO: 여유되면 Debounce 추가
-        kakaoMapRepository.searchPlaces(query).onSuccess {
+    private fun searchPlaces() = viewModelScope.launch {
+        kakaoMapRepository.searchPlaces(searchTerm.value).onSuccess {
             _uiState.update {
                 it.copy(
                     searchResult = it.searchResult,
                 )
             }
+        }.onFailure {
+            // TODO: 실패 처리
+            Timber.d("searchPlaces: $it")
         }
     }
 
@@ -185,5 +204,6 @@ class RecommendViewModel @Inject constructor(
 
     companion object {
         private const val DEFAULT_WEIGHT = 3
+        private const val DEBOUNCE_DELAY = 500L
     }
 }
