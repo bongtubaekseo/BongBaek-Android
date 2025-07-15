@@ -27,8 +27,8 @@ class ScheduleViewModel @Inject constructor(
     fun fetchScheduleEvent(page: Int, category: String? = null) {
         viewModelScope.launch {
             eventRepository.getScheduleEvents(
-                page = 0,
-                category = null,
+                page = page,
+                category = category,
             ).onSuccess { response ->
                 updateScheduleUiState(
                     value = UiState.Success(response)
@@ -55,6 +55,7 @@ class ScheduleViewModel @Inject constructor(
                     eventCategoryType = eventCategoryType,
                 )
             }
+            fetchScheduleEvent(page = 0, category = eventCategoryType.label)
         }
 
     fun getUsername() =

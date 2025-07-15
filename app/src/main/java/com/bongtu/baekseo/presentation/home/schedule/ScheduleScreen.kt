@@ -43,8 +43,8 @@ fun ScheduleRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchScheduleEvent(
-            page = 0,
-            category = null,
+            page = uiState.page,
+            category = uiState.eventCategoryType.label,
         )
         viewModel.getUsername()
     }
