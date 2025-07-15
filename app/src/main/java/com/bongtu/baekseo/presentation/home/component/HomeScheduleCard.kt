@@ -22,26 +22,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_location
-import com.bongtu.baekseo.R.string.home_card_date
 import com.bongtu.baekseo.R.string.record_card_cost
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.presentation.home.model.HomeEvent
-import com.bongtu.baekseo.presentation.home.model.HomeEventInfo
-import com.bongtu.baekseo.presentation.home.model.HomeHostInfo
-import com.bongtu.baekseo.presentation.home.model.HomeLocationInfo
+import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.type.HomeScheduleCardInfoType
-import java.time.LocalDate
 
 @Composable
 fun HomeScheduleCard(
     event: HomeEvent,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = event.eventInfo.eventDate.toFormattedDateWithDay()
+    val date = event.eventDate.toFormattedDateWithDay()
 
     Column(
         modifier = modifier
@@ -56,7 +49,7 @@ fun HomeScheduleCard(
             ),
     ) {
         Text(
-            text = event.hostInfo.hostNickname,
+            text = event.hostNickname,
             style = BongBaekTheme.typography.captionRegular12,
             color = BongBaekTheme.colors.primaryNormal,
         )
@@ -66,13 +59,13 @@ fun HomeScheduleCard(
             horizontalArrangement = Arrangement.SpaceBetween,
         ) {
             Text(
-                text = event.hostInfo.hostName,
+                text = event.hostName,
                 style = BongBaekTheme.typography.titleSemiBold18,
                 color = BongBaekTheme.colors.white,
             )
 
             Text(
-                text = stringResource(record_card_cost, event.eventInfo.cost),
+                text = stringResource(record_card_cost, event.cost),
                 style = BongBaekTheme.typography.titleSemiBold18,
                 color = BongBaekTheme.colors.white,
             )
@@ -85,11 +78,11 @@ fun HomeScheduleCard(
             horizontalArrangement = Arrangement.spacedBy(4.dp),
         ) {
             BongBaekSmallBadge(
-                title = event.eventInfo.eventCategory.label,
+                title = event.eventCategory,
             )
 
             BongBaekSmallBadge(
-                title = event.eventInfo.relationship.label,
+                title = event.relationship,
             )
         }
 
@@ -97,14 +90,14 @@ fun HomeScheduleCard(
 
         HomeScheduleCardInfo(
             infoType = HomeScheduleCardInfoType.LOCATION,
-            content = event.locationInfo.location,
+            content = event.location,
         )
 
         Spacer(modifier = Modifier.height(4.dp))
 
         HomeScheduleCardInfo(
             infoType = HomeScheduleCardInfoType.DATE,
-            content = stringResource(home_card_date, date, weekDay),
+            content = date,
         )
     }
 }
@@ -169,19 +162,14 @@ private fun HomeScheduleCardPreview() {
         HomeScheduleCard(
             event = HomeEvent(
                 eventId = "eventId",
-                hostInfo = HomeHostInfo(
-                    hostName = "헤헤",
-                    hostNickname = "헤헤헤",
-                ),
-                eventInfo = HomeEventInfo(
-                    eventCategory = EventType.BIRTHDAY,
-                    relationship = RelationType.FRIEND,
-                    cost = 10000,
-                    eventDate = LocalDate.of(2025, 2, 11),
-                ),
-                locationInfo = HomeLocationInfo(
-                    location = "강남구 테헤란로 강남 웨딩홀"
-                )
+                hostName = "헤헤",
+                hostNickname = "초록승준",
+                eventCategory = "생일",
+                relationship = "친구",
+                cost = 10000,
+                eventDate = "2025.02.11",
+                dDay = 1,
+                location = "강남",
             )
         )
     }
