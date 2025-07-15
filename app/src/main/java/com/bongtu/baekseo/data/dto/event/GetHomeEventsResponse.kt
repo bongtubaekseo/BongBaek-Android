@@ -28,12 +28,12 @@ data class GetHomeEventsResponse(
         val relationship: String,
         @SerialName("cost")
         val cost: Int,
-        @SerialName("isAttend")
-        val isAttend: Boolean?,
         @SerialName("eventDate")
         val eventDate: String,
         @SerialName("dDay")
         val dDay: Int,
+        @SerialName("note")
+        val note: String?,
     )
 
     @Serializable
