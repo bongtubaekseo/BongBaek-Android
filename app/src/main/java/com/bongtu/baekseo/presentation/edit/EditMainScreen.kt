@@ -473,7 +473,8 @@ private fun FormFieldDropDown(
         maxItemSize = menuItems.size,
         selectedItem = selectedItem,
         onDismissRequest = { expanded = false },
-        onItemSelected = { onItemSelected(it) },
+        onItemSelect = { onItemSelected(it) },
+        label = { it },
         modifier = Modifier
             .padding(top = 12.dp),
     )
