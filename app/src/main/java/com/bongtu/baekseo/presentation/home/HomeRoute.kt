@@ -18,6 +18,7 @@ fun HomeRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToRecord: () -> Unit,
+    navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -43,6 +44,7 @@ fun HomeRoute(
             ScheduleRoute(
                 setBottomBarVisible = setBottomBarVisible,
                 onBackClick = navController::navigateUp,
+                navigateToEdit = navigateToEdit,
             )
         }
     }

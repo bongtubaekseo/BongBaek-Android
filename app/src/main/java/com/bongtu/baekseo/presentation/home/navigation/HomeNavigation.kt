@@ -15,6 +15,7 @@ fun NavGraphBuilder.homeGraph(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
+    navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
@@ -22,6 +23,7 @@ fun NavGraphBuilder.homeGraph(
             setBottomBarVisible = setBottomBarVisible,
             navigateToRecommend = navigateToRecommend,
             navigateToRecord = navigateToRecord,
+            navigateToEdit = navigateToEdit,
             modifier = modifier,
         )
     }

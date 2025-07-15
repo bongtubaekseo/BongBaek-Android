@@ -41,6 +41,10 @@ class ScheduleViewModel @Inject constructor(
                             eventList = updatedList.toPersistentList(),
                         )
                     }
+
+                    if (response.isEmpty()) {
+                        updateScheduleUiState(UiState.Empty)
+                    }
                 }.onFailure {
                     updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
                 }

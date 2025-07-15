@@ -29,6 +29,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
+import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
@@ -38,6 +39,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun ScheduleRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     onBackClick: () -> Unit,
+    navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
@@ -60,6 +62,7 @@ fun ScheduleRoute(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
         onBackClick = onBackClick,
+        navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
         viewModel = viewModel,
         modifier = modifier,
@@ -71,6 +74,7 @@ private fun ScheduleScreen(
     uiState: ScheduleState,
     onCategoryClick: (EventCategoryType) -> Unit,
     onBackClick: () -> Unit,
+    navigateToEdit: () -> Unit,
     lazyListState: LazyListState,
     viewModel: ScheduleViewModel,
     modifier: Modifier = Modifier,
@@ -104,7 +108,11 @@ private fun ScheduleScreen(
 
         when (uiState.scheduleLoadState) {
             is UiState.Empty -> {
-                // TODO: 빈 상태
+                ScheduleEmptyContent(
+                    eventType = uiState.eventCategoryType.label,
+                    onButtonClick = navigateToEdit,
+                    modifier = Modifier.padding(top = 58.dp),
+                )
             }
 
             is UiState.Failure -> {
@@ -196,6 +204,7 @@ private fun ScheduleScreenPreview() {
             ),
             onCategoryClick = {},
             onBackClick = {},
+            navigateToEdit = {},
             lazyListState = rememberLazyListState(),
             viewModel = hiltViewModel(),
             modifier = Modifier,
