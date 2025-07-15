@@ -28,6 +28,8 @@ class RecommendContract {
         val latitude: Double = 0.0,
         val longitude: Double = 0.0,
         val expense: Int = 0,
+        val minExpense: Int = 0,
+        val maxExpense: Int = 0,
     )
 
     sealed interface RecommendSideEffect {
