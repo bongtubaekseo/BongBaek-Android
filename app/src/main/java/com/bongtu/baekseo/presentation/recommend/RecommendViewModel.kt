@@ -12,8 +12,8 @@ import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.FlowPreview
@@ -145,7 +145,7 @@ class RecommendViewModel @Inject constructor(
                     )
                 }
                 Timber.d("fetchExpense: $response")
-                _sideEffect.emit(MainSideEffect.NavigateToResult)
+                _sideEffect.emit(NavigateToResult)
             }.onFailure {
                 // TODO: 실패 처리
                 Timber.d("fetchExpense: $it")
@@ -197,7 +197,7 @@ class RecommendViewModel @Inject constructor(
             )
         }.onSuccess { response ->
             Timber.d("saveEventInformation: $response")
-            _sideEffect.emit(ResultSideEffect.NavigateToFinal)
+            _sideEffect.emit(NavigateToFinal)
         }.onFailure {
             // TODO: 실패 처리
             Timber.d("saveEventInformation: $it")
