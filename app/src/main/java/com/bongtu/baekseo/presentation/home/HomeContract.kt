@@ -2,7 +2,7 @@ package com.bongtu.baekseo.presentation.home
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.presentation.home.model.HomeEvent
+import com.bongtu.baekseo.data.model.event.HomeEvent
 import kotlinx.collections.immutable.ImmutableList
 
 class HomeContract {

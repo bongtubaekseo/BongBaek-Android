@@ -8,9 +8,12 @@ import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
+import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.repository.event.EventRepository
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.toImmutableList
 import javax.inject.Inject
 
 class EventRepositoryImpl @Inject constructor(
@@ -48,5 +51,15 @@ class EventRepositoryImpl @Inject constructor(
         )
     }.mapCatching { response ->
         response.data.toModel()
+    }
+
+    override suspend fun fetchHomeEvents(): Result<ImmutableList<HomeEvent>> = runCatching {
+        eventDataSource.fetchHomeEvents()
+    }.mapCatching { response ->
+        response.data.events.map {
+            it.toModel()
+        }.toImmutableList()
+    }.recoverCatching {
+        emptyList<HomeEvent>().toImmutableList()
     }
 }
