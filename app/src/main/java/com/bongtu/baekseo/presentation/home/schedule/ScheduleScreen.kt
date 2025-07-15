@@ -40,6 +40,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun ScheduleRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     onBackClick: () -> Unit,
+    navigateToDetail:(String) -> Unit,
     navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
@@ -63,6 +64,7 @@ fun ScheduleRoute(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
         onBackClick = onBackClick,
+        onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
         viewModel = viewModel,
@@ -75,6 +77,7 @@ private fun ScheduleScreen(
     uiState: ScheduleState,
     onCategoryClick: (EventCategoryType) -> Unit,
     onBackClick: () -> Unit,
+    onCardClick:(String) -> Unit,
     navigateToEdit: () -> Unit,
     lazyListState: LazyListState,
     viewModel: ScheduleViewModel,
@@ -129,9 +132,7 @@ private fun ScheduleScreen(
             is UiState.Success -> {
                 ScheduleListContent(
                     scheduleEventList = uiState.scheduleLoadState.data.events,
-                    onCardClick = {
-                        // TODO: Card 클릭 이벤트
-                    },
+                    onCardClick = onCardClick,
                     lazyListState = lazyListState,
                     viewModel = viewModel,
                 )
@@ -213,6 +214,7 @@ private fun ScheduleScreenPreview() {
             ),
             onCategoryClick = {},
             onBackClick = {},
+            onCardClick = {},
             navigateToEdit = {},
             lazyListState = rememberLazyListState(),
             viewModel = hiltViewModel(),

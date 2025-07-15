@@ -16,6 +16,7 @@ fun NavGraphBuilder.homeGraph(
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
+    navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
@@ -24,6 +25,7 @@ fun NavGraphBuilder.homeGraph(
             navigateToRecommend = navigateToRecommend,
             navigateToRecord = navigateToRecord,
             navigateToEdit = navigateToEdit,
+            navigateToDetail = navigateToDetail,
             modifier = modifier,
         )
     }
