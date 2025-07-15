@@ -27,6 +27,7 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoardin
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
+import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendFinal
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
@@ -184,7 +185,15 @@ private fun MainNavHost(
         editGraph(
             navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
-            navigateToFinal = navigator::navigateUp,        // TODO: 네비 방식 점검 필요
+            navigateToFinal = {
+                navigator.navController.navigateToRecommendFinal(
+                    navOptions = navOptions {
+                        popUpTo<Edit> {
+                            inclusive = true
+                        }
+                    },
+                )
+            },
             navigateToDetail = { eventId ->
                 navigator.navController.navigateToDetail(
                     eventId = eventId,
@@ -203,6 +212,9 @@ private fun MainNavHost(
                         }
                     }
                 )
+            },
+            navigateToSchedule = {
+                // TODO: schedule navigate
             },
             modifier = modifier,
         )
