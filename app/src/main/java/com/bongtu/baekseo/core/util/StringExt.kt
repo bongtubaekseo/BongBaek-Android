@@ -51,3 +51,8 @@ fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     return localDate.year to localDate.monthValue
 }
+
+fun String.toFormattedMonthDayYear(): String = runCatching {
+    val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+    parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
+}.getOrElse { this }
