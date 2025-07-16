@@ -50,17 +50,13 @@ class EditViewModel @Inject constructor(
     val costValidate = _costValidate.asStateFlow()
 
     fun updateName(newName: String) {
-        _uiState.update {
-            it.copy(name = newName)
-        }
-        _nameValidate.value = TextFieldValidateResult.validate(newName)
+        _uiState.update { it.copy(name = newName) }
+        _nameValidate.update { TextFieldValidateResult.validate(newName) }
     }
 
     fun updateNickname(newNickname: String) {
-        _uiState.update {
-            it.copy(nickname = newNickname)
-        }
-        _nickNameValidate.value = TextFieldValidateResult.validate(newNickname)
+        _uiState.update { it.copy(nickname = newNickname) }
+        _nickNameValidate.update { TextFieldValidateResult.validate(newNickname) }
     }
 
     fun updateEventCategory(newEventCategory: String) = _uiState.update {
@@ -72,10 +68,8 @@ class EditViewModel @Inject constructor(
     }
 
     fun updateCost(newCost: String) {
-        _uiState.update {
-            it.copy(cost = newCost)
-        }
-        _costValidate.value = TextFieldValidateResult.validateCost(newCost)
+        _uiState.update { it.copy(cost = newCost) }
+        _costValidate.update { TextFieldValidateResult.validateCost(newCost) }
     }
 
     fun updateAttendLabel(newAttendLabel: String) = _uiState.update {
