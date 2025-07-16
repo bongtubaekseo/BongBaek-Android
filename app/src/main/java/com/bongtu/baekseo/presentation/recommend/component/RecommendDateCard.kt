@@ -36,6 +36,7 @@ import com.bongtu.baekseo.core.util.DateTextFieldFormat
 fun RecommendDateCard(
     date: String,
     text: String,
+    onFocusChange: (Boolean) -> Unit,
     onTextChange: (String) -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -76,6 +77,7 @@ fun RecommendDateCard(
             isEditable = false,
             onClick = {
                 isDialogOpen = true
+                onFocusChange(false)
             },
             visualTransformation = DateTextFieldFormat(),
         )
@@ -88,6 +90,7 @@ fun RecommendDateCard(
                 onDismissRequest = {
                     isDialogOpen = false
                     onTextChange("")
+                    onFocusChange(true)
                 },
                 onConfirmClick = onConfirmClick,
             )
@@ -102,6 +105,7 @@ private fun RecommendDateCardPreview() {
         RecommendDateCard(
             date = "",
             text = "",
+            onFocusChange = {},
             onTextChange = {},
             onConfirmClick = {},
         )

@@ -17,7 +17,6 @@ import com.bongtu.baekseo.presentation.home.schedule.navigation.navigateToSchedu
 fun HomeRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToRecommend: () -> Unit,
-    navigateToRecord: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
@@ -36,7 +35,7 @@ fun HomeRoute(
     ) {
         composable<Main> {
             HomeMainRoute(
-                navigateToRecord = navigateToRecord,
+                navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navController::navigateToSchedule,
             )

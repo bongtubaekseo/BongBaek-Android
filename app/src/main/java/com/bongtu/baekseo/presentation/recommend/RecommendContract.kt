@@ -11,8 +11,9 @@ import kotlinx.collections.immutable.persistentListOf
 class RecommendContract {
     @Immutable
     data class RecommendUiState(
-        val loadState: UiState<Nothing> = UiState.Empty,
+        val loadState: UiState<Unit> = UiState.Empty,
         val pageIndex: Int = 1,
+        val username: String = "",
         val name: String = "",
         val nameError: String? = null,
         val nickname: String = "",
@@ -33,7 +34,7 @@ class RecommendContract {
 
     sealed interface RecommendSideEffect {
         sealed class MainSideEffect : RecommendSideEffect {
-            data object NavigateToResult : MainSideEffect()
+            data object NavigateToLoading : MainSideEffect()
         }
 
         sealed class ResultSideEffect : RecommendSideEffect {
