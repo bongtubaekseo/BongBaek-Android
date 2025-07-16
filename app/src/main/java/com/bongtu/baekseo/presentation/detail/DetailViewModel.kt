@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -28,18 +29,16 @@ class DetailViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<DetailSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun fetchDetailEvent(eventId: String) {
-        viewModelScope.launch {
-            eventRepository.getEventDetail(eventId)
-                .onSuccess { response ->
-                    updateDetailEvent(
-                        value = UiState.Success(response)
-                    )
-                }
-                .onFailure {
-                    updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
-                }
-        }
+    fun fetchDetailEvent(eventId: String) = viewModelScope.launch {
+        eventRepository.getEventDetail(eventId)
+            .onSuccess { response ->
+                updateDetailEvent(
+                    value = UiState.Success(response)
+                )
+            }
+            .onFailure {
+                updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
+            }
     }
 
     private fun updateDetailEvent(value: UiState<DetailEvent>) =
@@ -55,7 +54,12 @@ class DetailViewModel @Inject constructor(
     }
 
     fun removeDetailEvent() = viewModelScope.launch {
-        /* TODO: 삭제 API 호출 */
-        _sideEffect.emit(NavigateToRecord)
+        eventRepository.deleteEventInfo((uiState.value.loadState as UiState.Success).data.eventId)
+            .onSuccess { response ->
+                Timber.tag("DetailViewModel").d("deleteEventInfo: $response")
+                _sideEffect.emit(NavigateToRecord)
+            }.onFailure {
+                Timber.tag("DetailViewModel").e(it)
+            }
     }
 }
