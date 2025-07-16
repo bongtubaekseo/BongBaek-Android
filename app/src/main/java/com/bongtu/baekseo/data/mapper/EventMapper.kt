@@ -2,11 +2,13 @@ package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
 import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
 import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.model.event.Cost
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -55,4 +57,24 @@ fun FetchHomeEventsResponse.Event.toModel() = HomeEvent(
     eventDate = eventInfo.eventDate,
     dDay = eventInfo.dDay,
     location = locationInfo.location,
+)
+
+fun LocationInfoDto.toModel() = Location(
+    location = location,
+    address = address,
+    latitude = latitude,
+    longitude = longitude,
+)
+
+fun GetEventDetailResponse.toModel() = DetailEvent(
+    eventId = eventId,
+    hostName = hostInfo.hostName,
+    hostNickname = hostInfo.hostNickname,
+    eventCategory = eventInfo.eventCategory,
+    relationship = eventInfo.relationship,
+    cost = eventInfo.cost,
+    isEventParticipated = eventInfo.isAttend,
+    eventDate = eventInfo.eventDate,
+    note = eventInfo.note,
+    locationInfo = locationInfo.toModel(),
 )
