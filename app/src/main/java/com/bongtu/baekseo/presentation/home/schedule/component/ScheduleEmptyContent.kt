@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -23,6 +24,8 @@ import com.bongtu.baekseo.R.drawable.img_record_empty
 import com.bongtu.baekseo.R.string.record_empty_button
 import com.bongtu.baekseo.R.string.record_empty_description
 import com.bongtu.baekseo.R.string.schedule_empty_title
+import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 
@@ -68,28 +71,19 @@ fun ScheduleEmptyContent(
             contentDescription = null,
         )
 
-        Button(
-            modifier = Modifier.padding(top = 32.dp),
+        BongBaekButton(
+            title = stringResource(record_empty_button),
             onClick = onButtonClick,
-            shape = RoundedCornerShape(6.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BongBaekTheme.colors.primaryNormal,
-                contentColor = BongBaekTheme.colors.white,
-            ),
-            contentPadding = PaddingValues(
+            buttonType = ButtonType.PRIMARY,
+            modifier = Modifier
+                .wrapContentWidth()
+                .padding(top = 30.dp),
+            textStyle = BongBaekTheme.typography.titleSemiBold16,
+            paddingValues = PaddingValues(
                 horizontal = 30.dp,
                 vertical = 8.dp,
             ),
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Text(
-                    text = stringResource(record_empty_button),
-                    style = BongBaekTheme.typography.titleSemiBold16,
-                )
-            }
-        }
+        )
     }
 }
 
