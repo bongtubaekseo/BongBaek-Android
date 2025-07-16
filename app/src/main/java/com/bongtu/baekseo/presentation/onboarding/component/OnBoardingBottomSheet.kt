@@ -180,7 +180,9 @@ private fun OnBoardingAgreeItem(
 
         Text(
             text = stringResource(id = item.titleRes),
-            modifier = Modifier.padding(start = 8.dp),
+            modifier = Modifier
+                .padding(start = 8.dp)
+                .noRippleClickable { onCheckedChange(!isChecked) },
             style = textStyle,
             color = textColor,
         )

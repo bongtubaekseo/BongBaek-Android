@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -85,6 +86,8 @@ fun HomeRecommendCard(
             onClick = onClick,
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier.fillMaxWidth(),
+            textStyle = BongBaekTheme.typography.titleSemiBold16,
+            paddingValues = PaddingValues(12.dp),
         )
     }
 }

@@ -14,6 +14,7 @@ class OnBoardingContract {
         val birth: String = "",
         var dialogBirth: String = "",
         val income: String = IncomeType.NONE.label,
+        val nameError: String? = null,
     )
 
     sealed class OnBoardingSideEffect {

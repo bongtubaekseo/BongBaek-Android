@@ -13,6 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
+import com.bongtu.baekseo.R.font.pretendard_black
 import com.bongtu.baekseo.R.font.pretendard_bold
 import com.bongtu.baekseo.R.font.pretendard_medium
 import com.bongtu.baekseo.R.font.pretendard_regular
@@ -28,6 +29,8 @@ val PretendardMedium =
     FontFamily(Font(pretendard_medium))
 val PretendardRegular =
     FontFamily(Font(pretendard_regular))
+val PretendardBlack =
+    FontFamily(Font(pretendard_black))
 
 @Immutable
 data class BongBaekTypography(

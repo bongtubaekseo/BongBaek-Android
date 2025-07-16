@@ -51,6 +51,7 @@ val gradientEnvelopeStart = Color(0xE6A6BEF3)
 val gradientEnvelopeEnd = Color(0xE6D3D9FF)
 val gradientExpenseStart = Color(0xFF4E62FF)
 val gradientExpenseEnd = Color(0xFF502EFF)
+val onboardingTitle = Color(0xFFCDC9FF)
 
 // Page Indicator
 val pageIndicator = Color(0x4DFFFFFF)
@@ -90,6 +91,7 @@ data class BongBaekColors(
     val pageIndicator: Color,
     val gradientCostCardBackGround: Color,
     val gradientCostCardBorder: Color,
+    val onboardingTitle: Color,
 )
 
 val defaultBongBaekColors = BongBaekColors(
@@ -123,6 +125,7 @@ val defaultBongBaekColors = BongBaekColors(
     pageIndicator = pageIndicator,
     gradientCostCardBackGround = gradientCostCardBackGround,
     gradientCostCardBorder = gradientCostCardBorder,
+    onboardingTitle = onboardingTitle,
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
@@ -163,6 +166,7 @@ private fun BongBaekColorsPreview() {
                 colors.pageIndicator,
                 colors.gradientCostCardBackGround,
                 colors.gradientCostCardBorder,
+                colors.onboardingTitle,
             ).forEach { color ->
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp),
