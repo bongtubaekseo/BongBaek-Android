@@ -106,6 +106,7 @@ fun RecommendEventLocationContent(
                 onDismissRequest = { isExpanded = false },
                 onItemSelect = { place ->
                     onPlaceSelect(place)
+                    onFocusChange(false)
                 },
                 label = { it.name },
                 modifier = Modifier

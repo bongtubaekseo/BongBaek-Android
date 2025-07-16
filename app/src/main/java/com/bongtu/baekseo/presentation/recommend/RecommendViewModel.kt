@@ -25,7 +25,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -45,6 +47,8 @@ class RecommendViewModel @Inject constructor(
     private val _searchTerm = MutableStateFlow("")
     val searchTerm = _searchTerm.asStateFlow()
 
+    private val _isManualSearch = MutableStateFlow(true)
+
     private val _sideEffect = MutableSharedFlow<RecommendSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
@@ -52,9 +56,18 @@ class RecommendViewModel @Inject constructor(
         updateUsername()
 
         viewModelScope.launch {
-            searchTerm.debounce(DEBOUNCE_DELAY).collect {
-                searchPlaces()
-            }
+            combine(
+                _searchTerm,
+                _isManualSearch,
+                transform = { term, isManual -> term to isManual }
+            )
+                .debounce(DEBOUNCE_DELAY)
+                .distinctUntilChanged()
+                .collect { (term, isManual) ->
+                    if (isManual && term.isNotBlank()) {
+                        searchPlaces()
+                    }
+                }
         }
     }
 
@@ -64,7 +77,10 @@ class RecommendViewModel @Inject constructor(
         }
     }
 
-    fun updateSearchTerm(searchTerm: String) = _searchTerm.update { searchTerm }
+    fun updateSearchTerm(searchTerm: String) {
+        _isManualSearch.value = true
+        _searchTerm.value = searchTerm
+    }
 
     fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
         currentState.copy(loadState = newLoadState)
@@ -120,9 +136,8 @@ class RecommendViewModel @Inject constructor(
         _uiState.update {
             it.copy(selectedPlace = newLocation)
         }
-        _searchTerm.update {
-            newLocation?.name.orEmpty()
-        }
+        _isManualSearch.value = false
+        _searchTerm.value = newLocation?.name.orEmpty()
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {
