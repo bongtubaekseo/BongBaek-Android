@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
@@ -62,9 +63,8 @@ fun OnBoardingBottomSheet(
     ModalBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-            .navigationBarsPadding(),
+            .fillMaxWidth(),
+        contentWindowInsets = { WindowInsets(0) },
         dragHandle = null,
         sheetState = sheetState,
         shape = RoundedCornerShape(
@@ -98,7 +98,8 @@ private fun OnBoardingBottomSheetAgreeContent(
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray750)
-            .padding(horizontal = 20.dp),
+            .padding(horizontal = 20.dp)
+            .navigationBarsPadding(),
     ) {
         Text(
             text = stringResource(id = onboarding_bottom_sheet_description),
