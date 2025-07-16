@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
@@ -35,7 +36,10 @@ class OnBoardingViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun updateName(newName: String) = _uiState.update {
-        it.copy(name = newName)
+        it.copy(
+            name = newName,
+            nameError = validateName(newName)
+        )
     }
 
     fun updateBirth(newBirth: String) = _uiState.update {
@@ -97,6 +101,11 @@ class OnBoardingViewModel @Inject constructor(
     private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
         it.copy(kakaoId = newKakaoId)
     }
+
+    fun updateButtonState(): Boolean =
+        with(uiState.value) {
+            return name.isNotEmpty() && birth.isNotEmpty() && nameError == null
+        }
 
     private fun saveUsername(name: String) =
         viewModelScope.launch {

@@ -75,17 +75,18 @@ fun OnBoardingSettingScreen(
             }
     }
 
-    var validateResult: TextFieldValidateResult by remember {
-        mutableStateOf(
-            TextFieldValidateResult.Default
-        )
-    }
+//    var validateResult: TextFieldValidateResult by remember {
+//        mutableStateOf(
+//            TextFieldValidateResult.Default
+//        )
+//    }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
-    val buttonEnabled = remember(uiState.name, validateResult, uiState.birth) {
-        validateResult == TextFieldValidateResult.Default && uiState.birth.isNotEmpty() && uiState.name.isNotEmpty()
+    val buttonEnabled = remember(uiState.name, uiState.birth) {
+        viewModel.updateButtonState()
     }
     var incomeSelected by remember { mutableStateOf(true) }
+    val isError = uiState.nameError != null
 
     Column(
         modifier = modifier
@@ -111,14 +112,11 @@ fun OnBoardingSettingScreen(
                     text = uiState.name,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = validateResult,
-                    onTextChange = {
-                        validateResult = TextFieldValidateResult.Default
-                        viewModel.updateName(newName = it)
-                    },
-                    onInputDone = {
-                        validateResult = TextFieldValidateResult.validate(uiState.name)
-                    },
+                    validateResult = if (uiState.nameError != null)
+                        TextFieldValidateResult.Error(uiState.nameError.orEmpty())
+                    else
+                        TextFieldValidateResult.Default,
+                    onTextChange = viewModel::updateName,
                     isClearButtonEnabled = false,
                 )
 
@@ -133,9 +131,7 @@ fun OnBoardingSettingScreen(
                             viewModel.updateDialogBirth(uiState.birth)
                             isDatePickerDialogVisible = true
                         },
-                    onTextChange = {
-                        viewModel.updateBirth(newBirth = it)
-                    },
+                    onTextChange = viewModel::updateBirth,
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
@@ -211,9 +207,7 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = {
-                    viewModel.postSignUp()
-                },
+                onClick = viewModel::postSignUp,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
