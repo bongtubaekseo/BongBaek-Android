@@ -1,10 +1,14 @@
 package com.bongtu.baekseo.presentation.onboarding
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -24,7 +28,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.SpanStyle
@@ -38,6 +44,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_kakao
+import com.bongtu.baekseo.R.drawable.img_onboarding
 import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
@@ -162,85 +169,94 @@ fun OnBoardingLoginScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
-    Column(
-        modifier = modifier
-            .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
-            .padding(horizontal = 20.dp),
-        verticalArrangement = Arrangement.SpaceBetween,
+    Box(
+        modifier = modifier,
     ) {
+        Image(
+            painter = painterResource(id = img_onboarding),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop,
+        )
         Column(
-            modifier = Modifier.padding(top = 120.dp),
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 20.dp),
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            Text(
-                text = buildAnnotatedString {
-                    withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
-                        append(stringResource(id = onboarding_title_primary))
-                    }
-                    append(stringResource(id = onboarding_title_white))
-                },
-                style = BongBaekTheme.typography.headBold26,
-                color = BongBaekTheme.colors.white,
-            )
-
-            Text(
-                text = stringResource(id = onboarding_description),
-                modifier = Modifier.padding(top = 30.dp),
-                style = BongBaekTheme.typography.body2Regular16,
-                color = BongBaekTheme.colors.gray300,
-            )
-        }
-
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            BongBaekButton(
-                title = stringResource(id = button_kakao),
-                onClick = {
-                    onKakaoLoginClick()
-                    // TODO: 이미 온 사용자이면 OnBoardingSetting으로 이동
-                },
-                buttonType = ButtonType.KAKAO,
-                modifier = Modifier
-                    .fillMaxWidth(),
-                textStyle = BongBaekTheme.typography.titleSemiBold18,
-                leadingIcon = {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(ic_kakao),
-                        contentDescription = null,
-                        tint = BongBaekTheme.colors.black,
-                    )
-                },
-            )
-
-            Text(
-                text = stringResource(id = onboarding_login_information),
-                modifier = Modifier.padding(top = 20.dp),
-                style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.white,
-            )
-
-            Row(
-                modifier = Modifier.padding(
-                    top = 4.dp,
-                    bottom = 26.dp,
-                ),
+            Column(
+                modifier = Modifier.padding(top = 120.dp),
             ) {
                 Text(
-                    text = stringResource(id = onboarding_personal_privacy),
-                    textDecoration = TextDecoration.Underline,
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.gray300,
+                    text = buildAnnotatedString {
+                        withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
+                            append(stringResource(id = onboarding_title_primary))
+                        }
+                        append(stringResource(id = onboarding_title_white))
+                    },
+                    style = BongBaekTheme.typography.headBold26,
+                    color = BongBaekTheme.colors.white,
                 )
-
-                Spacer(modifier = Modifier.width(30.dp))
 
                 Text(
-                    text = stringResource(id = onboarding_term_of_use),
-                    textDecoration = TextDecoration.Underline,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    text = stringResource(id = onboarding_description),
+                    modifier = Modifier.padding(top = 30.dp),
+                    style = BongBaekTheme.typography.body2Regular16,
                     color = BongBaekTheme.colors.gray300,
                 )
+            }
+
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
+                BongBaekButton(
+                    title = stringResource(id = button_kakao),
+                    onClick = {
+                        onKakaoLoginClick()
+                        // TODO: 이미 온 사용자이면 OnBoardingSetting으로 이동
+                    },
+                    buttonType = ButtonType.KAKAO,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    textStyle = BongBaekTheme.typography.titleSemiBold18,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(ic_kakao),
+                            contentDescription = null,
+                            tint = BongBaekTheme.colors.black,
+                        )
+                    },
+                )
+
+                Text(
+                    text = stringResource(id = onboarding_login_information),
+                    modifier = Modifier.padding(top = 20.dp),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.white,
+                )
+
+                Row(
+                    modifier = Modifier.padding(
+                        top = 4.dp,
+                        bottom = 26.dp,
+                    ),
+                ) {
+                    Text(
+                        text = stringResource(id = onboarding_personal_privacy),
+                        textDecoration = TextDecoration.Underline,
+                        style = BongBaekTheme.typography.captionRegular12,
+                        color = BongBaekTheme.colors.gray300,
+                    )
+
+                    Spacer(modifier = Modifier.width(30.dp))
+
+                    Text(
+                        text = stringResource(id = onboarding_term_of_use),
+                        textDecoration = TextDecoration.Underline,
+                        style = BongBaekTheme.typography.captionRegular12,
+                        color = BongBaekTheme.colors.gray300,
+                    )
+                }
             }
         }
     }
