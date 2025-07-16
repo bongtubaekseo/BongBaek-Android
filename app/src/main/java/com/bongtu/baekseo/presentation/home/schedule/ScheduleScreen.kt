@@ -134,7 +134,7 @@ private fun ScheduleScreen(
                     scheduleEventList = uiState.scheduleLoadState.data.events,
                     onCardClick = onCardClick,
                     lazyListState = lazyListState,
-                    viewModel = viewModel,
+                    updatePage = viewModel::updatePage,
                 )
             }
         }
