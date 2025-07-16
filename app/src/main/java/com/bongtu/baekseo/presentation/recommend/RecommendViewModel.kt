@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.Event
@@ -34,6 +35,7 @@ import kotlin.math.roundToInt
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
+    private val usernameDataStore: UsernameDataStore,
     private val kakaoMapRepository: KakaoMapRepository,
     private val eventRepository: EventRepository,
 ) : ViewModel() {
@@ -47,10 +49,18 @@ class RecommendViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        updateUsername()
+
         viewModelScope.launch {
             searchTerm.debounce(DEBOUNCE_DELAY).collect {
                 searchPlaces()
             }
+        }
+    }
+
+    private fun updateUsername() = viewModelScope.launch {
+        _uiState.update { currentState ->
+            currentState.copy(username = usernameDataStore.getUsername())
         }
     }
 

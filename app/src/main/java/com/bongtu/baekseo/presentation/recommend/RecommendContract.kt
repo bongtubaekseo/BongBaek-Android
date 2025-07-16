@@ -13,6 +13,7 @@ class RecommendContract {
     data class RecommendUiState(
         val loadState: UiState<Unit> = UiState.Empty,
         val pageIndex: Int = 1,
+        val username: String = "",
         val name: String = "",
         val nameError: String? = null,
         val nickname: String = "",

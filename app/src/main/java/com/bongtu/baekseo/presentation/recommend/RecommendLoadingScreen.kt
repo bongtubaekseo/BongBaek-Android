@@ -46,7 +46,7 @@ fun RecommendLoadingRoute(
     }
 
     RecommendLoadingScreen(
-        name = uiState.name,
+        name = uiState.username,
         isNetworkDone = uiState.loadState is UiState.Success,
         onNavigateToResult = navigateToResult,
         modifier = modifier,
