@@ -76,7 +76,7 @@ class EventRepositoryImpl @Inject constructor(
                 hostInfo = host.toDto(),
                 eventInfo = event.toDto(),
                 locationInfo = location.toDto(),
-            )
+            ),
         )
     }
 }
