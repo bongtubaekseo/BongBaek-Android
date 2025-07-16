@@ -14,6 +14,7 @@
     <string name="home_schedule_more">더보기</string>
     <!--Schedule   -->
     <string name="schedule_title">%s님의 전체 일정</string>
+    <string name="schedule_empty_title">기록한 %1$s%2$s 없어요!</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
     <string name="recommendation_intro_topbar">금액 추천 가이드</string>
