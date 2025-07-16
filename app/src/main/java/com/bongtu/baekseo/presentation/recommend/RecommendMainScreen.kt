@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.recommend
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -149,6 +150,7 @@ private fun RecommendMainScreen(
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var isTitleVisible by remember { mutableStateOf(true) }
     var text by remember { mutableStateOf("") }
     val (topbarRes, titleRes, descRes) = when (uiState.pageIndex) {
         1 -> Triple(
@@ -196,159 +198,182 @@ private fun RecommendMainScreen(
         uiState.selectedPlace,
     ) { checkButtonEnabled() }
 
-    Column(
-        modifier = modifier
-            .background(
-                color = BongBaekTheme.colors.gray900,
+    when (uiState.loadState) {
+        is UiState.Loading -> {
+            RecommendLoadingOverlay(
+                name = uiState.name,
             )
-            .systemBarsPadding(),
-    ) {
-        BongBaekTopBar(
-            title = stringResource(topbarRes),
-            topBarType = TopBarType.LEADING_ICON,
-            leadingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_arrow_back),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .noRippleClickable(onBackClick),
-                    tint = BongBaekTheme.colors.white,
-                )
-            },
-        )
+        }
 
-        Spacer(modifier = Modifier.height(8.dp))
+        is UiState.Failure -> {
 
-        RecommendProgressBar(
-            currentIndex = uiState.pageIndex,
-            modifier = Modifier
-                .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    bottom = 28.dp,
-                ),
-        )
+        }
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .then(
-                    if (uiState.pageIndex == 1) Modifier.verticalScroll(scrollState)
-                    else Modifier
-                ),
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+        else -> {
+            Column(
+                modifier = modifier
+                    .background(
+                        color = BongBaekTheme.colors.gray900,
+                    )
+                    .systemBarsPadding(),
             ) {
-                Text(
-                    text = stringResource(titleRes),
-                    style = BongBaekTheme.typography.headBold24,
-                    color = BongBaekTheme.colors.white,
+                BongBaekTopBar(
+                    title = stringResource(topbarRes),
+                    topBarType = TopBarType.LEADING_ICON,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(ic_arrow_back),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .noRippleClickable(onBackClick),
+                            tint = BongBaekTheme.colors.white,
+                        )
+                    },
                 )
 
-                if (uiState.pageIndex == 4) {
-                    Text(
-                        text = stringResource(recommendation_event_location_skip),
-                        style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.gray500,
-                        modifier = Modifier
-                            .noRippleClickable {
-                                onLocationSelect(null)
-                                fetchExpense()
-                            },
-                    )
-                }
-            }
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(14.dp))
+                RecommendProgressBar(
+                    currentIndex = uiState.pageIndex,
+                    modifier = Modifier
+                        .padding(
+                            start = 20.dp,
+                            end = 20.dp,
+                            bottom = 28.dp,
+                        ),
+                )
 
-            Text(
-                text = stringResource(descRes),
-                style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
-            )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(horizontal = 20.dp)
+                        .then(
+                            if (uiState.pageIndex == 1) Modifier.verticalScroll(scrollState)
+                            else Modifier
+                        ),
+                ) {
+                    AnimatedVisibility(
+                        visible = isTitleVisible,
+                    ) {
+                        Column {
+                            Row(
+                                modifier = Modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.SpaceBetween,
+                                verticalAlignment = Alignment.CenterVertically,
+                            ) {
+                                Text(
+                                    text = stringResource(titleRes),
+                                    style = BongBaekTheme.typography.headBold24,
+                                    color = BongBaekTheme.colors.white,
+                                )
 
-            if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
-            else Spacer(modifier = Modifier.height(30.dp))
+                                if (uiState.pageIndex == 4) {
+                                    Text(
+                                        text = stringResource(recommendation_event_location_skip),
+                                        style = BongBaekTheme.typography.body2Regular14,
+                                        color = BongBaekTheme.colors.gray500,
+                                        modifier = Modifier
+                                            .noRippleClickable {
+                                                onLocationSelect(null)
+                                                fetchExpense()
+                                            },
+                                    )
+                                }
+                            }
 
-            AnimatedContent(
-                targetState = uiState.pageIndex,
-            ) { page ->
-                when (page) {
-                    1 -> RecommendRelationTypeContent(
-                        name = uiState.name,
-                        onNameChange = onNameChange,
-                        nameError = uiState.nameError,
-                        nickname = uiState.nickname,
-                        onNicknameChange = onNicknameChange,
-                        nicknameError = uiState.nicknameError,
-                        selectedRelation = uiState.relationType,
-                        onRelationSelect = onRelationSelect,
-                        isChecked = uiState.isHighAccuracy,
-                        onCheckBoxClick = onCheckBoxClick,
-                        contactFrequency = uiState.contactFrequency,
-                        onContactFrequencyChange = onContactFrequencyChange,
-                        meetFrequency = uiState.meetFrequency,
-                        onMeetFrequencyChange = onMeetFrequencyChange,
-                    )
+                            Spacer(modifier = Modifier.height(14.dp))
 
-                    2 -> RecommendEventSelector(
-                        selectedEvent = uiState.eventType,
-                        onEventSelect = onEventSelect,
-                    )
-
-                    3 -> {
-                        Column(
-                            verticalArrangement = Arrangement.spacedBy(14.dp),
-                        ) {
-                            RecommendDateCard(
-                                date = uiState.eventDate,
-                                text = text,
-                                onTextChange = { text = it },
-                                onConfirmClick = {
-                                    onDateChange(text)
-                                    text = ""
-                                },
-                            )
-
-                            RecommendParticipationCard(
-                                isEventParticipated = uiState.isEventParticipated,
-                                onParticipationSelect = onParticipationSelect,
+                            Text(
+                                text = stringResource(descRes),
+                                style = BongBaekTheme.typography.body2Regular14,
+                                color = BongBaekTheme.colors.gray400,
                             )
                         }
                     }
 
-                    4 -> RecommendEventLocationContent(
-                        selectedPlace = uiState.selectedPlace,
-                        onPlaceSelect = onLocationSelect,
-                        searchValue = searchTerm,
-                        onSearchValueChange = onSearchTermChange,
-                        searchResult = uiState.searchResult,
+                    if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
+                    else Spacer(modifier = Modifier.height(30.dp))
+
+                    AnimatedContent(
+                        targetState = uiState.pageIndex,
+                    ) { page ->
+                        when (page) {
+                            1 -> RecommendRelationTypeContent(
+                                name = uiState.name,
+                                onNameChange = onNameChange,
+                                nameError = uiState.nameError,
+                                nickname = uiState.nickname,
+                                onNicknameChange = onNicknameChange,
+                                nicknameError = uiState.nicknameError,
+                                onFocusChange = { isTitleVisible = !it },
+                                selectedRelation = uiState.relationType,
+                                onRelationSelect = onRelationSelect,
+                                isChecked = uiState.isHighAccuracy,
+                                onCheckBoxClick = onCheckBoxClick,
+                                contactFrequency = uiState.contactFrequency,
+                                onContactFrequencyChange = onContactFrequencyChange,
+                                meetFrequency = uiState.meetFrequency,
+                                onMeetFrequencyChange = onMeetFrequencyChange,
+                            )
+
+                            2 -> RecommendEventSelector(
+                                selectedEvent = uiState.eventType,
+                                onEventSelect = onEventSelect,
+                            )
+
+                            3 -> {
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(14.dp),
+                                ) {
+                                    RecommendDateCard(
+                                        date = uiState.eventDate,
+                                        text = text,
+                                        onFocusChange = { isTitleVisible = it },
+                                        onTextChange = { text = it },
+                                        onConfirmClick = {
+                                            onDateChange(text)
+                                            text = ""
+                                        },
+                                    )
+
+                                    RecommendParticipationCard(
+                                        isEventParticipated = uiState.isEventParticipated,
+                                        onParticipationSelect = onParticipationSelect,
+                                    )
+                                }
+                            }
+
+                            4 -> RecommendEventLocationContent(
+                                selectedPlace = uiState.selectedPlace,
+                                onPlaceSelect = onLocationSelect,
+                                searchValue = searchTerm,
+                                onSearchValueChange = onSearchTermChange,
+                                searchResult = uiState.searchResult,
+                                onFocusChange = { isTitleVisible = !it },
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.weight(1f))
+
+                    BongBaekButton(
+                        title = stringResource(buttonTitleRes),
+                        onClick = {
+                            if (uiState.pageIndex == 4) fetchExpense()
+                            else onPageIndexChange(uiState.pageIndex + 1)
+                        },
+                        buttonType = ButtonType.PRIMARY,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                bottom = 24.dp,
+                            )
+                            .navigationBarsPadding(),
+                        enabled = isButtonEnabled,
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            BongBaekButton(
-                title = stringResource(buttonTitleRes),
-                onClick = {
-                    if (uiState.pageIndex == 4) fetchExpense()
-                    else onPageIndexChange(uiState.pageIndex + 1)
-                },
-                buttonType = ButtonType.PRIMARY,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        bottom = 24.dp,
-                    )
-                    .navigationBarsPadding(),
-                enabled = isButtonEnabled,
-            )
         }
     }
 }

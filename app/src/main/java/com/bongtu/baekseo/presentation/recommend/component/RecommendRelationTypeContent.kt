@@ -37,6 +37,7 @@ fun RecommendRelationTypeContent(
     nickname: String,
     onNicknameChange: (String) -> Unit,
     nicknameError: String?,
+    onFocusChange: (Boolean) -> Unit,
     selectedRelation: RelationType?,
     onRelationSelect: (RelationType) -> Unit,
     isChecked: Boolean,
@@ -57,6 +58,7 @@ fun RecommendRelationTypeContent(
             nickname = nickname,
             onNicknameChange = onNicknameChange,
             nicknameError = nicknameError,
+            onFocusChange = onFocusChange,
         )
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -132,6 +134,7 @@ private fun RecommendRelationTypeContentPreview() {
             nickname = nickname,
             onNicknameChange = { nickname = it },
             nicknameError = null,
+            onFocusChange = {},
             isChecked = isChecked,
             onCheckBoxClick = { isChecked = it },
             contactFrequency = contactFrequency,

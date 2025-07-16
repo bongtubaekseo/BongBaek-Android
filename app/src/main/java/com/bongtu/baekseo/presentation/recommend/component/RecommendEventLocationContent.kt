@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.presentation.recommend.component
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.width
@@ -51,6 +50,7 @@ fun RecommendEventLocationContent(
     searchValue: String,
     onSearchValueChange: (String) -> Unit,
     searchResult: ImmutableList<Place>,
+    onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
@@ -96,6 +96,7 @@ fun RecommendEventLocationContent(
                 onTextChange = {
                     onSearchValueChange(it)
                 },
+                onFocusChange = onFocusChange,
             )
 
             BongBaekDropdownMenu<Place>(
@@ -163,6 +164,7 @@ private fun RecommendEventLocationContentPreview() {
             searchValue = searchValue,
             onSearchValueChange = { searchValue = it },
             searchResult = persistentListOf(),
+            onFocusChange = {},
         )
     }
 }

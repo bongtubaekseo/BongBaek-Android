@@ -38,6 +38,7 @@ fun RecommendTextFieldCard(
     nickname: String,
     onNicknameChange: (String) -> Unit,
     nicknameError: String?,
+    onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -72,6 +73,7 @@ fun RecommendTextFieldCard(
             text = name,
             placeholder = stringResource(recommendation_name_placeholder),
             errorText = nameError,
+            onFocusChange = onFocusChange,
             onTextChange = onNameChange,
         )
 
@@ -81,6 +83,7 @@ fun RecommendTextFieldCard(
             text = nickname,
             placeholder = stringResource(recommendation_nickname_placeholder),
             errorText = nicknameError,
+            onFocusChange = onFocusChange,
             onTextChange = onNicknameChange,
         )
     }
@@ -103,6 +106,7 @@ private fun RecommendTextFieldCardPreview() {
                 nameError = null,
                 nickname = nickname,
                 onNicknameChange = { nickname = it },
+                onFocusChange = {},
                 nicknameError = null,
             )
         }
