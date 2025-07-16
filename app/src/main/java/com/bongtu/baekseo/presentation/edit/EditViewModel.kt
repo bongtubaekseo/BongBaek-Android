@@ -41,9 +41,9 @@ class EditViewModel @Inject constructor(
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val nameValidate = _nameValidate.asStateFlow()
 
-    private val _nickNameValidate =
+    private val _nicknameValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val nickNameValidate = _nickNameValidate.asStateFlow()
+    val nickNameValidate = _nicknameValidate.asStateFlow()
 
     private val _costValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
@@ -56,7 +56,7 @@ class EditViewModel @Inject constructor(
 
     fun updateNickname(newNickname: String) {
         _uiState.update { it.copy(nickname = newNickname) }
-        _nickNameValidate.update { TextFieldValidateResult.validate(newNickname) }
+        _nicknameValidate.update { TextFieldValidateResult.validate(newNickname) }
     }
 
     fun updateEventCategory(newEventCategory: String) = _uiState.update {
