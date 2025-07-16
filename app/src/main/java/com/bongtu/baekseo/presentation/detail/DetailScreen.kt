@@ -71,7 +71,6 @@ private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 fun DetailRoute(
-    eventId: String,
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToRecord: () -> Unit,   // TODO: 삭제시 호출
@@ -81,7 +80,7 @@ fun DetailRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(Unit) { viewModel.fetchDetailEvent(eventId) }
+    LaunchedEffect(Unit) { viewModel.fetchDetailEvent() }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -107,7 +106,7 @@ private fun DetailScreen(
     uiState: DetailUiState,
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
-    onRemoveButtonClick: () -> Unit,
+    onRemoveButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -159,7 +158,7 @@ private fun DetailScreen(
             is UiState.Success -> {
                 DetailContent(
                     event = uiState.loadState.data,
-                    onDeleteButtonClick = onRemoveButtonClick,
+                    onDeleteButtonClick = { onRemoveButtonClick(uiState.loadState.data.eventId) },
                     modifier = Modifier
                         .weight(1f),
                 )

@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.detail
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
@@ -21,24 +22,29 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val eventRepository: EventRepository,
 ) : ViewModel() {
+    private val eventId: String? = savedStateHandle.get<String>(EVENT_ID_KEY)
+
     private val _uiState = MutableStateFlow(DetailUiState())
     val uiState = _uiState.asStateFlow()
 
     private val _sideEffect = MutableSharedFlow<DetailSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    fun fetchDetailEvent(eventId: String) = viewModelScope.launch {
-        eventRepository.getEventDetail(eventId)
-            .onSuccess { response ->
-                updateDetailEvent(
-                    value = UiState.Success(response)
-                )
-            }
-            .onFailure {
-                updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
-            }
+    fun fetchDetailEvent() = viewModelScope.launch {
+        if (eventId != null) {
+            eventRepository.getEventDetail(eventId)
+                .onSuccess { response ->
+                    updateDetailEvent(
+                        value = UiState.Success(response)
+                    )
+                }
+                .onFailure {
+                    updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
+                }
+        }
     }
 
     private fun updateDetailEvent(value: UiState<DetailEvent>) =
@@ -49,17 +55,20 @@ class DetailViewModel @Inject constructor(
         }
 
     fun navigateToEdit() = viewModelScope.launch {
-        // TODO: Edit 에 caching 필요
         _sideEffect.emit(NavigateToEdit)
     }
 
-    fun removeDetailEvent() = viewModelScope.launch {
-        eventRepository.deleteEventInfo((uiState.value.loadState as UiState.Success).data.eventId)
+    fun removeDetailEvent(eventId: String) = viewModelScope.launch {
+        eventRepository.deleteEventInfo(eventId)
             .onSuccess { response ->
                 Timber.tag("DetailViewModel").d("deleteEventInfo: $response")
                 _sideEffect.emit(NavigateToRecord)
             }.onFailure {
                 Timber.tag("DetailViewModel").e(it)
             }
+    }
+
+    companion object {
+        private const val EVENT_ID_KEY = "eventId"
     }
 }

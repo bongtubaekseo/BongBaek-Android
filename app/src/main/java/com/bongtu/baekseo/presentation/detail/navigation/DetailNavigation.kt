@@ -20,11 +20,9 @@ fun NavGraphBuilder.detailGraph(
     modifier: Modifier = Modifier,
 ) {
     composable<Detail> { backStackEntry ->
-        val args = backStackEntry.toRoute<Detail>()
         DetailRoute(
-            eventId = args.eventId,
             navigateUp = navigateUp,
-            navigateToEdit = navigateToEdit,    // TODO: Caching
+            navigateToEdit = navigateToEdit,
             navigateToRecord = navigateToRecord,
             modifier = modifier,
         )
