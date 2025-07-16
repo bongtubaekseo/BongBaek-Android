@@ -38,4 +38,8 @@ class EventDataSourceImpl @Inject constructor(
         page = page,
         category = category,
     )
+
+    override suspend fun deleteEventInfo(
+        eventId: String,
+    ) = eventService.deleteEventInfo(eventId)
 }

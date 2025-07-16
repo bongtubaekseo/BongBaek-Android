@@ -33,4 +33,8 @@ interface EventDataSource {
         eventId: String,
         request: PutEventInfoRequest,
     ): BaseResponse<Unit>
+
+    suspend fun deleteEventInfo(
+        eventId: String,
+    ): BaseResponse<Unit>
 }
