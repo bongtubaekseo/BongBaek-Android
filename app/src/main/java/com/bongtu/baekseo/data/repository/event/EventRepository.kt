@@ -31,6 +31,13 @@ interface EventRepository {
         category: String? = null,
     ): Result<PageScheduleEvent>
 
+    suspend fun putEventInfo(
+        eventId: String,
+        host: Host,
+        event: Event,
+        location: Location,
+    ): Result<Unit>
+
     suspend fun getEventDetail(
         eventId: String,
     ): Result<DetailEvent>

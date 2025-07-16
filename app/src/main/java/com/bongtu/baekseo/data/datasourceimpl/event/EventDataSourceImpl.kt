@@ -5,6 +5,7 @@ import com.bongtu.baekseo.data.datasource.event.EventDataSource
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
+import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import com.bongtu.baekseo.data.service.event.EventService
 import javax.inject.Inject
 
@@ -18,6 +19,11 @@ class EventDataSourceImpl @Inject constructor(
     override suspend fun postEventCost(
         request: PostEventCostRequest,
     ) = eventService.postEventCost(request)
+
+    override suspend fun putEventInfo(
+        eventId: String,
+        request: PutEventInfoRequest,
+    ) = eventService.putEventInfo(eventId, request)
 
     override suspend fun getEventDetail(
         eventId: String,

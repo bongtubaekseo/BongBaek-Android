@@ -101,8 +101,13 @@ class RecommendViewModel @Inject constructor(
         it.copy(isEventParticipated = newIsEventParticipated)
     }
 
-    fun updateEventLocation(newLocation: Place?) = _uiState.update {
-        it.copy(selectedPlace = newLocation)
+    fun updateEventLocation(newLocation: Place?) {
+        _uiState.update {
+            it.copy(selectedPlace = newLocation)
+        }
+        _searchTerm.update {
+            newLocation?.name.orEmpty()
+        }
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {

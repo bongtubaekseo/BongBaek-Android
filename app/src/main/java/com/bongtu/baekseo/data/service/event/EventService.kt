@@ -7,9 +7,11 @@ import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
+import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -32,6 +34,12 @@ interface EventService {
         @Path("page") page: Int,
         @Query("category") category: String? = null,
     ): BaseResponse<GetScheduleEventsResponse>
+
+    @PUT("/api/v1/events/{eventId}")
+    suspend fun putEventInfo(
+        @Path("eventId") eventId: String,
+        @Body request: PutEventInfoRequest,
+    ): BaseResponse<Unit>
 
     @GET("/api/v1/events/{eventId}")
     suspend fun getEventDetail(

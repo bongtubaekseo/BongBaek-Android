@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.edit.component
 
+import android.text.Editable
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
@@ -47,8 +48,9 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun EditCostLabelTextField(
     text: String,
     onTextChange: (String) -> Unit,
-    onInputDone: (() -> Unit),
     modifier: Modifier = Modifier,
+    isEditable: Boolean = true,
+    onInputDone: (() -> Unit)? = null,
     validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     visualTransformation: VisualTransformation = CostTextFieldFormat(),
 ) {
@@ -133,7 +135,7 @@ fun EditCostLabelTextField(
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            onInputDone.invoke()
+                            onInputDone?.invoke()
                         },
                     ),
                     suffix = {

@@ -3,6 +3,7 @@ package com.bongtu.baekseo.data.repositoryimpl.event
 import com.bongtu.baekseo.data.datasource.event.EventDataSource
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
+import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import com.bongtu.baekseo.data.mapper.toDto
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.event.Cost
@@ -75,6 +76,22 @@ class EventRepositoryImpl @Inject constructor(
         )
     }.mapCatching { response ->
         response.data.toModel()
+    }
+
+    override suspend fun putEventInfo(
+        eventId: String,
+        host: Host,
+        event: Event,
+        location: Location,
+    ): Result<Unit> = runCatching {
+        eventDataSource.putEventInfo(
+            eventId = eventId,
+            request = PutEventInfoRequest(
+                hostInfo = host.toDto(),
+                eventInfo = event.toDto(),
+                locationInfo = location.toDto(),
+            ),
+        )
     }
 
     override suspend fun getEventDetail(

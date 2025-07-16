@@ -10,8 +10,13 @@ class CostTextFieldFormat : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val raw = text.text
         val clean = raw.replace(",", "")
-        val number = clean.toLongOrNull()?.coerceIn(0L, 99_999_999L)
-        val formatted = number?.let { DecimalFormat("#,###").format(it) } ?: ""
+
+        if (clean.isEmpty()) {
+            return TransformedText(AnnotatedString(""), OffsetMapping.Identity)
+        }
+
+        val number = clean.toLongOrNull()?.coerceIn(0L, 99_999_999L) ?: 0L
+        val formatted = DecimalFormat("#,###").format(number)
 
         val offsetMapping = object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {

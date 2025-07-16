@@ -5,9 +5,7 @@ import androidx.annotation.StringRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -19,23 +17,27 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
@@ -62,7 +64,6 @@ import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
-import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
@@ -76,12 +77,18 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToComplete
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToLocation
+import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
+import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun EditMainRoute(
@@ -92,12 +99,41 @@ fun EditMainRoute(
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val nameValidate by viewModel.nameValidate.collectAsStateWithLifecycle()
+    val nicknameValidate by viewModel.nickNameValidate.collectAsStateWithLifecycle()
+    val costValidate by viewModel.costValidate.collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<EditSideEffect.EditMainSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToComplete -> navigateComplete()
+                    is NavigateToLocation -> navigateToLocation()
+                }
+            }
+    }
+
     EditMainScreen(
         editEntryType = editEntryType,
+        uiState = uiState,
+        nameValidateResult = nameValidate,
+        nickNameValidateResult = nicknameValidate,
+        costValidateResult = costValidate,
         navigateUp = navigateUp,
-        navigateComplete = navigateComplete,
-        navigateToLocation = navigateToLocation,
-        viewModel = viewModel,
+        navigateToLocation = viewModel::navigateToLocation,
+        onNameChange = viewModel::updateName,
+        onNicknameChange = viewModel::updateNickname,
+        onRelationSelect = viewModel::updateRelationship,
+        onEventSelect = viewModel::updateEventCategory,
+        onCostChange = viewModel::updateCost,
+        onAttendSelect = viewModel::updateAttendLabel,
+        onDateChange = viewModel::updateEventDate,
+        onNoteChange = viewModel::updateNote,
+        checkIsFormFilled = viewModel::updateButtonState,
+        onSubmitEventButtonClick = { viewModel.submitEventInformation(editEntryType) },
         modifier = modifier,
     )
 }
@@ -105,43 +141,50 @@ fun EditMainRoute(
 @Composable
 private fun EditMainScreen(
     editEntryType: EditEntryType,
+    uiState: EditUiState,
+    nameValidateResult: TextFieldValidateResult,
+    nickNameValidateResult: TextFieldValidateResult,
+    costValidateResult: TextFieldValidateResult,
     navigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
-    viewModel: EditViewModel,
+    onNameChange: (String) -> Unit,
+    onNicknameChange: (String) -> Unit,
+    onRelationSelect: (String) -> Unit,
+    onEventSelect: (String) -> Unit,
+    onCostChange: (String) -> Unit,
+    onAttendSelect: (String) -> Unit,
+    onDateChange: (String) -> Unit,
+    onNoteChange: (String) -> Unit,
+    checkIsFormFilled: () -> Boolean,
+    onSubmitEventButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    // TODO: UiState 사용 예정
-    var name by remember { mutableStateOf("") }
-    var nickName by remember { mutableStateOf("") }
-    var relationSelectedItem by remember { mutableStateOf("") }
-    var eventSelectedItem by remember { mutableStateOf("") }
-    var cost by remember { mutableStateOf("") }
-    var attendanceSelectedItem by remember { mutableStateOf("") }
-
-    var date by remember { mutableStateOf("") }
-    var dialogDate by remember { mutableStateOf("") }
+    var text by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-
-    var location by remember { mutableStateOf(null) } // TODO: LocationInfo 변경 예정
-    var memo by remember { mutableStateOf("") }
-    var validateResult: TextFieldValidateResult by remember {
-        mutableStateOf(
-            TextFieldValidateResult.Default
-        )
-    }
 
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
-    val attendOptions = AttendType.entries.map { it.label }.toImmutableList() // TODO: 타입 위치 변경 예정
+    val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isFormFilled = name.isNotBlank()
-            && nickName.isNotBlank()
-            && relationSelectedItem.isNotBlank()
-            && eventSelectedItem.isNotBlank()
-            && cost.isNotBlank()
-            && attendanceSelectedItem.isNotBlank()
-            && date.isNotBlank()
+    val isFormFilled = remember(
+        uiState.name,
+        uiState.nickname,
+        uiState.relationship,
+        uiState.eventCategory,
+        uiState.cost,
+        uiState.attendLabel,
+        uiState.eventDate,
+    ) {
+        checkIsFormFilled()
+    }
+
+    val isMemoEditable = remember(editEntryType) {
+        editEntryType == EditEntryType.FROM_DETAIL
+    }
+
+    val isResultEditable = remember(editEntryType) {
+        editEntryType != EditEntryType.FROM_RESULT
+    }
 
     Column(
         modifier = modifier
@@ -183,34 +226,24 @@ private fun EditMainScreen(
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
                     labelImage = ic_person,
-                    text = name,
+                    text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = validateResult,
-                    onTextChange = {
-                        name = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    validateResult = nameValidateResult,
+                    onTextChange = onNameChange,
                     isRequired = true,
+                    isEditable = isResultEditable,
                 )
 
                 LabelTextField(
                     labelName = stringResource(id = edit_nickname_title),
                     labelImage = ic_nickname,
-                    text = nickName,
+                    text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    validateResult = validateResult,
-                    onTextChange = {
-                        nickName = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    validateResult = nickNameValidateResult,
+                    onTextChange = onNicknameChange,
                     isRequired = true,
+                    isEditable = isResultEditable,
                 )
 
                 FormFieldItem(
@@ -220,8 +253,9 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_relation_dropdown_placeholder),
                             menuItems = relations,
-                            selectedItem = relationSelectedItem,
-                            onItemSelected = { relationSelectedItem = it },
+                            selectedItem = uiState.relationship,
+                            onItemSelected = onRelationSelect,
+                            isEditable = isResultEditable,
                         )
                     },
                 )
@@ -233,22 +267,17 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
-                            selectedItem = eventSelectedItem,
-                            onItemSelected = { eventSelectedItem = it },
+                            selectedItem = uiState.eventCategory,
+                            onItemSelected = onEventSelect,
+                            isEditable = isResultEditable,
                         )
                     }
                 )
 
                 EditCostLabelTextField(
-                    text = cost,
-                    validateResult = validateResult,
-                    onTextChange = {
-                        cost = it
-                        validateResult = TextFieldValidateResult.Default
-                    },
-                    onInputDone = {
-                        // TODO: 유효성 검증 로직
-                    },
+                    text = uiState.cost,
+                    validateResult = costValidateResult,
+                    onTextChange = onCostChange,
                 )
 
                 FormFieldItem(
@@ -258,8 +287,9 @@ private fun EditMainScreen(
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
-                            selectedItem = attendanceSelectedItem,
-                            onItemSelected = { attendanceSelectedItem = it },
+                            selectedItem = uiState.attendLabel,
+                            onItemSelected = onAttendSelect,
+                            isEditable = isResultEditable,
                         )
                     }
                 )
@@ -267,12 +297,11 @@ private fun EditMainScreen(
                 LabelTextField(
                     labelImage = ic_calendar,
                     labelName = stringResource(id = edit_date_title),
-                    text = date,
+                    text = uiState.eventDate,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            dialogDate = date
-                            isDatePickerDialogVisible = true
+                            if (isResultEditable) isDatePickerDialogVisible = true
                         },
                     isRequired = true,
                     isEditable = false,
@@ -284,10 +313,9 @@ private fun EditMainScreen(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
                     content = {
-                        if (location != null) {  // TODO: LocationInfo 변경 예정
+                        if (uiState.selectedPlace != null) {
                             EditLocationContent(
-                                location = location.toString(),
-                                address = "",
+                                place = uiState.selectedPlace,
                             )
                         }
                     },
@@ -295,50 +323,52 @@ private fun EditMainScreen(
                     trailing = {
                         Text(
                             text = stringResource(
-                                if (location == null) edit_location_add_text
+                                if (uiState.selectedPlace == null) edit_location_add_text
                                 else edit_location_edit_text
                             ),
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
                                 .noRippleClickable(
-                                    onClick = navigateToLocation,
-                                )
+                                    onClick = {
+                                        if (isResultEditable) navigateToLocation()
+                                    }
+                                ),
                         )
                     }
                 )
             }
 
             EditMemoContent(
-                text = memo,
-                onTextChange = { memo = it },
+                text = uiState.note,
+                onTextChange = onNoteChange,
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
                         bottom = 160.dp,
-                    )
+                    ),
+                isEditable = isMemoEditable,
             )
         }
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.DATE,
-                value = dialogDate,
-                onValueChange = {
-                    dialogDate = it
-                },
+                value = text,
+                onValueChange = { text = it },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
+                    text = ""
                 },
                 onConfirmClick = {
-                    isDatePickerDialogVisible = false
-                    date = dialogDate
+                    onDateChange(text)
+                    text = ""
                 },
             )
         }
     }
 
-    SaveButton(
-        onClick = navigateComplete,
+    EditSaveButton(
+        onClick = onSubmitEventButtonClick,
         enabled = isFormFilled,
         modifier = Modifier
             .padding(
@@ -407,11 +437,10 @@ private fun FormFieldDropDown(
     menuItems: ImmutableList<String>,
     selectedItem: String,
     onItemSelected: (String) -> Unit,
+    isEditable: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     val isSelected = selectedItem.isNotBlank()
-
     val bongBaekColors = BongBaekTheme.colors
     val text = if (isSelected) selectedItem else placeholder
     val textColor = when {
@@ -421,6 +450,7 @@ private fun FormFieldDropDown(
     }
     val borderColor =
         if (expanded) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.transparent
+    var rowWidthPx by remember { mutableIntStateOf(0) }
 
     Row(
         modifier = Modifier
@@ -429,6 +459,9 @@ private fun FormFieldDropDown(
                 color = BongBaekTheme.colors.gray750,
                 shape = RoundedCornerShape(10.dp),
             )
+            .onGloballyPositioned { coordinates ->
+                rowWidthPx = coordinates.size.width
+            }
             .border(
                 width = 1.dp,
                 color = borderColor,
@@ -438,7 +471,9 @@ private fun FormFieldDropDown(
                 vertical = 12.dp,
                 horizontal = 16.dp,
             )
-            .noRippleClickable { expanded = !expanded },
+            .noRippleClickable {
+                if (isEditable) expanded = !expanded
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
@@ -459,46 +494,12 @@ private fun FormFieldDropDown(
     BongBaekDropdownMenu(
         expanded = expanded,
         items = menuItems,
-        maxItemSize = menuItems.size,
         selectedItem = selectedItem,
         onDismissRequest = { expanded = false },
         onItemSelect = { onItemSelected(it) },
         label = { it },
         modifier = Modifier
-            .padding(top = 12.dp),
+            .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
+        maxItemSize = menuItems.size,
     )
-}
-
-@Composable
-private fun SaveButton(
-    onClick: () -> Unit,
-    enabled: Boolean,
-    modifier: Modifier = Modifier,
-    shape: Shape = RoundedCornerShape(10.dp),
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter,
-    ) {
-        Button(
-            modifier = modifier
-                .fillMaxWidth(),
-            onClick = onClick,
-            enabled = enabled,
-            shape = shape,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = BongBaekTheme.colors.primaryNormal,
-                contentColor = BongBaekTheme.colors.white,
-                disabledContainerColor = BongBaekTheme.colors.gray700,
-                disabledContentColor = BongBaekTheme.colors.gray500,
-            ),
-            contentPadding = PaddingValues(14.dp),
-        ) {
-            Text(
-                text = stringResource(edit_save_button),
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-        }
-    }
 }

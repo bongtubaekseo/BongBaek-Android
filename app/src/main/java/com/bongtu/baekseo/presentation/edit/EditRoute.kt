@@ -15,7 +15,7 @@ import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 
 @Composable
 fun EditRoute(
-    editEntryType: EditEntryType,       // TODO: 해당 Entry 로 API 호출 분기 예정
+    editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     modifier: Modifier = Modifier,
@@ -39,14 +39,13 @@ fun EditRoute(
             nestedNavigateUp = navController::navigateUp,
             navigateComplete = navigateComplete,
             navigateToLocation = { navController.navigate(EditRoute.Location) },
-            navigateToMain = {
+            navigateToEditMain = {
                 navController.navigate(
                     route = EditRoute.Main,
                     navOptions = navOptions {
-                        popUpTo<EditRoute.Main> {
-                            inclusive = false
+                        popUpTo<EditRoute.Location> {
+                            inclusive = true
                         }
-                        launchSingleTop = true
                     },
                 )
             },
