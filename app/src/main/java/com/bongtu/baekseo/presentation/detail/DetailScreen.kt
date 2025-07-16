@@ -73,7 +73,7 @@ private const val MEMO_RATIO = 320f / 152f
 fun DetailRoute(
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
-    navigateToRecord: () -> Unit,   // TODO: 삭제시 호출
+    navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
