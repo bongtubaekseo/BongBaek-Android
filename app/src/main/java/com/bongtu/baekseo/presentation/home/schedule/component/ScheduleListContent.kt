@@ -48,7 +48,7 @@ fun ScheduleListContent(
     scheduleEventList: ImmutableList<ScheduleEvent>,
     onCardClick: (String) -> Unit,
     lazyListState: LazyListState,
-    viewModel: ScheduleViewModel,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
@@ -133,9 +133,7 @@ fun ScheduleListContent(
 
     lazyListState.OnBottomReached(
         buffer = 3,
-        onLoadMore = {
-            viewModel.updatePage()
-        }
+        onLoadMore = updatePage,
     )
 }
 
@@ -285,7 +283,7 @@ private fun ScheduleListContentPreview() {
             ),
             onCardClick = {},
             lazyListState = rememberLazyListState(),
-            viewModel = hiltViewModel(),
+            updatePage = {},
         )
     }
 }
