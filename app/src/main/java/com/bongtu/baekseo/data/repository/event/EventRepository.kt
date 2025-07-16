@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.data.repository.event
 
+import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.Event
@@ -39,7 +40,7 @@ interface EventRepository {
     ): Result<Unit>
 
     suspend fun deleteEvents(
-        eventIds: List<String>,
+        request: DeleteRecordRequest,
     ): Result<Unit>
 
     suspend fun getRecordEvents(

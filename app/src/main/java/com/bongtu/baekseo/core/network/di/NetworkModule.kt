@@ -23,6 +23,7 @@ import okhttp3.Interceptor
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.json.JSONArray
 import org.json.JSONObject
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -52,7 +53,7 @@ object NetworkModule {
         when {
             message.isJsonObject() -> Timber.Forest.tag("okhttp").d(JSONObject(message).toString(4))
 
-            message.isJsonArray() -> Timber.Forest.tag("okhttp").d(JSONObject(message).toString(4))
+            message.isJsonArray() -> Timber.Forest.tag("okhttp").d(JSONArray(message).toString(4))
 
             else -> {
                 Timber.Forest.tag("okhttp").d("CONNECTION INFO -> $message")

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
@@ -20,6 +21,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -35,11 +37,19 @@ class RecordViewModel @Inject constructor(
     private fun deleteEvents() {
         viewModelScope.launch {
             eventRepository.deleteEvents(
-                eventIds = uiState.value.selectedDeleteEventIds.toList()
+                request = DeleteRecordRequest(uiState.value.selectedDeleteEventIds.toList()),
             ).onSuccess {
                 updateSelectedDeleteEventIds(emptySet())
                 updateDeleteModeCancel()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        page = 0,
+                        attendType = uiState.value.attendType,
+                        eventCategoryType = uiState.value.eventCategoryType,
+                    )
+                }
                 fetchRecordEvent()
+
             }.onFailure {
                 updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
@@ -89,9 +99,9 @@ class RecordViewModel @Inject constructor(
 
     fun fetchSelectedDeleteEventIds() {
         // TODO("선택된 삭제 처리 추가 예정")
-        updateDeleteModeCancel()
-        updateSelectedDeleteEventIds(emptySet())
         deleteEvents()
+        updateDeleteModeCancel()
+//        updateSelectedDeleteEventIds(emptySet())
     }
 
     private fun updateRecordUiState(value: UiState<PageScheduleEvent>) =
@@ -134,14 +144,20 @@ class RecordViewModel @Inject constructor(
         }
 
     fun updateSelectedDeleteEventId(eventId: String) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                selectedDeleteEventIds = if (currentState.selectedDeleteEventIds.contains(eventId)) {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                val newSelected = if (currentState.selectedDeleteEventIds.contains(eventId)) {
                     currentState.selectedDeleteEventIds - eventId
                 } else {
                     currentState.selectedDeleteEventIds + eventId
                 }
-            )
+
+                Timber.tag("하하하하하").d("선택된 ID 목록: $newSelected")
+
+                currentState.copy(
+                    selectedDeleteEventIds = newSelected
+                )
+            }
         }
 
     fun updateEventType(eventCategoryType: EventCategoryType) =

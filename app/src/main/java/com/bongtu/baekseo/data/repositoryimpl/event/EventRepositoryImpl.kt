@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.data.repositoryimpl.event
 
 import com.bongtu.baekseo.data.datasource.event.EventDataSource
+import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
@@ -93,9 +94,9 @@ class EventRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun deleteEvents(eventIds: List<String>): Result<Unit> = runCatching {
+    override suspend fun deleteEvents(request: DeleteRecordRequest): Result<Unit> = runCatching {
         eventDataSource.deleteEvents(
-            eventIds = eventIds,
+            request = request,
         )
     }
 
