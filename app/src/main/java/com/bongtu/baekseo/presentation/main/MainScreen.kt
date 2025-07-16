@@ -113,12 +113,7 @@ private fun MainNavHost(
 
         homeGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
-            navigateToRecord = {
-                navigator.navController.navigateToRecord()
-            },
-            navigateToRecommend = {
-                navigator.navController.navigateToRecommend()
-            },
+            navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToDetail = { eventId ->
                 navigator.navController.navigateToDetail(
