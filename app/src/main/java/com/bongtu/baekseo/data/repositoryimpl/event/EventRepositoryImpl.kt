@@ -6,6 +6,7 @@ import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.mapper.toDto
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.event.Cost
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -61,5 +62,13 @@ class EventRepositoryImpl @Inject constructor(
         }.toImmutableList()
     }.recoverCatching {
         emptyList<HomeEvent>().toImmutableList()
+    }
+
+    override suspend fun getEventDetail(
+        eventId: String,
+    ): Result<DetailEvent> = runCatching {
+        eventDataSource.getEventDetail(eventId)
+    }.mapCatching { response ->
+        response.data.toModel()
     }
 }
