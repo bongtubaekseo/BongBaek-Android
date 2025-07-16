@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.data.model.RecordEvent
-import com.bongtu.baekseo.data.repository.DummyRepository
+import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
@@ -23,7 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class RecordViewModel @Inject constructor(
-    private val dummyRepository: DummyRepository,
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(RecordUiState())
     val uiState = _uiState.asStateFlow()
@@ -32,6 +32,20 @@ class RecordViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     private val _page = MutableStateFlow(0)  // TODO: 무한 스크롤 페이지 state
+
+    private fun deleteEvents() {
+        viewModelScope.launch {
+            eventRepository.deleteEvents(
+                eventIds = uiState.value.selectedDeleteEventIds.toList()
+            ).onSuccess {
+                updateSelectedDeleteEventIds(emptySet())
+                updateDeleteModeCancel()
+                fetchRecordEvent()
+            }.onFailure {
+                updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            }
+        }
+    }
 
     fun fetchRecordEvent() {
         // TODO: categoryType 이 ALL 이면 쿼리 스트링 x
