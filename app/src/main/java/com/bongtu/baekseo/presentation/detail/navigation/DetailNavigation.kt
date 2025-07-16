@@ -5,7 +5,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.toRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.detail.DetailRoute
 import kotlinx.serialization.Serializable

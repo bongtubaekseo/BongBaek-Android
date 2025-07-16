@@ -15,6 +15,7 @@ import com.bongtu.baekseo.presentation.edit.EditViewModel
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
+import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Schedule
 import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import kotlinx.serialization.Serializable
 
@@ -40,9 +41,11 @@ fun NavGraphBuilder.editGraph(
             previousDestination?.hasRoute(RecommendResult::class) == true -> {
                 EditEntryType.FROM_RESULT
             }
-//            previousDestination?.hasRoute(Schedule::class) == true -> {      // TODO: 중첩 네비 분리 후 활성화
-//                EditEntryType.FROM_SCHEDULE
-//            }
+
+            previousDestination?.hasRoute(Schedule::class) == true -> {
+                EditEntryType.FROM_SCHEDULE
+            }
+
             else -> {
                 EditEntryType.FROM_RECORD
             }
