@@ -12,6 +12,7 @@ class EditContract {
     @Immutable
     data class EditUiState(
         val submitState: UiState<Unit> = UiState.Empty,
+        val eventId: String = "",
         val name: String = "",
         val nickname: String = "",
         val eventCategory: String = "",
