@@ -35,7 +35,5 @@ class EditContract {
         sealed class EditLocationSideEffect : EditSideEffect {
             data object NavigateToEditMain : EditLocationSideEffect()
         }
-
-
     }
 }
