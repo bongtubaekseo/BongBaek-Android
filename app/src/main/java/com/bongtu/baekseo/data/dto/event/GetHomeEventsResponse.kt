@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class FetchHomeEventsResponse(
+data class GetHomeEventsResponse(
     @SerialName("events")
     val events: List<Event>
 ) {
@@ -28,8 +28,6 @@ data class FetchHomeEventsResponse(
         val relationship: String,
         @SerialName("cost")
         val cost: Int,
-        @SerialName("isAttend")
-        val isAttend: Boolean?,
         @SerialName("eventDate")
         val eventDate: String,
         @SerialName("dDay")

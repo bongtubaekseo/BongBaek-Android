@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
@@ -23,30 +25,30 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.R.string.record_card_weekday
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
+import com.bongtu.baekseo.core.util.toFormattedDateAndDay
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.home.schedule.ScheduleViewModel
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
 import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 // TODO: 기록하기와 공통 컴포넌트화 할 것
 @Composable
 fun ScheduleListContent(
     scheduleEventList: ImmutableList<ScheduleEvent>,
     onCardClick: (String) -> Unit,
+    lazyListState: LazyListState,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
@@ -54,6 +56,7 @@ fun ScheduleListContent(
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
+        state = lazyListState,
         contentPadding = PaddingValues(horizontal = 20.dp),
     ) {
         itemsIndexed(yearMonthEventItems) { index, item ->
@@ -109,8 +112,12 @@ fun ScheduleListContent(
                 is ScheduleYearMonthEventItem.Event -> {
                     with(item.event) {
                         ScheduleCard(
-                            hostInfo = hostInfo,
-                            eventInfo = eventInfo,
+                            hostName = hostName,
+                            hostNickname = hostNickname,
+                            eventCategory = eventCategory,
+                            relationship = relationship,
+                            cost = cost,
+                            eventDate = eventDate,
                             onCardClick = { onCardClick(eventId) },
                             modifier = Modifier.padding(top = topPadding),
                         )
@@ -123,16 +130,25 @@ fun ScheduleListContent(
             }
         }
     }
+
+    lazyListState.OnBottomReached(
+        buffer = 3,
+        onLoadMore = updatePage,
+    )
 }
 
 @Composable
 private fun ScheduleCard(
-    hostInfo: ScheduleHostInfo,
-    eventInfo: ScheduleEventInfo,
+    hostName: String,
+    hostNickname: String,
+    eventCategory: String,
+    relationship: String,
+    cost: Int,
+    eventDate: String,
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventInfo.eventDate.toFormattedDateWithDay()
+    val (date, weekDay) = eventDate.toFormattedDateAndDay()
 
     Column(
         modifier = modifier
@@ -148,7 +164,7 @@ private fun ScheduleCard(
             .noRippleClickable(onClick = onCardClick),
     ) {
         Text(
-            text = hostInfo.hostNickname,
+            text = hostNickname,
             color = BongBaekTheme.colors.primaryNormal,
             style = BongBaekTheme.typography.captionRegular12,
         )
@@ -161,12 +177,12 @@ private fun ScheduleCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Text(
-                text = hostInfo.hostName,
+                text = hostName,
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
             Text(
-                text = stringResource(record_card_cost, eventInfo.cost),
+                text = stringResource(record_card_cost, cost),
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
@@ -177,12 +193,12 @@ private fun ScheduleCard(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             BongBaekSmallBadge(
-                title = eventInfo.eventCategory.label,
+                title = eventCategory,
                 modifier = Modifier.padding(end = 8.dp),
             )
 
             BongBaekSmallBadge(
-                title = eventInfo.relationship.label,
+                title = relationship,
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -212,84 +228,62 @@ private fun ScheduleListContentPreview() {
             scheduleEventList = persistentListOf(
                 ScheduleEvent(
                     eventId = "1",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "공승준",
-                        hostNickname = "초록승준",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.WEDDING,
-                        relationship = RelationType.FRIEND,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 3, 11),
-                    ),
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.02.11 (목)",
                 ),
                 ScheduleEvent(
-                    eventId = "2",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "김종명",
-                        hostNickname = "봉준호",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.FIRST_BD,
-                        relationship = RelationType.NEIGHBOR,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 2, 11),
-                    ),
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.09.11 (목)",
                 ),
                 ScheduleEvent(
-                    eventId = "3",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "김헤정",
-                        hostNickname = "메정",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.BIRTHDAY,
-                        relationship = RelationType.ALUMNI,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 1, 11),
-                    ),
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.08.11 (목)",
                 ),
                 ScheduleEvent(
-                    eventId = "4",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "공승준",
-                        hostNickname = "초록승준",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.WEDDING,
-                        relationship = RelationType.FRIEND,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 6, 11),
-                    ),
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.07.11 (목)",
                 ),
                 ScheduleEvent(
-                    eventId = "5",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "김종명",
-                        hostNickname = "봉준호",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.FIRST_BD,
-                        relationship = RelationType.NEIGHBOR,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 8, 11),
-                    ),
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.06.11 (목)",
                 ),
                 ScheduleEvent(
-                    eventId = "6",
-                    hostInfo = ScheduleHostInfo(
-                        hostName = "김헤정",
-                        hostNickname = "메정",
-                    ),
-                    eventInfo = ScheduleEventInfo(
-                        eventCategory = EventType.BIRTHDAY,
-                        relationship = RelationType.ALUMNI,
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 8, 11),
-                    ),
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
+                    cost = 10000,
+                    eventDate = "2025.05.11 (목)",
                 ),
             ),
             onCardClick = {},
+            lazyListState = rememberLazyListState(),
+            updatePage = {},
         )
     }
 }
