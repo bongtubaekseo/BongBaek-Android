@@ -33,7 +33,7 @@ class RecommendContract {
 
     sealed interface RecommendSideEffect {
         sealed class MainSideEffect : RecommendSideEffect {
-            data object NavigateToResult : MainSideEffect()
+            data object NavigateToLoading : MainSideEffect()
         }
 
         sealed class ResultSideEffect : RecommendSideEffect {

@@ -15,7 +15,7 @@ import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToLoading
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -166,7 +166,7 @@ class RecommendViewModel @Inject constructor(
                 updateLoadState(UiState.Success(Unit))
 
                 Timber.d("fetchExpense: $response")
-                _sideEffect.emit(NavigateToResult)
+                _sideEffect.emit(NavigateToLoading)
             }.onFailure {
                 // TODO: 실패 처리
                 updateLoadState(UiState.Failure(ERROR_MESSAGE))
