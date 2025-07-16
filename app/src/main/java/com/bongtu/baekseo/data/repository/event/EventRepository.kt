@@ -23,4 +23,11 @@ interface EventRepository {
     ): Result<Cost>
 
     suspend fun fetchHomeEvents(): Result<ImmutableList<HomeEvent>>
+
+    suspend fun putEventInfo(
+        eventId: String,
+        host: Host,
+        event: Event,
+        location: Location,
+    ): Result<Unit>
 }
