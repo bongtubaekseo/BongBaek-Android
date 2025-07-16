@@ -18,4 +18,8 @@ class EventDataSourceImpl @Inject constructor(
     ) = eventService.postEventCost(request)
 
     override suspend fun fetchHomeEvents() = eventService.fetchHomeEvents()
+
+    override suspend fun getEventDetail(
+        eventId: String,
+    ) = eventService.getEventDetail(eventId)
 }
