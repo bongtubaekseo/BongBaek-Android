@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -29,6 +30,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
@@ -437,9 +440,7 @@ private fun FormFieldDropDown(
     isEditable: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
-
     val isSelected = selectedItem.isNotBlank()
-
     val bongBaekColors = BongBaekTheme.colors
     val text = if (isSelected) selectedItem else placeholder
     val textColor = when {
@@ -449,6 +450,7 @@ private fun FormFieldDropDown(
     }
     val borderColor =
         if (expanded) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.transparent
+    var rowWidthPx by remember { mutableIntStateOf(0) }
 
     Row(
         modifier = Modifier
@@ -457,6 +459,9 @@ private fun FormFieldDropDown(
                 color = BongBaekTheme.colors.gray750,
                 shape = RoundedCornerShape(10.dp),
             )
+            .onGloballyPositioned { coordinates ->
+                rowWidthPx = coordinates.size.width
+            }
             .border(
                 width = 1.dp,
                 color = borderColor,
@@ -489,12 +494,12 @@ private fun FormFieldDropDown(
     BongBaekDropdownMenu(
         expanded = expanded,
         items = menuItems,
-        maxItemSize = menuItems.size,
         selectedItem = selectedItem,
         onDismissRequest = { expanded = false },
         onItemSelect = { onItemSelected(it) },
         label = { it },
         modifier = Modifier
-            .padding(top = 12.dp),
+            .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
+        maxItemSize = menuItems.size,
     )
 }

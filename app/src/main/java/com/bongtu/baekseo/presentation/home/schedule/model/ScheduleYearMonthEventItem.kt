@@ -1,6 +1,6 @@
 package com.bongtu.baekseo.presentation.home.schedule.model
 
-import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 
 sealed interface ScheduleYearMonthEventItem {
     data class YearHeader(val year: Int) : ScheduleYearMonthEventItem

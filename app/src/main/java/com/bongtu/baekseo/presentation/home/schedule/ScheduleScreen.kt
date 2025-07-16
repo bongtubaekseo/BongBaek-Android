@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -21,30 +23,30 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.EventType
-import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
+import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleEventInfo
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleHostInfo
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 @Composable
 fun ScheduleRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     onBackClick: () -> Unit,
+    navigateToDetail: (String) -> Unit,
+    navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lazyListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         viewModel.fetchScheduleEvent()
@@ -62,6 +64,10 @@ fun ScheduleRoute(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
         onBackClick = onBackClick,
+        onCardClick = navigateToDetail,
+        navigateToEdit = navigateToEdit,
+        lazyListState = lazyListState,
+        viewModel = viewModel,
         modifier = modifier,
     )
 }
@@ -71,6 +77,10 @@ private fun ScheduleScreen(
     uiState: ScheduleState,
     onCategoryClick: (EventCategoryType) -> Unit,
     onBackClick: () -> Unit,
+    onCardClick: (String) -> Unit,
+    navigateToEdit: () -> Unit,
+    lazyListState: LazyListState,
+    viewModel: ScheduleViewModel,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -102,7 +112,13 @@ private fun ScheduleScreen(
 
         when (uiState.scheduleLoadState) {
             is UiState.Empty -> {
-                // TODO: 빈 상태
+                ScheduleEmptyContent(
+                    eventType = uiState.eventCategoryType.label,
+                    onButtonClick = navigateToEdit,
+                    modifier = Modifier
+                        .padding(top = 58.dp)
+                        .padding(horizontal = 20.dp),
+                )
             }
 
             is UiState.Failure -> {
@@ -115,10 +131,10 @@ private fun ScheduleScreen(
 
             is UiState.Success -> {
                 ScheduleListContent(
-                    scheduleEventList = uiState.scheduleLoadState.data,
-                    onCardClick = {
-                        // TODO: Card 클릭 이벤트
-                    },
+                    scheduleEventList = uiState.scheduleLoadState.data.events,
+                    onCardClick = onCardClick,
+                    lazyListState = lazyListState,
+                    updatePage = viewModel::updatePage,
                 )
             }
         }
@@ -128,94 +144,80 @@ private fun ScheduleScreen(
 @Preview
 @Composable
 private fun ScheduleScreenPreview() {
+    val events = persistentListOf(
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.09.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.08.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.07.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.06.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.05.11 (목)",
+        ),
+    )
+
     BongBaekTheme {
         ScheduleScreen(
             uiState = ScheduleState(
                 scheduleLoadState = UiState.Success(
-                    persistentListOf(
-                        ScheduleEvent(
-                            eventId = "1",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "공승준",
-                                hostNickname = "초록승준",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.WEDDING,
-                                relationship = RelationType.FRIEND,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 3, 11),
-                            ),
-                        ),
-                        ScheduleEvent(
-                            eventId = "2",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김종명",
-                                hostNickname = "봉준호",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.FIRST_BD,
-                                relationship = RelationType.NEIGHBOR,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 2, 11),
-                            ),
-                        ),
-                        ScheduleEvent(
-                            eventId = "3",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김헤정",
-                                hostNickname = "메정",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.BIRTHDAY,
-                                relationship = RelationType.ALUMNI,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 1, 11),
-                            ),
-                        ),
-                        ScheduleEvent(
-                            eventId = "4",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "공승준",
-                                hostNickname = "초록승준",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.WEDDING,
-                                relationship = RelationType.FRIEND,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 6, 11),
-                            ),
-                        ),
-                        ScheduleEvent(
-                            eventId = "5",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김종명",
-                                hostNickname = "봉준호",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.FIRST_BD,
-                                relationship = RelationType.NEIGHBOR,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 8, 11),
-                            ),
-                        ),
-                        ScheduleEvent(
-                            eventId = "6",
-                            hostInfo = ScheduleHostInfo(
-                                hostName = "김헤정",
-                                hostNickname = "메정",
-                            ),
-                            eventInfo = ScheduleEventInfo(
-                                eventCategory = EventType.BIRTHDAY,
-                                relationship = RelationType.ALUMNI,
-                                cost = 10000,
-                                eventDate = LocalDate.of(2025, 8, 11),
-                            ),
-                        ),
-                    ),
-                ),
+                    data = PageScheduleEvent(
+                        events = events,
+                        currentPage = 0,
+                        isLast = false
+                    )
+                )
             ),
             onCategoryClick = {},
             onBackClick = {},
+            onCardClick = {},
+            navigateToEdit = {},
+            lazyListState = rememberLazyListState(),
+            viewModel = hiltViewModel(),
             modifier = Modifier,
         )
     }

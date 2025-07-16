@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.home.schedule.model
 
-import com.bongtu.baekseo.core.util.toFormattedYearWithMonth
+import com.bongtu.baekseo.core.util.toFormattedYearWithMonthPair
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 
@@ -10,7 +11,7 @@ fun ImmutableList<ScheduleEvent>.toYearMonthEventItemList(): ImmutableList<Sched
     var lastMonth: Int? = null
 
     this.forEach { event ->
-        val (year, month) = event.eventInfo.eventDate.toFormattedYearWithMonth()
+        val (year, month) = event.eventDate.toFormattedYearWithMonthPair()
 
         if (year != lastYear) {
             result.add(ScheduleYearMonthEventItem.YearHeader(year))

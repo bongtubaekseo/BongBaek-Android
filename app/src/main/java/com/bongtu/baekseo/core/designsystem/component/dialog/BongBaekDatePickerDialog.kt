@@ -1,8 +1,6 @@
 package com.bongtu.baekseo.core.designsystem.component.dialog
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -58,7 +56,6 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  * @param onDismissRequest - dialog 닫기
  * @param onConfirmClick - ok 버튼 클릭 이벤트
  */
-
 private const val DATE_INPUT_MAX_LENGTH = 8
 
 @Composable
@@ -209,7 +206,6 @@ private fun BongBaekDatePickerTextField(
         visualTransformation = DatePickerFormat(),
         modifier = modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(10.dp))
             .border(
                 width = 1.dp,
                 color = BongBaekTheme.colors.lineNormal,

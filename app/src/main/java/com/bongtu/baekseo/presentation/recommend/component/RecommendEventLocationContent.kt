@@ -4,17 +4,22 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.bongtu.baekseo.R.drawable.img_map_marker
@@ -52,6 +57,12 @@ fun RecommendEventLocationContent(
     val mapView = remember { MapView(context) }
     val defaultPosition = LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
     val kakaoMapState = remember { mutableStateOf<KakaoMap?>(null) }
+    var isExpanded by remember { mutableStateOf(false) }
+    var rowWidthPx by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(searchResult) {
+        if (searchResult.isNotEmpty()) isExpanded = true
+    }
 
     LaunchedEffect(selectedPlace, kakaoMapState.value) {
         kakaoMapState.value?.let { map ->
@@ -73,30 +84,33 @@ fun RecommendEventLocationContent(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .onGloballyPositioned { coordinates ->
+                rowWidthPx = coordinates.size.width
+            },
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        Box {
-            Column {
-                SearchTextField(
-                    text = searchValue,
-                    onTextChange = onSearchValueChange,
-                )
+        Column {
+            SearchTextField(
+                text = searchValue,
+                onTextChange = {
+                    onSearchValueChange(it)
+                },
+            )
 
-                if (searchResult.isNotEmpty()) {
-                    BongBaekDropdownMenu<Place>(
-                        expanded = true,
-                        items = searchResult,
-                        maxItemSize = 3,
-                        selectedItem = selectedPlace,
-                        onDismissRequest = { },
-                        onItemSelect = { place ->
-                            onPlaceSelect(place)
-                        },
-                        label = { it.name },
-                    )
-                }
-            }
+            BongBaekDropdownMenu<Place>(
+                expanded = isExpanded,
+                items = searchResult,
+                selectedItem = selectedPlace,
+                onDismissRequest = { isExpanded = false },
+                onItemSelect = { place ->
+                    onPlaceSelect(place)
+                },
+                label = { it.name },
+                modifier = Modifier
+                    .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
+                offset = DpOffset(0.dp, 12.dp),
+            )
         }
 
         AndroidView(

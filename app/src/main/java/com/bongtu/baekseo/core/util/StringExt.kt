@@ -43,3 +43,11 @@ fun String.toFormattedShortEnglishDate(): String {
     val date = localDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH))
     return date
 }
+
+/**
+ * yyyy-mm-dd -> Pair(year, month)
+ */
+fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
+    val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
+    return localDate.year to localDate.monthValue
+}

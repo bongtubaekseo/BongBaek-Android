@@ -119,6 +119,12 @@ private fun MainNavHost(
             navigateToRecommend = {
                 navigator.navController.navigateToRecommend()
             },
+            navigateToEdit = navigator.navController::navigateToEdit,
+            navigateToDetail = { eventId ->
+                navigator.navController.navigateToDetail(
+                    eventId = eventId,
+                )
+            },
             modifier = modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         )
 
