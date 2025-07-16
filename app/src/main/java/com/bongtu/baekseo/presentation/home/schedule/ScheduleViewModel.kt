@@ -33,7 +33,14 @@ class ScheduleViewModel @Inject constructor(
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
-                    if (uiState.value.page == 0) newEvents else uiState.value.eventList + newEvents
+                    if (uiState.value.page == 0) {
+                        newEvents
+                    } else {
+                        val existingEvents =
+                            (uiState.value.scheduleLoadState as? UiState.Success)?.data?.events
+                                ?: persistentListOf()
+                        existingEvents + newEvents
+                    }
 
                 _uiState.update { currentState ->
                     currentState.copy(
@@ -48,9 +55,8 @@ class ScheduleViewModel @Inject constructor(
                                 )
                             )
                         },
-                        eventList = updatedList.toPersistentList(),
-                        isLastPage = response.isLast,
                         page = response.currentPage,
+                        isLast = response.isLast,
                     )
                 }
             }.onFailure {
@@ -74,8 +80,6 @@ class ScheduleViewModel @Inject constructor(
                 currentState.copy(
                     page = 0,
                     eventCategoryType = eventCategoryType,
-                    eventList = persistentListOf(),
-                    isLastPage = false,
                 )
             }
             fetchScheduleEvent()
@@ -88,7 +92,7 @@ class ScheduleViewModel @Inject constructor(
                     page = uiState.value.page + 1,
                 )
             }
-            fetchScheduleEvent()
+            if (!uiState.value.isLast) fetchScheduleEvent()
         }
 
     fun getUsername() =
