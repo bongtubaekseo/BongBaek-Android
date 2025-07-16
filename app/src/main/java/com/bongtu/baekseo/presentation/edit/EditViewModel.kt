@@ -3,7 +3,13 @@ package com.bongtu.baekseo.presentation.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
+import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.data.model.event.Event
+import com.bongtu.baekseo.data.model.event.HighAccuracy
+import com.bongtu.baekseo.data.model.event.Host
+import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.model.map.Place
+import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditLocationSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
@@ -15,11 +21,12 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class EditViewModel @Inject constructor(
-    // TODO: repository 추가 예정
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EditUiState())
     val uiState = _uiState.asStateFlow()
@@ -94,7 +101,6 @@ class EditViewModel @Inject constructor(
         it.copy(searchTerm = newSearchTerm)
     }
 
-
     fun updateButtonState(): Boolean = with(uiState.value) {
         name.isNotBlank() && nameValidate.value == TextFieldValidateResult.Default &&
                 nickname.isNotBlank() && nickNameValidate.value == TextFieldValidateResult.Default &&
@@ -123,8 +129,38 @@ class EditViewModel @Inject constructor(
 
     private fun saveEventInformation() =
         viewModelScope.launch {
-            // TODO: 생성 API 호출
-            _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+            with(uiState.value) {
+                eventRepository.postEventInfo(
+                    host = Host(
+                        name = name,
+                        nickname = nickname,
+                    ),
+                    event = Event(
+                        eventType = eventCategory,
+                        relationType = relationship,
+                        cost = cost.toInt(),
+                        isEventParticipated = attendLabel == "참석",
+                        eventDate = eventDate.toFormattedDate(),
+                        note = "",
+                    ),
+                    location = Location(
+                        location = selectedPlace?.name.orEmpty(),
+                        address = selectedPlace?.address.orEmpty(),
+                        latitude = selectedPlace?.latitude ?: 0.0,
+                        longitude = selectedPlace?.longitude ?: 0.0,
+                    ),
+                    highAccuracy = HighAccuracy(
+                        contactFrequency = DEFAULT_WEIGHT,
+                        meetFrequency = DEFAULT_WEIGHT,
+                    )
+                ).onSuccess { response ->
+                    Timber.tag("saveEditEventInformation").d("response: $response")
+                    _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+                }.onFailure {
+                    // TODO: 실패 처리
+                    Timber.tag("saveEditEventInformation").d("Error: $it")
+                }
+            }
         }
 
     fun navigateToLocation() = viewModelScope.launch {
@@ -133,5 +169,9 @@ class EditViewModel @Inject constructor(
 
     fun navigateToEditMain() = viewModelScope.launch {
         _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
+    }
+
+    companion object {
+        private const val DEFAULT_WEIGHT = 3
     }
 }
