@@ -9,6 +9,7 @@ import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -45,4 +46,9 @@ interface EventService {
     suspend fun getEventDetail(
         @Path("eventId") eventId: String,
     ): BaseResponse<GetEventDetailResponse>
+
+    @DELETE("/api/v1/events/{eventId}")
+    suspend fun deleteEventInfo(
+        @Path("eventId") eventId: String,
+    ): BaseResponse<Unit>
 }
