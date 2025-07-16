@@ -20,12 +20,11 @@ class EventDataSourceImpl @Inject constructor(
         request: PostEventCostRequest,
     ) = eventService.postEventCost(request)
 
-    override suspend fun fetchHomeEvents() = eventService.fetchHomeEvents()
-
     override suspend fun putEventInfo(
         eventId: String,
         request: PutEventInfoRequest,
     ) = eventService.putEventInfo(eventId, request)
+
     override suspend fun getHomeEvents() = eventService.getHomeEvents()
 
     override suspend fun getScheduleEvents(

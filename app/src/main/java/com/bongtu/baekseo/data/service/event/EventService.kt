@@ -10,10 +10,9 @@ import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
-import retrofit2.http.Path
-import retrofit2.http.Query
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface EventService {
     @POST("/api/v1/events")
@@ -34,7 +33,6 @@ interface EventService {
         @Path("page") page: Int,
         @Query("category") category: String? = null,
     ): BaseResponse<GetScheduleEventsResponse>
-    suspend fun fetchHomeEvents() : BaseResponse<FetchHomeEventsResponse>
 
     @PUT("/api/v1/events/{eventId}")
     suspend fun putEventInfo(
