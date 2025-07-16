@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyListState
@@ -14,6 +15,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -23,12 +25,12 @@ import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.presentation.record.component.RecordEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
@@ -114,6 +116,7 @@ private fun RecordScreen(
 
     Column(
         modifier = modifier
+            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .then(
                 if (uiState.isDeleteMode) {
@@ -146,7 +149,13 @@ private fun RecordScreen(
 
         when (uiState.recordLoadState) {
             is UiState.Empty -> {
-                RecordEmptyContent()
+                ScheduleEmptyContent(
+                    eventType = uiState.eventCategoryType.label,
+                    onButtonClick = navigateToAdd,
+                    modifier = Modifier
+                        .padding(top = 58.dp)
+                        .padding(horizontal = 20.dp),
+                )
             }
 
             is UiState.Failure -> {
