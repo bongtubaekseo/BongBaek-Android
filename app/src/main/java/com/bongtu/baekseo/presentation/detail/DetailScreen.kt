@@ -71,7 +71,7 @@ private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 fun DetailRoute(
-    eventId: String,    // TODO: eventId fetch
+    eventId: String,
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToRecord: () -> Unit,   // TODO: 삭제시 호출
