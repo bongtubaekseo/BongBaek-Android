@@ -6,6 +6,7 @@ import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
+import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 
 interface EventDataSource {
     suspend fun postEventInfo(
@@ -22,4 +23,9 @@ interface EventDataSource {
         page: Int,
         category: String?,
     ): BaseResponse<GetScheduleEventsResponse>
+
+    suspend fun putEventInfo(
+        eventId: String,
+        request: PutEventInfoRequest,
+    ): BaseResponse<Unit>
 }

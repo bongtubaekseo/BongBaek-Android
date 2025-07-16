@@ -18,8 +18,7 @@ import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToEdit(navOptions: NavOptions? = null) =
-    navigate(Edit, navOptions)
+fun NavController.navigateToEdit(navOptions: NavOptions? = null) = navigate(Edit, navOptions)
 
 fun NavGraphBuilder.editGraph(
     navController: NavController,
@@ -37,6 +36,7 @@ fun NavGraphBuilder.editGraph(
             previousDestination?.hasRoute(Detail::class) == true -> {
                 EditEntryType.FROM_DETAIL
             }
+
             previousDestination?.hasRoute(RecommendResult::class) == true -> {
                 EditEntryType.FROM_RESULT
             }
@@ -54,6 +54,7 @@ fun NavGraphBuilder.editGraph(
             EditEntryType.FROM_DETAIL -> {
                 { navigateToDetail("") }                // TODO: Caching 데이터 사용
             }
+
             EditEntryType.FROM_RESULT -> navigateToFinal
         }
 
@@ -72,7 +73,7 @@ fun NavGraphBuilder.nestedEditGraph(
     nestedNavigateUp: () -> Unit,
     navigateComplete: () -> Unit,
     navigateToLocation: () -> Unit,
-    navigateToMain: () -> Unit,
+    navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -90,7 +91,7 @@ fun NavGraphBuilder.nestedEditGraph(
     composable<Location> {
         EditLocationRoute(
             navigateUp = nestedNavigateUp,
-            navigateToEdit = navigateToMain,
+            navigateToEditMain = navigateToEditMain,
             viewModel = viewModel,
             modifier = modifier,
         )
