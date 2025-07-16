@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
@@ -19,7 +20,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailViewModel @Inject constructor(
-    // TODO: Repository 주입
+    private val eventRepository: EventRepository,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(DetailUiState())
     val uiState = _uiState.asStateFlow()
@@ -28,23 +29,17 @@ class DetailViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun fetchDetailEvent(eventId: String) {
-        // TODO: 상세 정보 API 호출
-        updateDetailEvent(
-            value = UiState.Success(
-                DetailEvent(
-                    eventId = "1",
-                    hostName = "홍길동",
-                    hostNickname = "홍길동",
-                    eventCategory = "결혼식",
-                    relationship = "친구",
-                    cost = 10000,
-                    isEventParticipated = true,
-                    eventDate = "2025-07-05",
-                    note = null,
-                    locationInfo = null,
-                )
-            )
-        )
+        viewModelScope.launch {
+            eventRepository.getEventDetail(eventId)
+                .onSuccess { response ->
+                    updateDetailEvent(
+                        value = UiState.Success(response)
+                    )
+                }
+                .onFailure {
+                    updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
+                }
+        }
     }
 
     private fun updateDetailEvent(value: UiState<DetailEvent>) =
