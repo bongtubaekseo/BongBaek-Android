@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
-import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
@@ -12,13 +12,14 @@ import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.Na
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,8 +31,6 @@ class RecordViewModel @Inject constructor(
 
     private val _sideEffect = MutableSharedFlow<RecordSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
-
-    private val _page = MutableStateFlow(0)  // TODO: 무한 스크롤 페이지 state
 
     private fun deleteEvents() {
         viewModelScope.launch {
@@ -48,78 +47,44 @@ class RecordViewModel @Inject constructor(
     }
 
     fun fetchRecordEvent() {
-        // TODO: categoryType 이 ALL 이면 쿼리 스트링 x
-        // TODO("서버 통신 연결")
+        viewModelScope.launch {
+            eventRepository.getRecordEvents(
+                page = uiState.value.page,
+                attended = uiState.value.attendType.isAttended,
+                category = uiState.value.eventCategoryType.label,
+            ).onSuccess { response ->
+                val newEvents = response.events
+                val updatedList =
+                    if (uiState.value.page == 0) {
+                        newEvents
+                    } else {
+                        val existingEvents =
+                            (uiState.value.recordLoadState as? UiState.Success)?.data?.events
+                                ?: persistentListOf()
+                        existingEvents + newEvents
+                    }
 
-        updateRecordUiState(
-            value = UiState.Success(
-                listOf(
-                    RecordEvent(
-                        eventId = "201",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 5, 4),
-                    ),
-                    RecordEvent(
-                        eventId = "202",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 5, 2),
-                    ),
-                    RecordEvent(
-                        eventId = "203",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 4, 10),
-                    ),
-                    RecordEvent(
-                        eventId = "204",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2025, 2, 23),
-                    ),
-                    RecordEvent(
-                        eventId = "205",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2024, 6, 8),
-                    ),
-                    RecordEvent(
-                        eventId = "206",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2024, 5, 24),
-                    ),
-                    RecordEvent(
-                        eventId = "207",
-                        hostName = "username",
-                        hostNickName = "nickname",
-                        category = "경조사 유형",
-                        relationship = "관계",
-                        cost = 10000,
-                        eventDate = LocalDate.of(2023, 2, 4),
-                    ),
-                ),
-            ),
-        )
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        recordLoadState = if (updatedList.isEmpty()) {
+                            UiState.Empty
+                        } else {
+                            UiState.Success(
+                                PageScheduleEvent(
+                                    events = updatedList.toPersistentList(),
+                                    currentPage = response.currentPage,
+                                    isLast = response.isLast,
+                                )
+                            )
+                        },
+                        page = response.currentPage,
+                        isLast = response.isLast,
+                    )
+                }
+            }.onFailure {
+                updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            }
+        }
     }
 
     fun fetchSelectedDeleteEventIds() {
@@ -129,7 +94,7 @@ class RecordViewModel @Inject constructor(
         deleteEvents()
     }
 
-    private fun updateRecordUiState(value: UiState<List<RecordEvent>>) =
+    private fun updateRecordUiState(value: UiState<PageScheduleEvent>) =
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
@@ -143,24 +108,15 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    private fun updateAttendType(newAttendType: AttendType) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                attendType = newAttendType,
-            )
+    fun updateNextPage() {
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    page = uiState.value.page + 1,
+                )
+            }
         }
-
-    private fun updateEventType(newEventCategoryType: EventCategoryType) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                eventCategoryType = newEventCategoryType,
-            )
-        }
-
-    private fun updatePage(newPage: Int) {
-        _page.value = newPage
     }
-
 
     fun updateDeleteMode() =
         _uiState.update { currentState ->
@@ -188,16 +144,26 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun selectEventCategory(newCategoryType: EventCategoryType) {
-        updateEventType(newCategoryType)
-        updatePage(0)
-        fetchRecordEvent()
-    }
+    fun updateEventType(eventCategoryType: EventCategoryType) =
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    page = 0,
+                    eventCategoryType = eventCategoryType,
+                )
+            }
+            fetchRecordEvent()
+        }
 
     fun selectAttendType(newAttendType: AttendType) {
-        updateAttendType(newAttendType)
-        updateEventType(EventCategoryType.ALL)
-        updatePage(0)
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                page = 0,
+                attendType = newAttendType,
+                eventCategoryType = EventCategoryType.ALL,
+            )
+        }
         fetchRecordEvent()
     }
 

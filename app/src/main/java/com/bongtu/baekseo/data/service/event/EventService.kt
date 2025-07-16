@@ -45,4 +45,11 @@ interface EventService {
     suspend fun deleteEvents(
         @Body eventIds: List<String>,
     ): BaseResponse<Unit>
+
+    @GET("/api/v1/events/history/{page}")
+    suspend fun getRecordEvents(
+        @Path("page") page: Int,
+        @Query("attended") attended: Boolean = true,
+        @Query("category") category: String? = null,
+    ): BaseResponse<GetScheduleEventsResponse>
 }

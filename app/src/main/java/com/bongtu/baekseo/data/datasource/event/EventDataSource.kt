@@ -32,4 +32,10 @@ interface EventDataSource {
     suspend fun deleteEvents(
         eventIds: List<String>,
     ): BaseResponse<Unit>
+
+    suspend fun getRecordEvents(
+        page: Int,
+        attended: Boolean,
+        category: String?,
+    ): BaseResponse<GetScheduleEventsResponse>
 }

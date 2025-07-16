@@ -28,6 +28,17 @@ class EventDataSourceImpl @Inject constructor(
     override suspend fun deleteEvents(eventIds: List<String>): BaseResponse<Unit> =
         eventService.deleteEvents(eventIds)
 
+    override suspend fun getRecordEvents(
+        page: Int,
+        attended: Boolean,
+        category: String?
+    ): BaseResponse<GetScheduleEventsResponse> =
+        eventService.getRecordEvents(
+            page = page,
+            attended = attended,
+            category = category,
+        )
+
     override suspend fun getHomeEvents() = eventService.getHomeEvents()
 
     override suspend fun getScheduleEvents(
