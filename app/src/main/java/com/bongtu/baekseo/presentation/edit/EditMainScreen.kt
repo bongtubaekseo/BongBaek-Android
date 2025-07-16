@@ -175,6 +175,14 @@ private fun EditMainScreen(
         checkIsFormFilled()
     }
 
+    val isMemoEditable = remember(editEntryType) {
+        editEntryType == EditEntryType.FROM_DETAIL
+    }
+
+    val isResultEditable = remember(editEntryType) {
+        editEntryType != EditEntryType.FROM_RESULT
+    }
+
     Column(
         modifier = modifier
             .background(
@@ -221,6 +229,7 @@ private fun EditMainScreen(
                     validateResult = nameValidateResult,
                     onTextChange = onNameChange,
                     isRequired = true,
+                    isEditable = isResultEditable,
                 )
 
                 LabelTextField(
@@ -231,6 +240,7 @@ private fun EditMainScreen(
                     validateResult = nickNameValidateResult,
                     onTextChange = onNicknameChange,
                     isRequired = true,
+                    isEditable = isResultEditable,
                 )
 
                 FormFieldItem(
@@ -242,6 +252,7 @@ private fun EditMainScreen(
                             menuItems = relations,
                             selectedItem = uiState.relationship,
                             onItemSelected = onRelationSelect,
+                            isEditable = isResultEditable,
                         )
                     },
                 )
@@ -255,6 +266,7 @@ private fun EditMainScreen(
                             menuItems = events,
                             selectedItem = uiState.eventCategory,
                             onItemSelected = onEventSelect,
+                            isEditable = isResultEditable,
                         )
                     }
                 )
@@ -274,6 +286,7 @@ private fun EditMainScreen(
                             menuItems = attendOptions,
                             selectedItem = uiState.attendLabel,
                             onItemSelected = onAttendSelect,
+                            isEditable = isResultEditable,
                         )
                     }
                 )
@@ -285,7 +298,7 @@ private fun EditMainScreen(
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            isDatePickerDialogVisible = true
+                            if (isResultEditable) isDatePickerDialogVisible = true
                         },
                     isRequired = true,
                     isEditable = false,
@@ -313,7 +326,11 @@ private fun EditMainScreen(
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
-                                .noRippleClickable(navigateToLocation),
+                                .noRippleClickable(
+                                    onClick = {
+                                        if (isResultEditable) navigateToLocation()
+                                    }
+                                ),
                         )
                     }
                 )
@@ -326,7 +343,8 @@ private fun EditMainScreen(
                     .padding(
                         top = 20.dp,
                         bottom = 160.dp,
-                    )
+                    ),
+                isEditable = isMemoEditable,
             )
         }
         if (isDatePickerDialogVisible) {
@@ -416,6 +434,7 @@ private fun FormFieldDropDown(
     menuItems: ImmutableList<String>,
     selectedItem: String,
     onItemSelected: (String) -> Unit,
+    isEditable: Boolean = true,
 ) {
     var expanded by remember { mutableStateOf(false) }
 
@@ -447,7 +466,9 @@ private fun FormFieldDropDown(
                 vertical = 12.dp,
                 horizontal = 16.dp,
             )
-            .noRippleClickable { expanded = !expanded },
+            .noRippleClickable {
+                if (isEditable) expanded = !expanded
+            },
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Text(
