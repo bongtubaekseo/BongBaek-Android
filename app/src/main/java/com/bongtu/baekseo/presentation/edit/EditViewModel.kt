@@ -3,7 +3,9 @@ package com.bongtu.baekseo.presentation.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
+import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -48,6 +50,36 @@ class EditViewModel @Inject constructor(
     private val _costValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val costValidate = _costValidate.asStateFlow()
+
+    fun getEditEvent() {
+        val cachedEvent = EventCache.load()
+        cachedEvent?.let {
+            with(cachedEvent) {
+                _uiState.update {
+                    it.copy(
+                        eventId = eventId,
+                        name = hostName,
+                        nickname = hostNickname,
+                        eventCategory = eventCategory,
+                        relationship = relationship,
+                        cost = cost.toString(),
+                        attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
+                        eventDate = eventDate.toFormattedMonthDayYear(),
+                        note = note,
+                        selectedPlace = Place(
+                            id = placeId,
+                            name = placeName,
+                            address = address,
+                            roadAddress = roadAddress,
+                            latitude = latitude,
+                            longitude = longitude,
+                        ),
+                    )
+                }
+            }
+        }
+    }
+
 
     fun updateName(newName: String) {
         _uiState.update { it.copy(name = newName) }
@@ -193,5 +225,7 @@ class EditViewModel @Inject constructor(
     companion object {
         private const val DEFAULT_WEIGHT = 3
         private const val ATTENDED = "참석"
+        private const val ABSENT = "불참석"
     }
+
 }

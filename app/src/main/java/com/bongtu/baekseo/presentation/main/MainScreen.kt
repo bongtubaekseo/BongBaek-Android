@@ -169,7 +169,7 @@ private fun MainNavHost(
 
         detailGraph(
             navigateUp = navigator::navigateUp,
-            navigateToEdit = navigator.navController::navigateToEdit,  // TODO: Caching
+            navigateToEdit = navigator.navController::navigateToEdit,
             navigateToRecord = {
                 navigator.navController.navigateToRecord(
                     navOptions = navOptions {

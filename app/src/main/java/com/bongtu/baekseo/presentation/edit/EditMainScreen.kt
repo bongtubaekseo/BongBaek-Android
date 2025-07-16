@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -75,6 +76,7 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -114,6 +116,16 @@ fun EditMainRoute(
                     is NavigateToLocation -> navigateToLocation()
                 }
             }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getEditEvent()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            EventCache.clear()
+        }
     }
 
     EditMainScreen(
