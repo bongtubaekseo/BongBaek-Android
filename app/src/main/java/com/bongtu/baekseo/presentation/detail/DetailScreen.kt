@@ -142,28 +142,23 @@ private fun DetailScreen(
             },
         )
 
-        when (uiState.loadState) {
-            is UiState.Empty -> {
-                // TODO: 빈 화면 없어도 될 듯?
-            }
-
-            is UiState.Failure -> {
-                // TODO: 에러 상태 화면
-            }
-
-            is UiState.Loading -> {
-                // TODO: 로딩 상태 화면
-            }
-
-            is UiState.Success -> {
-                DetailContent(
-                    event = uiState.loadState.data,
-                    onDeleteButtonClick = { onRemoveButtonClick(uiState.loadState.data.eventId) },
-                    modifier = Modifier
-                        .weight(1f),
-                )
-            }
-        }
+        DetailContent(
+            event = DetailEvent(
+                eventId = uiState.eventId,
+                hostName = uiState.hostName,
+                hostNickname = uiState.hostNickname,
+                eventCategory = uiState.eventCategory,
+                relationship = uiState.relationship,
+                cost = uiState.cost,
+                isEventParticipated = uiState.isEventParticipated,
+                eventDate = uiState.eventDate,
+                note = uiState.note,
+                locationInfo = uiState.locationInfo,
+            ),
+            onDeleteButtonClick = { onRemoveButtonClick(uiState.eventId) },
+            modifier = Modifier
+                .weight(1f),
+        )
     }
 }
 
@@ -272,7 +267,8 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
+    val (date, weekDay) = if (eventDate.isBlank()) "-" to "0" else eventDate.toFormattedDateAndDay()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -427,7 +423,7 @@ private fun RecordDeleteAlertDialog(
 private fun RecordDetailScreenPreview() {
     BongBaekTheme {
         DetailScreen(
-            uiState = DetailUiState(),
+            uiState = DetailUiState(UiState.Loading),
             onBackButtonClick = {},
             onEditButtonClick = {},
             onRemoveButtonClick = {},

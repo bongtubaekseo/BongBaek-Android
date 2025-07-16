@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect
@@ -38,19 +37,30 @@ class DetailViewModel @Inject constructor(
             eventRepository.getEventDetail(eventId)
                 .onSuccess { response ->
                     updateDetailEvent(
-                        value = UiState.Success(response)
+                        value = response,
                     )
+                    Timber.d("$response")
                 }
                 .onFailure {
-                    updateDetailEvent(UiState.Failure(it.message ?: "Unknown Error"))
+                    // TODO: 실패 처리
+                    Timber.d("fetchDetailEvent: $it")
                 }
         }
     }
 
-    private fun updateDetailEvent(value: UiState<DetailEvent>) =
+    private fun updateDetailEvent(value: DetailEvent) =
         _uiState.update { currentState ->
             currentState.copy(
-                loadState = value,
+                eventId = value.eventId,
+                hostName = value.hostName,
+                hostNickname = value.hostNickname,
+                eventCategory = value.eventCategory,
+                relationship = value.relationship,
+                cost = value.cost,
+                isEventParticipated = value.isEventParticipated,
+                eventDate = value.eventDate,
+                note = value.note,
+                locationInfo = value.locationInfo,
             )
         }
 

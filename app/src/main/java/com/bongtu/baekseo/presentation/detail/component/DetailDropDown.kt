@@ -80,15 +80,17 @@ fun DetailDropDown(
     val eventDate = event.eventDate.toFormattedShortEnglishDate()
 
     val isEmptyLocationInfo = remember(event.locationInfo) {
-        with(event.locationInfo!!) {
-            location.isBlank() &&
-                    address.isBlank() &&
-                    latitude == 0.0 &&
-                    longitude == 0.0
+        with(event) {
+            locationInfo?.let {
+                it.location.isBlank() &&
+                        it.address.isBlank() &&
+                        it.latitude == 0.0 &&
+                        it.longitude == 0.0
+            }
         }
     }
 
-    val locationInfo = if (isEmptyLocationInfo) null else event.locationInfo
+    val locationInfo = if (isEmptyLocationInfo == true) null else event.locationInfo
 
     val recordDetailItems = persistentListOf(
         Triple(
