@@ -1,14 +1,11 @@
 package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -39,6 +36,8 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.em
+import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -53,11 +52,13 @@ import com.bongtu.baekseo.R.string.onboarding_description
 import com.bongtu.baekseo.R.string.onboarding_login_information
 import com.bongtu.baekseo.R.string.onboarding_personal_privacy
 import com.bongtu.baekseo.R.string.onboarding_term_of_use
+import com.bongtu.baekseo.R.string.onboarding_title_prefix
 import com.bongtu.baekseo.R.string.onboarding_title_primary
-import com.bongtu.baekseo.R.string.onboarding_title_white
+import com.bongtu.baekseo.R.string.onboarding_title_suffix
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
@@ -189,20 +190,28 @@ fun OnBoardingLoginScreen(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(style = SpanStyle(color = BongBaekTheme.colors.primaryNormal)) {
+                        append(stringResource(id = onboarding_title_prefix))
+                        withStyle(
+                            style = SpanStyle(
+                                color = BongBaekTheme.colors.white,
+                                fontFamily = PretendardBlack,
+                                fontSize = 26.sp,
+                                letterSpacing = (-0.03).em,
+                            ),
+                        ) {
                             append(stringResource(id = onboarding_title_primary))
                         }
-                        append(stringResource(id = onboarding_title_white))
+                        append(stringResource(id = onboarding_title_suffix))
                     },
                     style = BongBaekTheme.typography.headBold26,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.onboardingTitle,
                 )
 
                 Text(
                     text = stringResource(id = onboarding_description),
                     modifier = Modifier.padding(top = 30.dp),
                     style = BongBaekTheme.typography.body2Regular16,
-                    color = BongBaekTheme.colors.gray300,
+                    color = BongBaekTheme.colors.gray100,
                 )
             }
 
