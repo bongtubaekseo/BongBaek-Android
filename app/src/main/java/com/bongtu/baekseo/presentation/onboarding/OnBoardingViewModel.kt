@@ -64,7 +64,8 @@ class OnBoardingViewModel @Inject constructor(
                 .onSuccess { response ->
                     updateKakaoId(response.kakaoId)
                     if (response.isCompletedSignUp) {
-                        _sideEffect.emit(NavigateToHome)
+//                        _sideEffect.emit(NavigateToHome)
+                        _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     } else {
                         _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     }

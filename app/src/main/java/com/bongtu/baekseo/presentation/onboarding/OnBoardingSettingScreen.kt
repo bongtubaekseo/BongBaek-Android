@@ -75,18 +75,12 @@ fun OnBoardingSettingScreen(
             }
     }
 
-//    var validateResult: TextFieldValidateResult by remember {
-//        mutableStateOf(
-//            TextFieldValidateResult.Default
-//        )
-//    }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
     val buttonEnabled = remember(uiState.name, uiState.birth) {
         viewModel.updateButtonState()
     }
     var incomeSelected by remember { mutableStateOf(true) }
-    val isError = uiState.nameError != null
 
     Column(
         modifier = modifier
@@ -102,7 +96,8 @@ fun OnBoardingSettingScreen(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 20.dp),
+                .padding(horizontal = 20.dp)
+                .statusBarsPadding(),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {

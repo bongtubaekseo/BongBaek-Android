@@ -108,7 +108,7 @@ private fun MainNavHost(
                     }
                 )
             },
-            modifier = modifier,
+            modifier = modifier.padding(bottom = innerPadding.calculateBottomPadding()),
         )
 
         homeGraph(

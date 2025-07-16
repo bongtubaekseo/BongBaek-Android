@@ -24,7 +24,8 @@ class SplashViewModel @Inject constructor(
         viewModelScope.launch {
             checkAutoLoginUseCase.invoke()
                 .onSuccess {
-                    _sideEffect.emit(NavigateToHome)
+//                    _sideEffect.emit(NavigateToHome)
+                    _sideEffect.emit(NavigateToOnBoarding)
                 }.onFailure { error ->
                     Timber.e("토큰 재발급 실패: ${error.message}")
                     _sideEffect.emit(NavigateToOnBoarding)
