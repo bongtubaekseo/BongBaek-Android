@@ -2,8 +2,10 @@ package com.bongtu.baekseo.presentation.recommend
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.Event
@@ -14,7 +16,7 @@ import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToLoading
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -23,7 +25,9 @@ import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.debounce
+import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -33,6 +37,7 @@ import kotlin.math.roundToInt
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class RecommendViewModel @Inject constructor(
+    private val usernameDataStore: UsernameDataStore,
     private val kakaoMapRepository: KakaoMapRepository,
     private val eventRepository: EventRepository,
 ) : ViewModel() {
@@ -42,18 +47,44 @@ class RecommendViewModel @Inject constructor(
     private val _searchTerm = MutableStateFlow("")
     val searchTerm = _searchTerm.asStateFlow()
 
+    private val _isManualSearch = MutableStateFlow(true)
+
     private val _sideEffect = MutableSharedFlow<RecommendSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     init {
+        updateUsername()
+
         viewModelScope.launch {
-            searchTerm.debounce(DEBOUNCE_DELAY).collect {
-                searchPlaces()
-            }
+            combine(
+                _searchTerm,
+                _isManualSearch,
+                transform = { term, isManual -> term to isManual }
+            )
+                .debounce(DEBOUNCE_DELAY)
+                .distinctUntilChanged()
+                .collect { (term, isManual) ->
+                    if (isManual && term.isNotBlank()) {
+                        searchPlaces()
+                    }
+                }
         }
     }
 
-    fun updateSearchTerm(searchTerm: String) = _searchTerm.update { searchTerm }
+    private fun updateUsername() = viewModelScope.launch {
+        _uiState.update { currentState ->
+            currentState.copy(username = usernameDataStore.getUsername())
+        }
+    }
+
+    fun updateSearchTerm(searchTerm: String) {
+        _isManualSearch.value = true
+        _searchTerm.value = searchTerm
+    }
+
+    fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
+        currentState.copy(loadState = newLoadState)
+    }
 
     fun updatePageIndex(newIndex: Int) = _uiState.update {
         it.copy(pageIndex = newIndex)
@@ -105,9 +136,8 @@ class RecommendViewModel @Inject constructor(
         _uiState.update {
             it.copy(selectedPlace = newLocation)
         }
-        _searchTerm.update {
-            newLocation?.name.orEmpty()
-        }
+        _isManualSearch.value = false
+        _searchTerm.value = newLocation?.name.orEmpty()
     }
 
     fun updateExpense(newExpense: Int) = _uiState.update {
@@ -129,6 +159,8 @@ class RecommendViewModel @Inject constructor(
 
     fun fetchExpense() = viewModelScope.launch {
         with(uiState.value) {
+            updateLoadState(UiState.Loading)
+
             eventRepository.postEventCost(
                 event = Event(
                     eventType = eventType!!.label,
@@ -156,10 +188,14 @@ class RecommendViewModel @Inject constructor(
                         maxExpense = response.max,
                     )
                 }
+                updateLoadState(UiState.Success(Unit))
+
                 Timber.d("fetchExpense: $response")
-                _sideEffect.emit(NavigateToResult)
+                _sideEffect.emit(NavigateToLoading)
             }.onFailure {
                 // TODO: 실패 처리
+                updateLoadState(UiState.Failure(ERROR_MESSAGE))
+
                 Timber.d("fetchExpense: $it")
             }
         }
@@ -219,6 +255,7 @@ class RecommendViewModel @Inject constructor(
     companion object {
         private const val DEFAULT_WEIGHT = 3
         private const val DEBOUNCE_DELAY = 500L
+        private const val ERROR_MESSAGE = "Failed API Connection"
         private fun mapFrequencyToScale(value: Float) = (value * 4 + 1).roundToInt().coerceIn(1, 5)
     }
 }

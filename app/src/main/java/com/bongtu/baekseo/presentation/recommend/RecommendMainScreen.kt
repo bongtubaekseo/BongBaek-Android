@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.recommend
 
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -49,7 +50,6 @@ import com.bongtu.baekseo.R.string.recommendation_event_type_topbar
 import com.bongtu.baekseo.R.string.recommendation_relation_description
 import com.bongtu.baekseo.R.string.recommendation_relation_title
 import com.bongtu.baekseo.R.string.recommendation_relation_topbar
-import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -60,12 +60,11 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
-import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToResult
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.MainSideEffect.NavigateToLoading
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import com.bongtu.baekseo.presentation.recommend.component.RecommendDateCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendEventLocationContent
 import com.bongtu.baekseo.presentation.recommend.component.RecommendEventSelector
-import com.bongtu.baekseo.presentation.recommend.component.RecommendLoadingOverlay
 import com.bongtu.baekseo.presentation.recommend.component.RecommendParticipationCard
 import com.bongtu.baekseo.presentation.recommend.component.RecommendProgressBar
 import com.bongtu.baekseo.presentation.recommend.component.RecommendRelationTypeContent
@@ -74,7 +73,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 @Composable
 fun RecommendMainRoute(
     navigateToUp: () -> Unit,
-    navigateToResult: () -> Unit,
+    navigateToLoading: () -> Unit,
     viewModel: RecommendViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -91,19 +90,13 @@ fun RecommendMainRoute(
             .filterIsInstance<RecommendSideEffect.MainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToResult -> navigateToResult()
+                    is NavigateToLoading -> navigateToLoading()
                 }
             }
     }
 
     BackHandler {
         onBackClick()
-    }
-
-    if (uiState.loadState is UiState.Loading) {
-        RecommendLoadingOverlay(
-            name = uiState.name,
-        )
     }
 
     RecommendMainScreen(
@@ -149,6 +142,7 @@ private fun RecommendMainScreen(
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
 ) {
+    var isTitleVisible by remember { mutableStateOf(true) }
     var text by remember { mutableStateOf("") }
     val (topbarRes, titleRes, descRes) = when (uiState.pageIndex) {
         1 -> Triple(
@@ -239,38 +233,44 @@ private fun RecommendMainScreen(
                     else Modifier
                 ),
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
+            AnimatedVisibility(
+                visible = isTitleVisible,
             ) {
-                Text(
-                    text = stringResource(titleRes),
-                    style = BongBaekTheme.typography.headBold24,
-                    color = BongBaekTheme.colors.white,
-                )
+                Column {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(titleRes),
+                            style = BongBaekTheme.typography.headBold24,
+                            color = BongBaekTheme.colors.white,
+                        )
 
-                if (uiState.pageIndex == 4) {
+                        if (uiState.pageIndex == 4) {
+                            Text(
+                                text = stringResource(recommendation_event_location_skip),
+                                style = BongBaekTheme.typography.body2Regular14,
+                                color = BongBaekTheme.colors.gray500,
+                                modifier = Modifier
+                                    .noRippleClickable {
+                                        onLocationSelect(null)
+                                        fetchExpense()
+                                    },
+                            )
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(14.dp))
+
                     Text(
-                        text = stringResource(recommendation_event_location_skip),
+                        text = stringResource(descRes),
                         style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.gray500,
-                        modifier = Modifier
-                            .noRippleClickable {
-                                onLocationSelect(null)
-                                fetchExpense()
-                            },
+                        color = BongBaekTheme.colors.gray400,
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.height(14.dp))
-
-            Text(
-                text = stringResource(descRes),
-                style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
-            )
 
             if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
             else Spacer(modifier = Modifier.height(30.dp))
@@ -286,6 +286,7 @@ private fun RecommendMainScreen(
                         nickname = uiState.nickname,
                         onNicknameChange = onNicknameChange,
                         nicknameError = uiState.nicknameError,
+                        onFocusChange = { isTitleVisible = !it },
                         selectedRelation = uiState.relationType,
                         onRelationSelect = onRelationSelect,
                         isChecked = uiState.isHighAccuracy,
@@ -308,6 +309,7 @@ private fun RecommendMainScreen(
                             RecommendDateCard(
                                 date = uiState.eventDate,
                                 text = text,
+                                onFocusChange = { isTitleVisible = it },
                                 onTextChange = { text = it },
                                 onConfirmClick = {
                                     onDateChange(text)
@@ -328,6 +330,7 @@ private fun RecommendMainScreen(
                         searchValue = searchTerm,
                         onSearchValueChange = onSearchTermChange,
                         searchResult = uiState.searchResult,
+                        onFocusChange = { isTitleVisible = !it },
                     )
                 }
             }
