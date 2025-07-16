@@ -5,9 +5,12 @@ import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
+import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Path
 
 interface EventService {
     @POST("/api/v1/events")
@@ -22,4 +25,10 @@ interface EventService {
 
     @GET("api/v1/events/home")
     suspend fun fetchHomeEvents() : BaseResponse<FetchHomeEventsResponse>
+
+    @PUT("/api/v1/events/{eventId}")
+    suspend fun putEventInfo(
+        @Path("eventId") eventId: String,
+        @Body request: PutEventInfoRequest,
+    ): BaseResponse<Unit>
 }
