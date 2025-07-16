@@ -52,6 +52,7 @@ fun ScheduleEmptyContent(
                 .fillMaxWidth()
                 .padding(bottom = 16.dp),
         )
+
         Text(
             text = stringResource(record_empty_description),
             color = BongBaekTheme.colors.gray400,
