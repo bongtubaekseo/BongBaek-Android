@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.recommend
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
@@ -54,6 +55,10 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun updateSearchTerm(searchTerm: String) = _searchTerm.update { searchTerm }
+
+    fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
+        currentState.copy(loadState = newLoadState)
+    }
 
     fun updatePageIndex(newIndex: Int) = _uiState.update {
         it.copy(pageIndex = newIndex)
@@ -129,6 +134,8 @@ class RecommendViewModel @Inject constructor(
 
     fun fetchExpense() = viewModelScope.launch {
         with(uiState.value) {
+            updateLoadState(UiState.Loading)
+
             eventRepository.postEventCost(
                 event = Event(
                     eventType = eventType!!.label,
@@ -156,10 +163,14 @@ class RecommendViewModel @Inject constructor(
                         maxExpense = response.max,
                     )
                 }
+                updateLoadState(UiState.Success(Unit))
+
                 Timber.d("fetchExpense: $response")
                 _sideEffect.emit(NavigateToResult)
             }.onFailure {
                 // TODO: 실패 처리
+                updateLoadState(UiState.Failure(ERROR_MESSAGE))
+
                 Timber.d("fetchExpense: $it")
             }
         }
@@ -219,6 +230,7 @@ class RecommendViewModel @Inject constructor(
     companion object {
         private const val DEFAULT_WEIGHT = 3
         private const val DEBOUNCE_DELAY = 500L
+        private const val ERROR_MESSAGE = "Failed API Connection"
         private fun mapFrequencyToScale(value: Float) = (value * 4 + 1).roundToInt().coerceIn(1, 5)
     }
 }

@@ -11,7 +11,7 @@ import kotlinx.collections.immutable.persistentListOf
 class RecommendContract {
     @Immutable
     data class RecommendUiState(
-        val loadState: UiState<Nothing> = UiState.Empty,
+        val loadState: UiState<Unit> = UiState.Empty,
         val pageIndex: Int = 1,
         val name: String = "",
         val nameError: String? = null,
