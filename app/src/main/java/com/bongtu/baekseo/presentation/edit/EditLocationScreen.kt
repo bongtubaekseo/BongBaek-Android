@@ -55,6 +55,8 @@ fun EditLocationRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
+
     val lifecycleOwner = LocalLifecycleOwner.current
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -63,7 +65,7 @@ fun EditLocationRoute(
     }
 
     EditLocationScreen(
-        searchValue = uiState.searchTerm,
+        searchValue = searchTerm,
         navigateUp = navigateUp,
         navigateToEdit = viewModel::navigateToEditMain,
         onSearchValueChange = viewModel::updateSearchTerm,

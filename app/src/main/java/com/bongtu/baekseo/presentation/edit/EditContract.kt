@@ -20,7 +20,6 @@ class EditContract {
         val attendLabel: String = "",
         val eventDate: String = "",
         val note: String = "",
-        val searchTerm: String = "",
         val searchResult: ImmutableList<Place> = persistentListOf(),
         val selectedPlace: Place? = null,
     )

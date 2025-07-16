@@ -34,6 +34,9 @@ class EditViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<EditContract.EditSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
+    private val _searchTerm = MutableStateFlow("")
+    val searchTerm = _searchTerm.asStateFlow()
+
     private val _nameValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val nameValidate = _nameValidate.asStateFlow()
@@ -97,9 +100,7 @@ class EditViewModel @Inject constructor(
         it.copy(selectedPlace = newPlace)
     }
 
-    fun updateSearchTerm(newSearchTerm: String) = _uiState.update {
-        it.copy(searchTerm = newSearchTerm)
-    }
+    fun updateSearchTerm(newSearchTerm: String) = _searchTerm.update { newSearchTerm }
 
     fun updateButtonState(): Boolean = with(uiState.value) {
         name.isNotBlank() && nameValidate.value == TextFieldValidateResult.Default &&
