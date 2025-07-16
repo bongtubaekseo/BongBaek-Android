@@ -41,4 +41,8 @@ interface EventRepository {
     suspend fun getEventDetail(
         eventId: String,
     ): Result<DetailEvent>
+
+    suspend fun deleteEventInfo(
+        eventId: String,
+    ): Result<Unit>
 }

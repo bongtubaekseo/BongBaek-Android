@@ -101,4 +101,10 @@ class EventRepositoryImpl @Inject constructor(
     }.mapCatching { response ->
         response.data.toModel()
     }
+
+    override suspend fun deleteEventInfo(
+        eventId: String,
+    ): Result<Unit> = runCatching {
+        eventDataSource.deleteEventInfo(eventId)
+    }
 }
