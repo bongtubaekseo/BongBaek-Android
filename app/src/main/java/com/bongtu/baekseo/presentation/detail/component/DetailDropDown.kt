@@ -87,6 +87,7 @@ fun DetailDropDown(
                     longitude == 0.0
         }
     }
+
     val locationInfo = if (isEmptyLocationInfo) null else event.locationInfo
 
     val recordDetailItems = persistentListOf(
