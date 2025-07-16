@@ -35,6 +35,7 @@ fun EditMemoContent(
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    isEditable: Boolean = false,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
@@ -95,6 +96,8 @@ fun EditMemoContent(
                         focusManager.clearFocus()
                     },
                 ),
+                isReadOnly = !isEditable,
+                isEnabled = isEditable,
                 isSingleLine = false,
                 modifier = Modifier
                     .padding(

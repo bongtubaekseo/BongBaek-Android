@@ -14,6 +14,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,6 +26,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_close
 import com.bongtu.baekseo.R.string.edit_location_sarch_item_empty
@@ -37,28 +41,37 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.data.model.map.Place
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun EditLocationRoute(
     navigateUp: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
-    var searchValue by remember { mutableStateOf("") }
-    var selectedSearchItem by remember { mutableStateOf("") }
-    val dummyItems = persistentListOf<String>()
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
+
+    val lifecycleOwner = LocalLifecycleOwner.current
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<EditSideEffect.EditLocationSideEffect>()
+            .collect { navigateToEditMain() }
+    }
 
     EditLocationScreen(
-        searchValue = searchValue,
+        searchValue = searchTerm,
         navigateUp = navigateUp,
-        navigateToEdit = navigateToEdit,
-        onSearchValueChange = { searchValue = it },
-        searchItems = dummyItems,                   // TODO: 검색 결과
-        selectedSearchItem = selectedSearchItem,    // TODO: 검색 결과
-        onSearchItemSelected = {},                  // TODO: 검색 결과
+        navigateToEdit = viewModel::navigateToEditMain,
+        onSearchValueChange = viewModel::updateSearchTerm,
+        searchResult = uiState.searchResult,                   // TODO: 검색 결과
+        selectedPlace = uiState.selectedPlace,
+        onPlaceSelect = viewModel::updatePlace,
         isButtonEnabled = true,
         modifier = modifier,
     )
@@ -70,15 +83,15 @@ fun EditLocationScreen(
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
     onSearchValueChange: (String) -> Unit,
-    searchItems: ImmutableList<String>,
-    selectedSearchItem: String,
-    onSearchItemSelected: (String) -> Unit,
+    searchResult: ImmutableList<Place>,
+    selectedPlace: Place?,
+    onPlaceSelect: (Place) -> Unit,
     isButtonEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val isEmptySearchItems = remember(searchItems) {
-        searchItems.isEmpty()
+    val isEmptySearchItems = remember(searchResult) {
+        searchResult.isEmpty()
     }
 
     Column(
@@ -162,14 +175,16 @@ fun EditLocationScreen(
                         )
                     }
                 } else {
-                    BongBaekDropdownMenu<String>(
+                    BongBaekDropdownMenu<Place>(
                         expanded = expanded,
-                        items = searchItems,
+                        items = searchResult,
                         maxItemSize = 3,
-                        selectedItem = selectedSearchItem,
+                        selectedItem = selectedPlace,
                         onDismissRequest = { expanded = false },
-                        onItemSelect = onSearchItemSelected,
-                        label = { it },
+                        onItemSelect = { place ->
+                            onPlaceSelect(place)
+                        },
+                        label = { it.name },
                     )
                 }
 
@@ -205,11 +220,11 @@ private fun EditLocationScreenPreview() {
             searchValue = "",
             onSearchValueChange = {},
             isButtonEnabled = true,
-            searchItems = persistentListOf(),
-            selectedSearchItem = "",
-            onSearchItemSelected = {},
             navigateUp = {},
             navigateToEdit = {},
+            searchResult = persistentListOf(),
+            selectedPlace = null,
+            onPlaceSelect = {},
         )
     }
 }
