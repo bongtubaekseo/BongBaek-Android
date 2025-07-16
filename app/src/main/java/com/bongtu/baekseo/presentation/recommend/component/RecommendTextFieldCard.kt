@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -41,6 +42,14 @@ fun RecommendTextFieldCard(
     onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isNameFocused by remember { mutableStateOf(false) }
+    var isNicknameFocused by remember { mutableStateOf(false) }
+    val isTextFieldFocused = isNameFocused || isNicknameFocused
+
+    LaunchedEffect(isTextFieldFocused) {
+        onFocusChange(isTextFieldFocused)
+    }
+
     Column(
         modifier = modifier
             .background(
@@ -73,7 +82,7 @@ fun RecommendTextFieldCard(
             text = name,
             placeholder = stringResource(recommendation_name_placeholder),
             errorText = nameError,
-            onFocusChange = onFocusChange,
+            onFocusChange = { isNameFocused = it },
             onTextChange = onNameChange,
         )
 
@@ -83,7 +92,7 @@ fun RecommendTextFieldCard(
             text = nickname,
             placeholder = stringResource(recommendation_nickname_placeholder),
             errorText = nicknameError,
-            onFocusChange = onFocusChange,
+            onFocusChange = { isNicknameFocused = it },
             onTextChange = onNicknameChange,
         )
     }
