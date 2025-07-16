@@ -12,6 +12,7 @@ import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.core.util.sharedViewModel
 import com.bongtu.baekseo.presentation.recommend.RecommendFinalRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendIntroScreen
+import com.bongtu.baekseo.presentation.recommend.RecommendLoadingRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendMainRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendResultRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendViewModel
@@ -22,6 +23,9 @@ fun NavController.navigateToRecommend(navOptions: NavOptions? = null) =
 
 fun NavController.navigateToRecommendMain(navOptions: NavOptions? = null) =
     navigate(RecommendMain, navOptions)
+
+fun NavController.navigateToRecommendLoading(navOptions: NavOptions? = null) =
+    navigate(RecommendLoading, navOptions)
 
 fun NavController.navigateToRecommendResult(navOptions: NavOptions? = null) =
     navigate(RecommendResult, navOptions)
@@ -53,6 +57,16 @@ fun NavGraphBuilder.recommendGraph(
 
             RecommendMainRoute(
                 navigateToUp = navController::navigateUp,
+                navigateToLoading = navController::navigateToRecommendLoading,
+                viewModel = viewModel,
+                modifier = modifier,
+            )
+        }
+
+        composable<RecommendLoading> { backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<RecommendViewModel>(navController)
+
+            RecommendLoadingRoute(
                 navigateToResult = navController::navigateToRecommendResult,
                 viewModel = viewModel,
                 modifier = modifier,
@@ -88,6 +102,9 @@ data object RecommendIntro : Route
 
 @Serializable
 data object RecommendMain : Route
+
+@Serializable
+data object RecommendLoading : Route
 
 @Serializable
 data object RecommendResult : Route
