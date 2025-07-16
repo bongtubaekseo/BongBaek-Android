@@ -21,6 +21,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,6 +58,7 @@ fun RoundedBoxTextField(
     modifier: Modifier = Modifier,
     errorText: String? = null,
     isEditable: Boolean = true,
+    onFocusChange: (Boolean) -> Unit = {},
     onClick: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
@@ -82,6 +84,10 @@ fun RoundedBoxTextField(
 
     val textColor = remember(isError) {
         if (isError) bongBaekColors.secondaryRed else bongBaekColors.white
+    }
+
+    LaunchedEffect(isFocused) {
+        onFocusChange(isFocused)
     }
 
     Column(

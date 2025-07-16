@@ -42,12 +42,17 @@ fun SearchTextField(
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    onFocusChange: (Boolean) -> Unit = {},
     onItemSelected: (() -> Unit)? = null,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
     val focusManager = LocalFocusManager.current
+
+    LaunchedEffect(isFocused) {
+        onFocusChange(isFocused)
+    }
 
     LaunchedEffect(onItemSelected) {
         onItemSelected?.let { handler ->
