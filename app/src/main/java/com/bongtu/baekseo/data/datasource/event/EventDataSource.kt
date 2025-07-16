@@ -28,4 +28,8 @@ interface EventDataSource {
         eventId: String,
         request: PutEventInfoRequest,
     ): BaseResponse<Unit>
+
+    suspend fun deleteEvents(
+        eventIds: List<String>,
+    ): BaseResponse<Unit>
 }

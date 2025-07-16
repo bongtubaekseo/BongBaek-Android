@@ -92,4 +92,10 @@ class EventRepositoryImpl @Inject constructor(
             ),
         )
     }
+
+    override suspend fun deleteEvents(eventIds: List<String>): Result<Unit> = runCatching {
+        eventDataSource.deleteEvents(
+            eventIds = eventIds,
+        )
+    }
 }

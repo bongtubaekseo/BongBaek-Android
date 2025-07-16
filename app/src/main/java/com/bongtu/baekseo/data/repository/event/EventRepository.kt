@@ -36,4 +36,8 @@ interface EventRepository {
         event: Event,
         location: Location,
     ): Result<Unit>
+
+    suspend fun deleteEvents(
+        eventIds: List<String>,
+    ): Result<Unit>
 }

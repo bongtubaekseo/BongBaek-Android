@@ -126,6 +126,7 @@ class RecordViewModel @Inject constructor(
         // TODO("선택된 삭제 처리 추가 예정")
         updateDeleteModeCancel()
         updateSelectedDeleteEventIds(emptySet())
+        deleteEvents()
     }
 
     private fun updateRecordUiState(value: UiState<List<RecordEvent>>) =
