@@ -1,7 +1,8 @@
 package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
-import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
+import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
 import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
@@ -12,6 +13,9 @@ import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.model.event.Host
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import kotlinx.collections.immutable.toImmutableList
 
 fun Host.toDto() = HostInfoDto(
     hostName = name,
@@ -45,7 +49,7 @@ fun PostEventCostResponse.toModel() = Cost(
     max = range.max,
 )
 
-fun FetchHomeEventsResponse.Event.toModel() = HomeEvent(
+fun GetHomeEventsResponse.Event.toModel() = HomeEvent(
     eventId = eventId,
     hostName = hostInfo.hostName,
     hostNickname = hostInfo.hostNickname,
@@ -55,4 +59,22 @@ fun FetchHomeEventsResponse.Event.toModel() = HomeEvent(
     eventDate = eventInfo.eventDate,
     dDay = eventInfo.dDay,
     location = locationInfo.location,
+)
+
+fun GetScheduleEventsResponse.Event.toModel() = ScheduleEvent(
+    eventId = eventId,
+    hostName = hostInfo.hostName,
+    hostNickname = hostInfo.hostNickname,
+    eventCategory = eventInfo.eventCategory,
+    relationship = eventInfo.relationship,
+    cost = eventInfo.cost,
+    eventDate = eventInfo.eventDate,
+)
+
+fun GetScheduleEventsResponse.toModel() = PageScheduleEvent(
+    events = events.map {
+        it.toModel()
+    }.toImmutableList(),
+    currentPage = currentPage,
+    isLast = isLast,
 )

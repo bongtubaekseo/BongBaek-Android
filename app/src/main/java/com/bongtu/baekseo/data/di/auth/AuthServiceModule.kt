@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.data.di.auth
 
-import com.bongtu.baekseo.core.network.qualifier.JWT
 import com.bongtu.baekseo.core.network.qualifier.NoAuth
 import com.bongtu.baekseo.data.service.auth.AuthService
 import dagger.Module
