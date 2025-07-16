@@ -103,8 +103,8 @@ fun EditMainRoute(
     val nameValidate by viewModel.nameValidate.collectAsStateWithLifecycle()
     val nicknameValidate by viewModel.nickNameValidate.collectAsStateWithLifecycle()
     val costValidate by viewModel.costValidate.collectAsStateWithLifecycle()
-
     val lifecycleOwner = LocalLifecycleOwner.current
+
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .filterIsInstance<EditSideEffect.EditMainSideEffect>()
@@ -313,9 +313,9 @@ private fun EditMainScreen(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
                     content = {
-                        if (uiState.selectedPlace != null) {
+                        uiState.selectedPlace?.let { place ->
                             EditLocationContent(
-                                place = uiState.selectedPlace,
+                                place = place,
                             )
                         }
                     },
@@ -323,19 +323,18 @@ private fun EditMainScreen(
                     trailing = {
                         Text(
                             text = stringResource(
-                                if (uiState.selectedPlace == null) edit_location_add_text
-                                else edit_location_edit_text
+                                uiState.selectedPlace?.let {
+                                    edit_location_edit_text
+                                } ?: edit_location_add_text
                             ),
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.gray300,
                             modifier = Modifier
-                                .noRippleClickable(
-                                    onClick = {
-                                        if (isResultEditable) navigateToLocation()
-                                    }
-                                ),
+                                .noRippleClickable {
+                                    if (isResultEditable) navigateToLocation()
+                                },
                         )
-                    }
+                    },
                 )
             }
 
