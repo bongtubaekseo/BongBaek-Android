@@ -122,9 +122,35 @@ class EditViewModel @Inject constructor(
 
     private fun patchEventInformation() =
         viewModelScope.launch {
-            // TODO: 수정 API 호출
-            _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
-
+            with(uiState.value) {
+                eventRepository.putEventInfo(
+                    eventId = "",                   // TODO: Caching eventId
+                    host = Host(
+                        name = name,
+                        nickname = nickname,
+                    ),
+                    event = Event(
+                        eventType = eventCategory,
+                        relationType = relationship,
+                        cost = cost.toInt(),
+                        isEventParticipated = attendLabel == ATTENDED,
+                        eventDate = eventDate.toFormattedDate(),
+                        note = "",
+                    ),
+                    location = Location(
+                        location = selectedPlace?.name.orEmpty(),
+                        address = selectedPlace?.address.orEmpty(),
+                        latitude = selectedPlace?.latitude ?: 0.0,
+                        longitude = selectedPlace?.longitude ?: 0.0,
+                    ),
+                ).onSuccess { response ->
+                    Timber.tag("patchEditEventInformation").d("response: $response")
+                    _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+                }.onFailure {
+                    // TODO: 실패 처리
+                    Timber.tag("patchEditEventInformation").d("Error: $it")
+                }
+            }
         }
 
     private fun saveEventInformation() =
@@ -139,7 +165,7 @@ class EditViewModel @Inject constructor(
                         eventType = eventCategory,
                         relationType = relationship,
                         cost = cost.toInt(),
-                        isEventParticipated = attendLabel == "참석",
+                        isEventParticipated = attendLabel == ATTENDED,
                         eventDate = eventDate.toFormattedDate(),
                         note = "",
                     ),
@@ -152,7 +178,7 @@ class EditViewModel @Inject constructor(
                     highAccuracy = HighAccuracy(
                         contactFrequency = DEFAULT_WEIGHT,
                         meetFrequency = DEFAULT_WEIGHT,
-                    )
+                    ),
                 ).onSuccess { response ->
                     Timber.tag("saveEditEventInformation").d("response: $response")
                     _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
@@ -173,5 +199,6 @@ class EditViewModel @Inject constructor(
 
     companion object {
         private const val DEFAULT_WEIGHT = 3
+        private const val ATTENDED = "참석"
     }
 }
