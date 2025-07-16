@@ -85,9 +85,7 @@ class EditViewModel @Inject constructor(
     }
 
     fun updateNote(newNote: String) = _uiState.update {
-        it.copy(
-            note = newNote,
-        )
+        it.copy(note = newNote,)
     }
 
     fun updatePlace(newPlace: Place?) = _uiState.update {
