@@ -34,7 +34,7 @@ import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateWithDayPair
+import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.ScheduleViewModel
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
@@ -150,7 +150,7 @@ private fun ScheduleCard(
     onCardClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateWithDayPair()
+    val (date, weekDay) = eventDate.toFormattedDateAndDay()
 
     Column(
         modifier = modifier
