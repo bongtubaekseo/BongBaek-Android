@@ -47,7 +47,7 @@ fun BongBaekButton(
     buttonType: ButtonType,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textStyle: TextStyle = BongBaekTheme.typography.titleSemiBold20,
+    textStyle: TextStyle = BongBaekTheme.typography.titleSemiBold18,
     shape: Shape = RoundedCornerShape(10.dp),
     paddingValues: PaddingValues = PaddingValues(14.dp),
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -164,8 +164,8 @@ private fun BongBaekButtonPreview() {
                     .wrapContentWidth(),
                 textStyle = BongBaekTheme.typography.titleSemiBold16,
                 paddingValues = PaddingValues(
-                    horizontal = 29.dp,
-                    vertical = 7.dp,
+                    horizontal = 30.dp,
+                    vertical = 8.dp,
                 ),
             )
         }

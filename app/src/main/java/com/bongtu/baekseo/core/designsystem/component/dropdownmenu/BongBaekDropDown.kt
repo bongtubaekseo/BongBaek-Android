@@ -1,11 +1,9 @@
 package com.bongtu.baekseo.core.designsystem.component.dropdownmenu
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,9 +11,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,14 +21,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -49,49 +46,50 @@ import kotlinx.collections.immutable.persistentListOf
 fun <T> BongBaekDropdownMenu(
     expanded: Boolean,
     items: ImmutableList<T>,
-    maxItemSize: Int,
     selectedItem: T?,
     onDismissRequest: () -> Unit,
     onItemSelect: (T) -> Unit,
     label: (T) -> String,
     modifier: Modifier = Modifier,
+    maxItemSize: Int = 3,
+    offset: DpOffset = DpOffset(0.dp, 14.dp),
 ) {
     val bongBaekColors = BongBaekTheme.colors
     var itemHeightDp by remember { mutableStateOf(0.dp) }
-    val scrollState = rememberScrollState()
 
-    AnimatedVisibility(
-        visible = expanded,
-        enter = fadeIn() + expandVertically(),
-        exit = fadeOut() + shrinkVertically(),
+    DropdownMenu(
+        expanded = expanded,
+        offset = offset,
+        onDismissRequest = onDismissRequest,
+        properties = PopupProperties(
+            focusable = false,
+        ),
+        shape = RoundedCornerShape(10.dp),
+        containerColor = bongBaekColors.gray750,
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(
+                horizontal = 12.dp,
+                vertical = 4.dp,
+            )
+            .heightIn(
+                max =
+                    if (itemHeightDp > 0.dp) (itemHeightDp + 8.dp) * maxItemSize
+                    else Dp.Unspecified,
+            ),
     ) {
-        Column(
-            modifier = modifier
-                .fillMaxWidth()
-                .clip(RoundedCornerShape(10.dp))
-                .background(bongBaekColors.gray750)
-                .padding(12.dp),
-        ) {
-            Column(
-                modifier = Modifier
-                    .let {
-                        if (itemHeightDp > 0.dp) {
-                            it.heightIn(max = itemHeightDp * maxItemSize)
-                        } else it.heightIn(max = 0.dp)
-                    }
-                    .verticalScroll(scrollState),
-            ) {
-                items.forEachIndexed { index, item ->
-                    DropDownMenuItem<T>(
-                        item = item,
-                        index = index,
-                        isSelected = selectedItem == item,
-                        onItemSelected = onItemSelect,
-                        onFirstItemMeasured = { itemHeightDp = it },
-                        label = label,
-                    )
-                }
-            }
+        items.forEachIndexed { index, item ->
+            DropDownMenuItem<T>(
+                item = item,
+                index = index,
+                isSelected = item == selectedItem,
+                onFirstItemMeasured = { itemHeightDp = it },
+                onItemSelected = {
+                    onItemSelect(it)
+                    onDismissRequest()
+                },
+                label = label,
+            )
         }
     }
 }
@@ -106,18 +104,31 @@ private fun <T> DropDownMenuItem(
     label: (T) -> String,
 ) {
     val bongBaekColors = BongBaekTheme.colors
+    val bongBaekTypography = BongBaekTheme.typography
     val density = LocalDensity.current
-    val (backgroundColor, textColor) = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
-        else bongBaekColors.transparent to bongBaekColors.white
+    val interactionSource = remember { MutableInteractionSource() }
+    val isPressed by interactionSource.collectIsPressedAsState()
+
+    val (backgroundColor, textColor) = remember(isSelected, isPressed) {
+        when {
+            isPressed -> bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
+            isSelected == true -> bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
+            else -> bongBaekColors.transparent to bongBaekColors.white
+        }
+    }
+    val textStyle = remember(isSelected, isPressed) {
+        when {
+            isPressed -> bongBaekTypography.body1Medium16
+            isSelected == true -> bongBaekTypography.body1Medium16
+            else -> bongBaekTypography.body2Regular16
+        }
     }
 
     Box(
         modifier = Modifier
             .onGloballyPositioned {
                 if (index == 0) {
-                    val px = it.size.height
-                    onFirstItemMeasured(with(density) { px.toDp() })
+                    onFirstItemMeasured(with(density) { it.size.height.toDp() })
                 }
             }
             .background(
@@ -126,13 +137,18 @@ private fun <T> DropDownMenuItem(
             )
             .fillMaxWidth()
             .padding(horizontal = 12.dp, vertical = 8.dp)
-            .noRippleClickable { onItemSelected(item) },
+            .clickable(
+                interactionSource = interactionSource,
+                indication = null,
+            ) {
+                onItemSelected(item)
+            },
         contentAlignment = Alignment.CenterStart,
     ) {
         Text(
             text = label(item),
             color = textColor,
-            style = BongBaekTheme.typography.body1Medium16,
+            style = textStyle,
         )
     }
 }
