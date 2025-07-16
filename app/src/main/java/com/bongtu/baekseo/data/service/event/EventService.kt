@@ -1,10 +1,9 @@
 package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
-import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
-import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
@@ -13,7 +12,6 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
 import retrofit2.http.Query
-import retrofit2.http.Path
 
 interface EventService {
     @POST("/api/v1/events")
@@ -34,7 +32,6 @@ interface EventService {
         @Path("page") page: Int,
         @Query("category") category: String? = null,
     ): BaseResponse<GetScheduleEventsResponse>
-    suspend fun fetchHomeEvents(): BaseResponse<FetchHomeEventsResponse>
 
     @GET("/api/v1/events/{eventId}")
     suspend fun getEventDetail(

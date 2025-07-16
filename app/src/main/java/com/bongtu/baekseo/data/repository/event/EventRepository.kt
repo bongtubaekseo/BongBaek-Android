@@ -30,7 +30,6 @@ interface EventRepository {
         page: Int,
         category: String? = null,
     ): Result<PageScheduleEvent>
-    suspend fun fetchHomeEvents(): Result<ImmutableList<HomeEvent>>
 
     suspend fun getEventDetail(
         eventId: String,

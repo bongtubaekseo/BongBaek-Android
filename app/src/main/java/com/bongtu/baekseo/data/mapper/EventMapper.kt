@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
-import com.bongtu.baekseo.data.dto.event.FetchHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
@@ -70,6 +69,18 @@ fun GetEventDetailResponse.toModel() = DetailEvent(
     eventDate = eventInfo.eventDate,
     note = eventInfo.note,
     locationInfo = locationInfo.toModel(),
+)
+
+fun GetHomeEventsResponse.Event.toModel() = HomeEvent(
+    eventId = eventId,
+    hostName = hostInfo.hostName,
+    hostNickname = hostInfo.hostNickname,
+    eventCategory = eventInfo.eventCategory,
+    relationship = eventInfo.relationship,
+    cost = eventInfo.cost,
+    eventDate = eventInfo.eventDate,
+    dDay = eventInfo.dDay,
+    location = locationInfo.location,
 )
 
 fun GetScheduleEventsResponse.Event.toModel() = ScheduleEvent(
