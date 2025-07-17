@@ -64,13 +64,14 @@ fun OnBoardingBottomSheet(
         onDismissRequest = onDismissRequest,
         modifier = modifier
             .fillMaxWidth(),
-        contentWindowInsets = { WindowInsets(0) },
-        dragHandle = null,
         sheetState = sheetState,
         shape = RoundedCornerShape(
             topStart = 10.dp,
             topEnd = 10.dp,
         ),
+        dragHandle = null,
+        scrimColor = BongBaekTheme.colors.black.copy(alpha = .6f),
+        contentWindowInsets = { WindowInsets(0) },
     ) {
         OnBoardingBottomSheetAgreeContent(
             items = items,
@@ -79,8 +80,7 @@ fun OnBoardingBottomSheet(
             onItemCheckedChange = onItemCheckedChange,
             onNextClick = onNextClick,
             modifier = Modifier
-                .fillMaxWidth()
-                .wrapContentHeight(),
+                .fillMaxWidth(),
         )
     }
 }
@@ -95,11 +95,12 @@ private fun OnBoardingBottomSheetAgreeContent(
     modifier: Modifier = Modifier,
 ) {
     val isAllChecked = checkedStates.all { it }
+
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray750)
-            .padding(horizontal = 20.dp)
-            .navigationBarsPadding(),
+            .navigationBarsPadding()
+            .padding(horizontal = 20.dp),
     ) {
         Text(
             text = stringResource(id = onboarding_bottom_sheet_description),
@@ -147,7 +148,10 @@ private fun OnBoardingBottomSheetAgreeContent(
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 40.dp),
+                .padding(
+                    top = 40.dp,
+                    bottom = 20.dp,
+                ),
             enabled = isAllChecked,
         )
     }
