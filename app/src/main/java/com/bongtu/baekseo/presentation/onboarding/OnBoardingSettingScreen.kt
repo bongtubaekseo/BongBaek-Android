@@ -160,8 +160,6 @@ fun OnBoardingSettingScreen(
                 AnimatedVisibility(
                     visible = switchChecked,
                     modifier = Modifier.padding(top = 30.dp),
-                    enter = EnterTransition.None,
-                    exit = ExitTransition.None,
                 ) {
                     Column(
                         modifier = Modifier
