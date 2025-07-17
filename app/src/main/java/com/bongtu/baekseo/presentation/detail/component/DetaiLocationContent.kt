@@ -94,7 +94,6 @@ fun DetailLocationContent(
 
         Column(
             modifier = Modifier
-
                 .fillMaxWidth()
                 .padding(
                     horizontal = 16.dp,
