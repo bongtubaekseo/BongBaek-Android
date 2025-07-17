@@ -15,14 +15,12 @@ fun NavController.navigateToDetail(eventId: String, navOptions: NavOptions? = nu
 fun NavGraphBuilder.detailGraph(
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
-    navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Detail> { backStackEntry ->
         DetailRoute(
             navigateUp = navigateUp,
             navigateToEdit = navigateToEdit,
-            navigateToRecord = navigateToRecord,
             modifier = modifier,
         )
     }

@@ -73,7 +73,6 @@ private const val MEMO_RATIO = 320f / 152f
 fun DetailRoute(
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
-    navigateToRecord: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
@@ -87,7 +86,7 @@ fun DetailRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToEdit -> navigateToEdit()
-                    is NavigateToRecord -> navigateToRecord()
+                    is NavigateToRecord -> navigateUp()
                 }
             }
     }

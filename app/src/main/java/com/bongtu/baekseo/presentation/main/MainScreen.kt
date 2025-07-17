@@ -146,7 +146,7 @@ private fun MainNavHost(
                     }
                 )
             },
-            navigateToEdit = navigator.navController::navigateToEdit, // TODO: Caching
+            navigateToEdit = navigator.navController::navigateToEdit,
             modifier = modifier,
         )
 
@@ -165,7 +165,6 @@ private fun MainNavHost(
         detailGraph(
             navigateUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToRecord = navigator::navigateUp,                       // TODO: schedule, record
             modifier = modifier,
         )
 
@@ -181,28 +180,6 @@ private fun MainNavHost(
                     },
                 )
             },
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                    navOptions = navOptions {
-                        popUpTo<Edit> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    },
-                )
-            },
-            navigateToRecord = {
-                navigator.navController.navigateToRecord(
-                    navOptions = navOptions {
-                        popUpTo<Edit> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                )
-            },
-            navigateToSchedule = navigator::navigateUp,
             modifier = modifier,
         )
     }

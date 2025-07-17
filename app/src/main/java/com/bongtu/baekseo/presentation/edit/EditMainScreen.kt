@@ -100,9 +100,6 @@ fun EditMainRoute(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToDetail: (String) -> Unit,
-    navigateToRecord: () -> Unit,
-    navigateToSchedule: () -> Unit,
     navigateToLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
@@ -118,9 +115,9 @@ fun EditMainRoute(
             .filterIsInstance<EditSideEffect.EditMainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToRecord -> navigateToRecord()
-                    is NavigateToDetail -> navigateToDetail(sideEffect.eventId)
-                    is NavigateToSchedule -> navigateToSchedule()
+                    is NavigateToRecord -> navigateUp()
+                    is NavigateToDetail -> navigateUp()
+                    is NavigateToSchedule -> navigateUp()
                     is NavigateToFinal -> navigateToFinal()
                     is NavigateToLocation -> navigateToLocation()
                 }

@@ -25,9 +25,6 @@ fun NavGraphBuilder.editGraph(
     navController: NavController,
     navigateToUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToDetail: (String) -> Unit,
-    navigateToRecord: () -> Unit,
-    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Edit> { backStackEntry ->
@@ -54,9 +51,6 @@ fun NavGraphBuilder.editGraph(
         EditRoute(
             editEntryType = entryType,
             navigateUp = navigateToUp,
-            navigateToRecord = navigateToRecord,
-            navigateToSchedule = navigateToSchedule,
-            navigateToDetail = navigateToDetail,
             navigateToFinal = navigateToFinal,
             modifier = modifier,
         )
@@ -67,9 +61,6 @@ fun NavGraphBuilder.nestedEditGraph(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     nestedNavigateUp: () -> Unit,
-    navigateToDetail: (String) -> Unit,
-    navigateToRecord: () -> Unit,
-    navigateToSchedule: () -> Unit,
     navigateToFinal: () -> Unit,
     navigateToLocation: () -> Unit,
     navigateToEditMain: () -> Unit,
@@ -80,9 +71,6 @@ fun NavGraphBuilder.nestedEditGraph(
         EditMainRoute(
             editEntryType = editEntryType,
             navigateUp = navigateUp,
-            navigateToRecord = navigateToRecord,
-            navigateToSchedule = navigateToSchedule,
-            navigateToDetail = navigateToDetail,
             navigateToFinal = navigateToFinal,
             navigateToLocation = navigateToLocation,
             viewModel = viewModel,
