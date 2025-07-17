@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,7 +46,6 @@ fun RecordRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val bottomPadding = innerPadding.calculateBottomPadding()
-    val lazyListState = rememberLazyListState()
 
     if (uiState.isDeleteMode) {
         BackHandler { viewModel.updateDeleteModeCancel() }
@@ -81,7 +78,6 @@ fun RecordRoute(
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
         onDeleteClick = viewModel::fetchSelectedDeleteEventIds,
-        lazyListState = lazyListState,
         updatePage = viewModel::updateNextPage,
         modifier = modifier
             .then(
@@ -106,7 +102,6 @@ private fun RecordScreen(
     onExitDeleteModeClick: () -> Unit,
     onDeleteSelectedButtonClick: (String) -> Unit,
     onDeleteClick: () -> Unit,
-    lazyListState: LazyListState,
     updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -173,7 +168,6 @@ private fun RecordScreen(
                     selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                     onCardClick = navigateToDetail,
                     onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
-                    lazyListState = lazyListState,
                     updatePage = updatePage,
                 )
             }
@@ -260,7 +254,6 @@ private fun RecordDefaultScreenPreview() {
             navigateToDetail = {},
             navigateToAdd = {},
             innerPadding = PaddingValues(),
-            lazyListState = rememberLazyListState(),
             updatePage = {},
             modifier = Modifier,
         )
