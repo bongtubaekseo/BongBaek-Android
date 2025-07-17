@@ -108,6 +108,12 @@ fun HomeMainScreen(
 
         is UiState.Loading -> {
             // TODO: 로딩 상태
+            // 임시로 흰 화면이 깜빡거려 같은 배경색으로 대체
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = BongBaekTheme.colors.gray900),
+            )
         }
 
         is UiState.Success -> {
