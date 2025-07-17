@@ -149,7 +149,7 @@ class EditViewModel @Inject constructor(
         viewModelScope.launch {
             with(uiState.value) {
                 eventRepository.putEventInfo(
-                    eventId = "",                   // TODO: Caching eventId
+                    eventId = eventId,
                     host = Host(
                         name = name,
                         nickname = nickname,
@@ -160,7 +160,7 @@ class EditViewModel @Inject constructor(
                         cost = cost.toInt(),
                         isEventParticipated = attendLabel == ATTENDED,
                         eventDate = eventDate.toFormattedDate(),
-                        note = "",
+                        note = note,
                     ),
                     location = Location(
                         location = selectedPlace?.name.orEmpty(),
