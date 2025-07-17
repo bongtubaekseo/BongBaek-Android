@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.home.schedule
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -90,6 +91,7 @@ private fun ScheduleScreen(
 ) {
     Column(
         modifier = modifier
+            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .statusBarsPadding(),
     ) {
