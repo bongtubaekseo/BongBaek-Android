@@ -86,7 +86,6 @@ class EditViewModel @Inject constructor(
         }
     }
 
-
     fun updateName(newName: String) {
         _uiState.update { it.copy(name = newName) }
         _nameValidate.update { TextFieldValidateResult.validate(newName) }
