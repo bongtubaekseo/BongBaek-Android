@@ -99,6 +99,7 @@ class DetailViewModel @Inject constructor(
                 _sideEffect.emit(NavigateToRecord)
             }.onFailure {
                 Timber.tag("DetailViewModel").e(it)
+                // TODO: 실패처리
             }
     }
 
