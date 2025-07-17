@@ -36,16 +36,19 @@ class MainNavigator(
 
     fun navigate(tab: MainTab) {
         val navOptions = navOptions {
-            popUpTo(navController.graph.findStartDestination().id) {
-                saveState = true
+            navController.currentDestination?.route?.let {
+                popUpTo(it) {
+                    saveState = true
+                    inclusive = true
+                }
+                launchSingleTop = true
+                restoreState = true
             }
-            launchSingleTop = true
-            restoreState = true
         }
 
         when (tab) {
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
-            MainTab.RECOMMEND -> navController.navigateToRecommend(navOptions = navOptions)
+            MainTab.RECOMMEND -> navController.navigateToRecommend()
             MainTab.RECORD -> navController.navigateToRecord(navOptions = navOptions)
         }
     }
