@@ -89,7 +89,7 @@ fun RecommendDateCard(
 
         if (isDialogOpen) {
             BongBaekDatePickerDialog(
-                datePickerDialogType = DatePickerDialogType.DATE,
+                datePickerDialogType = DatePickerDialogType.DATE_PRESENT,
                 value = text,
                 onValueChange = onTextChange,
                 onDismissRequest = {
