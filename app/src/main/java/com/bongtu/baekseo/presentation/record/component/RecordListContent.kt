@@ -127,7 +127,10 @@ fun RecordListContent(
                             category = eventCategory,
                             relationship = relationship,
                             eventDate = eventDate,
-                            onCardClick = { if (!isDeleteMode) onCardClick(eventId) },
+                            onCardClick = {
+                                if (!isDeleteMode) onCardClick(eventId)
+                                else onDeleteSelectedButtonClick(eventId)
+                            },
                             isDeleteMode = isDeleteMode,
                             isDeleteToggleCheck = isDeleteToggleCheck,
                             onDeleteToggleClick = { onDeleteSelectedButtonClick(eventId) },
