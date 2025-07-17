@@ -39,6 +39,8 @@ class EditViewModel @Inject constructor(
     private val _searchTerm = MutableStateFlow("")
     val searchTerm = _searchTerm.asStateFlow()
 
+    private val _entryType = MutableStateFlow<EditEntryType?>(null)
+
     private val _nameValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val nameValidate = _nameValidate.asStateFlow()
@@ -50,6 +52,10 @@ class EditViewModel @Inject constructor(
     private val _costValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val costValidate = _costValidate.asStateFlow()
+
+    fun updateEntryType(type: EditEntryType) {
+        _entryType.update { type }
+    }
 
     fun getEditEvent() {
         val cachedEvent = EventCache.load()
@@ -170,7 +176,7 @@ class EditViewModel @Inject constructor(
                     ),
                 ).onSuccess { response ->
                     Timber.tag("patchEditEventInformation").d("response: $response")
-                    _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+                    onEditComplete(eventId)
                 }.onFailure {
                     // TODO: 실패 처리
                     Timber.tag("patchEditEventInformation").d("Error: $it")
@@ -206,7 +212,7 @@ class EditViewModel @Inject constructor(
                     ),
                 ).onSuccess { response ->
                     Timber.tag("saveEditEventInformation").d("response: $response")
-                    _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+                    onEditComplete()
                 }.onFailure {
                     // TODO: 실패 처리
                     Timber.tag("saveEditEventInformation").d("Error: $it")
@@ -220,6 +226,21 @@ class EditViewModel @Inject constructor(
 
     fun navigateToEditMain() = viewModelScope.launch {
         _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
+    }
+
+    fun onEditComplete(eventId: String? = null) {
+        viewModelScope.launch {
+            when (_entryType.value!!) {
+                EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
+                EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
+                EditEntryType.FROM_DETAIL -> {
+                    eventId?.let {
+                        _sideEffect.emit(EditMainSideEffect.NavigateToDetail(it))
+                    }
+                }
+                EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
+            }
+        }
     }
 
     companion object {

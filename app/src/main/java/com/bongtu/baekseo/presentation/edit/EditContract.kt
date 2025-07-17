@@ -5,8 +5,6 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.map.Place
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class EditContract {
     @Immutable
@@ -28,7 +26,13 @@ class EditContract {
     sealed interface EditSideEffect {
 
         sealed class EditMainSideEffect : EditSideEffect {
-            data object NavigateToComplete : EditMainSideEffect()
+            data object NavigateToRecord : EditMainSideEffect()
+            data class NavigateToDetail(
+                val eventId: String,
+            ) : EditMainSideEffect()
+
+            data object NavigateToFinal : EditMainSideEffect()
+            data object NavigateToSchedule : EditMainSideEffect()
             data object NavigateToLocation : EditMainSideEffect()
         }
 

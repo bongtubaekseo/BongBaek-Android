@@ -171,6 +171,7 @@ private fun MainNavHost(
                         popUpTo<Detail> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 )
             },
@@ -196,6 +197,7 @@ private fun MainNavHost(
                         popUpTo<Edit> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     },
                 )
             },

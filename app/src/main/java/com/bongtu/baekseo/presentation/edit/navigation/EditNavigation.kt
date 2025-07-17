@@ -51,20 +51,13 @@ fun NavGraphBuilder.editGraph(
             }
         }
 
-        val navigateComplete = when (entryType) {
-            EditEntryType.FROM_RECORD -> navigateToRecord
-            EditEntryType.FROM_SCHEDULE -> navigateToSchedule
-            EditEntryType.FROM_DETAIL -> {
-                { navigateToDetail("") }                // TODO: Caching 데이터 사용
-            }
-
-            EditEntryType.FROM_RESULT -> navigateToFinal
-        }
-
         EditRoute(
             editEntryType = entryType,
             navigateUp = navigateToUp,
-            navigateComplete = navigateComplete,
+            navigateToRecord = navigateToRecord,
+            navigateToSchedule = navigateToSchedule,
+            navigateToDetail = navigateToDetail,
+            navigateToFinal = navigateToFinal,
             modifier = modifier,
         )
     }
@@ -74,7 +67,10 @@ fun NavGraphBuilder.nestedEditGraph(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     nestedNavigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
+    navigateToDetail: (String) -> Unit,
+    navigateToRecord: () -> Unit,
+    navigateToSchedule: () -> Unit,
+    navigateToFinal: () -> Unit,
     navigateToLocation: () -> Unit,
     navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
@@ -84,7 +80,10 @@ fun NavGraphBuilder.nestedEditGraph(
         EditMainRoute(
             editEntryType = editEntryType,
             navigateUp = navigateUp,
-            navigateComplete = navigateComplete,
+            navigateToRecord = navigateToRecord,
+            navigateToSchedule = navigateToSchedule,
+            navigateToDetail = navigateToDetail,
+            navigateToFinal = navigateToFinal,
             navigateToLocation = navigateToLocation,
             viewModel = viewModel,
             modifier = modifier,
