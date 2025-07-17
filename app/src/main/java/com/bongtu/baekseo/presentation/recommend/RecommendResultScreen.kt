@@ -37,6 +37,7 @@ import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
+import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendUiState
 import com.bongtu.baekseo.presentation.recommend.component.RecommendExpenseCard
@@ -55,13 +56,13 @@ fun RecommendResultRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    // TODO: EditScreen과 연결할 때 SideEffect와 연결하기
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .filterIsInstance<RecommendSideEffect.ResultSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToFinal -> navigateToFinal()
+                    is NavigateToEdit -> navigateToEdit()
                 }
             }
     }
@@ -73,7 +74,7 @@ fun RecommendResultRoute(
     RecommendResultScreen(
         uiState = uiState,
         onConfirmClick = viewModel::saveEventInformation,
-        onEditClick = navigateToEdit,
+        onEditClick = viewModel::navigateToEdit,
         modifier = modifier,
     )
 }

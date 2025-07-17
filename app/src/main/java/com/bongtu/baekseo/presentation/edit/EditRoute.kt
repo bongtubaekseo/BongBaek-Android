@@ -17,7 +17,7 @@ import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 fun EditRoute(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
+    navigateToFinal: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: EditViewModel = hiltViewModel(),
 ) {
@@ -37,18 +37,8 @@ fun EditRoute(
             editEntryType = editEntryType,
             navigateUp = navigateUp,
             nestedNavigateUp = navController::navigateUp,
-            navigateComplete = navigateComplete,
+            navigateToFinal = navigateToFinal,
             navigateToLocation = { navController.navigate(EditRoute.Location) },
-            navigateToEditMain = {
-                navController.navigate(
-                    route = EditRoute.Main,
-                    navOptions = navOptions {
-                        popUpTo<EditRoute.Location> {
-                            inclusive = true
-                        }
-                    },
-                )
-            },
             viewModel = viewModel,
             modifier = modifier,
         )

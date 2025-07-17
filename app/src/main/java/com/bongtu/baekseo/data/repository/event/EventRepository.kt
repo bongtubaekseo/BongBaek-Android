@@ -3,6 +3,7 @@ package com.bongtu.baekseo.data.repository.event
 import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.DeleteEvent
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -48,4 +49,12 @@ interface EventRepository {
         attended: Boolean = true,
         category: String? = null,
     ): Result<PageScheduleEvent>
+
+    suspend fun getEventDetail(
+        eventId: String,
+    ): Result<DetailEvent>
+
+    suspend fun deleteEventInfo(
+        eventId: String,
+    ): Result<Unit>
 }

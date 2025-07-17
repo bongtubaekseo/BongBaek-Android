@@ -20,6 +20,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -75,11 +76,15 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToComplete
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToLocation
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToRecord
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
@@ -94,7 +99,7 @@ import kotlinx.coroutines.flow.filterIsInstance
 fun EditMainRoute(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
+    navigateToFinal: () -> Unit,
     navigateToLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
@@ -110,10 +115,24 @@ fun EditMainRoute(
             .filterIsInstance<EditSideEffect.EditMainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToComplete -> navigateComplete()
+                    is NavigateToRecord -> navigateUp()
+                    is NavigateToDetail -> navigateUp()
+                    is NavigateToSchedule -> navigateUp()
+                    is NavigateToFinal -> navigateToFinal()
                     is NavigateToLocation -> navigateToLocation()
                 }
             }
+    }
+
+    LaunchedEffect(Unit) {
+        viewModel.getEditEvent()
+        viewModel.updateEntryType(editEntryType)
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            EventCache.clear()
+        }
     }
 
     EditMainScreen(

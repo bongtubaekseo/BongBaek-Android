@@ -71,24 +71,22 @@ private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 fun DetailRoute(
-    eventId: String,    // TODO: eventId fetch
     navigateUp: () -> Unit,
     navigateToEdit: () -> Unit,
-    navigateToRecord: () -> Unit,   // TODO: 삭제시 호출
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
-    LaunchedEffect(Unit) { viewModel.fetchDetailEvent(eventId) }
+    LaunchedEffect(Unit) { viewModel.fetchDetailEvent() }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToEdit -> navigateToEdit()
-                    is NavigateToRecord -> navigateToRecord()
+                    is NavigateToRecord -> navigateUp()
                 }
             }
     }
@@ -107,7 +105,7 @@ private fun DetailScreen(
     uiState: DetailUiState,
     onBackButtonClick: () -> Unit,
     onEditButtonClick: () -> Unit,
-    onRemoveButtonClick: () -> Unit,
+    onRemoveButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -143,28 +141,23 @@ private fun DetailScreen(
             },
         )
 
-        when (uiState.loadState) {
-            is UiState.Empty -> {
-                // TODO: 빈 화면 없어도 될 듯?
-            }
-
-            is UiState.Failure -> {
-                // TODO: 에러 상태 화면
-            }
-
-            is UiState.Loading -> {
-                // TODO: 로딩 상태 화면
-            }
-
-            is UiState.Success -> {
-                DetailContent(
-                    event = uiState.loadState.data,
-                    onDeleteButtonClick = onRemoveButtonClick,
-                    modifier = Modifier
-                        .weight(1f),
-                )
-            }
-        }
+        DetailContent(
+            event = DetailEvent(
+                eventId = uiState.eventId,
+                hostName = uiState.hostName,
+                hostNickname = uiState.hostNickname,
+                eventCategory = uiState.eventCategory,
+                relationship = uiState.relationship,
+                cost = uiState.cost,
+                isEventParticipated = uiState.isEventParticipated,
+                eventDate = uiState.eventDate,
+                note = uiState.note,
+                locationInfo = uiState.locationInfo,
+            ),
+            onDeleteButtonClick = { onRemoveButtonClick(uiState.eventId) },
+            modifier = Modifier
+                .weight(1f),
+        )
     }
 }
 
@@ -273,7 +266,8 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
+    val (date, weekDay) = if (eventDate.isBlank()) "-" to "0" else eventDate.toFormattedDateAndDay()
+
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -428,7 +422,7 @@ private fun RecordDeleteAlertDialog(
 private fun RecordDetailScreenPreview() {
     BongBaekTheme {
         DetailScreen(
-            uiState = DetailUiState(),
+            uiState = DetailUiState(UiState.Loading),
             onBackButtonClick = {},
             onEditButtonClick = {},
             onRemoveButtonClick = {},
