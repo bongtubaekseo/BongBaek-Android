@@ -60,12 +60,11 @@ class OnBoardingViewModel @Inject constructor(
 
     fun loginWithKakao(token: String) {
         viewModelScope.launch {
-            setKakaoLoginUseCase.invoke(token)
+            setKakaoLoginUseCase(token)
                 .onSuccess { response ->
                     updateKakaoId(response.kakaoId)
                     if (response.isCompletedSignUp) {
-//                        _sideEffect.emit(NavigateToHome)
-                        _kakaoLoginState.tryEmit(SocialLoginState.Success)
+                        _sideEffect.emit(NavigateToHome)
                     } else {
                         _kakaoLoginState.tryEmit(SocialLoginState.Success)
                     }

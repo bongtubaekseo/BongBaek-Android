@@ -37,6 +37,15 @@ android {
         manifestPlaceholders["KAKAO_KEY"] = kakaoNativeKey
     }
 
+    signingConfigs {
+        getByName("debug") {
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+            storeFile = File("${project.rootDir.absolutePath}/keystore/debug.keystore")
+            storePassword = "android"
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true

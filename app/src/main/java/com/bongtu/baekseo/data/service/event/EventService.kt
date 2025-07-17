@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
@@ -11,6 +12,7 @@ import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.HTTP
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
@@ -41,6 +43,18 @@ interface EventService {
         @Path("eventId") eventId: String,
         @Body request: PutEventInfoRequest,
     ): BaseResponse<Unit>
+
+    @HTTP(method = "DELETE", path = "/api/v1/events", hasBody = true)
+    suspend fun deleteEvents(
+        @Body request: DeleteEventsRequest,
+    ): BaseResponse<Unit>
+
+    @GET("/api/v1/events/history/{page}")
+    suspend fun getRecordEvents(
+        @Path("page") page: Int,
+        @Query("attended") attended: Boolean = true,
+        @Query("category") category: String? = null,
+    ): BaseResponse<GetScheduleEventsResponse>
 
     @GET("/api/v1/events/{eventId}")
     suspend fun getEventDetail(

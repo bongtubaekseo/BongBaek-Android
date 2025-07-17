@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.edit.component
+package com.bongtu.baekseo.presentation.detail.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import com.bongtu.baekseo.R.drawable.img_map_marker
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.data.model.map.Place
 import com.kakao.vectormap.GestureType
 import com.kakao.vectormap.KakaoMap
 import com.kakao.vectormap.KakaoMapReadyCallback
@@ -31,16 +30,19 @@ import com.kakao.vectormap.label.LabelStyle
 import com.kakao.vectormap.label.LabelStyles
 import timber.log.Timber
 
-private const val MAP_RATIO = 280 / 180f
+private const val MAP_RATIO = 280f / 180f
 
 @Composable
-fun EditLocationContent(
-    place: Place,
+fun DetailLocationContent(
+    location: String,
+    address: String,
+    latitude: Double,
+    longitude: Double,
     modifier: Modifier = Modifier,
 ) {
     val context = LocalContext.current
     val mapView = remember { MapView(context) }
-    val defaultPosition = LatLng.from(place.latitude, place.longitude)
+    val defaultPosition = LatLng.from(latitude, longitude)
 
     Column(
         modifier = modifier
@@ -100,13 +102,13 @@ fun EditLocationContent(
             verticalArrangement = Arrangement.spacedBy(2.dp),
         ) {
             Text(
-                text = place.name,
+                text = location,
                 style = BongBaekTheme.typography.body1Medium16,
                 color = BongBaekTheme.colors.white,
             )
 
             Text(
-                text = place.address,
+                text = address,
                 style = BongBaekTheme.typography.body2Regular14,
                 color = BongBaekTheme.colors.gray400,
             )
@@ -118,15 +120,11 @@ fun EditLocationContent(
 @Composable
 private fun EditLocationContentPreview() {
     BongBaekTheme {
-        EditLocationContent(
-            place = Place(
-                id = "",
-                name = "장소 이름",
-                address = "장소 주소",
-                roadAddress = "",
-                latitude = 0.0,
-                longitude = 0.0,
-            ),
+        DetailLocationContent(
+            location = "장소 이름",
+            address = "장소 주소",
+            latitude = 0.0,
+            longitude = 0.0,
         )
     }
 }

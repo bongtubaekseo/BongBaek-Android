@@ -1,5 +1,7 @@
 package com.bongtu.baekseo.data.mapper
 
+import com.bongtu.baekseo.data.dto.event.DeleteEventsDto
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
 import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
@@ -9,6 +11,7 @@ import com.bongtu.baekseo.data.dto.event.HostInfoDto
 import com.bongtu.baekseo.data.dto.event.LocationInfoDto
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.model.event.Cost
+import com.bongtu.baekseo.data.model.event.DeleteEvent
 import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
@@ -43,6 +46,10 @@ fun Location.toDto() = LocationInfoDto(
 fun HighAccuracy.toDto() = HighAccuracyDto(
     contactFrequency = contactFrequency,
     meetFrequency = meetFrequency,
+)
+
+fun DeleteEvent.toDto() = DeleteEventsDto(
+    eventIds = eventIds.toList(),
 )
 
 fun PostEventCostResponse.toModel() = Cost(

@@ -296,7 +296,7 @@ fun HomeMainSuccessScreen(
                 Spacer(modifier = Modifier.size(10.dp))
 
                 if (item == items.last()) {
-                    Spacer(modifier = Modifier.size(40.dp))
+                    Spacer(modifier = Modifier.size(28.dp))
                 }
             }
 
