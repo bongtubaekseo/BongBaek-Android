@@ -2,6 +2,7 @@ package com.bongtu.baekseo.data.datasourceimpl.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
 import com.bongtu.baekseo.data.datasource.event.EventDataSource
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
@@ -24,6 +25,20 @@ class EventDataSourceImpl @Inject constructor(
         eventId: String,
         request: PutEventInfoRequest,
     ) = eventService.putEventInfo(eventId, request)
+
+    override suspend fun deleteEvents(request: DeleteEventsRequest): BaseResponse<Unit> =
+        eventService.deleteEvents(request)
+
+    override suspend fun getRecordEvents(
+        page: Int,
+        attended: Boolean,
+        category: String?,
+    ): BaseResponse<GetScheduleEventsResponse> =
+        eventService.getRecordEvents(
+            page = page,
+            attended = attended,
+            category = category,
+        )
 
     override suspend fun getHomeEvents() = eventService.getHomeEvents()
 
