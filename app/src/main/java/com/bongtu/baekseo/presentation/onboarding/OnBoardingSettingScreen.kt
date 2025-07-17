@@ -106,7 +106,7 @@ fun OnBoardingSettingScreen(
                     text = uiState.name,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = if (uiState.nameError.isEmpty())
+                    validateResult = if (uiState.nameError.isNotEmpty())
                         TextFieldValidateResult.Error(uiState.nameError)
                     else
                         TextFieldValidateResult.Default,
