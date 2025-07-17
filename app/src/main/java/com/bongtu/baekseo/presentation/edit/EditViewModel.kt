@@ -3,7 +3,9 @@ package com.bongtu.baekseo.presentation.edit
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
+import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -47,6 +49,8 @@ class EditViewModel @Inject constructor(
 
     private val _isManualSearch = MutableStateFlow(true)
 
+    private val _entryType = MutableStateFlow<EditEntryType?>(null)
+
     private val _nameValidate =
         MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
     val nameValidate = _nameValidate.asStateFlow()
@@ -73,6 +77,46 @@ class EditViewModel @Inject constructor(
                         searchPlaces()
                     }
                 }
+        }
+    }
+
+    fun updateEntryType(type: EditEntryType) = _entryType.update { type }
+
+    fun getEditEvent() {
+        val cachedEvent = EventCache.load()
+        cachedEvent?.let {
+            with(cachedEvent) {
+                _uiState.update {
+                    it.copy(
+                        eventId = eventId,
+                        name = hostName,
+                        nickname = hostNickname,
+                        eventCategory = eventCategory,
+                        relationship = relationship,
+                        cost = cost.toString(),
+                        attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
+                        eventDate = eventDate.toFormattedMonthDayYear(),
+                        note = note,
+                        selectedPlace = if (
+                            location.isEmpty() &&
+                            address.isEmpty() &&
+                            latitude == 0.0 &&
+                            longitude == 0.0
+                        ) {
+                            null
+                        } else {
+                            Place(
+                                id = "",
+                                name = location,
+                                address = address,
+                                roadAddress = "",
+                                latitude = latitude,
+                                longitude = longitude,
+                            )
+                        },
+                    )
+                }
+            }
         }
     }
 
@@ -136,7 +180,7 @@ class EditViewModel @Inject constructor(
     fun submitEventInformation(entryType: EditEntryType) {
         when (entryType) {
             EditEntryType.FROM_RECORD -> saveEventInformation()
-            EditEntryType.FROM_SCHEDULE -> patchEventInformation()
+            EditEntryType.FROM_SCHEDULE -> saveEventInformation()
             EditEntryType.FROM_DETAIL -> patchEventInformation()
             EditEntryType.FROM_RESULT -> saveEventInformation()
         }
@@ -160,7 +204,39 @@ class EditViewModel @Inject constructor(
         viewModelScope.launch {
             with(uiState.value) {
                 eventRepository.putEventInfo(
-                    eventId = "",                   // TODO: Caching eventId
+                    eventId = eventId,
+                    host = Host(
+                        name = name,
+                        nickname = nickname,
+                    ),
+                    event = Event(
+                        eventType = eventCategory,
+                        relationType = relationship,
+                        cost = cost.toInt(),
+                        isEventParticipated = attendLabel == ATTENDED,
+                        eventDate = eventDate.toFormattedDate(),
+                        note = note,
+                    ),
+                    location = Location(
+                        location = selectedPlace?.name.orEmpty(),
+                        address = selectedPlace?.address.orEmpty(),
+                        latitude = selectedPlace?.latitude ?: 0.0,
+                        longitude = selectedPlace?.longitude ?: 0.0,
+                    ),
+                ).onSuccess { response ->
+                    Timber.tag("patchEditEventInformation").d("response: $response")
+                    navigateToComplete()
+                }.onFailure {
+                    // TODO: 실패 처리
+                    Timber.tag("patchEditEventInformation").d("Error: $it")
+                }
+            }
+        }
+
+    private fun saveEventInformation() =
+        viewModelScope.launch {
+            with(uiState.value) {
+                eventRepository.postEventInfo(
                     host = Host(
                         name = name,
                         nickname = nickname,
@@ -179,58 +255,41 @@ class EditViewModel @Inject constructor(
                         latitude = selectedPlace?.latitude ?: 0.0,
                         longitude = selectedPlace?.longitude ?: 0.0,
                     ),
+                    highAccuracy = HighAccuracy(
+                        contactFrequency = DEFAULT_WEIGHT,
+                        meetFrequency = DEFAULT_WEIGHT,
+                    ),
                 ).onSuccess { response ->
-                    Timber.tag("patchEditEventInformation").d("response: $response")
-                    _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
+                    Timber.tag("saveEditEventInformation").d("response: $response")
+                    navigateToComplete()
                 }.onFailure {
                     // TODO: 실패 처리
-                    Timber.tag("patchEditEventInformation").d("Error: $it")
+                    Timber.tag("saveEditEventInformation").d("Error: $it")
                 }
             }
         }
 
-    private fun saveEventInformation() = viewModelScope.launch {
-        with(uiState.value) {
-            eventRepository.postEventInfo(
-                host = Host(
-                    name = name,
-                    nickname = nickname,
-                ),
-                event = Event(
-                    eventType = eventCategory,
-                    relationType = relationship,
-                    cost = cost.toInt(),
-                    isEventParticipated = attendLabel == ATTENDED,
-                    eventDate = eventDate.toFormattedDate(),
-                    note = "",
-                ),
-                location = Location(
-                    location = selectedPlace?.name.orEmpty(),
-                    address = selectedPlace?.address.orEmpty(),
-                    latitude = selectedPlace?.latitude ?: 0.0,
-                    longitude = selectedPlace?.longitude ?: 0.0,
-                ),
-                highAccuracy = HighAccuracy(
-                    contactFrequency = DEFAULT_WEIGHT,
-                    meetFrequency = DEFAULT_WEIGHT,
-                ),
-            ).onSuccess { response ->
-                Timber.tag("saveEditEventInformation").d("response: $response")
-                _sideEffect.emit(EditMainSideEffect.NavigateToComplete)
-            }.onFailure {
-                // TODO: 실패 처리
-                Timber.tag("saveEditEventInformation").d("Error: $it")
-            }
-        }
-    }
-
     fun navigateToLocation() = viewModelScope.launch {
         _sideEffect.emit(EditMainSideEffect.NavigateToLocation)
+    }
+
+    fun navigateToEditMain() = viewModelScope.launch {
+        _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
+    }
+
+    fun navigateToComplete() = viewModelScope.launch {
+        when (_entryType.value!!) {
+            EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
+            EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
+            EditEntryType.FROM_DETAIL -> _sideEffect.emit(EditMainSideEffect.NavigateToDetail)
+            EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
+        }
     }
 
     companion object {
         private const val DEBOUNCE_DELAY = 500L
         private const val DEFAULT_WEIGHT = 3
         private const val ATTENDED = "참석"
+        private const val ABSENT = "불참석"
     }
 }

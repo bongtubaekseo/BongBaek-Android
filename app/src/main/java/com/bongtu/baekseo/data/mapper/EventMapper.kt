@@ -3,6 +3,7 @@ package com.bongtu.baekseo.data.mapper
 import com.bongtu.baekseo.data.dto.event.DeleteEventsDto
 import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
+import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.HighAccuracyDto
@@ -11,6 +12,7 @@ import com.bongtu.baekseo.data.dto.event.LocationInfoDto
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.DeleteEvent
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -54,6 +56,26 @@ fun PostEventCostResponse.toModel() = Cost(
     cost = cost,
     min = range.min,
     max = range.max,
+)
+
+fun LocationInfoDto.toModel() = Location(
+    location = location,
+    address = address,
+    latitude = latitude,
+    longitude = longitude,
+)
+
+fun GetEventDetailResponse.toModel() = DetailEvent(
+    eventId = eventId,
+    hostName = hostInfo.hostName,
+    hostNickname = hostInfo.hostNickname,
+    eventCategory = eventInfo.eventCategory,
+    relationship = eventInfo.relationship,
+    cost = eventInfo.cost,
+    isEventParticipated = eventInfo.isAttend,
+    eventDate = eventInfo.eventDate,
+    note = eventInfo.note,
+    locationInfo = locationInfo.toModel(),
 )
 
 fun GetHomeEventsResponse.Event.toModel() = HomeEvent(

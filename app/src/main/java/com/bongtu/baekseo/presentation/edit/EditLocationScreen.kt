@@ -73,7 +73,6 @@ private const val DEFAULT_LONGITUDE = 126.9780
 @Composable
 fun EditLocationRoute(
     navigateUp: () -> Unit,
-    navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -84,7 +83,7 @@ fun EditLocationRoute(
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .filterIsInstance<EditSideEffect.EditLocationSideEffect>()
-            .collect { navigateToEditMain() }
+            .collect { navigateUp() }
     }
 
     EditLocationScreen(

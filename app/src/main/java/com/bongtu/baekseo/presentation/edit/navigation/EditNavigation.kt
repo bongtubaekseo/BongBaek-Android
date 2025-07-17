@@ -16,6 +16,7 @@ import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
+import com.bongtu.baekseo.presentation.record.navigation.Record
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToEdit(navOptions: NavOptions? = null) = navigate(Edit, navOptions)
@@ -24,9 +25,6 @@ fun NavGraphBuilder.editGraph(
     navController: NavController,
     navigateToUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToDetail: (String) -> Unit,
-    navigateToRecord: () -> Unit,
-    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Edit> { backStackEntry ->
@@ -40,28 +38,20 @@ fun NavGraphBuilder.editGraph(
             previousDestination?.hasRoute(RecommendResult::class) == true -> {
                 EditEntryType.FROM_RESULT
             }
-//            previousDestination?.hasRoute(Schedule::class) == true -> {      // TODO: 중첩 네비 분리 후 활성화
-//                EditEntryType.FROM_SCHEDULE
-//            }
-            else -> {
+
+            previousDestination?.hasRoute(Record::class) == true -> {
                 EditEntryType.FROM_RECORD
             }
-        }
 
-        val navigateComplete = when (entryType) {
-            EditEntryType.FROM_RECORD -> navigateToRecord
-            EditEntryType.FROM_SCHEDULE -> navigateToSchedule
-            EditEntryType.FROM_DETAIL -> {
-                { navigateToDetail("") }                // TODO: Caching 데이터 사용
+            else -> {
+                EditEntryType.FROM_SCHEDULE
             }
-
-            EditEntryType.FROM_RESULT -> navigateToFinal
         }
 
         EditRoute(
             editEntryType = entryType,
             navigateUp = navigateToUp,
-            navigateComplete = navigateComplete,
+            navigateToFinal = navigateToFinal,
             modifier = modifier,
         )
     }
@@ -71,9 +61,8 @@ fun NavGraphBuilder.nestedEditGraph(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     nestedNavigateUp: () -> Unit,
-    navigateComplete: () -> Unit,
+    navigateToFinal: () -> Unit,
     navigateToLocation: () -> Unit,
-    navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -81,7 +70,7 @@ fun NavGraphBuilder.nestedEditGraph(
         EditMainRoute(
             editEntryType = editEntryType,
             navigateUp = navigateUp,
-            navigateComplete = navigateComplete,
+            navigateToFinal = navigateToFinal,
             navigateToLocation = navigateToLocation,
             viewModel = viewModel,
             modifier = modifier,
@@ -91,7 +80,6 @@ fun NavGraphBuilder.nestedEditGraph(
     composable<Location> {
         EditLocationRoute(
             navigateUp = nestedNavigateUp,
-            navigateToEditMain = navigateToEditMain,
             viewModel = viewModel,
             modifier = modifier,
         )
