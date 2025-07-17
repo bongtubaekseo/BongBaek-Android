@@ -72,7 +72,10 @@ fun RecordRoute(
         lazyListState.scrollToItem(0)
     }
 
-    LaunchedEffect(Unit) { viewModel.fetchRecordEvent() }
+    LaunchedEffect(Unit) {
+        viewModel.clearPage()
+        viewModel.fetchRecordEvent()
+    }
 
     RecordScreen(
         uiState = uiState,

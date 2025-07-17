@@ -68,7 +68,7 @@ class RecordViewModel @Inject constructor(
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
-                    if (uiState.value.page == 0) {
+                    if (isFirstPage) {
                         newEvents
                     } else {
                         val existingEvents =
@@ -126,6 +126,15 @@ class RecordViewModel @Inject constructor(
                 )
             }
             if (!uiState.value.isLast) fetchRecordEvent()
+        }
+
+    fun clearPage() =
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    page = 0,
+                )
+            }
         }
 
     fun updateDeleteMode() =

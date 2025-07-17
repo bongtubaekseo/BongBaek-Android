@@ -100,6 +100,15 @@ class ScheduleViewModel @Inject constructor(
             if (!uiState.value.isLast) fetchScheduleEvent()
         }
 
+    fun clearPage() =
+        viewModelScope.launch {
+            _uiState.update { currentState ->
+                currentState.copy(
+                    page = 0,
+                )
+            }
+        }
+
     fun getUsername() =
         viewModelScope.launch {
             _uiState.update { currentState ->
