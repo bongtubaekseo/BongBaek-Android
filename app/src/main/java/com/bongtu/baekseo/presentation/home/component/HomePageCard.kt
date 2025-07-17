@@ -35,6 +35,7 @@ import com.bongtu.baekseo.R.string.badge_schedule_empty
 import com.bongtu.baekseo.R.string.home_page_card_description
 import com.bongtu.baekseo.R.string.home_page_card_empty
 import com.bongtu.baekseo.R.string.home_page_card_title
+import com.bongtu.baekseo.R.string.home_page_card_today_title
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
@@ -57,6 +58,18 @@ fun HomePageSingleCard(
         if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
 
+    val pageTitle = if (daysLeft == 0) stringResource(
+        home_page_card_today_title,
+        hostname,
+        eventType,
+    ) else stringResource(
+        home_page_card_title,
+        hostname,
+        eventType,
+        postposition,
+        daysLeft,
+    )
+
     Box(
         modifier = modifier
             .aspectRatio(SINGLE_RATIO)
@@ -76,13 +89,7 @@ fun HomePageSingleCard(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = stringResource(
-                    home_page_card_title,
-                    hostname,
-                    eventType,
-                    postposition,
-                    daysLeft
-                ),
+                text = pageTitle,
                 style = BongBaekTheme.typography.headBold24,
                 color = BongBaekTheme.colors.white,
             )
@@ -121,6 +128,18 @@ fun HomePageMultipleCard(
         if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
 
+    val pageTitle = if (daysLeft == 0) stringResource(
+        home_page_card_today_title,
+        hostname,
+        eventType,
+    ) else stringResource(
+        home_page_card_title,
+        hostname,
+        eventType,
+        postposition,
+        daysLeft,
+    )
+
     Box(
         modifier = modifier
             .aspectRatio(MULTIPLE_RATIO)
@@ -140,13 +159,7 @@ fun HomePageMultipleCard(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = stringResource(
-                    home_page_card_title,
-                    hostname,
-                    eventType,
-                    postposition,
-                    daysLeft
-                ),
+                text = pageTitle,
                 style = BongBaekTheme.typography.headBold24,
                 color = BongBaekTheme.colors.white,
             )

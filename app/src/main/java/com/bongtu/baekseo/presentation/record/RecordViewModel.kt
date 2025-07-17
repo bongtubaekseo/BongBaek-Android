@@ -55,6 +55,12 @@ class RecordViewModel @Inject constructor(
 
     fun fetchRecordEvent() =
         viewModelScope.launch {
+            val isFirstPage = uiState.value.page == 0
+
+            if (isFirstPage) {
+                updateRecordUiState(UiState.Loading)
+            }
+
             eventRepository.getRecordEvents(
                 page = uiState.value.page,
                 attended = uiState.value.attendType.isAttended,

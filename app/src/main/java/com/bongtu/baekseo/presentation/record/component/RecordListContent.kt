@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -55,11 +56,11 @@ fun RecordListContent(
     selectedDeleteEventIds: Set<String>,
     onCardClick: (String) -> Unit,
     onDeleteSelectedButtonClick: (String) -> Unit,
+    lazyListState: LazyListState,
     updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
-    val lazyListState = rememberLazyListState()
 
     LazyColumn(
         modifier = modifier
@@ -127,7 +128,10 @@ fun RecordListContent(
                             category = eventCategory,
                             relationship = relationship,
                             eventDate = eventDate,
-                            onCardClick = { if (!isDeleteMode) onCardClick(eventId) },
+                            onCardClick = {
+                                if (!isDeleteMode) onCardClick(eventId)
+                                else onDeleteSelectedButtonClick(eventId)
+                            },
                             isDeleteMode = isDeleteMode,
                             isDeleteToggleCheck = isDeleteToggleCheck,
                             onDeleteToggleClick = { onDeleteSelectedButtonClick(eventId) },
@@ -341,6 +345,7 @@ private fun RecordContentPreview() {
             onCardClick = {},
             onDeleteSelectedButtonClick = {},
             isDeleteMode = true,
+            lazyListState = rememberLazyListState(),
             updatePage = {},
             selectedDeleteEventIds = setOf("eventId"),
         )

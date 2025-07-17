@@ -26,7 +26,7 @@ class SplashViewModel @Inject constructor(
                 .onSuccess {
                     _sideEffect.emit(NavigateToHome)
                 }.onFailure { error ->
-                    Timber.e("토큰 재발급 실패: ${error.message}")
+                    Timber.tag("SplashScreen").e("${error.message}")
                     _sideEffect.emit(NavigateToOnBoarding)
                 }
         }

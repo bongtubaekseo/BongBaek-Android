@@ -25,8 +25,14 @@ class ScheduleViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ScheduleState())
     val uiState = _uiState.asStateFlow()
 
-    fun fetchScheduleEvent() {
+    fun fetchScheduleEvent() =
         viewModelScope.launch {
+            val isFirstPage = uiState.value.page == 0
+
+            if (isFirstPage) {
+                updateScheduleUiState(UiState.Loading)
+            }
+
             eventRepository.getScheduleEvents(
                 page = uiState.value.page,
                 category = uiState.value.eventCategoryType.label,
@@ -63,7 +69,6 @@ class ScheduleViewModel @Inject constructor(
                 updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
-    }
 
     private fun updateScheduleUiState(value: UiState<PageScheduleEvent>) =
         viewModelScope.launch {

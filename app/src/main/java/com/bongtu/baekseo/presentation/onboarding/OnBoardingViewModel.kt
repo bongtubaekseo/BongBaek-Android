@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
@@ -23,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
     private val usernameDataStore: UsernameDataStore,
+    private val tokenDataStore: TokenDataStore,
     private val authRepository: AuthRepository,
     private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
 ) : ViewModel() {
@@ -54,11 +56,10 @@ class OnBoardingViewModel @Inject constructor(
         it.copy(income = newIncome)
     }
 
-    fun setUiStateIdle() {
+    fun setUiStateIdle() =
         _kakaoLoginState.tryEmit(SocialLoginState.Idle)
-    }
 
-    fun loginWithKakao(token: String) {
+    fun loginWithKakao(token: String) =
         viewModelScope.launch {
             setKakaoLoginUseCase(token)
                 .onSuccess { response ->
@@ -73,9 +74,8 @@ class OnBoardingViewModel @Inject constructor(
                     _kakaoLoginState.tryEmit(SocialLoginState.Fail)
                 }
         }
-    }
 
-    fun postSignUp() {
+    fun postSignUp() =
         viewModelScope.launch {
             authRepository.postSignUp(
                 kakaoId = uiState.value.kakaoId,
@@ -83,13 +83,16 @@ class OnBoardingViewModel @Inject constructor(
                 memberBirthday = uiState.value.birth.toFormattedDate(),
                 memberIncome = uiState.value.income,
             ).onSuccess { response ->
-                _sideEffect.emit(NavigateToHome)
                 saveUsername(response.name)
+                tokenDataStore.setTokens(
+                    accessToken = response.accessToken,
+                    refreshToken = response.refreshToken,
+                )
+                _sideEffect.emit(NavigateToHome)
             }.onFailure {
                 updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
-    }
 
     private fun updateOnBoardingUiState(value: UiState<Nothing>) =
         _uiState.update { currentState ->
@@ -98,9 +101,10 @@ class OnBoardingViewModel @Inject constructor(
             )
         }
 
-    private fun updateKakaoId(newKakaoId: Long) = _uiState.update {
-        it.copy(kakaoId = newKakaoId)
-    }
+    private fun updateKakaoId(newKakaoId: Long) =
+        _uiState.update {
+            it.copy(kakaoId = newKakaoId)
+        }
 
     fun updateButtonState(): Boolean =
         with(uiState.value) {
