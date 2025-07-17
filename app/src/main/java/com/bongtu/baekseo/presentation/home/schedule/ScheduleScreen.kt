@@ -53,6 +53,10 @@ fun ScheduleRoute(
         viewModel.getUsername()
     }
 
+    LaunchedEffect(uiState.eventCategoryType) {
+        lazyListState.scrollToItem(0)
+    }
+
     DisposableEffect(Unit) {
         setBottomBarVisible(false)
         onDispose {
