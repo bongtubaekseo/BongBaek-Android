@@ -57,6 +57,9 @@ playServicesMaps = "19.0.0"
 kakao = "2.21.4"
 kakaoMap = "2.12.8"
 
+# Process Phoenix
+process-phoenix = "2.1.2"
+
 [libraries]
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -119,6 +122,9 @@ advanced-bottom-sheet = { group = "io.morfly.compose", name = "advanced-bottomsh
 # --- Kakao SDK ---
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
 kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref = "kakaoMap" }
+
+# Process Phoenix
+process-phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "process-phoenix" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

@@ -114,4 +114,7 @@ dependencies {
     // Kakao
     implementation(libs.kakao.user)
     implementation(libs.kakao.map)
+
+    // Process Phoenix
+    implementation(libs.process.phoenix)
 }
