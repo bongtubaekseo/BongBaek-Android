@@ -165,16 +165,7 @@ private fun MainNavHost(
         detailGraph(
             navigateUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToRecord = {
-                navigator.navController.navigateToRecord(
-                    navOptions = navOptions {
-                        popUpTo<Detail> {
-                            inclusive = true
-                        }
-                        launchSingleTop = true
-                    }
-                )
-            },
+            navigateToRecord = navigator::navigateUp,                       // TODO: schedule, record
             modifier = modifier,
         )
 
