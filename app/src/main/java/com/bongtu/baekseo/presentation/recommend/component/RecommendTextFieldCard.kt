@@ -35,10 +35,10 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 fun RecommendTextFieldCard(
     name: String,
     onNameChange: (String) -> Unit,
-    nameError: String?,
+    nameError: String,
     nickname: String,
     onNicknameChange: (String) -> Unit,
-    nicknameError: String?,
+    nicknameError: String,
     onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -112,11 +112,11 @@ private fun RecommendTextFieldCardPreview() {
             RecommendTextFieldCard(
                 name = name,
                 onNameChange = { name = it },
-                nameError = null,
+                nameError = "",
                 nickname = nickname,
                 onNicknameChange = { nickname = it },
                 onFocusChange = {},
-                nicknameError = null,
+                nicknameError = "",
             )
         }
     }

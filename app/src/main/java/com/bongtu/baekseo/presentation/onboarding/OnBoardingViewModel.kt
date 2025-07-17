@@ -108,7 +108,7 @@ class OnBoardingViewModel @Inject constructor(
 
     fun updateButtonState(): Boolean =
         with(uiState.value) {
-            return name.isNotEmpty() && birth.isNotEmpty() && nameError == null
+            return name.isNotEmpty() && birth.isNotEmpty() && nameError.isEmpty()
         }
 
     private fun saveUsername(name: String) =

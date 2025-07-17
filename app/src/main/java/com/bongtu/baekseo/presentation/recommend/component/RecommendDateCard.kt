@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -42,6 +43,10 @@ fun RecommendDateCard(
     modifier: Modifier = Modifier,
 ) {
     var isDialogOpen by remember { mutableStateOf(false) }
+
+    LaunchedEffect(isDialogOpen) {
+        if (!isDialogOpen && date.isEmpty()) onTextChange("")
+    }
 
     Column(
         modifier = modifier
@@ -84,12 +89,11 @@ fun RecommendDateCard(
 
         if (isDialogOpen) {
             BongBaekDatePickerDialog(
-                datePickerDialogType = DatePickerDialogType.DATE,
+                datePickerDialogType = DatePickerDialogType.DATE_PRESENT,
                 value = text,
                 onValueChange = onTextChange,
                 onDismissRequest = {
                     isDialogOpen = false
-                    onTextChange("")
                     onFocusChange(true)
                 },
                 onConfirmClick = onConfirmClick,

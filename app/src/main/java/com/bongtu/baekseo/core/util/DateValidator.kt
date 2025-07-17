@@ -1,25 +1,35 @@
 package com.bongtu.baekseo.core.util
 
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
+import java.time.LocalDate
+import java.time.Period
 
-fun isValidDate(input: String, type: DatePickerDialogType): Boolean {
-    if (input.length != 8) return false
+object DateValidator {
+    fun validateDate(input: String, type: DatePickerDialogType): String {
+        if (input.length != 8) return "유효한 날짜 형식이 아닙니다"
 
-    val month = input.substring(0, 2).toIntOrNull() ?: return false
-    val day = input.substring(2, 4).toIntOrNull() ?: return false
-    val year = input.substring(4, 8).toIntOrNull() ?: return false
+        val month = input.substring(0, 2).toIntOrNull()
+        val day = input.substring(2, 4).toIntOrNull()
+        val year = input.substring(4, 8).toIntOrNull()
 
-    // 월: 1~12, 일: 1~31
-    if (month !in 1..12 || day !in 1..31) return false
+        if (month == null || day == null || year == null) return "유효한 날짜 형식이 아닙니다"
+        if (month !in 1..12 || day !in 1..31) return "유효한 날짜 형식이 아닙니다" // 월: 1~12, 일: 1~31
 
-    // 만 14세 이상 (2025년 기준 2011년까지)
-    if (type == DatePickerDialogType.BIRTH && year > 2011) return false
+        val date = LocalDate.of(year, month, day)
+        val today = LocalDate.now()
 
-    // 실제 날짜 유효성 확인
-    return try {
-        java.time.LocalDate.of(year, month, day)
-        true
-    } catch (e: Exception) {
-        false
+        return when (type) {
+            DatePickerDialogType.BIRTH -> {  // 만 14세 이상
+                if (Period.between(date, today).years < 14) "만 14세 이상만 가입이 가능합니다"
+                else ""
+            }
+
+            DatePickerDialogType.DATE_PRESENT -> { // 현재 날짜
+                if (date.isBefore(today)) "과거 날짜는 입력할 수 없습니다"
+                else ""
+            }
+
+            DatePickerDialogType.DATE -> ""
+        }
     }
 }

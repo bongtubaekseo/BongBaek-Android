@@ -150,7 +150,7 @@ class RecommendViewModel @Inject constructor(
         with(uiState.value) {
             return when (pageIndex) {
                 1 -> name.isNotEmpty() && nickname.isNotEmpty() && relationType != null
-                        && nameError == null && nicknameError == null
+                        && nameError.isEmpty() && nicknameError.isEmpty()
 
                 2 -> eventType != null
                 3 -> eventDate.isNotEmpty() && isEventParticipated != null

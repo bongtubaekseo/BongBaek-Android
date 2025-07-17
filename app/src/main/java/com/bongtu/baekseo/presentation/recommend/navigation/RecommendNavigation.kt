@@ -30,12 +30,15 @@ fun NavController.navigateToRecommendLoading(navOptions: NavOptions? = null) =
 fun NavController.navigateToRecommendResult(navOptions: NavOptions? = null) =
     navigate(RecommendResult, navOptions)
 
+fun NavHostController.navigateBackToRecommendMain() = popBackStack(RecommendMain, inclusive = false)
+
 fun NavHostController.navigateToRecommendFinal(navOptions: NavOptions? = null) =
     navigate(RecommendFinal, navOptions)
 
 fun NavGraphBuilder.recommendGraph(
     navController: NavHostController,
     navigateToUp: () -> Unit,
+    navigateBackToMain: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToRecord: () -> Unit,
     navigateToEdit: () -> Unit,
@@ -79,6 +82,7 @@ fun NavGraphBuilder.recommendGraph(
             RecommendResultRoute(
                 navigateToFinal = navController::navigateToRecommendFinal,
                 navigateToEdit = navigateToEdit,
+                navigateBackToMain = navigateBackToMain,
                 viewModel = viewModel,
                 modifier = modifier,
             )
