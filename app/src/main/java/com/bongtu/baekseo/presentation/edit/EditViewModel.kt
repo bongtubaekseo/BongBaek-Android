@@ -73,10 +73,10 @@ class EditViewModel @Inject constructor(
                         eventDate = eventDate.toFormattedMonthDayYear(),
                         note = note,
                         selectedPlace = Place(
-                            id = placeId,
-                            name = placeName,
-                            address = address,
-                            roadAddress = roadAddress,
+                            id = "",
+                            name = "",
+                            address = location,
+                            roadAddress = address,
                             latitude = latitude,
                             longitude = longitude,
                         ),
@@ -238,6 +238,7 @@ class EditViewModel @Inject constructor(
                         _sideEffect.emit(EditMainSideEffect.NavigateToDetail(it))
                     }
                 }
+
                 EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
             }
         }

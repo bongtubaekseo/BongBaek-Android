@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.local.cache.EventCache
+import com.bongtu.baekseo.data.model.event.CachingEvent
 import com.bongtu.baekseo.data.model.event.DetailEvent
-import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
@@ -50,9 +50,9 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    fun saveDetailEvent() = viewModelScope.launch {
+    private fun saveCachingEventInformation() = viewModelScope.launch {
         with(uiState.value) {
-            val editEvent = EditEvent(
+            val editEvent = CachingEvent(
                 eventId = eventId,
                 hostName = hostName,
                 hostNickname = hostNickname,
@@ -62,10 +62,8 @@ class DetailViewModel @Inject constructor(
                 isEventParticipated = isEventParticipated,
                 eventDate = eventDate,
                 note = note ?: "",
-                placeId = "",
-                placeName = "",
-                address = locationInfo?.location ?: "",
-                roadAddress = locationInfo?.address ?: "",
+                location = locationInfo?.location ?: "",
+                address = locationInfo?.address ?: "",
                 latitude = locationInfo?.latitude ?: 0.0,
                 longitude = locationInfo?.longitude ?: 0.0,
             )
@@ -90,7 +88,7 @@ class DetailViewModel @Inject constructor(
         }
 
     fun navigateToEdit() = viewModelScope.launch {
-        saveDetailEvent()
+        saveCachingEventInformation()
         _sideEffect.emit(NavigateToEdit)
     }
 

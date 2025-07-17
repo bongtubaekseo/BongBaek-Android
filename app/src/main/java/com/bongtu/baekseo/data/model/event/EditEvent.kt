@@ -4,7 +4,7 @@ import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class EditEvent(
+data class CachingEvent(
     val eventId: String,
     val hostName: String,
     val hostNickname: String,
@@ -14,10 +14,8 @@ data class EditEvent(
     val isEventParticipated: Boolean,
     val eventDate: String,
     val note: String,
-    val placeId: String,
-    val placeName: String,
+    val location: String,
     val address: String,
-    val roadAddress: String,
     val latitude: Double,
     val longitude: Double,
 ) : Parcelable
