@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -131,7 +130,7 @@ fun HomeMainSuccessScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
         items.size
@@ -166,9 +165,8 @@ fun HomeMainSuccessScreen(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .statusBarsPadding()
+            .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar()
