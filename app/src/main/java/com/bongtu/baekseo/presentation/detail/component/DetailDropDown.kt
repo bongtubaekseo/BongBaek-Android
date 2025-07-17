@@ -9,11 +9,9 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -179,7 +177,7 @@ fun DetailDropDown(
                 }
 
                 event.locationInfo?.let { data ->
-                    DetailDropDownLocationContent(
+                    DetailLocationContent(
                         location = data.location,
                         address = data.address,
                         latitude = data.latitude,
@@ -255,60 +253,6 @@ private fun DetailDropDownItem(
                             .padding(vertical = 6.dp),
                     )
             }
-        }
-    }
-}
-
-private const val MAP_RATIO = 280f / 180f
-
-@Composable
-private fun DetailDropDownLocationContent(
-    location: String,
-    address: String,
-    latitude: Double,   // TODO: 지도 연결시 사용
-    longitude: Double,
-    modifier: Modifier = Modifier,
-) {
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .background(
-                color = BongBaekTheme.colors.gray700,
-                shape = RoundedCornerShape(10.dp),
-            )
-    ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = BongBaekTheme.colors.primaryLight,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .aspectRatio(MAP_RATIO),
-        ) {
-            // TODO: 지도로 대체
-        }
-
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(
-                    horizontal = 16.dp,
-                    vertical = 14.dp,
-                ),
-        ) {
-            Text(
-                text = location,
-                style = BongBaekTheme.typography.body1Medium16,
-                color = BongBaekTheme.colors.white,
-                modifier = Modifier
-                    .padding(bottom = 2.dp),
-            )
-            Text(
-                text = address,
-                style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
-            )
         }
     }
 }
