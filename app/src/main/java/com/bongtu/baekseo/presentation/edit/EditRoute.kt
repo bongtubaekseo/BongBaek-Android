@@ -39,16 +39,6 @@ fun EditRoute(
             nestedNavigateUp = navController::navigateUp,
             navigateToFinal = navigateToFinal,
             navigateToLocation = { navController.navigate(EditRoute.Location) },
-            navigateToEditMain = {
-                navController.navigate(
-                    route = EditRoute.Main,
-                    navOptions = navOptions {
-                        popUpTo<EditRoute.Location> {
-                            inclusive = true
-                        }
-                    },
-                )
-            },
             viewModel = viewModel,
             modifier = modifier,
         )

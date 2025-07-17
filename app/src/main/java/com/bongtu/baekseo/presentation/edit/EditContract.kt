@@ -27,9 +27,7 @@ class EditContract {
 
         sealed class EditMainSideEffect : EditSideEffect {
             data object NavigateToRecord : EditMainSideEffect()
-            data class NavigateToDetail(
-                val eventId: String,
-            ) : EditMainSideEffect()
+            data object NavigateToDetail: EditMainSideEffect()
 
             data object NavigateToFinal : EditMainSideEffect()
             data object NavigateToSchedule : EditMainSideEffect()

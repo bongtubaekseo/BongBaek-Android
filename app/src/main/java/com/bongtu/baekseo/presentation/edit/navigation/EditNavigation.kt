@@ -63,7 +63,6 @@ fun NavGraphBuilder.nestedEditGraph(
     nestedNavigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
     navigateToLocation: () -> Unit,
-    navigateToEditMain: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -81,7 +80,6 @@ fun NavGraphBuilder.nestedEditGraph(
     composable<Location> {
         EditLocationRoute(
             navigateUp = nestedNavigateUp,
-            navigateToEditMain = navigateToEditMain,
             viewModel = viewModel,
             modifier = modifier,
         )
