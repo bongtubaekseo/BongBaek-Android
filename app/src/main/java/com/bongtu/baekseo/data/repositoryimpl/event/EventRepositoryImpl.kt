@@ -9,6 +9,7 @@ import com.bongtu.baekseo.data.mapper.toDto
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.DeleteEvent
+import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -115,5 +116,19 @@ class EventRepositoryImpl @Inject constructor(
         )
     }.mapCatching { response ->
         response.data.toModel()
+    }
+
+    override suspend fun getEventDetail(
+        eventId: String,
+    ): Result<DetailEvent> = runCatching {
+        eventDataSource.getEventDetail(eventId)
+    }.mapCatching { response ->
+        response.data.toModel()
+    }
+
+    override suspend fun deleteEventInfo(
+        eventId: String,
+    ): Result<Unit> = runCatching {
+        eventDataSource.deleteEventInfo(eventId)
     }
 }

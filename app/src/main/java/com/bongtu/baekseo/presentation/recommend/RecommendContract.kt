@@ -39,6 +39,7 @@ class RecommendContract {
 
         sealed class ResultSideEffect : RecommendSideEffect {
             data object NavigateToFinal : ResultSideEffect()
+            data object NavigateToEdit : ResultSideEffect()
         }
     }
 }

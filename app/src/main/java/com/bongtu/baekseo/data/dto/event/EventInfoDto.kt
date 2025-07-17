@@ -16,5 +16,5 @@ data class EventInfoDto(
     @SerialName("eventDate")
     val eventDate: String,
     @SerialName("note")
-    val note: String,
+    val note: String?,
 )

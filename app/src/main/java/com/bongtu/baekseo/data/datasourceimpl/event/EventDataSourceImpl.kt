@@ -40,6 +40,10 @@ class EventDataSourceImpl @Inject constructor(
             category = category,
         )
 
+    override suspend fun getEventDetail(
+        eventId: String,
+    ) = eventService.getEventDetail(eventId)
+
     override suspend fun getHomeEvents() = eventService.getHomeEvents()
 
     override suspend fun getScheduleEvents(
@@ -49,4 +53,8 @@ class EventDataSourceImpl @Inject constructor(
         page = page,
         category = category,
     )
+
+    override suspend fun deleteEventInfo(
+        eventId: String,
+    ) = eventService.deleteEventInfo(eventId)
 }

@@ -5,9 +5,11 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
+import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
+import com.bongtu.baekseo.data.model.event.CachingEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -250,6 +252,30 @@ class RecommendViewModel @Inject constructor(
             // TODO: 실패 처리
             Timber.d("saveEventInformation: $it")
         }
+    }
+
+    private fun saveCachingEventInformation() = with(uiState.value) {
+        val editEvent = CachingEvent(
+            eventId = "",
+            hostName = name,
+            hostNickname = nickname,
+            eventCategory = eventType!!.label,
+            relationship = relationType!!.label,
+            cost = expense,
+            isEventParticipated = isEventParticipated!!,
+            eventDate = eventDate,
+            note = "",
+            location = selectedPlace?.name.orEmpty(),
+            address = selectedPlace?.address.orEmpty(),
+            latitude = selectedPlace?.latitude ?: 0.0,
+            longitude = selectedPlace?.longitude ?: 0.0,
+        )
+        EventCache.save(editEvent)
+    }
+
+    fun navigateToEdit() = viewModelScope.launch {
+        saveCachingEventInformation()
+        _sideEffect.emit(RecommendSideEffect.ResultSideEffect.NavigateToEdit)
     }
 
     companion object {

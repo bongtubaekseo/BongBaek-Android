@@ -5,13 +5,12 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.map.Place
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 
 class EditContract {
     @Immutable
     data class EditUiState(
         val submitState: UiState<Unit> = UiState.Empty,
+        val eventId: String = "",
         val name: String = "",
         val nickname: String = "",
         val eventCategory: String = "",
@@ -27,7 +26,11 @@ class EditContract {
     sealed interface EditSideEffect {
 
         sealed class EditMainSideEffect : EditSideEffect {
-            data object NavigateToComplete : EditMainSideEffect()
+            data object NavigateToRecord : EditMainSideEffect()
+            data object NavigateToDetail: EditMainSideEffect()
+
+            data object NavigateToFinal : EditMainSideEffect()
+            data object NavigateToSchedule : EditMainSideEffect()
             data object NavigateToLocation : EditMainSideEffect()
         }
 
