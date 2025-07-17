@@ -99,14 +99,23 @@ class EditViewModel @Inject constructor(
                         attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
                         eventDate = eventDate.toFormattedMonthDayYear(),
                         note = note,
-                        selectedPlace = Place(
-                            id = "",
-                            name = "",
-                            address = location,
-                            roadAddress = address,
-                            latitude = latitude,
-                            longitude = longitude,
-                        ),
+                        selectedPlace = if (
+                            location.isEmpty() &&
+                            address.isEmpty() &&
+                            latitude == 0.0 &&
+                            longitude == 0.0
+                        ) {
+                            null
+                        } else {
+                            Place(
+                                id = "",
+                                name = location,
+                                address = address,
+                                roadAddress = "",
+                                latitude = latitude,
+                                longitude = longitude,
+                            )
+                        },
                     )
                 }
             }
@@ -218,7 +227,7 @@ class EditViewModel @Inject constructor(
                     ),
                 ).onSuccess { response ->
                     Timber.tag("patchEditEventInformation").d("response: $response")
-                    navigateToComplete(eventId)
+                    navigateToComplete()
                 }.onFailure {
                     // TODO: 실패 처리
                     Timber.tag("patchEditEventInformation").d("Error: $it")
@@ -270,17 +279,12 @@ class EditViewModel @Inject constructor(
         _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
     }
 
-    fun navigateToComplete(eventId: String? = null) {
+    fun navigateToComplete() {
         viewModelScope.launch {
             when (_entryType.value!!) {
                 EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
                 EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
-                EditEntryType.FROM_DETAIL -> {
-                    eventId?.let {
-                        _sideEffect.emit(EditMainSideEffect.NavigateToDetail(it))
-                    }
-                }
-
+                EditEntryType.FROM_DETAIL -> _sideEffect.emit(EditMainSideEffect.NavigateToDetail)
                 EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
             }
         }
