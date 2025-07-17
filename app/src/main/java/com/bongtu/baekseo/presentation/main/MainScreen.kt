@@ -26,6 +26,7 @@ import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
+import com.bongtu.baekseo.presentation.recommend.navigation.navigateBackToRecommendMain
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendFinal
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
@@ -126,6 +127,7 @@ private fun MainNavHost(
         recommendGraph(
             navController = navigator.navController,
             navigateToUp = navigator::navigateUp,
+            navigateBackToMain = navigator.navController::navigateBackToRecommendMain,
             navigateToHome = {
                 navigator.navController.navigateToHome(
                     navOptions = navOptions {
