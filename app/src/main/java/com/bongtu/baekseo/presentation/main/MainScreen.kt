@@ -207,12 +207,11 @@ private fun MainNavHost(
                         popUpTo<Edit> {
                             inclusive = true
                         }
+                        launchSingleTop = true
                     }
                 )
             },
-            navigateToSchedule = {
-                // TODO: schedule navigate
-            },
+            navigateToSchedule = navigator::navigateUp,
             modifier = modifier,
         )
     }

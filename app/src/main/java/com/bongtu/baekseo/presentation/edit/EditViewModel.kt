@@ -145,7 +145,7 @@ class EditViewModel @Inject constructor(
     fun submitEventInformation(entryType: EditEntryType) {
         when (entryType) {
             EditEntryType.FROM_RECORD -> saveEventInformation()
-            EditEntryType.FROM_SCHEDULE -> patchEventInformation()
+            EditEntryType.FROM_SCHEDULE -> saveEventInformation()
             EditEntryType.FROM_DETAIL -> patchEventInformation()
             EditEntryType.FROM_RESULT -> saveEventInformation()
         }
@@ -176,7 +176,7 @@ class EditViewModel @Inject constructor(
                     ),
                 ).onSuccess { response ->
                     Timber.tag("patchEditEventInformation").d("response: $response")
-                    onEditComplete(eventId)
+                    navigateToComplete(eventId)
                 }.onFailure {
                     // TODO: 실패 처리
                     Timber.tag("patchEditEventInformation").d("Error: $it")
@@ -212,7 +212,7 @@ class EditViewModel @Inject constructor(
                     ),
                 ).onSuccess { response ->
                     Timber.tag("saveEditEventInformation").d("response: $response")
-                    onEditComplete()
+                    navigateToComplete()
                 }.onFailure {
                     // TODO: 실패 처리
                     Timber.tag("saveEditEventInformation").d("Error: $it")
@@ -228,7 +228,7 @@ class EditViewModel @Inject constructor(
         _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
     }
 
-    fun onEditComplete(eventId: String? = null) {
+    fun navigateToComplete(eventId: String? = null) {
         viewModelScope.launch {
             when (_entryType.value!!) {
                 EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)

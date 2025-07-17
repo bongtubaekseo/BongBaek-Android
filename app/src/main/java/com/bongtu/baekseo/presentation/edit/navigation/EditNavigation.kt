@@ -15,8 +15,8 @@ import com.bongtu.baekseo.presentation.edit.EditViewModel
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
-import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Schedule
 import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
+import com.bongtu.baekseo.presentation.record.navigation.Record
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToEdit(navOptions: NavOptions? = null) = navigate(Edit, navOptions)
@@ -42,12 +42,12 @@ fun NavGraphBuilder.editGraph(
                 EditEntryType.FROM_RESULT
             }
 
-            previousDestination?.hasRoute(Schedule::class) == true -> {
-                EditEntryType.FROM_SCHEDULE
+            previousDestination?.hasRoute(Record::class) == true -> {
+                EditEntryType.FROM_RECORD
             }
 
             else -> {
-                EditEntryType.FROM_RECORD
+                EditEntryType.FROM_SCHEDULE
             }
         }
 
