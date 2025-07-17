@@ -49,6 +49,7 @@ fun ScheduleRoute(
     val lazyListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
+        viewModel.clearPage()
         viewModel.fetchScheduleEvent()
         viewModel.getUsername()
     }
