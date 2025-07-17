@@ -80,9 +80,7 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    fun updateEntryType(type: EditEntryType) {
-        _entryType.update { type }
-    }
+    fun updateEntryType(type: EditEntryType) = _entryType.update { type }
 
     fun getEditEvent() {
         val cachedEvent = EventCache.load()
@@ -279,14 +277,12 @@ class EditViewModel @Inject constructor(
         _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
     }
 
-    fun navigateToComplete() {
-        viewModelScope.launch {
-            when (_entryType.value!!) {
-                EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
-                EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
-                EditEntryType.FROM_DETAIL -> _sideEffect.emit(EditMainSideEffect.NavigateToDetail)
-                EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
-            }
+    fun navigateToComplete() = viewModelScope.launch {
+        when (_entryType.value!!) {
+            EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
+            EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
+            EditEntryType.FROM_DETAIL -> _sideEffect.emit(EditMainSideEffect.NavigateToDetail)
+            EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
         }
     }
 
