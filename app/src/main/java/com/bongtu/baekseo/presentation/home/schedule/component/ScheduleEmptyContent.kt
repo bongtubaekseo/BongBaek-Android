@@ -3,13 +3,9 @@ package com.bongtu.baekseo.presentation.home.schedule.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -23,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.img_record_empty
 import com.bongtu.baekseo.R.string.record_empty_button
 import com.bongtu.baekseo.R.string.record_empty_description
+import com.bongtu.baekseo.R.string.record_empty_title
 import com.bongtu.baekseo.R.string.schedule_empty_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
@@ -41,13 +38,21 @@ fun ScheduleEmptyContent(
     val postposition = remember(eventType) {
         if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
+
+    val titleText = if (eventType == EventCategoryType.ALL.label) {
+        stringResource(record_empty_title)
+    } else {
+        stringResource(schedule_empty_title, eventType, postposition)
+    }
+
+
     Column(
         modifier = modifier
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Text(
-            text = stringResource(schedule_empty_title, eventType, postposition),
+            text = titleText,
             color = BongBaekTheme.colors.white,
             style = BongBaekTheme.typography.headBold24,
             textAlign = TextAlign.Center,

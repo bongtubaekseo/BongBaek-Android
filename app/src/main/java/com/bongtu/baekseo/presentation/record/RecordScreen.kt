@@ -4,6 +4,7 @@ import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.runtime.Composable
@@ -12,7 +13,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -20,17 +21,18 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.data.model.RecordEvent
+import com.bongtu.baekseo.data.model.event.PageScheduleEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.presentation.record.component.RecordEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
-import java.time.LocalDate
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun RecordRoute(
@@ -71,11 +73,12 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
-        onCategoryClick = viewModel::selectEventCategory,
+        onCategoryClick = viewModel::updateEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
         onDeleteClick = viewModel::fetchSelectedDeleteEventIds,
+        updatePage = viewModel::updateNextPage,
         modifier = modifier
             .then(
                 if (uiState.isDeleteMode) {
@@ -99,6 +102,7 @@ private fun RecordScreen(
     onExitDeleteModeClick: () -> Unit,
     onDeleteSelectedButtonClick: (String) -> Unit,
     onDeleteClick: () -> Unit,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val isDeleteButtonEnabled = remember(uiState.selectedDeleteEventIds) {
@@ -107,6 +111,7 @@ private fun RecordScreen(
 
     Column(
         modifier = modifier
+            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .then(
                 if (uiState.isDeleteMode) {
@@ -139,7 +144,13 @@ private fun RecordScreen(
 
         when (uiState.recordLoadState) {
             is UiState.Empty -> {
-                RecordEmptyContent()
+                ScheduleEmptyContent(
+                    eventType = uiState.eventCategoryType.label,
+                    onButtonClick = navigateToAdd,
+                    modifier = Modifier
+                        .padding(top = 58.dp)
+                        .padding(horizontal = 20.dp),
+                )
             }
 
             is UiState.Failure -> {
@@ -152,11 +163,12 @@ private fun RecordScreen(
 
             is UiState.Success -> {
                 RecordListContent(
-                    recordEventList = uiState.recordLoadState.data,
+                    recordEventList = uiState.recordLoadState.data.events,
                     isDeleteMode = uiState.isDeleteMode,
                     selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                     onCardClick = navigateToDetail,
                     onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
+                    updatePage = updatePage,
                 )
             }
         }
@@ -166,76 +178,72 @@ private fun RecordScreen(
 @Preview
 @Composable
 private fun RecordDefaultScreenPreview() {
+    val events = persistentListOf(
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.02.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.09.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.08.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.07.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.06.11 (목)",
+        ),
+        ScheduleEvent(
+            eventId = "1",
+            hostName = "공승준",
+            hostNickname = "초록승준",
+            eventCategory = "결혼식",
+            relationship = "친구",
+            cost = 10000,
+            eventDate = "2025.05.11 (목)",
+        ),
+    )
     BongBaekTheme {
         RecordScreen(
             uiState = RecordUiState(
                 recordLoadState = UiState.Success(
-                    listOf(
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 5, 4),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 5, 2),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 4, 10),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2025, 2, 23),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2024, 6, 8),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2024, 5, 24),
-                        ),
-                        RecordEvent(
-                            eventId = "eventId",
-                            hostName = "username",
-                            hostNickName = "nickname",
-                            category = "경조사 유형",
-                            relationship = "관계",
-                            cost = 10000,
-                            eventDate = LocalDate.of(2023, 2, 4),
-                        ),
-                    ),
-                ),
+                    data = PageScheduleEvent(
+                        events = events,
+                        currentPage = 0,
+                        isLast = false
+                    )
+                )
             ),
             onTabClick = {},
             onCategoryClick = {},
@@ -246,6 +254,7 @@ private fun RecordDefaultScreenPreview() {
             navigateToDetail = {},
             navigateToAdd = {},
             innerPadding = PaddingValues(),
+            updatePage = {},
             modifier = Modifier,
         )
     }

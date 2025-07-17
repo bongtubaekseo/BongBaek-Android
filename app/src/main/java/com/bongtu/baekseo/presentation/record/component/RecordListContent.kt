@@ -4,6 +4,7 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -37,38 +39,43 @@ import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.data.model.RecordEvent
-import com.bongtu.baekseo.presentation.record.model.YearMonthEventItem
-import com.bongtu.baekseo.presentation.record.model.toYearMonthEventItemList
-import java.time.LocalDate
+import com.bongtu.baekseo.core.util.toFormattedDateAndDay
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
+import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun RecordListContent(
-    recordEventList: List<RecordEvent>,
+    recordEventList: ImmutableList<ScheduleEvent>,
     isDeleteMode: Boolean,
     selectedDeleteEventIds: Set<String>,
     onCardClick: (String) -> Unit,
     onDeleteSelectedButtonClick: (String) -> Unit,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = recordEventList.toYearMonthEventItemList()
+    val lazyListState = rememberLazyListState()
 
     LazyColumn(
         modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = 20.dp),
+            .fillMaxSize(),
+        state = lazyListState,
+        contentPadding = PaddingValues(horizontal = 20.dp),
     ) {
         itemsIndexed(yearMonthEventItems) { index, item ->
             val previousItem = yearMonthEventItems.getOrNull(index - 1)
 
             val topPadding = remember(item, previousItem) {
                 when (item) {
-                    is YearMonthEventItem.YearHeader -> if (previousItem == null) 0.dp else 40.dp
-                    is YearMonthEventItem.MonthHeader -> 30.dp
-                    is YearMonthEventItem.Event -> {
-                        if (previousItem is YearMonthEventItem.Event) 10.dp else 20.dp
+                    is ScheduleYearMonthEventItem.YearHeader -> if (previousItem == null) 0.dp else 40.dp
+                    is ScheduleYearMonthEventItem.MonthHeader -> 30.dp
+                    is ScheduleYearMonthEventItem.Event -> {
+                        if (previousItem is ScheduleYearMonthEventItem.Event) 10.dp else 20.dp
                     }
                 }
             }
@@ -78,7 +85,7 @@ fun RecordListContent(
             }
 
             when (item) {
-                is YearMonthEventItem.YearHeader -> {
+                is ScheduleYearMonthEventItem.YearHeader -> {
                     Text(
                         text = stringResource(record_card_list_year, item.year),
                         color = BongBaekTheme.colors.white,
@@ -89,7 +96,7 @@ fun RecordListContent(
                     )
                 }
 
-                is YearMonthEventItem.MonthHeader -> {
+                is ScheduleYearMonthEventItem.MonthHeader -> {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -110,14 +117,14 @@ fun RecordListContent(
                     }
                 }
 
-                is YearMonthEventItem.Event -> {
+                is ScheduleYearMonthEventItem.Event -> {
                     with(item.event) {
                         val isDeleteToggleCheck = selectedDeleteEventIds.contains(eventId)
                         RecordCard(
-                            nickname = hostNickName,
+                            nickname = hostNickname,
                             username = hostName,
                             cost = cost,
-                            category = category,
+                            category = eventCategory,
                             relationship = relationship,
                             eventDate = eventDate,
                             onCardClick = { if (!isDeleteMode) onCardClick(eventId) },
@@ -135,6 +142,11 @@ fun RecordListContent(
             }
         }
     }
+
+    lazyListState.OnBottomReached(
+        buffer = 3,
+        onLoadMore = updatePage,
+    )
 }
 
 @Composable
@@ -144,14 +156,14 @@ private fun RecordCard(
     cost: Int,
     category: String,
     relationship: String,
-    eventDate: LocalDate,
+    eventDate: String,
     onCardClick: () -> Unit,
     isDeleteMode: Boolean,
     isDeleteToggleCheck: Boolean,
     onDeleteToggleClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = eventDate.toFormattedDateWithDay()
+    val (date, weekDay) = eventDate.toFormattedDateAndDay()
 
     val deletePadding by animateDpAsState(
         targetValue = if (isDeleteMode) 16.dp else 0.dp,
@@ -270,74 +282,66 @@ private fun RecordContentPreview() {
     BongBaekTheme {
         RecordListContent(
             modifier = Modifier.background(color = BongBaekTheme.colors.gray900),
-            recordEventList = listOf(
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+            recordEventList = persistentListOf(
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2025, 5, 4),
+                    eventDate = "2025.02.11 (목)",
                 ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2025, 5, 2),
+                    eventDate = "2025.09.11 (목)",
                 ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2025, 4, 10),
+                    eventDate = "2025.08.11 (목)",
                 ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2025, 2, 23),
+                    eventDate = "2025.07.11 (목)",
                 ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2024, 6, 8),
+                    eventDate = "2025.06.11 (목)",
                 ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
+                ScheduleEvent(
+                    eventId = "1",
+                    hostName = "공승준",
+                    hostNickname = "초록승준",
+                    eventCategory = "결혼식",
+                    relationship = "친구",
                     cost = 10000,
-                    eventDate = LocalDate.of(2024, 5, 24),
-                ),
-                RecordEvent(
-                    eventId = "eventId",
-                    hostName = "username",
-                    hostNickName = "nickname",
-                    category = "경조사 유형",
-                    relationship = "관계",
-                    cost = 10000,
-                    eventDate = LocalDate.of(2023, 2, 4),
+                    eventDate = "2025.05.11 (목)",
                 ),
             ),
             onCardClick = {},
             onDeleteSelectedButtonClick = {},
             isDeleteMode = true,
+            updatePage = {},
             selectedDeleteEventIds = setOf("eventId"),
         )
     }

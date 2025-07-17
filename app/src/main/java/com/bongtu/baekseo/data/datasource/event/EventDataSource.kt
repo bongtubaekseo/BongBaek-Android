@@ -1,6 +1,8 @@
 package com.bongtu.baekseo.data.datasource.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.data.dto.event.DeleteEventsDto
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
@@ -28,4 +30,14 @@ interface EventDataSource {
         eventId: String,
         request: PutEventInfoRequest,
     ): BaseResponse<Unit>
+
+    suspend fun deleteEvents(
+        request: DeleteEventsRequest,
+    ): BaseResponse<Unit>
+
+    suspend fun getRecordEvents(
+        page: Int,
+        attended: Boolean,
+        category: String?,
+    ): BaseResponse<GetScheduleEventsResponse>
 }
