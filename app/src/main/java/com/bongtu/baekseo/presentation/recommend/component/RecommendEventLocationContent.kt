@@ -1,10 +1,15 @@
 package com.bongtu.baekseo.presentation.recommend.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -12,6 +17,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -115,40 +121,88 @@ fun RecommendEventLocationContent(
             )
         }
 
-        AndroidView(
-            modifier = Modifier
-                .clip(RoundedCornerShape(12.dp))
-                .aspectRatio(MAP_RATIO),
-            factory = { context ->
-                mapView.apply {
-                    mapView.start(
-                        object : MapLifeCycleCallback() {
-                            override fun onMapDestroy() = Unit
+        Box {
+            AndroidView(
+                modifier = Modifier
+                    .clip(RoundedCornerShape(12.dp))
+                    .aspectRatio(MAP_RATIO),
+                factory = { context ->
+                    mapView.apply {
+                        mapView.start(
+                            object : MapLifeCycleCallback() {
+                                override fun onMapDestroy() = Unit
 
-                            override fun onMapError(exception: Exception?) = Unit
-                        },
-                        object : KakaoMapReadyCallback() {
-                            override fun onMapReady(kakaoMap: KakaoMap) {
-                                Timber.tag("KakaoMap").d("Map ready")
-                                kakaoMapState.value = kakaoMap
-                                val cameraUpdate =
-                                    CameraUpdateFactory.newCenterPosition(defaultPosition)
-                                kakaoMap.moveCamera(cameraUpdate)
+                                override fun onMapError(exception: Exception?) = Unit
+                            },
+                            object : KakaoMapReadyCallback() {
+                                override fun onMapReady(kakaoMap: KakaoMap) {
+                                    Timber.tag("KakaoMap").d("Map ready")
+                                    kakaoMapState.value = kakaoMap
+                                    val cameraUpdate =
+                                        CameraUpdateFactory.newCenterPosition(defaultPosition)
+                                    kakaoMap.moveCamera(cameraUpdate)
 
-                                val labelStyle = LabelStyle.from(img_map_marker)
-                                val labelStyles = LabelStyles.from("myStyleId", labelStyle)
-                                val appliedStyles =
-                                    kakaoMap.labelManager?.addLabelStyles(labelStyles)
-                                val labelLayer = kakaoMap.labelManager?.layer
+                                    val labelStyle = LabelStyle.from(img_map_marker)
+                                    val labelStyles = LabelStyles.from("myStyleId", labelStyle)
+                                    val appliedStyles =
+                                        kakaoMap.labelManager?.addLabelStyles(labelStyles)
+                                    val labelLayer = kakaoMap.labelManager?.layer
 
-                                labelLayer?.addLabel(
-                                    LabelOptions.from(defaultPosition).setStyles(appliedStyles)
-                                )
-                            }
-                        },
-                    )
-                }
-            },
+                                    labelLayer?.addLabel(
+                                        LabelOptions.from(defaultPosition).setStyles(appliedStyles)
+                                    )
+                                }
+                            },
+                        )
+                    }
+                },
+            )
+
+            selectedPlace?.let { place ->
+                LocationCard(
+                    name = place.name,
+                    address = place.address,
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter),
+                )
+            }
+        }
+    }
+}
+
+@Composable
+private fun LocationCard(
+    name: String,
+    address: String,
+    modifier: Modifier = Modifier,
+) {
+    Column(
+        modifier = modifier
+            .padding(
+                horizontal = 10.dp,
+                vertical = 14.dp,
+            )
+            .fillMaxWidth()
+            .background(
+                color = BongBaekTheme.colors.gray750,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .padding(
+                horizontal = 20.dp,
+                vertical = 14.dp,
+            ),
+        verticalArrangement = Arrangement.spacedBy(4.dp),
+    ) {
+        Text(
+            text = name,
+            style = BongBaekTheme.typography.titleSemiBold18,
+            color = BongBaekTheme.colors.white,
+        )
+
+        Text(
+            text = address,
+            style = BongBaekTheme.typography.body2Regular14,
+            color = BongBaekTheme.colors.gray400,
         )
     }
 }
