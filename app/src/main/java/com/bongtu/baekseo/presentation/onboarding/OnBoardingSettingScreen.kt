@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -107,8 +106,8 @@ fun OnBoardingSettingScreen(
                     text = uiState.name,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = if (uiState.nameError != null)
-                        TextFieldValidateResult.Error(uiState.nameError.orEmpty())
+                    validateResult = if (uiState.nameError.isEmpty())
+                        TextFieldValidateResult.Error(uiState.nameError)
                     else
                         TextFieldValidateResult.Default,
                     onTextChange = viewModel::updateName,

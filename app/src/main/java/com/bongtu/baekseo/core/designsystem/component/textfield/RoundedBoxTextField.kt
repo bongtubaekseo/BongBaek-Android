@@ -56,7 +56,7 @@ fun RoundedBoxTextField(
     text: String,
     placeholder: String,
     modifier: Modifier = Modifier,
-    errorText: String? = null,
+    errorText: String = "",
     isEditable: Boolean = true,
     onFocusChange: (Boolean) -> Unit = {},
     onClick: () -> Unit = {},
@@ -71,7 +71,7 @@ fun RoundedBoxTextField(
     val focusManager = LocalFocusManager.current
 
     val isFilled = text.isNotEmpty()
-    val isError = errorText != null
+    val isError = errorText.isNotEmpty()
 
     val bongBaekColors = BongBaekTheme.colors
     val borderColor = remember(isError, isFocused) {
@@ -157,7 +157,7 @@ fun RoundedBoxTextField(
                         .size(14.dp),
                 )
                 Text(
-                    text = errorText.orEmpty(),
+                    text = errorText,
                     modifier = Modifier
                         .padding(start = 4.dp),
                     style = BongBaekTheme.typography.captionRegular12,
@@ -187,7 +187,7 @@ private fun RoundedBoxTextFieldPreview() {
         RoundedBoxTextField(
             text = text,
             placeholder = "placeholder",
-            errorText = null,
+            errorText = "",
             validateResult = validateResult,
             onTextChange = {
                 text = it

@@ -10,11 +10,11 @@ object TextFieldValidator {
     fun validateName(name: String) = when {
         charRegex.containsMatchIn(name) -> "특수문자는 사용할 수 없어요."
         name.length < 2 || name.length > 10 -> "2자 이상 10자 이내로 입력해주세요."
-        else -> null
+        else -> ""
     }
 
     fun validateCost(cost: String) = when {
         cost.toInt() < 1 ->"1원 이상 적어주세요"
-        else -> null
+        else -> ""
     }
 }
