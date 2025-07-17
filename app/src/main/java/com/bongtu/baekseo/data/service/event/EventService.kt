@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
-import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
@@ -9,7 +9,6 @@ import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import retrofit2.http.Body
-import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.HTTP
 import retrofit2.http.POST
@@ -45,7 +44,7 @@ interface EventService {
 
     @HTTP(method = "DELETE", path = "/api/v1/events", hasBody = true)
     suspend fun deleteEvents(
-        @Body request: DeleteRecordRequest,
+        @Body request: DeleteEventsRequest,
     ): BaseResponse<Unit>
 
     @GET("/api/v1/events/history/{page}")

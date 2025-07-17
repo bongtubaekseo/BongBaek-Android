@@ -1,13 +1,14 @@
 package com.bongtu.baekseo.data.repositoryimpl.event
 
 import com.bongtu.baekseo.data.datasource.event.EventDataSource
-import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
+import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
 import com.bongtu.baekseo.data.dto.event.PutEventInfoRequest
 import com.bongtu.baekseo.data.mapper.toDto
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.event.Cost
+import com.bongtu.baekseo.data.model.event.DeleteEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -94,16 +95,18 @@ class EventRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun deleteEvents(request: DeleteRecordRequest): Result<Unit> = runCatching {
+    override suspend fun deleteEvents(request: DeleteEvent): Result<Unit> = runCatching {
         eventDataSource.deleteEvents(
-            request = request,
+            request = DeleteEventsRequest(
+                eventIds = request.toDto().eventIds,
+            ),
         )
     }
 
     override suspend fun getRecordEvents(
         page: Int,
         attended: Boolean,
-        category: String?
+        category: String?,
     ): Result<PageScheduleEvent> = runCatching {
         eventDataSource.getRecordEvents(
             page = page,

@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class DeleteRecordRequest(
+data class DeleteEventsRequest(
     @SerialName("eventIds")
     val eventIds: List<String>,
 )

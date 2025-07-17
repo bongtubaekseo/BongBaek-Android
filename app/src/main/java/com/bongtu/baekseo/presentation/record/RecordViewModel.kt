@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
-import com.bongtu.baekseo.data.dto.event.DeleteRecordRequest
+import com.bongtu.baekseo.data.model.event.DeleteEvent
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
@@ -21,7 +21,6 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -34,10 +33,10 @@ class RecordViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<RecordSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-    private fun deleteEvents() {
+    private fun deleteEvents() =
         viewModelScope.launch {
             eventRepository.deleteEvents(
-                request = DeleteRecordRequest(uiState.value.selectedDeleteEventIds.toList()),
+                request = DeleteEvent(uiState.value.selectedDeleteEventIds),
             ).onSuccess {
                 updateSelectedDeleteEventIds(emptySet())
                 updateDeleteModeCancel()
@@ -49,14 +48,12 @@ class RecordViewModel @Inject constructor(
                     )
                 }
                 fetchRecordEvent()
-
             }.onFailure {
                 updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
-    }
 
-    fun fetchRecordEvent() {
+    fun fetchRecordEvent() =
         viewModelScope.launch {
             eventRepository.getRecordEvents(
                 page = uiState.value.page,
@@ -95,13 +92,10 @@ class RecordViewModel @Inject constructor(
                 updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
-    }
 
     fun fetchSelectedDeleteEventIds() {
-        // TODO("선택된 삭제 처리 추가 예정")
         deleteEvents()
         updateDeleteModeCancel()
-//        updateSelectedDeleteEventIds(emptySet())
     }
 
     private fun updateRecordUiState(value: UiState<PageScheduleEvent>) =
@@ -118,15 +112,15 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateNextPage() {
+    fun updateNextPage() =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
                     page = uiState.value.page + 1,
                 )
             }
+            if (!uiState.value.isLast) fetchRecordEvent()
         }
-    }
 
     fun updateDeleteMode() =
         _uiState.update { currentState ->
@@ -152,27 +146,23 @@ class RecordViewModel @Inject constructor(
                     currentState.selectedDeleteEventIds + eventId
                 }
 
-                Timber.tag("하하하하하").d("선택된 ID 목록: $newSelected")
-
                 currentState.copy(
                     selectedDeleteEventIds = newSelected
                 )
             }
         }
 
-    fun updateEventType(eventCategoryType: EventCategoryType) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    page = 0,
-                    eventCategoryType = eventCategoryType,
-                )
-            }
-            fetchRecordEvent()
+    fun updateEventType(eventCategoryType: EventCategoryType) {
+        _uiState.update { currentState ->
+            currentState.copy(
+                page = 0,
+                eventCategoryType = eventCategoryType,
+            )
         }
+        fetchRecordEvent()
+    }
 
     fun selectAttendType(newAttendType: AttendType) {
-
         _uiState.update { currentState ->
             currentState.copy(
                 page = 0,
