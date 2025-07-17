@@ -128,6 +128,18 @@ fun HomePageMultipleCard(
         if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     }
 
+    val pageTitle = if (daysLeft == 0) stringResource(
+        home_page_card_today_title,
+        hostname,
+        eventType,
+    ) else stringResource(
+        home_page_card_title,
+        hostname,
+        eventType,
+        postposition,
+        daysLeft,
+    )
+
     Box(
         modifier = modifier
             .aspectRatio(MULTIPLE_RATIO)
@@ -147,13 +159,7 @@ fun HomePageMultipleCard(
             horizontalAlignment = Alignment.Start,
         ) {
             Text(
-                text = stringResource(
-                    home_page_card_title,
-                    hostname,
-                    eventType,
-                    postposition,
-                    daysLeft
-                ),
+                text = pageTitle,
                 style = BongBaekTheme.typography.headBold24,
                 color = BongBaekTheme.colors.white,
             )
