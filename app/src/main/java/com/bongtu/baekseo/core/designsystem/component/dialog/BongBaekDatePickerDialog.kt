@@ -23,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -34,7 +33,6 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.string.date_picker_cancel
-import com.bongtu.baekseo.R.string.date_picker_error
 import com.bongtu.baekseo.R.string.date_picker_ok
 import com.bongtu.baekseo.R.string.date_picker_placeholder
 import com.bongtu.baekseo.R.string.date_picker_title
@@ -42,7 +40,7 @@ import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
-import com.bongtu.baekseo.core.util.isValidDate
+import com.bongtu.baekseo.core.util.DateValidator.validateDate
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
@@ -67,11 +65,15 @@ fun BongBaekDatePickerDialog(
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val hasInput = value.isNotEmpty()
-    val isValid = isValidDate(
+    val dateError = validateDate(
         input = value,
         type = datePickerDialogType,
     )
+    val isValid = dateError.isEmpty()
+    val bongBaekColors = BongBaekTheme.colors
+    val confirmTextColor = remember(isValid) {
+        if (isValid) bongBaekColors.white else bongBaekColors.gray300
+    }
 
     Dialog(
         onDismissRequest = onDismissRequest,
@@ -117,7 +119,7 @@ fun BongBaekDatePickerDialog(
                 }
 
                 AnimatedVisibility(
-                    visible = hasInput && !isValid,
+                    visible = value.isNotEmpty() && !isValid,
                     modifier = Modifier.padding(top = 6.dp),
                 ) {
                     Row(
@@ -133,7 +135,7 @@ fun BongBaekDatePickerDialog(
                         Spacer(modifier = Modifier.size(4.dp))
 
                         Text(
-                            text = stringResource(id = date_picker_error),
+                            text = dateError,
                             style = BongBaekTheme.typography.captionRegular12,
                             color = BongBaekTheme.colors.secondaryRed,
                         )
@@ -176,7 +178,7 @@ fun BongBaekDatePickerDialog(
                         Text(
                             text = stringResource(id = date_picker_ok),
                             style = BongBaekTheme.typography.body2Regular16,
-                            color = if (isValid) BongBaekTheme.colors.white else BongBaekTheme.colors.gray300,
+                            color = confirmTextColor,
                         )
                     }
                 }

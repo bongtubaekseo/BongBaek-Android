@@ -50,6 +50,7 @@ private const val ENVELOPE_RATIO = 320 / 291f
 fun RecommendResultRoute(
     navigateToFinal: () -> Unit,
     navigateToEdit: () -> Unit,
+    navigateBackToMain: () -> Unit,
     viewModel: RecommendViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -68,7 +69,7 @@ fun RecommendResultRoute(
     }
 
     BackHandler {
-        // 뒤로가기 버튼 방지 TODO: 뭔가 더 깔끔한 방법 찾아야 할 듯
+        navigateBackToMain()
     }
 
     RecommendResultScreen(
