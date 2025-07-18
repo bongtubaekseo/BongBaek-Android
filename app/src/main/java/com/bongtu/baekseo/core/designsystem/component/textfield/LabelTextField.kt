@@ -165,8 +165,6 @@ fun LabelTextField(
 
         AnimatedVisibility(
             visible = isError,
-            enter = EnterTransition.None,
-            exit = ExitTransition.None,
         ) {
             Row(
                 modifier = Modifier

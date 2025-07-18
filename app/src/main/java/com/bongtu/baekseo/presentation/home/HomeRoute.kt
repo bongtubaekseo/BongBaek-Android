@@ -2,9 +2,10 @@ package com.bongtu.baekseo.presentation.home
 
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -19,6 +20,7 @@ fun HomeRoute(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToDetail: (String) -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -30,22 +32,24 @@ fun HomeRoute(
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
-        modifier = modifier
-            .fillMaxSize(),
     ) {
         composable<Main> {
             HomeMainRoute(
                 navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navController::navigateToSchedule,
+                modifier = modifier
+                    .padding(bottom = bottomPadding),
             )
         }
+
         composable<Schedule> {
             ScheduleRoute(
                 setBottomBarVisible = setBottomBarVisible,
                 onBackClick = navController::navigateUp,
                 navigateToDetail = navigateToDetail,
                 navigateToEdit = navigateToEdit,
+                modifier = modifier,
             )
         }
     }

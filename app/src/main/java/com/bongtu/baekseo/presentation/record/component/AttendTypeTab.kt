@@ -20,9 +20,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.common.type.AttendType
 
 @Immutable
 private data class TabStyle(
@@ -53,9 +53,7 @@ fun AttendTypeTab(
         ) {
             AttendType.entries.forEach { type ->
                 val isSelected = type == selectedTab
-
                 val (color, typography) = BongBaekTheme.colors to BongBaekTheme.typography
-
                 val style = remember(isSelected) {
                     if (isSelected) {
                         TabStyle(
@@ -89,7 +87,9 @@ fun AttendTypeTab(
                             .background(
                                 color = style.backgroundColor,
                             )
-                            .noRippleClickable { if(isEnabled) onTabClick(type) },
+                            .noRippleClickable {
+                                if (isEnabled && selectedTab != type) onTabClick(type)
+                            },
                         contentAlignment = Alignment.Center,
                     ) {
                         Text(

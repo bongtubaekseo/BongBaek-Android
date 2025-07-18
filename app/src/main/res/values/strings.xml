@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BongBaek-Android</string>
+    <string name="app_name">봉투백서</string>
     <string name="kr_won">원</string>
     <!--Home    -->
     <string name="home">홈</string>

@@ -21,29 +21,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
-import com.bongtu.baekseo.R.drawable.img_map_marker
+import com.bongtu.baekseo.core.designsystem.component.KakaoMapView
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.map.Place
-import com.kakao.vectormap.KakaoMap
-import com.kakao.vectormap.KakaoMapReadyCallback
 import com.kakao.vectormap.LatLng
-import com.kakao.vectormap.MapLifeCycleCallback
-import com.kakao.vectormap.MapView
-import com.kakao.vectormap.camera.CameraUpdateFactory
-import com.kakao.vectormap.label.LabelOptions
-import com.kakao.vectormap.label.LabelStyle
-import com.kakao.vectormap.label.LabelStyles
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import timber.log.Timber
 
 private const val MAP_RATIO = 320 / 312f
 private const val DEFAULT_LATITUDE = 37.5665
@@ -59,34 +48,14 @@ fun RecommendEventLocationContent(
     onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val context = LocalContext.current
-    val mapView = remember { MapView(context) }
-    val defaultPosition = LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
-    val kakaoMapState = remember { mutableStateOf<KakaoMap?>(null) }
     var isExpanded by remember { mutableStateOf(false) }
     var rowWidthPx by remember { mutableIntStateOf(0) }
+    val defaultPosition = selectedPlace?.let {
+        LatLng.from(it.latitude, it.longitude)
+    } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
 
     LaunchedEffect(searchResult) {
         if (searchResult.isNotEmpty()) isExpanded = true
-    }
-
-    LaunchedEffect(selectedPlace, kakaoMapState.value) {
-        kakaoMapState.value?.let { map ->
-            val position = selectedPlace?.let {
-                LatLng.from(it.latitude, it.longitude)
-            } ?: defaultPosition
-            map.moveCamera(CameraUpdateFactory.newCenterPosition(position))
-
-            val layer = map.labelManager?.layer
-            layer?.removeAll()
-
-            val labelStyle = LabelStyle.from(img_map_marker)
-            val style = map.labelManager?.addLabelStyles(
-                LabelStyles.from("myStyleId", labelStyle)
-            )
-            layer?.addLabel(LabelOptions.from(position).setStyles(style))
-            Timber.d("Map updated: ($position)")
-        }
     }
 
     Column(
@@ -122,40 +91,11 @@ fun RecommendEventLocationContent(
         }
 
         Box {
-            AndroidView(
+            KakaoMapView(
+                position = defaultPosition,
                 modifier = Modifier
                     .clip(RoundedCornerShape(12.dp))
                     .aspectRatio(MAP_RATIO),
-                factory = { context ->
-                    mapView.apply {
-                        mapView.start(
-                            object : MapLifeCycleCallback() {
-                                override fun onMapDestroy() = Unit
-
-                                override fun onMapError(exception: Exception?) = Unit
-                            },
-                            object : KakaoMapReadyCallback() {
-                                override fun onMapReady(kakaoMap: KakaoMap) {
-                                    Timber.tag("KakaoMap").d("Map ready")
-                                    kakaoMapState.value = kakaoMap
-                                    val cameraUpdate =
-                                        CameraUpdateFactory.newCenterPosition(defaultPosition)
-                                    kakaoMap.moveCamera(cameraUpdate)
-
-                                    val labelStyle = LabelStyle.from(img_map_marker)
-                                    val labelStyles = LabelStyles.from("myStyleId", labelStyle)
-                                    val appliedStyles =
-                                        kakaoMap.labelManager?.addLabelStyles(labelStyles)
-                                    val labelLayer = kakaoMap.labelManager?.layer
-
-                                    labelLayer?.addLabel(
-                                        LabelOptions.from(defaultPosition).setStyles(appliedStyles)
-                                    )
-                                }
-                            },
-                        )
-                    }
-                },
             )
 
             selectedPlace?.let { place ->

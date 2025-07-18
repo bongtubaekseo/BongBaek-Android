@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.home.navigation
 
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
@@ -16,6 +17,7 @@ fun NavGraphBuilder.homeGraph(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToDetail: (String) -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
@@ -24,6 +26,7 @@ fun NavGraphBuilder.homeGraph(
             navigateToRecommend = navigateToRecommend,
             navigateToEdit = navigateToEdit,
             navigateToDetail = navigateToDetail,
+            bottomPadding = bottomPadding,
             modifier = modifier,
         )
     }

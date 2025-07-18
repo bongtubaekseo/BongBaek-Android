@@ -5,14 +5,12 @@ import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
@@ -121,7 +119,8 @@ private fun MainNavHost(
                     eventId = eventId,
                 )
             },
-            modifier = modifier.padding(bottom = innerPadding.calculateBottomPadding()),
+            bottomPadding = innerPadding.calculateBottomPadding(),
+            modifier = modifier,
         )
 
         recommendGraph(
