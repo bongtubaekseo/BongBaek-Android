@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.home.schedule
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -117,32 +118,36 @@ private fun ScheduleScreen(
             isEnabled = true,
         )
 
-        when (uiState.scheduleLoadState) {
-            is UiState.Empty -> {
-                ScheduleEmptyContent(
-                    eventType = uiState.eventCategoryType.label,
-                    onButtonClick = navigateToEdit,
-                    modifier = Modifier
-                        .padding(top = 58.dp)
-                        .padding(horizontal = 20.dp),
-                )
-            }
+        Crossfade(
+            targetState = uiState.scheduleLoadState to uiState.eventCategoryType,
+        ) { (loadState, category) ->
+            when (loadState) {
+                is UiState.Empty -> {
+                    ScheduleEmptyContent(
+                        eventType = category.label,
+                        onButtonClick = navigateToEdit,
+                        modifier = Modifier
+                            .padding(top = 58.dp)
+                            .padding(horizontal = 20.dp),
+                    )
+                }
 
-            is UiState.Failure -> {
-                // TODO: 에러 상태
-            }
+                is UiState.Failure -> {
+                    // TODO: 에러 상태
+                }
 
-            is UiState.Loading -> {
-                // TODO: 로딩 상태
-            }
+                is UiState.Loading -> {
+                    // TODO: 로딩 상태
+                }
 
-            is UiState.Success -> {
-                ScheduleListContent(
-                    scheduleEventList = uiState.scheduleLoadState.data.events,
-                    onCardClick = onCardClick,
-                    lazyListState = lazyListState,
-                    updatePage = viewModel::updatePage,
-                )
+                is UiState.Success -> {
+                    ScheduleListContent(
+                        scheduleEventList = loadState.data.events,
+                        onCardClick = onCardClick,
+                        lazyListState = lazyListState,
+                        updatePage = viewModel::updatePage,
+                    )
+                }
             }
         }
     }
