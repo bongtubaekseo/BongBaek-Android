@@ -491,7 +491,7 @@ private fun FormFieldDropDown(
                 horizontal = 16.dp,
             )
             .noRippleClickable {
-                if (isEditable) expanded = !expanded
+                if (isEditable && !expanded) expanded = true
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -520,5 +520,6 @@ private fun FormFieldDropDown(
         modifier = Modifier
             .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
         maxItemSize = menuItems.size,
+        isFocusable = true,
     )
 }
