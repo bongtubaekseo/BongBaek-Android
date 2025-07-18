@@ -20,6 +20,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
@@ -48,10 +49,10 @@ fun SearchTextField(
     onFocusChange: (Boolean) -> Unit = {},
     onItemSelected: (() -> Unit)? = null,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
+    focusManager: FocusManager = LocalFocusManager.current,
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
-    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(isFocused) {
         onFocusChange(isFocused)

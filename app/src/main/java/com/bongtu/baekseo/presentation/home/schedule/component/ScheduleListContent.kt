@@ -6,9 +6,13 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -50,14 +54,22 @@ fun ScheduleListContent(
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
+    val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
         state = lazyListState,
-        contentPadding = PaddingValues(horizontal = 20.dp),
+        contentPadding = PaddingValues(
+            start = 20.dp,
+            top = 20.dp,
+            end = 20.dp,
+            bottom = 20.dp + navigationBarsPadding,
+        ),
     ) {
-        itemsIndexed(yearMonthEventItems) { index, item ->
+        itemsIndexed(
+            items = yearMonthEventItems,
+        ) { index, item ->
             val previousItem = yearMonthEventItems.getOrNull(index - 1)
 
             val topPadding = remember(item, previousItem) {
@@ -68,10 +80,6 @@ fun ScheduleListContent(
                         if (previousItem is ScheduleYearMonthEventItem.Event) 10.dp else 20.dp
                     }
                 }
-            }
-
-            if (index == 0) {
-                Spacer(modifier = Modifier.height(20.dp))
             }
 
             when (item) {
@@ -121,10 +129,6 @@ fun ScheduleListContent(
                         )
                     }
                 }
-            }
-
-            if (index == yearMonthEventItems.lastIndex) {
-                Spacer(modifier = Modifier.height(20.dp))
             }
         }
     }

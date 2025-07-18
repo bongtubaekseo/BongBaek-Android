@@ -180,7 +180,6 @@ private fun EditMainScreen(
 ) {
     var text by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
@@ -363,7 +362,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 141.dp,
+                        bottom = 140.dp,
                     ),
                 isEditable = isMemoEditable,
             )
@@ -491,7 +490,7 @@ private fun FormFieldDropDown(
                 horizontal = 16.dp,
             )
             .noRippleClickable {
-                if (isEditable) expanded = !expanded
+                if (isEditable && !expanded) expanded = true
             },
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -520,5 +519,6 @@ private fun FormFieldDropDown(
         modifier = Modifier
             .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
         maxItemSize = menuItems.size,
+        isFocusable = true,
     )
 }
