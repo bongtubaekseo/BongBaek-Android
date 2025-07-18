@@ -46,13 +46,13 @@ fun BongBaekFilterChip(
                 color = backgroundColor,
                 shape = RoundedCornerShape(6.dp),
             )
+            .noRippleClickable(onClick)
             .padding(
                 start = 16.dp,
                 top = 5.dp,
                 end = 16.dp,
                 bottom = 7.dp,
-            )
-            .noRippleClickable(onClick),
+            ),
         contentAlignment = Alignment.Center,
     ) {
         Text(

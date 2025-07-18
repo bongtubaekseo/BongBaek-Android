@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.home.component
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -20,6 +21,7 @@ fun HomeTopBar(
 ) {
     Box(
         modifier = modifier
+            .statusBarsPadding()
             .fillMaxWidth()
             .padding(top = 30.dp, start = 20.dp),
     ) {

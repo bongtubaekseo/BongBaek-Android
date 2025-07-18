@@ -22,6 +22,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -56,6 +57,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
+import com.jakewharton.processphoenix.ProcessPhoenix
 
 @Composable
 fun OnBoardingSettingScreen(
@@ -81,6 +83,8 @@ fun OnBoardingSettingScreen(
         viewModel.updateButtonState()
     }
     var incomeSelected by remember { mutableStateOf(true) }
+
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -160,8 +164,6 @@ fun OnBoardingSettingScreen(
                 AnimatedVisibility(
                     visible = switchChecked,
                     modifier = Modifier.padding(top = 30.dp),
-                    enter = EnterTransition.None,
-                    exit = ExitTransition.None,
                 ) {
                     Column(
                         modifier = Modifier
@@ -201,7 +203,10 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = viewModel::postSignUp,
+                onClick = {
+                    viewModel.postSignUp()
+                    ProcessPhoenix.triggerRebirth(context)
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -109,6 +108,12 @@ fun HomeMainScreen(
 
         is UiState.Loading -> {
             // TODO: 로딩 상태
+            // 임시로 흰 화면이 깜빡거려 같은 배경색으로 대체
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(color = BongBaekTheme.colors.gray900),
+            )
         }
 
         is UiState.Success -> {
@@ -131,7 +136,7 @@ fun HomeMainSuccessScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
         items.size
@@ -166,9 +171,8 @@ fun HomeMainSuccessScreen(
 
     Column(
         modifier = modifier
-            .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .statusBarsPadding()
+            .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar()

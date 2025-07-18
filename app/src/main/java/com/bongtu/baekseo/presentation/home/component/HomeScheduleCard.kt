@@ -90,7 +90,7 @@ fun HomeScheduleCard(
 
         HomeScheduleCardInfo(
             infoType = HomeScheduleCardInfoType.LOCATION,
-            content = event.location,
+            content = event.location.ifBlank { "-" },
         )
 
         Spacer(modifier = Modifier.height(4.dp))
