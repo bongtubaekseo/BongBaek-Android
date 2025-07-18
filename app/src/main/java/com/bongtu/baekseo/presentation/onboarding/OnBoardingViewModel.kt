@@ -88,7 +88,6 @@ class OnBoardingViewModel @Inject constructor(
                     accessToken = response.accessToken,
                     refreshToken = response.refreshToken,
                 )
-                _sideEffect.emit(NavigateToHome)
             }.onFailure {
                 updateOnBoardingUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
