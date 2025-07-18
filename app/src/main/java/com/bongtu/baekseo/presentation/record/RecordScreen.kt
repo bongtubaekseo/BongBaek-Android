@@ -1,7 +1,9 @@
 package com.bongtu.baekseo.presentation.record
 
 import androidx.activity.compose.BackHandler
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -154,35 +156,41 @@ private fun RecordScreen(
             isEnabled = !uiState.isDeleteMode,
         )
 
-        when (uiState.recordLoadState) {
-            is UiState.Empty -> {
-                ScheduleEmptyContent(
-                    eventType = uiState.eventCategoryType.label,
-                    onButtonClick = navigateToAdd,
-                    modifier = Modifier
-                        .padding(top = 58.dp)
-                        .padding(horizontal = 20.dp),
-                )
-            }
+        Crossfade(
+            targetState = uiState.recordLoadState to uiState.eventCategoryType,
+        ) { (loadState, category) ->
+            when (loadState) {
+                is UiState.Loading -> {
+                    // TODO: 로딩 상태 화면
+                    // 임시로 흰 화면이 깜빡거려 같은 배경색으로 대체
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = BongBaekTheme.colors.gray900),
+                    )
+                }
 
-            is UiState.Failure -> {
-                // TODO: 에러 상태 화면
-            }
+                is UiState.Success -> {
+                    RecordListContent(
+                        recordEventList = loadState.data.events,
+                        isDeleteMode = uiState.isDeleteMode,
+                        selectedDeleteEventIds = uiState.selectedDeleteEventIds,
+                        onCardClick = navigateToDetail,
+                        onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
+                        lazyListState = lazyListState,
+                        updatePage = updatePage,
+                    )
+                }
 
-            is UiState.Loading -> {
-                // TODO: 로딩 상태 화면
-            }
-
-            is UiState.Success -> {
-                RecordListContent(
-                    recordEventList = uiState.recordLoadState.data.events,
-                    isDeleteMode = uiState.isDeleteMode,
-                    selectedDeleteEventIds = uiState.selectedDeleteEventIds,
-                    onCardClick = navigateToDetail,
-                    onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
-                    lazyListState = lazyListState,
-                    updatePage = updatePage,
-                )
+                else -> {
+                    ScheduleEmptyContent(
+                        eventType = category.label,
+                        onButtonClick = navigateToAdd,
+                        modifier = Modifier
+                            .padding(top = 58.dp)
+                            .padding(horizontal = 20.dp),
+                    )
+                }
             }
         }
     }
