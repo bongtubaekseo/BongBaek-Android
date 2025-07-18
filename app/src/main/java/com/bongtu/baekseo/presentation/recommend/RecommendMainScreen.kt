@@ -190,6 +190,10 @@ private fun RecommendMainScreen(
         uiState.selectedPlace,
     ) { checkButtonEnabled() }
 
+    LaunchedEffect(uiState.pageIndex) {
+        isTitleVisible = true
+    }
+
     Column(
         modifier = modifier
             .background(
@@ -269,11 +273,10 @@ private fun RecommendMainScreen(
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.gray400,
                     )
+                    if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
+                    else Spacer(modifier = Modifier.height(30.dp))
                 }
             }
-
-            if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
-            else Spacer(modifier = Modifier.height(30.dp))
 
             AnimatedContent(
                 targetState = uiState.pageIndex,

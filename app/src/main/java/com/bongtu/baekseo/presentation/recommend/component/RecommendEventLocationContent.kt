@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
@@ -53,6 +54,7 @@ fun RecommendEventLocationContent(
     val defaultPosition = selectedPlace?.let {
         LatLng.from(it.latitude, it.longitude)
     } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+    val focusManager = LocalFocusManager.current
 
     LaunchedEffect(searchResult) {
         if (searchResult.isNotEmpty()) isExpanded = true
@@ -72,6 +74,7 @@ fun RecommendEventLocationContent(
                     onSearchValueChange(it)
                 },
                 onFocusChange = onFocusChange,
+                focusManager = focusManager,
             )
 
             BongBaekDropdownMenu<Place>(
@@ -82,6 +85,7 @@ fun RecommendEventLocationContent(
                 onItemSelect = { place ->
                     onPlaceSelect(place)
                     onFocusChange(false)
+                    focusManager.clearFocus()
                 },
                 label = { it.name },
                 modifier = Modifier

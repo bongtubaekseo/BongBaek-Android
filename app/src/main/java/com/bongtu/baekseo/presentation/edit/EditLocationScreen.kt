@@ -99,13 +99,12 @@ fun EditLocationScreen(
     onPlaceSelect: (Place?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val defaultPosition = selectedPlace?.let {
-        LatLng.from(it.latitude, it.longitude)
-    } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
-
     var isExpanded by remember { mutableStateOf(false) }
     var rowWidthPx by remember { mutableIntStateOf(0) }
     var tempSelectedPlace by remember { mutableStateOf<Place?>(selectedPlace) }
+    val defaultPosition = tempSelectedPlace?.let {
+        LatLng.from(it.latitude, it.longitude)
+    } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
 
     LaunchedEffect(searchResult) {
         if (searchResult.isNotEmpty()) isExpanded = true
