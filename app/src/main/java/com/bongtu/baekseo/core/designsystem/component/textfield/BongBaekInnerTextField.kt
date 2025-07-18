@@ -3,6 +3,7 @@ package com.bongtu.baekseo.core.designsystem.component.textfield
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
@@ -69,10 +70,15 @@ fun BongBaekInnerTextField(
         visualTransformation = visualTransformation,
         decorationBox = { innerTextField ->
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
             ) {
-                Box(modifier = Modifier.weight(1f)) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f),
+                    contentAlignment = Alignment.TopStart,
+                ) {
                     if (text.isEmpty()) {
                         Text(
                             text = placeholder,
