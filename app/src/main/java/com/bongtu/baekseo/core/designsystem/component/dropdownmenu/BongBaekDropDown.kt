@@ -53,6 +53,7 @@ fun <T> BongBaekDropdownMenu(
     modifier: Modifier = Modifier,
     maxItemSize: Int = 3,
     offset: DpOffset = DpOffset(0.dp, 14.dp),
+    isFocusable: Boolean = false,
 ) {
     val bongBaekColors = BongBaekTheme.colors
     var itemHeightDp by remember { mutableStateOf(0.dp) }
@@ -62,7 +63,7 @@ fun <T> BongBaekDropdownMenu(
         offset = offset,
         onDismissRequest = onDismissRequest,
         properties = PopupProperties(
-            focusable = false,
+            focusable = isFocusable,
         ),
         shape = RoundedCornerShape(10.dp),
         containerColor = bongBaekColors.gray750,
