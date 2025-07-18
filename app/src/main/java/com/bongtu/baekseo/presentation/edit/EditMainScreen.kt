@@ -381,6 +381,7 @@ private fun EditMainScreen(
                     onDateChange(text)
                     text = ""
                 },
+                previousDate = uiState.previousDate,
             )
         }
     }

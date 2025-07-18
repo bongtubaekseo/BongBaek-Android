@@ -5,6 +5,7 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.map.Place
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
+import java.time.LocalDate
 
 class EditContract {
     @Immutable
@@ -18,6 +19,7 @@ class EditContract {
         val cost: String = "",
         val attendLabel: String = "",
         val eventDate: String = "",
+        val previousDate: LocalDate = LocalDate.now().minusDays(1),
         val note: String = "",
         val searchResult: ImmutableList<Place> = persistentListOf(),
         val selectedPlace: Place? = null,

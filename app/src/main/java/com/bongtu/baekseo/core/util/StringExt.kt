@@ -31,7 +31,8 @@ fun String.toFormattedDateWithDay(): String {
 fun String.toFormattedDateAndDay(): Pair<String, String> {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-    val day = localDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN) // "수"
+    val day =
+        localDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN) // "수"
     return date to day
 }
 
@@ -52,6 +53,9 @@ fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
     return localDate.year to localDate.monthValue
 }
 
+/**
+ * yyyy-mm-dd -> MMddyyyy
+ */
 fun String.toFormattedMonthDayYear(): String = runCatching {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
