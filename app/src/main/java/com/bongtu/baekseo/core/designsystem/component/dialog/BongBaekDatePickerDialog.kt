@@ -42,6 +42,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
 import com.bongtu.baekseo.core.util.DateValidator.validateDate
 import com.bongtu.baekseo.core.util.noRippleClickable
+import java.time.LocalDate
 
 /**
  * Bong baek date picker
@@ -64,10 +65,12 @@ fun BongBaekDatePickerDialog(
     onDismissRequest: () -> Unit,
     onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
+    previousDate: LocalDate = LocalDate.now(),
 ) {
     val dateError = validateDate(
         input = value,
         type = datePickerDialogType,
+        previousDate = previousDate,
     )
     val isValid = dateError.isEmpty()
     val bongBaekColors = BongBaekTheme.colors

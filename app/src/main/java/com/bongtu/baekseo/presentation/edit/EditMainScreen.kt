@@ -363,7 +363,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 160.dp,
+                        bottom = 141.dp,
                     ),
                 isEditable = isMemoEditable,
             )
@@ -381,6 +381,7 @@ private fun EditMainScreen(
                     onDateChange(text)
                     text = ""
                 },
+                previousDate = uiState.previousDate,
             )
         }
     }

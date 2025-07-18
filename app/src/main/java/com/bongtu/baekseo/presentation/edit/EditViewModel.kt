@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.time.LocalDate
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
@@ -96,6 +97,7 @@ class EditViewModel @Inject constructor(
                         cost = cost.toString(),
                         attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
                         eventDate = eventDate.toFormattedMonthDayYear(),
+                        previousDate = runCatching { LocalDate.parse(eventDate) }.getOrElse { LocalDate.now() },
                         note = note,
                         selectedPlace = if (
                             location.isEmpty() &&

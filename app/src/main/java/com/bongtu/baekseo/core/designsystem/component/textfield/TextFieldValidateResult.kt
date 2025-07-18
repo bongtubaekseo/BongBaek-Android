@@ -23,7 +23,7 @@ sealed class TextFieldValidateResult {
     }
 
     companion object {
-        private val SPECIAL_CHAR_REGEX = Regex("[!@#\$%^&*(),.?\":{}|<>]")
+        private val SPECIAL_CHAR_REGEX = Regex("[^가-힣a-zA-Z0-9\\s]")
         private const val ERROR_LENGTH_MESSAGE = "2자 이상 10자 이내로 입력해주세요"
         private const val ERROR_SPECIAL_CHARACTER_MESSAGE = "특수문자는 사용할 수 없어요"
         private const val ERROR_ZERO_COST_MESSAGE = "1원 이상 적어주세요"

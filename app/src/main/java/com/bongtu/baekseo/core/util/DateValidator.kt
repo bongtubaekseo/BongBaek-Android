@@ -1,11 +1,16 @@
 package com.bongtu.baekseo.core.util
 
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
+import timber.log.Timber
 import java.time.LocalDate
 import java.time.Period
 
 object DateValidator {
-    fun validateDate(input: String, type: DatePickerDialogType): String {
+    fun validateDate(
+        input: String,
+        type: DatePickerDialogType,
+        previousDate: LocalDate,
+    ): String {
         if (input.length != 8) return "유효한 날짜 형식이 아닙니다"
 
         val month = input.substring(0, 2).toIntOrNull()
@@ -29,7 +34,15 @@ object DateValidator {
                 else ""
             }
 
-            DatePickerDialogType.DATE -> ""
+            DatePickerDialogType.DATE -> {
+                if (previousDate >= today && date < today) {
+                    "미래 날짜만 입력 가능합니다"
+                } else if (previousDate < today && date >= today) {
+                    "과거 날짜만 입력 가능합니다"
+                } else {
+                    ""
+                }
+            }
         }
     }
 }
