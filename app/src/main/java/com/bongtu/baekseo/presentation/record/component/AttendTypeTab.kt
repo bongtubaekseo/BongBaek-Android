@@ -53,9 +53,7 @@ fun AttendTypeTab(
         ) {
             AttendType.entries.forEach { type ->
                 val isSelected = type == selectedTab
-
                 val (color, typography) = BongBaekTheme.colors to BongBaekTheme.typography
-
                 val style = remember(isSelected) {
                     if (isSelected) {
                         TabStyle(

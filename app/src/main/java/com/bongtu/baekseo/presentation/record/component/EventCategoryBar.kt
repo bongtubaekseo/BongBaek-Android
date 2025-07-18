@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.record.component
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -27,28 +28,21 @@ fun EventCategoryBar(
         modifier = modifier
             .padding(vertical = 16.dp)
             .fillMaxWidth(),
+        contentPadding = PaddingValues(horizontal = 20.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
-        itemsIndexed(EventCategoryType.entries) { index, type ->
-
-            val isSelected = type == selectedCategory
-
-            if (index == 0) {
-                Spacer(modifier = Modifier.width(20.dp))
-            }
-
+        itemsIndexed(
+            items = EventCategoryType.entries,
+            key = { _, type -> type.ordinal },
+        ) { index, type ->
             BongBaekFilterChip(
                 eventLabel = type.label,
-                isSelected = isSelected,
+                isSelected = type == selectedCategory,
                 onClick = {
                     if (isEnabled && selectedCategory != type) onCategoryClick(type)
                 },
             )
-
-            if (index == EventCategoryType.entries.lastIndex) {
-                Spacer(modifier = Modifier.width(20.dp))
-            }
         }
     }
 }
