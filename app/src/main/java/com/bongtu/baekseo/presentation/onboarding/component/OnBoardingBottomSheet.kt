@@ -28,10 +28,12 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.DialogWindowProvider
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.string.button_next
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
@@ -95,6 +97,8 @@ private fun OnBoardingBottomSheetAgreeContent(
     modifier: Modifier = Modifier,
 ) {
     val isAllChecked = checkedStates.all { it }
+    val window = (LocalView.current.parent as DialogWindowProvider).window
+    window.isNavigationBarContrastEnforced = false
 
     Column(
         modifier = modifier
@@ -149,8 +153,7 @@ private fun OnBoardingBottomSheetAgreeContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    top = 40.dp,
-                    bottom = 20.dp,
+                    vertical = 40.dp,
                 ),
             enabled = isAllChecked,
         )
