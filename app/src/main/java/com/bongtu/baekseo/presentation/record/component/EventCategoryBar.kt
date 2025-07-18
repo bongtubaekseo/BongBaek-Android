@@ -41,7 +41,9 @@ fun EventCategoryBar(
             BongBaekFilterChip(
                 eventLabel = type.label,
                 isSelected = isSelected,
-                onClick = { if(isEnabled) onCategoryClick(type) },
+                onClick = {
+                    if (isEnabled && selectedCategory != type) onCategoryClick(type)
+                },
             )
 
             if (index == EventCategoryType.entries.lastIndex) {
