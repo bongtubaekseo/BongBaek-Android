@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.local.cache.EventCache
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
 import com.bongtu.baekseo.data.model.event.Event
@@ -122,14 +124,18 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    fun updateName(newName: String) {
-        _uiState.update { it.copy(name = newName) }
-        _nameValidate.update { TextFieldValidateResult.validate(newName) }
+    fun updateName(newName: String) = _uiState.update {
+        it.copy(
+            name = newName,
+            nameError = validateName(newName),
+        )
     }
 
-    fun updateNickname(newNickname: String) {
-        _uiState.update { it.copy(nickname = newNickname) }
-        _nicknameValidate.update { TextFieldValidateResult.validate(newNickname) }
+    fun updateNickname(newNickname: String) = _uiState.update {
+        it.copy(
+            nickname = newNickname,
+            nicknameError = validateName(newNickname),
+        )
     }
 
     fun updateEventCategory(newEventCategory: String) = _uiState.update {
@@ -140,9 +146,12 @@ class EditViewModel @Inject constructor(
         it.copy(relationship = newRelationship)
     }
 
-    fun updateCost(newCost: String) {
-        _uiState.update { it.copy(cost = newCost) }
-        _costValidate.update { TextFieldValidateResult.validateCost(newCost) }
+    fun updateCost(newCost: String) = _uiState.update { prev ->
+        val cost = newCost.filter { it.isDigit() }.toLongOrNull()?.coerceIn(0L, 99_999_999L)
+        prev.copy(
+            cost = cost.toString(),
+            costError = validateCost(newCost)
+        )
     }
 
     fun updateAttendLabel(newAttendLabel: String) = _uiState.update {
