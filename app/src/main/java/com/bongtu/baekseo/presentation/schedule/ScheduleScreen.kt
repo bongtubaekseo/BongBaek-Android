@@ -21,7 +21,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
@@ -34,6 +36,9 @@ import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
 import kotlinx.collections.immutable.persistentListOf
@@ -48,12 +53,24 @@ fun ScheduleRoute(
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
     val lazyListState = rememberLazyListState()
 
     LaunchedEffect(Unit) {
         viewModel.clearPage()
         viewModel.fetchScheduleEvent()
         viewModel.getUsername()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToDetail -> navigateToDetail(sideEffect.eventId)
+                    NavigateToEdit -> navigateToEdit()
+                    NavigateToHome -> navigateToUp()
+                }
+            }
     }
 
     LaunchedEffect(uiState.eventCategoryType) {
@@ -70,9 +87,9 @@ fun ScheduleRoute(
     ScheduleScreen(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
-        onBackClick = navigateToUp,
-        onCardClick = navigateToDetail,
-        navigateToEdit = navigateToEdit,
+        onBackClick = viewModel::navigateToHome,
+        onCardClick = viewModel::navigateToDetail,
+        navigateToEdit = viewModel::navigateToEdit,
         lazyListState = lazyListState,
         viewModel = viewModel,
         modifier = modifier,
@@ -220,7 +237,7 @@ private fun ScheduleScreenPreview() {
                     data = PageScheduleEvent(
                         events = events,
                         currentPage = 0,
-                        isLast = false
+                        isLast = false,
                     )
                 )
             ),

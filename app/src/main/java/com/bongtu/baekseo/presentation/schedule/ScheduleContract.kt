@@ -11,7 +11,11 @@ class ScheduleContract {
         val scheduleLoadState: UiState<PageScheduleEvent> = UiState.Loading,
         val eventCategoryType: EventCategoryType = EventCategoryType.ALL,
         val name: String = "",
-        val page: Int = 0,
-        val isLast: Boolean = false,
     )
+
+    sealed class ScheduleSideEffect {
+        data object NavigateToHome : ScheduleSideEffect()
+        data class NavigateToDetail(val eventId: String) : ScheduleSideEffect()
+        data object NavigateToEdit : ScheduleSideEffect()
+    }
 }
