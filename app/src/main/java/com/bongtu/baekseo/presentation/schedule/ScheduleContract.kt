@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule
+package com.bongtu.baekseo.presentation.schedule
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState

@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule
+package com.bongtu.baekseo.presentation.schedule
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -31,9 +31,9 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
-import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
-import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
+import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
+import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf

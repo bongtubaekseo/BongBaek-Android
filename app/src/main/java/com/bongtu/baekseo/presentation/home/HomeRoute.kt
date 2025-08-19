@@ -11,8 +11,8 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Main
 import com.bongtu.baekseo.presentation.home.navigation.HomeRoute.Schedule
-import com.bongtu.baekseo.presentation.home.schedule.ScheduleRoute
-import com.bongtu.baekseo.presentation.home.schedule.navigation.navigateToSchedule
+import com.bongtu.baekseo.presentation.schedule.ScheduleRoute
+import com.bongtu.baekseo.presentation.schedule.navigation.navigateToSchedule
 
 @Composable
 fun HomeRoute(

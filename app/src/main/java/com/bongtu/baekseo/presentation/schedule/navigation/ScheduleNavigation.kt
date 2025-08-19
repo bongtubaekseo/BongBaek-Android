@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule.navigation
+package com.bongtu.baekseo.presentation.schedule.navigation
 
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions

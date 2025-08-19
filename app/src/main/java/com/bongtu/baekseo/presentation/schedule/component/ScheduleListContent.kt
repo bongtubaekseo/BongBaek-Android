@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule.component
+package com.bongtu.baekseo.presentation.schedule.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -39,8 +39,8 @@ import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
-import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
+import com.bongtu.baekseo.presentation.schedule.model.ScheduleYearMonthEventItem
+import com.bongtu.baekseo.presentation.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
