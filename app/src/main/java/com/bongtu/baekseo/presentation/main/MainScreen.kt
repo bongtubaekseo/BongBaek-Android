@@ -13,7 +13,6 @@ import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
-import com.bongtu.baekseo.presentation.dummy.navigation.dummyGraph
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
 import com.bongtu.baekseo.presentation.edit.navigation.editGraph
 import com.bongtu.baekseo.presentation.edit.navigation.navigateToEdit
@@ -73,8 +72,6 @@ private fun MainNavHost(
         navController = navigator.navController,
         startDestination = navigator.startDestination,
     ) {
-        dummyGraph(modifier = modifier)
-
         splashGraph(
             navigateToOnBoarding = {
                 navigator.navController.navigateToOnBoarding(

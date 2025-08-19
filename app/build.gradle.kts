@@ -30,7 +30,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "DUMMY_URL", properties.getProperty("dummy.url"))
         buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
         buildConfigField("String", "USER_TOKEN", properties.getProperty("user.token"))
 
