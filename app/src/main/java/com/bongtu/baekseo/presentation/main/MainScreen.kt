@@ -30,6 +30,8 @@ import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendF
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
+import com.bongtu.baekseo.presentation.schedule.navigation.navigateToSchedule
+import com.bongtu.baekseo.presentation.schedule.navigation.scheduleGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
 import kotlinx.collections.immutable.toImmutableList
@@ -111,14 +113,9 @@ private fun MainNavHost(
         )
 
         homeGraph(
-            setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                )
-            },
+            navigateToSchedule = navigator.navController::navigateToSchedule,
             bottomPadding = innerPadding.calculateBottomPadding(),
             modifier = modifier,
         )
@@ -179,6 +176,18 @@ private fun MainNavHost(
                             inclusive = true
                         }
                     },
+                )
+            },
+            modifier = modifier,
+        )
+
+        scheduleGraph(
+            setBottomBarVisible = navigator::updateBottomBarVisible,
+            navigateToUp = navigator::navigateUp,
+            navigateToEdit = navigator.navController::navigateToEdit,
+            navigateToDetail = { eventId ->
+                navigator.navController.navigateToDetail(
+                    eventId = eventId,
                 )
             },
             modifier = modifier,

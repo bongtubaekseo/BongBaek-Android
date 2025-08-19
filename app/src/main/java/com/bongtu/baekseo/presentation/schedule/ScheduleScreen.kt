@@ -31,17 +31,17 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
+import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
+import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
-import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ScheduleRoute(
     setBottomBarVisible: (Boolean) -> Unit,
-    onBackClick: () -> Unit,
+    navigateToUp: () -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
@@ -70,7 +70,7 @@ fun ScheduleRoute(
     ScheduleScreen(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
-        onBackClick = onBackClick,
+        onBackClick = navigateToUp,
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
