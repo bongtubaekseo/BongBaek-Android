@@ -30,10 +30,6 @@ security = "1.1.0-alpha06"
 lifecycleRuntimeComposeAndroid = "2.9.1"
 datastorePreferences = "1.1.7"
 
-# Accompanist
-accompanistPager = "0.25.0"
-accompanistSystemuicontroller = "0.30.1"
-
 # Third Party
 okhttp = "4.12.0"
 retrofit = "2.11.0"
@@ -46,12 +42,10 @@ timber = "5.0.1"
 lottieCompose = "6.6.1"
 coroutine = "1.10.2"
 ktlint = "11.5.1"
-advancedBottomSheet = "0.1.0"
 
 ## Kotlin Symbol Processing
 ksp = "2.0.0-1.0.24"
 appcompat = "1.7.0"
-playServicesMaps = "19.0.0"
 
 # Kakao SDK
 kakao = "2.21.4"
@@ -94,11 +88,6 @@ coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 kotlinx-immutable = { group = "org.jetbrains.kotlinx", name = "kotlinx-collections-immutable", version.ref = "kotlinxImmutable" }
 
-# Accompanist
-accompanist-pager = { module = "com.google.accompanist:accompanist-pager", version.ref = "accompanistPager" }
-accompanist-pager-indicators = { module = "com.google.accompanist:accompanist-pager-indicators", version.ref = "accompanistPager" }
-accompanist-systemuicontroller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanistSystemuicontroller" }
-
 # Third Party
 okhttp = { group = "com.squareup.okhttp3", name = "okhttp" }
 okhttp-bom = { group = "com.squareup.okhttp3", name = "okhttp-bom", version.ref = "okhttp" }
@@ -117,7 +106,6 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
-advanced-bottom-sheet = { group = "io.morfly.compose", name = "advanced-bottomsheet-material3", version.ref = "advancedBottomSheet" }
 
 # --- Kakao SDK ---
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }

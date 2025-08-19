@@ -106,9 +106,6 @@ dependencies {
     implementation(libs.coil.network)
     implementation(libs.timber)
     implementation(libs.lottie)
-    implementation(libs.advanced.bottom.sheet)
-
-    implementation(libs.accompanist.systemuicontroller)
 
     // Kakao
     implementation(libs.kakao.user)
