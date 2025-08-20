@@ -133,11 +133,12 @@ class EditViewModel @Inject constructor(
         it.copy(relationship = newRelationship)
     }
 
-    fun updateCost(newCost: String) = _uiState.update { prev ->
-        val cost = newCost.filter { it.isDigit() }.toLongOrNull()?.coerceIn(0L, 99_999_999L)
-        prev.copy(
-            cost = cost.toString(),
-            costError = validateCost(newCost)
+    fun updateCost(newCost: String) = _uiState.update {
+        val digits = newCost.filter { it.isDigit() }
+        val costText = if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
+        it.copy(
+            cost = costText,
+            costError = validateCost(costText)
         )
     }
 
