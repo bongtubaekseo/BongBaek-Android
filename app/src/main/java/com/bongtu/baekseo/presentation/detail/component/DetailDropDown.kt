@@ -75,7 +75,7 @@ fun DetailDropDown(
         else
             AttendType.ABSENT
     }
-    val eventDate = event.eventDate.toFormattedShortEnglishDate()
+    val eventDate = remember(event.eventDate) { event.eventDate.toFormattedShortEnglishDate() }
 
     val isEmptyLocationInfo = remember(event.locationInfo) {
         with(event) {
