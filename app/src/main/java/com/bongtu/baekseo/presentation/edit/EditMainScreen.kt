@@ -44,11 +44,14 @@ import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_check_gray
+import com.bongtu.baekseo.R.drawable.ic_coin
 import com.bongtu.baekseo.R.drawable.ic_event
 import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.string.edit_cost_text_field_placeholder
+import com.bongtu.baekseo.R.string.edit_cost_title
 import com.bongtu.baekseo.R.string.edit_date_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_date_title
 import com.bongtu.baekseo.R.string.edit_event_dropdown_placeholder
@@ -65,6 +68,7 @@ import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
+import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
@@ -73,10 +77,10 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.local.cache.EventCache
+import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -86,7 +90,6 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMain
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
-import com.bongtu.baekseo.presentation.edit.component.EditCostLabelTextField
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
 import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
@@ -105,9 +108,6 @@ fun EditMainRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val nameValidate by viewModel.nameValidate.collectAsStateWithLifecycle()
-    val nicknameValidate by viewModel.nickNameValidate.collectAsStateWithLifecycle()
-    val costValidate by viewModel.costValidate.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
@@ -138,9 +138,6 @@ fun EditMainRoute(
     EditMainScreen(
         editEntryType = editEntryType,
         uiState = uiState,
-        nameValidateResult = nameValidate,
-        nickNameValidateResult = nicknameValidate,
-        costValidateResult = costValidate,
         navigateUp = navigateUp,
         navigateToLocation = viewModel::navigateToLocation,
         onNameChange = viewModel::updateName,
@@ -161,9 +158,6 @@ fun EditMainRoute(
 private fun EditMainScreen(
     editEntryType: EditEntryType,
     uiState: EditUiState,
-    nameValidateResult: TextFieldValidateResult,
-    nickNameValidateResult: TextFieldValidateResult,
-    costValidateResult: TextFieldValidateResult,
     navigateUp: () -> Unit,
     navigateToLocation: () -> Unit,
     onNameChange: (String) -> Unit,
@@ -247,7 +241,7 @@ private fun EditMainScreen(
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = nameValidateResult,
+                    errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
                     isEditable = isResultEditable,
@@ -258,7 +252,7 @@ private fun EditMainScreen(
                     labelImage = ic_nickname,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    validateResult = nickNameValidateResult,
+                    errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
                     isEditable = isResultEditable,
@@ -292,11 +286,35 @@ private fun EditMainScreen(
                     }
                 )
 
-                EditCostLabelTextField(
-                    text = uiState.cost,
-                    validateResult = costValidateResult,
-                    onTextChange = onCostChange,
-                )
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.Bottom,
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                ) {
+                    LabelTextField(
+                        labelName = stringResource(id = edit_cost_title),
+                        labelImage = ic_coin,
+                        text = uiState.cost,
+                        modifier = Modifier.weight(1f),
+                        placeholder = stringResource(id = edit_cost_text_field_placeholder),
+                        errorText = uiState.costError,
+                        onTextChange = onCostChange,
+                        isRequired = true,
+                        visualTransformation = CostTextFieldFormat(),
+                    )
+
+                    Text(
+                        text = stringResource(kr_won),
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = BongBaekTheme.colors.white,
+                        modifier = Modifier
+                            .padding(
+                                start = 16.dp,
+                                bottom = 12.dp,
+                            ),
+                    )
+                }
 
                 FormFieldItem(
                     iconRes = ic_check_gray,
