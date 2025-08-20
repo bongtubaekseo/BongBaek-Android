@@ -35,6 +35,7 @@ import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -292,7 +293,7 @@ private fun EditMainScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom,
+                    verticalAlignment = Alignment.Top,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
                     LabelTextField(
@@ -304,6 +305,7 @@ private fun EditMainScreen(
                         errorText = uiState.costError,
                         onTextChange = onCostChange,
                         isRequired = true,
+                        keyBoardType = KeyboardType.NumberPassword,
                         visualTransformation = CostTextFieldFormat(),
                     )
 
@@ -314,7 +316,7 @@ private fun EditMainScreen(
                         modifier = Modifier
                             .padding(
                                 start = 16.dp,
-                                bottom = 12.dp,
+                                top = 33.dp,
                             ),
                     )
                 }
