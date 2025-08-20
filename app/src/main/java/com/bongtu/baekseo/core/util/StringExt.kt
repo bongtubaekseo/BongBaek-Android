@@ -2,6 +2,7 @@ package com.bongtu.baekseo.core.util
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
 import java.util.Locale
 
 /**
@@ -21,29 +22,28 @@ fun String.toFormattedDate(): String {
 fun String.toFormattedDateWithDay(): String {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = parsedDate.format(DateTimeFormatter.ofPattern("yyyy. MM. dd"))
-    val day = parsedDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN)
+    val day = parsedDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
     return "$date ($day)"
 }
 
 /**
  * yyyy-mm-dd -> yyyy.mm.dd, (day)
  */
-fun String.toFormattedDateAndDay(): Pair<String, String> {
+fun String.toFormattedDateAndDay(): Pair<String, String> = runCatching {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
-    val day =
-        localDate.dayOfWeek.getDisplayName(java.time.format.TextStyle.SHORT, Locale.KOREAN) // "수"
-    return date to day
-}
+    val day = localDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
+    date to day
+}.getOrElse { "" to "" }
 
 /**
  * yyyy-mm-dd -> "MMM dd, yyyy"
  */
-fun String.toFormattedShortEnglishDate(): String {
+fun String.toFormattedShortEnglishDate(): String = runCatching {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH))
-    return date
-}
+    date
+}.getOrElse { this }
 
 /**
  * yyyy-mm-dd -> Pair(year, month)
