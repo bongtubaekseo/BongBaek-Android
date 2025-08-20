@@ -30,7 +30,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "DUMMY_URL", properties.getProperty("dummy.url"))
         buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
         buildConfigField("String", "USER_TOKEN", properties.getProperty("user.token"))
 
@@ -107,9 +106,6 @@ dependencies {
     implementation(libs.coil.network)
     implementation(libs.timber)
     implementation(libs.lottie)
-    implementation(libs.advanced.bottom.sheet)
-
-    implementation(libs.accompanist.systemuicontroller)
 
     // Kakao
     implementation(libs.kakao.user)
