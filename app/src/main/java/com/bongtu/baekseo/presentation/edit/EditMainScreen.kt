@@ -180,10 +180,13 @@ private fun EditMainScreen(
 
     val isFormFilled = remember(
         uiState.name,
+        uiState.nameError,
         uiState.nickname,
+        uiState.nicknameError,
         uiState.relationship,
         uiState.eventCategory,
         uiState.cost,
+        uiState.costError,
         uiState.attendLabel,
         uiState.eventDate,
     ) {

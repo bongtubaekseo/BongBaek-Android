@@ -2,7 +2,6 @@ package com.bongtu.baekseo.presentation.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
@@ -53,18 +52,6 @@ class EditViewModel @Inject constructor(
     private val _isManualSearch = MutableStateFlow(true)
 
     private val _entryType = MutableStateFlow<EditEntryType?>(null)
-
-    private val _nameValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val nameValidate = _nameValidate.asStateFlow()
-
-    private val _nicknameValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val nickNameValidate = _nicknameValidate.asStateFlow()
-
-    private val _costValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val costValidate = _costValidate.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -179,11 +166,14 @@ class EditViewModel @Inject constructor(
     fun clearSearchResult() = _uiState.update { it.copy(searchResult = persistentListOf()) }
 
     fun updateButtonState(): Boolean = with(uiState.value) {
-        name.isNotBlank() && nameValidate.value == TextFieldValidateResult.Default &&
-                nickname.isNotBlank() && nickNameValidate.value == TextFieldValidateResult.Default &&
+        name.isNotBlank() &&
+                nameError.isBlank() &&
+                nickname.isNotBlank() &&
+                nicknameError.isBlank() &&
                 eventCategory.isNotBlank() &&
                 relationship.isNotBlank() &&
-                cost.isNotBlank() && costValidate.value == TextFieldValidateResult.Default &&
+                cost.isNotBlank() &&
+                costError.isBlank() &&
                 attendLabel.isNotBlank() &&
                 eventDate.isNotBlank()
     }
