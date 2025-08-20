@@ -37,6 +37,8 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -48,7 +50,6 @@ import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
 import com.bongtu.baekseo.presentation.home.component.HomeRecommendCard
-import com.bongtu.baekseo.presentation.home.component.HomeScheduleCard
 import com.bongtu.baekseo.presentation.home.component.HomeScheduleEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeTopBar
 import kotlinx.collections.immutable.ImmutableList
@@ -296,8 +297,15 @@ fun HomeSuccessScreen(
             }
 
             items.forEach { item ->
-                HomeScheduleCard(
-                    event = item,
+                BongBaekScheduleCard(
+                    scheduleCardType = ScheduleCardType.HOME,
+                    hostName = item.hostName,
+                    hostNickname = item.hostNickname,
+                    eventCategory = item.eventCategory,
+                    relationship = item.relationship,
+                    cost = item.cost,
+                    eventDate = item.eventDate,
+                    location = item.location,
                 )
 
                 Spacer(modifier = Modifier.size(10.dp))
