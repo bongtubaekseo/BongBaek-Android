@@ -31,6 +31,7 @@ import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
+import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 import com.bongtu.baekseo.presentation.home.type.HomeScheduleCardInfoType
 
 @Composable
@@ -50,6 +51,7 @@ fun BongBaekScheduleCard(
     val isScheduleCard = scheduleCardType == ScheduleCardType.SCHEDULE
 
     val (date, weekDay) = eventDate.toFormattedDateAndDay()
+    val homeDate = eventDate.toFormattedDateWithDay()
     val spacerHeight = if (isHomeCard) 10.dp else 8.dp
     val spacerBadgeHeight = if (isHomeCard) 4.dp else 8.dp
 
@@ -149,7 +151,7 @@ fun BongBaekScheduleCard(
 
             HomeScheduleCardInfo(
                 infoType = HomeScheduleCardInfoType.DATE,
-                content = date,
+                content = homeDate,
             )
         }
     }
