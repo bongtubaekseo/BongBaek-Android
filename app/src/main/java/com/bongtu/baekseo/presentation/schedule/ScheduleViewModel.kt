@@ -54,15 +54,11 @@ class ScheduleViewModel @Inject constructor(
                         existingEvents + newEvents
                     }
 
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        scheduleList = updatedList.toPersistentList(),
-                        scheduleLoadState = when {
-                            updatedList.isEmpty() -> UiState.Empty
-                            else -> UiState.Success(Unit)
-                        }
-                    )
-                }
+                updateScheduleList(updatedList.toPersistentList())
+
+                if (updatedList.isEmpty()) updateScheduleUiState(UiState.Empty)
+                else updateScheduleUiState(UiState.Success(Unit))
+
                 _isLast.value = response.isLast
                 _page.value = response.currentPage
             }.onFailure {
