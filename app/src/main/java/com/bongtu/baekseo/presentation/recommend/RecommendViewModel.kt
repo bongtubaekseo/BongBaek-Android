@@ -84,7 +84,7 @@ class RecommendViewModel @Inject constructor(
         _searchTerm.value = searchTerm
     }
 
-    fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
+    private fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
         currentState.copy(loadState = newLoadState)
     }
 
@@ -215,8 +215,6 @@ class RecommendViewModel @Inject constructor(
 
     fun saveEventInformation() = viewModelScope.launch {
         with(uiState.value) {
-            // TODO: 반복되는 부분은 추후 리팩토링해서 묶을 수 있게끔 설정
-            // TODO: null-assertion vs elvis 멘토링 이후에 리팩
             eventRepository.postEventInfo(
                 host = Host(
                     name = name,
