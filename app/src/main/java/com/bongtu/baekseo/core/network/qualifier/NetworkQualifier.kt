@@ -13,8 +13,3 @@ annotation class NoAuth
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
 annotation class Kakao
-
-@Qualifier
-@Retention(AnnotationRetention.BINARY)
-annotation class Dummy
-// TODO: 삭제 예정
