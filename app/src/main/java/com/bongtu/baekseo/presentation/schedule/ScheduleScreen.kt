@@ -31,14 +31,13 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
-import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
-import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToEdit
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
 import kotlinx.collections.immutable.persistentListOf
@@ -159,7 +158,7 @@ private fun ScheduleScreen(
 
                 is UiState.Success -> {
                     ScheduleListContent(
-                        scheduleEventList = loadState.data.events,
+                        scheduleEventList = uiState.scheduleList,
                         onCardClick = onCardClick,
                         lazyListState = lazyListState,
                         updatePage = viewModel::updatePage,
@@ -233,13 +232,7 @@ private fun ScheduleScreenPreview() {
     BongBaekTheme {
         ScheduleScreen(
             uiState = ScheduleState(
-                scheduleLoadState = UiState.Success(
-                    data = PageScheduleEvent(
-                        events = events,
-                        currentPage = 0,
-                        isLast = false,
-                    )
-                )
+                scheduleList = events,
             ),
             onCategoryClick = {},
             onBackClick = {},
