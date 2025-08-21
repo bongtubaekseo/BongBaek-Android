@@ -176,19 +176,6 @@ private fun RecommendMainScreen(
         }
     }
     val scrollState = rememberScrollState()
-    val isButtonEnabled = remember(
-        uiState.pageIndex,
-        uiState.name,
-        uiState.nickname,
-        uiState.relationType,
-        uiState.isHighAccuracy,
-        uiState.contactFrequency,
-        uiState.meetFrequency,
-        uiState.eventType,
-        uiState.eventDate,
-        uiState.isEventParticipated,
-        uiState.selectedPlace,
-    ) { checkButtonEnabled() }
 
     LaunchedEffect(uiState.pageIndex) {
         isTitleVisible = true
@@ -353,7 +340,7 @@ private fun RecommendMainScreen(
                         bottom = 24.dp,
                     )
                     .navigationBarsPadding(),
-                enabled = isButtonEnabled,
+                enabled = checkButtonEnabled(),
             )
         }
     }
