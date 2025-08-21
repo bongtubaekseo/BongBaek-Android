@@ -142,10 +142,6 @@ class RecommendViewModel @Inject constructor(
         _searchTerm.value = newLocation?.name.orEmpty()
     }
 
-    fun updateExpense(newExpense: Int) = _uiState.update {
-        it.copy(expense = newExpense)
-    }
-
     fun updateButtonState(): Boolean {
         with(uiState.value) {
             return when (pageIndex) {
