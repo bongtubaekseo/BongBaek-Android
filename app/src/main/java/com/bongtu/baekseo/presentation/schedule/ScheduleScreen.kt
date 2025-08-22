@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -44,7 +43,6 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ScheduleRoute(
-    setBottomBarVisible: (Boolean) -> Unit,
     navigateToUp: () -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToEdit: () -> Unit,
@@ -74,13 +72,6 @@ fun ScheduleRoute(
 
     LaunchedEffect(uiState.eventCategoryType) {
         lazyListState.scrollToItem(0)
-    }
-
-    DisposableEffect(Unit) {
-        setBottomBarVisible(false)
-        onDispose {
-            setBottomBarVisible(true)
-        }
     }
 
     ScheduleScreen(

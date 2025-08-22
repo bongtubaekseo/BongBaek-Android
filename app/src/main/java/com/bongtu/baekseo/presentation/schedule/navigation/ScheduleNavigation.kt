@@ -13,7 +13,6 @@ fun NavController.navigateToSchedule(navOptions: NavOptions? = null) =
     navigate(Schedule, navOptions)
 
 fun NavGraphBuilder.scheduleGraph(
-    setBottomBarVisible: (Boolean) -> Unit,
     navigateToUp: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToDetail: (String) -> Unit,
@@ -21,7 +20,6 @@ fun NavGraphBuilder.scheduleGraph(
 ) {
     composable<Schedule> {
         ScheduleRoute(
-            setBottomBarVisible = setBottomBarVisible,
             navigateToUp = navigateToUp,
             navigateToDetail = navigateToDetail,
             navigateToEdit = navigateToEdit,

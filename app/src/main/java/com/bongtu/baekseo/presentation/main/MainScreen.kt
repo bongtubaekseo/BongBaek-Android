@@ -179,7 +179,6 @@ private fun MainNavHost(
         )
 
         scheduleGraph(
-            setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToDetail = { eventId ->
