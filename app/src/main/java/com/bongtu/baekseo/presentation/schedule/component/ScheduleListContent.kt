@@ -48,6 +48,13 @@ fun ScheduleListContent(
     val navigationBarsPadding =
         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
+    val hasUserScrolled = remember(lazyListState) {
+        // 첫 아이템이 화면 위로 올라갔거나, 스크롤 중일 때 true
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
+        }
+    }
+
     LazyColumn(
         modifier = modifier
             .fillMaxSize(),
@@ -123,13 +130,6 @@ fun ScheduleListContent(
                     }
                 }
             }
-        }
-    }
-
-    val hasUserScrolled = remember(lazyListState) {
-        // 첫 아이템이 화면 위로 올라갔거나, 스크롤 중일 때 true
-        derivedStateOf {
-            lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
         }
     }
 
