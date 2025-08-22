@@ -50,7 +50,6 @@ fun ScheduleRoute(
     LaunchedEffect(Unit) {
         viewModel.clearPage()
         viewModel.fetchScheduleEvent()
-        viewModel.getUsername()
     }
 
     LaunchedEffect(uiState.eventCategoryType) {
@@ -64,7 +63,7 @@ fun ScheduleRoute(
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
-        viewModel = viewModel,
+        updatePage = viewModel::updatePage,
         modifier = modifier,
     )
 }
@@ -77,7 +76,7 @@ private fun ScheduleScreen(
     onCardClick: (String) -> Unit,
     navigateToEdit: () -> Unit,
     lazyListState: LazyListState,
-    viewModel: ScheduleViewModel,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -135,7 +134,7 @@ private fun ScheduleScreen(
                         scheduleEventList = uiState.scheduleList,
                         onCardClick = onCardClick,
                         lazyListState = lazyListState,
-                        updatePage = viewModel::updatePage,
+                        updatePage = updatePage,
                     )
                 }
             }
@@ -213,7 +212,7 @@ private fun ScheduleScreenPreview() {
             onCardClick = {},
             navigateToEdit = {},
             lazyListState = rememberLazyListState(),
-            viewModel = hiltViewModel(),
+            updatePage = {},
             modifier = Modifier,
         )
     }
