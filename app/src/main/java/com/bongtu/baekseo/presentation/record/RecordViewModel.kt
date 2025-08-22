@@ -50,7 +50,8 @@ class RecordViewModel @Inject constructor(
                         eventCategoryType = uiState.value.eventCategoryType,
                     )
                 }
-                fetchRecordEvent()
+                clearPage()
+                fetchRecordEvent(requestedPage = 0)
             }.onFailure {
                 updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
@@ -61,9 +62,7 @@ class RecordViewModel @Inject constructor(
             val page = requestedPage ?: _page.value
             val isFirstPage = page == 0
 
-            if (isFirstPage) {
-                updateRecordUiState(UiState.Loading)
-            }
+            if (isFirstPage) updateRecordUiState(UiState.Loading)
 
             eventRepository.getRecordEvents(
                 page = page,
@@ -130,11 +129,10 @@ class RecordViewModel @Inject constructor(
             }
         }
 
-    fun clearPage() =
-        viewModelScope.launch {
-            _page.value = 0
-            _isLast.value = false
-        }
+    fun clearPage() {
+        _page.value = 0
+        _isLast.value = false
+    }
 
     fun updateDeleteMode() =
         _uiState.update { currentState ->
