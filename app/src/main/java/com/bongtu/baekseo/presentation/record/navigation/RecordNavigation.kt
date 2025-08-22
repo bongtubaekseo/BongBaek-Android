@@ -17,7 +17,6 @@ fun NavGraphBuilder.recordGraph(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToAdd: () -> Unit,
     navigateToDetail: (String) -> Unit,
-    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     composable<Record> {
@@ -25,7 +24,6 @@ fun NavGraphBuilder.recordGraph(
             setBottomBarVisible = setBottomBarVisible,
             navigateToDetail = navigateToDetail,
             navigateToAdd = navigateToAdd,
-            innerPadding = innerPadding,
             modifier = modifier,
         )
     }

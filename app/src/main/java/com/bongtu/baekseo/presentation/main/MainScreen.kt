@@ -7,13 +7,18 @@ import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
@@ -45,8 +50,8 @@ fun MainScreen(
         bottomBar = {
             AnimatedVisibility(
                 visible = navigator.showBottomBar(),
-                enter = fadeIn() + expandVertically(),
-                exit = shrinkVertically() + fadeOut(),
+                enter = fadeIn() + slideIn { IntOffset(0, it.height) },
+                exit = fadeOut() + slideOut { IntOffset(0, it.height) },
             ) {
                 MainBottomBar(
                     tabs = MainTab.entries.toImmutableList(),
@@ -59,18 +64,18 @@ fun MainScreen(
         modifier = Modifier
             .fillMaxSize(),
     ) { innerPadding ->
-        MainNavHost(
-            navigator = navigator,
-            innerPadding = innerPadding,
-            modifier = Modifier,
-        )
+        CompositionLocalProvider(LocalBottomNavigationBarsPadding provides innerPadding) {
+            MainNavHost(
+                navigator = navigator,
+                modifier = Modifier,
+            )
+        }
     }
 }
 
 @Composable
 private fun MainNavHost(
     navigator: MainNavigator,
-    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     NavHost(
@@ -125,7 +130,6 @@ private fun MainNavHost(
                     eventId = eventId,
                 )
             },
-            bottomPadding = innerPadding.calculateBottomPadding(),
             modifier = modifier,
         )
 
@@ -165,7 +169,6 @@ private fun MainNavHost(
                 )
             },
             navigateToAdd = navigator.navController::navigateToEdit,
-            innerPadding = innerPadding,
             modifier = modifier,
         )
 

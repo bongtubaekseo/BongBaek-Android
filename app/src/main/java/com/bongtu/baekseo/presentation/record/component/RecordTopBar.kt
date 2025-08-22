@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.record.component
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -40,7 +41,8 @@ fun RecordTopBar(
     }
 
     BongBaekTopBar(
-        modifier = modifier,
+        modifier = modifier
+            .statusBarsPadding(),
         title = stringResource(title),
         topBarType = topBarType,
         leadingIcon = if (isDeleteMode) {

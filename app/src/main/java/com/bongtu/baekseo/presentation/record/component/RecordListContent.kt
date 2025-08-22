@@ -7,11 +7,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -38,10 +42,13 @@ import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.R.string.record_card_weekday
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
+import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.plus
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
@@ -66,7 +73,8 @@ fun RecordListContent(
         modifier = modifier
             .fillMaxSize(),
         state = lazyListState,
-        contentPadding = PaddingValues(horizontal = 20.dp),
+        contentPadding = PaddingValues(horizontal = 20.dp)
+                + WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
     ) {
         itemsIndexed(yearMonthEventItems) { index, item ->
             val previousItem = yearMonthEventItems.getOrNull(index - 1)

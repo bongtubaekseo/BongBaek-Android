@@ -20,7 +20,6 @@ fun HomeRoute(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToDetail: (String) -> Unit,
-    bottomPadding: Dp,
     modifier: Modifier = Modifier,
 ) {
     val navController = rememberNavController()
@@ -38,8 +37,7 @@ fun HomeRoute(
                 navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navController::navigateToSchedule,
-                modifier = modifier
-                    .padding(bottom = bottomPadding),
+                modifier = modifier,
             )
         }
 
