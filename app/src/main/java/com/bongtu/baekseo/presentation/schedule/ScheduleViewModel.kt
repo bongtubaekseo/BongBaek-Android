@@ -7,14 +7,11 @@ import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
-import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleSideEffect
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -27,9 +24,6 @@ class ScheduleViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ScheduleState())
     val uiState = _uiState.asStateFlow()
-
-    private val _sideEffect = MutableSharedFlow<ScheduleSideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
 
     private val _page = MutableStateFlow(0)
 
@@ -119,16 +113,4 @@ class ScheduleViewModel @Inject constructor(
                 )
             }
         }
-
-    fun navigateToHome() = viewModelScope.launch {
-        _sideEffect.emit(ScheduleSideEffect.NavigateToHome)
-    }
-
-    fun navigateToDetail(eventId: String) = viewModelScope.launch {
-        _sideEffect.emit(ScheduleSideEffect.NavigateToDetail(eventId))
-    }
-
-    fun navigateToEdit() = viewModelScope.launch {
-        _sideEffect.emit(ScheduleSideEffect.NavigateToEdit)
-    }
 }

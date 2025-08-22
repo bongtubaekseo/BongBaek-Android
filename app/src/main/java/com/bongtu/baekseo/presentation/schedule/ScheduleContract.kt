@@ -15,10 +15,4 @@ class ScheduleContract {
         val eventCategoryType: EventCategoryType = EventCategoryType.ALL,
         val name: String = "",
     )
-
-    sealed class ScheduleSideEffect {
-        data object NavigateToHome : ScheduleSideEffect()
-        data class NavigateToDetail(val eventId: String) : ScheduleSideEffect()
-        data object NavigateToEdit : ScheduleSideEffect()
-    }
 }
