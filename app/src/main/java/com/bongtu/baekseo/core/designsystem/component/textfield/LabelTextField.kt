@@ -54,7 +54,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  @param isEditable write / read
  *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
- *  @param keyBoardType KeyBoardType
+ *  @param keyboardType KeyboardType
  *  @param isClearButtonEnabled 텍스트 clear 버튼 활성화 여부
  */
 @Composable
@@ -69,7 +69,7 @@ fun LabelTextField(
     isEditable: Boolean = true,
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
-    keyBoardType: KeyboardType = KeyboardType.Unspecified,
+    keyboardType: KeyboardType = KeyboardType.Unspecified,
     isClearButtonEnabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
@@ -137,7 +137,7 @@ fun LabelTextField(
             textStyle = BongBaekTheme.typography.body2Regular16,
             interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(
-                keyboardType = keyBoardType,
+                keyboardType = keyboardType,
                 imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(

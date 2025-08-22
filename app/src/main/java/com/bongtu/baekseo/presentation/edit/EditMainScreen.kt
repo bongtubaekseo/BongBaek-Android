@@ -305,7 +305,7 @@ private fun EditMainScreen(
                         errorText = uiState.costError,
                         onTextChange = onCostChange,
                         isRequired = true,
-                        keyBoardType = KeyboardType.NumberPassword,
+                        keyboardType = KeyboardType.NumberPassword,
                         visualTransformation = CostTextFieldFormat(),
                     )
 
