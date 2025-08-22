@@ -29,29 +29,34 @@ class ScheduleViewModel @Inject constructor(
 
     private val _isLast = MutableStateFlow(false)
 
-    fun fetchScheduleEvent() =
+    init {
+        getUsername()
+    }
+
+    fun fetchScheduleEvent(requestedPage: Int? = null) =
         viewModelScope.launch {
-            val isFirstPage = _page.value == 0
+            val page = requestedPage ?: _page.value
+            val isFirstPage = page == 0
 
             if (isFirstPage) updateScheduleUiState(UiState.Loading)
 
             eventRepository.getScheduleEvents(
-                page = _page.value,
+                page = page,
                 category = uiState.value.eventCategoryType.label,
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
-                    if (isFirstPage) {
-                        newEvents
-                    } else {
-                        val existingEvents = uiState.value.scheduleList
-                        existingEvents + newEvents
-                    }
+                    if (isFirstPage) newEvents
+                    else uiState.value.scheduleList + newEvents
 
-                updateScheduleList(updatedList.toPersistentList())
-
-                if (updatedList.isEmpty()) updateScheduleUiState(UiState.Empty)
-                else updateScheduleUiState(UiState.Success(Unit))
+                _uiState.update { current ->
+                    current.copy(
+                        scheduleList = updatedList.toPersistentList(),
+                        scheduleLoadState =
+                            if (updatedList.isEmpty()) UiState.Empty
+                            else UiState.Success(Unit),
+                    )
+                }
 
                 _isLast.value = response.isLast
                 _page.value = response.currentPage
@@ -94,8 +99,8 @@ class ScheduleViewModel @Inject constructor(
     fun updatePage() =
         viewModelScope.launch {
             if (!_isLast.value) {
-                _page.value += 1
-                fetchScheduleEvent()
+                val next = _page.value + 1
+                fetchScheduleEvent(requestedPage = next)
             }
         }
 
@@ -105,7 +110,7 @@ class ScheduleViewModel @Inject constructor(
             _isLast.value = false
         }
 
-    fun getUsername() =
+    private fun getUsername() =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
