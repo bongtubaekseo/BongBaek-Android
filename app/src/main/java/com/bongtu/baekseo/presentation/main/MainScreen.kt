@@ -1,8 +1,12 @@
 package com.bongtu.baekseo.presentation.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
+import androidx.compose.animation.expandVertically
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
@@ -39,16 +43,21 @@ fun MainScreen(
 ) {
     Scaffold(
         bottomBar = {
-            MainBottomBar(
-                isVisible = navigator.showBottomBar(),
-                tabs = MainTab.entries.toImmutableList(),
-                currentTab = navigator.currentTab,
-                onTabSelected = navigator::navigate,
-            )
+            AnimatedVisibility(
+                visible = navigator.showBottomBar(),
+                enter = fadeIn() + expandVertically(),
+                exit = shrinkVertically() + fadeOut(),
+            ) {
+                MainBottomBar(
+                    tabs = MainTab.entries.toImmutableList(),
+                    currentTab = navigator.currentTab,
+                    onTabSelected = navigator::navigate,
+                )
+            }
         },
+        containerColor = BongBaekTheme.colors.gray900,
         modifier = Modifier
-            .fillMaxSize()
-            .background(BongBaekTheme.colors.gray900),
+            .fillMaxSize(),
     ) { innerPadding ->
         MainNavHost(
             navigator = navigator,

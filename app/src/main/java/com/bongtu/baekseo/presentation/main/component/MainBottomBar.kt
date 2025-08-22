@@ -1,10 +1,5 @@
 package com.bongtu.baekseo.presentation.main.component
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideIn
-import androidx.compose.animation.slideOut
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -27,7 +22,6 @@ import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -37,59 +31,45 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainBottomBar(
-    isVisible: Boolean,
     tabs: ImmutableList<MainTab>,
     currentTab: MainTab?,
     onTabSelected: (MainTab) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    AnimatedVisibility(
-        visible = isVisible,
-        enter = fadeIn() + slideIn { IntOffset(0, 0) },
-        exit = fadeOut() + slideOut { IntOffset(0, 0) },
+    Row(
         modifier = modifier
-            .background(BongBaekTheme.colors.gray900),
+            .fillMaxWidth()
+            .background(
+                brush = Brush.verticalGradient(
+                    colors = listOf(
+                        BongBaekTheme.colors.gray750,
+                        BongBaekTheme.colors.gray850,
+                    ),
+                ),
+                shape = RoundedCornerShape(
+                    topStart = 10.dp,
+                    topEnd = 10.dp,
+                ),
+            )
+            .padding(
+                top = 12.dp,
+            )
+            .navigationBarsPadding(),
+        horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.verticalGradient(
-                        colors = listOf(
-                            BongBaekTheme.colors.gray750,
-                            BongBaekTheme.colors.gray850,
-                        ),
-                    ),
-                    shape = RoundedCornerShape(
-                        topStart = 10.dp,
-                        topEnd = 10.dp,
-                    ),
-                )
-                .padding(
-                    top = 12.dp,
-                )
-                .navigationBarsPadding(),
-            horizontalArrangement = Arrangement.SpaceAround,
-        ) {
-            tabs.forEach { tab ->
-                val isSelected = tab == currentTab
-                val iconColor =
-                    if (isSelected) BongBaekTheme.colors.white
-                    else BongBaekTheme.colors.gray400
-                val textColor =
-                    if (isSelected) BongBaekTheme.colors.white
-                    else BongBaekTheme.colors.gray400
+        tabs.forEach { tab ->
+            val selectedColor =
+                if (tab == currentTab) BongBaekTheme.colors.white
+                else BongBaekTheme.colors.gray400
 
-                MainNavigationBarItem(
-                    tab = tab,
-                    onClick = {
-                        onTabSelected(tab)
-                    },
-                    iconColor = iconColor,
-                    textColor = textColor,
-                    modifier = Modifier.weight(1f),
-                )
-            }
+            MainNavigationBarItem(
+                tab = tab,
+                onClick = {
+                    onTabSelected(tab)
+                },
+                selectedColor = selectedColor,
+                modifier = Modifier.weight(1f),
+            )
         }
     }
 }
@@ -98,8 +78,7 @@ fun MainBottomBar(
 private fun MainNavigationBarItem(
     tab: MainTab,
     onClick: () -> Unit,
-    iconColor: Color,
-    textColor: Color,
+    selectedColor: Color,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -112,13 +91,13 @@ private fun MainNavigationBarItem(
         Icon(
             imageVector = ImageVector.vectorResource(tab.iconRes),
             contentDescription = stringResource(tab.title),
-            tint = iconColor,
+            tint = selectedColor,
         )
 
         Text(
             text = stringResource(tab.title),
             style = BongBaekTheme.typography.body2Regular14,
-            color = textColor,
+            color = selectedColor,
         )
     }
 }
@@ -128,7 +107,6 @@ private fun MainNavigationBarItem(
 private fun MainBottomBarPreview() {
     BongBaekTheme {
         MainBottomBar(
-            isVisible = true,
             tabs = MainTab.entries.toImmutableList(),
             currentTab = MainTab.HOME,
             onTabSelected = {},
