@@ -33,6 +33,10 @@ class RecordViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<RecordSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
+    private val _page = MutableStateFlow(0)
+
+    private val _isLast = MutableStateFlow(false)
+
     private fun deleteEvents() =
         viewModelScope.launch {
             eventRepository.deleteEvents(
@@ -42,7 +46,6 @@ class RecordViewModel @Inject constructor(
                 updateDeleteModeCancel()
                 _uiState.update { currentState ->
                     currentState.copy(
-                        page = 0,
                         attendType = uiState.value.attendType,
                         eventCategoryType = uiState.value.eventCategoryType,
                     )
@@ -53,16 +56,17 @@ class RecordViewModel @Inject constructor(
             }
         }
 
-    fun fetchRecordEvent() =
+    fun fetchRecordEvent(requestedPage: Int? = null) =
         viewModelScope.launch {
-            val isFirstPage = uiState.value.page == 0
+            val page = requestedPage ?: _page.value
+            val isFirstPage = page == 0
 
             if (isFirstPage) {
                 updateRecordUiState(UiState.Loading)
             }
 
             eventRepository.getRecordEvents(
-                page = uiState.value.page,
+                page = page,
                 attended = uiState.value.attendType.isAttended,
                 category = uiState.value.eventCategoryType.label,
             ).onSuccess { response ->
@@ -90,10 +94,10 @@ class RecordViewModel @Inject constructor(
                                 )
                             )
                         },
-                        page = response.currentPage,
-                        isLast = response.isLast,
                     )
                 }
+                _isLast.value = response.isLast
+                _page.value = response.currentPage
             }.onFailure {
                 updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
@@ -120,21 +124,16 @@ class RecordViewModel @Inject constructor(
 
     fun updateNextPage() =
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    page = uiState.value.page + 1,
-                )
+            if (!_isLast.value) {
+                val next = _page.value + 1
+                fetchRecordEvent(requestedPage = next)
             }
-            if (!uiState.value.isLast) fetchRecordEvent()
         }
 
     fun clearPage() =
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    page = 0,
-                )
-            }
+            _page.value = 0
+            _isLast.value = false
         }
 
     fun updateDeleteMode() =
@@ -168,9 +167,10 @@ class RecordViewModel @Inject constructor(
         }
 
     fun updateEventType(eventCategoryType: EventCategoryType) {
+        clearPage()
+
         _uiState.update { currentState ->
             currentState.copy(
-                page = 0,
                 eventCategoryType = eventCategoryType,
             )
         }
@@ -178,9 +178,10 @@ class RecordViewModel @Inject constructor(
     }
 
     fun selectAttendType(newAttendType: AttendType) {
+        clearPage()
+
         _uiState.update { currentState ->
             currentState.copy(
-                page = 0,
                 attendType = newAttendType,
                 eventCategoryType = EventCategoryType.ALL,
             )
