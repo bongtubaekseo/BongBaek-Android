@@ -62,7 +62,6 @@ fun BongBaekScheduleCard(
                 color = BongBaekTheme.colors.gray750,
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(scheduleCardType.padding)
             .then(
                 if (isHomeCard) {
                     Modifier.border(
@@ -73,7 +72,8 @@ fun BongBaekScheduleCard(
                 } else {
                     Modifier.noRippleClickable(onCardClick)
                 }
-            ),
+            )
+            .padding(scheduleCardType.padding),
     ) {
         Text(
             text = hostNickname,
