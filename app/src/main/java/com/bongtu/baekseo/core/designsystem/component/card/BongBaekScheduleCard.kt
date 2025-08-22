@@ -205,7 +205,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025.02.11",
+                eventDate = "2025-02-11",
                 location = "강남",
                 onCardClick = {},
             )
@@ -216,7 +216,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025.02.11",
+                eventDate = "2025-02-11",
                 location = "강남",
                 onCardClick = {},
             )
