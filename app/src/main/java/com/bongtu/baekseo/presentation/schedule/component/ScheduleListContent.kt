@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -125,10 +126,19 @@ fun ScheduleListContent(
         }
     }
 
-    lazyListState.OnBottomReached(
-        buffer = 3,
-        onLoadMore = updatePage,
-    )
+    val hasUserScrolled = remember(lazyListState) {
+        // 첫 아이템이 화면 위로 올라갔거나, 스크롤 중일 때 true
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
+        }
+    }
+
+    if (hasUserScrolled.value) {
+        lazyListState.OnBottomReached(
+            buffer = 3,
+            onLoadMore = updatePage,
+        )
+    }
 }
 
 @Preview
