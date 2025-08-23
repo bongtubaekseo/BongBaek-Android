@@ -50,8 +50,12 @@ fun BongBaekScheduleCard(
     val isHomeCard = scheduleCardType == ScheduleCardType.HOME
     val isScheduleCard = scheduleCardType == ScheduleCardType.SCHEDULE
 
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
-    val homeDate = eventDate.toFormattedDateWithDay()
+    val dateAndDay = runCatching { eventDate.toFormattedDateAndDay() }
+        .getOrElse { eventDate to "" }
+    val (date, weekDay) = dateAndDay
+    val homeDate = runCatching { eventDate.toFormattedDateWithDay() }
+        .getOrElse { eventDate }
+
     val spacerHeight = if (isHomeCard) 10.dp else 8.dp
     val spacerBadgeHeight = if (isHomeCard) 4.dp else 8.dp
 
