@@ -49,7 +49,6 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
@@ -110,10 +109,7 @@ fun OnBoardingSettingScreen(
                     text = uiState.name,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
-                    validateResult = if (uiState.nameError.isNotEmpty())
-                        TextFieldValidateResult.Error(uiState.nameError)
-                    else
-                        TextFieldValidateResult.Default,
+                    errorText = uiState.nameError,
                     onTextChange = viewModel::updateName,
                     isClearButtonEnabled = false,
                 )

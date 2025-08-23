@@ -49,8 +49,8 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.plus
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
-import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
+import com.bongtu.baekseo.presentation.schedule.model.ScheduleYearMonthEventItem
+import com.bongtu.baekseo.presentation.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
