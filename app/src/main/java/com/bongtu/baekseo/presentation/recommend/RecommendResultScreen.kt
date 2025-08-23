@@ -136,7 +136,7 @@ private fun RecommendResultScreen(
                 }
 
                 RecommendExpenseCard(
-                    event = uiState.eventType!!,
+                    event = requireNotNull(uiState.eventType),
                     expense = uiState.expense,
                     isLottieEnded = isLottieEnded,
                     modifier = Modifier
@@ -149,7 +149,7 @@ private fun RecommendResultScreen(
                 expense = uiState.expense,
                 minExpense = uiState.minExpense,
                 maxExpense = uiState.maxExpense,
-                event = uiState.eventType!!.label,
+                event = requireNotNull(uiState.eventType).label,
                 location = displayLocation,
                 isLottieEnded = isLottieEnded,
                 onConfirmClick = onConfirmClick,

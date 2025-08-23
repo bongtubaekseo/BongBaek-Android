@@ -1,15 +1,15 @@
-package com.bongtu.baekseo.presentation.home.schedule
+package com.bongtu.baekseo.presentation.schedule
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
-import com.bongtu.baekseo.data.model.event.PageScheduleEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
-import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -25,52 +25,47 @@ class ScheduleViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(ScheduleState())
     val uiState = _uiState.asStateFlow()
 
-    fun fetchScheduleEvent() =
-        viewModelScope.launch {
-            val isFirstPage = uiState.value.page == 0
+    private val _page = MutableStateFlow(0)
 
-            if (isFirstPage) {
-                updateScheduleUiState(UiState.Loading)
-            }
+    private val _isLast = MutableStateFlow(false)
+
+    init {
+        getUsername()
+    }
+
+    fun fetchScheduleEvent(requestedPage: Int? = null) =
+        viewModelScope.launch {
+            val page = requestedPage ?: _page.value
+            val isFirstPage = page == 0
+
+            if (isFirstPage) updateScheduleUiState(UiState.Loading)
 
             eventRepository.getScheduleEvents(
-                page = uiState.value.page,
+                page = page,
                 category = uiState.value.eventCategoryType.label,
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
-                    if (uiState.value.page == 0) {
-                        newEvents
-                    } else {
-                        val existingEvents =
-                            (uiState.value.scheduleLoadState as? UiState.Success)?.data?.events
-                                ?: persistentListOf()
-                        existingEvents + newEvents
-                    }
+                    if (isFirstPage) newEvents
+                    else uiState.value.scheduleList + newEvents
 
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        scheduleLoadState = if (updatedList.isEmpty()) {
-                            UiState.Empty
-                        } else {
-                            UiState.Success(
-                                PageScheduleEvent(
-                                    events = updatedList.toPersistentList(),
-                                    currentPage = response.currentPage,
-                                    isLast = response.isLast,
-                                )
-                            )
-                        },
-                        page = response.currentPage,
-                        isLast = response.isLast,
+                _uiState.update { current ->
+                    current.copy(
+                        scheduleList = updatedList.toPersistentList(),
+                        scheduleLoadState =
+                            if (updatedList.isEmpty()) UiState.Empty
+                            else UiState.Success(Unit),
                     )
                 }
+
+                _isLast.value = response.isLast
+                _page.value = response.currentPage
             }.onFailure {
                 updateScheduleUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
 
-    private fun updateScheduleUiState(value: UiState<PageScheduleEvent>) =
+    private fun updateScheduleUiState(value: UiState<Unit>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
@@ -79,11 +74,22 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-    fun updateEventType(eventCategoryType: EventCategoryType) =
+    private fun updateScheduleList(value: ImmutableList<ScheduleEvent>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    page = 0,
+                    scheduleList = value,
+                )
+            }
+        }
+
+    fun updateEventType(eventCategoryType: EventCategoryType) =
+        viewModelScope.launch {
+            _page.value = 0
+            _isLast.value = false
+
+            _uiState.update { currentState ->
+                currentState.copy(
                     eventCategoryType = eventCategoryType,
                 )
             }
@@ -92,24 +98,19 @@ class ScheduleViewModel @Inject constructor(
 
     fun updatePage() =
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    page = uiState.value.page + 1,
-                )
+            if (!_isLast.value) {
+                val next = _page.value + 1
+                fetchScheduleEvent(requestedPage = next)
             }
-            if (!uiState.value.isLast) fetchScheduleEvent()
         }
 
     fun clearPage() =
         viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    page = 0,
-                )
-            }
+            _page.value = 0
+            _isLast.value = false
         }
 
-    fun getUsername() =
+    private fun getUsername() =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(

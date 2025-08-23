@@ -1,46 +1,37 @@
-package com.bongtu.baekseo.presentation.home.schedule.component
+package com.bongtu.baekseo.presentation.schedule.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
-import com.bongtu.baekseo.R.string.record_card_weekday
-import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
+import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
-import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.model.ScheduleYearMonthEventItem
-import com.bongtu.baekseo.presentation.home.schedule.model.toYearMonthEventItemList
+import com.bongtu.baekseo.presentation.schedule.model.ScheduleYearMonthEventItem
+import com.bongtu.baekseo.presentation.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -54,7 +45,14 @@ fun ScheduleListContent(
     modifier: Modifier = Modifier,
 ) {
     val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
-    val navigationBarsPadding = WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+    val navigationBarsPadding =
+        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
+    val hasUserScrolled = remember(lazyListState) {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
+        }
+    }
 
     LazyColumn(
         modifier = modifier
@@ -117,7 +115,8 @@ fun ScheduleListContent(
 
                 is ScheduleYearMonthEventItem.Event -> {
                     with(item.event) {
-                        ScheduleCard(
+                        BongBaekScheduleCard(
+                            scheduleCardType = ScheduleCardType.SCHEDULE,
                             hostName = hostName,
                             hostNickname = hostNickname,
                             eventCategory = eventCategory,
@@ -133,91 +132,11 @@ fun ScheduleListContent(
         }
     }
 
-    lazyListState.OnBottomReached(
-        buffer = 3,
-        onLoadMore = updatePage,
-    )
-}
-
-@Composable
-private fun ScheduleCard(
-    hostName: String,
-    hostNickname: String,
-    eventCategory: String,
-    relationship: String,
-    cost: Int,
-    eventDate: String,
-    onCardClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
-
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(size = 10.dp))
-            .background(color = BongBaekTheme.colors.gray750)
-            .padding(
-                top = 16.dp,
-                bottom = 18.dp,
-                start = 20.dp,
-                end = 20.dp,
-            )
-            .noRippleClickable(onClick = onCardClick),
-    ) {
-        Text(
-            text = hostNickname,
-            color = BongBaekTheme.colors.primaryNormal,
-            style = BongBaekTheme.typography.captionRegular12,
+    if (hasUserScrolled.value) {
+        lazyListState.OnBottomReached(
+            buffer = 3,
+            onLoadMore = updatePage,
         )
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Text(
-                text = hostName,
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-            Text(
-                text = stringResource(record_card_cost, cost),
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold18,
-            )
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            BongBaekSmallBadge(
-                title = eventCategory,
-                modifier = Modifier.padding(end = 8.dp),
-            )
-
-            BongBaekSmallBadge(
-                title = relationship,
-            )
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Text(
-                text = date,
-                color = BongBaekTheme.colors.gray400,
-                style = BongBaekTheme.typography.captionRegular12,
-                modifier = Modifier.padding(end = 4.dp),
-            )
-
-            Text(
-                text = stringResource(record_card_weekday, weekDay),
-                color = BongBaekTheme.colors.gray400,
-                style = BongBaekTheme.typography.captionRegular12,
-            )
-        }
     }
 }
 
