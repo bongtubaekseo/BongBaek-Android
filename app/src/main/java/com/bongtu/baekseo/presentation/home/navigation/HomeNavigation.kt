@@ -14,7 +14,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) = navigate(Home
 fun NavGraphBuilder.homeGraph(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
-    navigateToDetail: (String) -> Unit,
+    navigateToSchedule: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Home> {
