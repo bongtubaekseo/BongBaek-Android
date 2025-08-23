@@ -2,8 +2,6 @@ package com.bongtu.baekseo.core.designsystem.component.textfield
 
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
@@ -32,15 +30,17 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_nickname
-import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.R.string.label_text_field_required_text
+import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
+import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
  *  Label Text Field
@@ -49,11 +49,12 @@ import com.bongtu.baekseo.R.string.label_text_field_required_text
  *  @param labelImage 라벨 이미지 리소스
  *  @param text 입력값
  *  @param placeholder 힌트
+ *  @param errorText error 문구
  *  @param isRequired 필수 값 * 표시 여부
  *  @param isEditable write / read
  *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
- *  @param validateResult TextFieldValidateResult.Default / TextFieldValidateResult.Error
+ *  @param keyboardType KeyboardType
  *  @param isClearButtonEnabled 텍스트 clear 버튼 활성화 여부
  */
 @Composable
@@ -63,11 +64,12 @@ fun LabelTextField(
     text: String,
     placeholder: String,
     modifier: Modifier = Modifier,
+    errorText: String = "",
     isRequired: Boolean = false,
     isEditable: Boolean = true,
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
-    validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
+    keyboardType: KeyboardType = KeyboardType.Unspecified,
     isClearButtonEnabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
@@ -76,7 +78,7 @@ fun LabelTextField(
     val focusManager = LocalFocusManager.current
 
     val isFilled = text.isNotEmpty()
-    val isError = validateResult is TextFieldValidateResult.Error
+    val isError = errorText.isNotEmpty()
 
     val bongBaekColors = BongBaekTheme.colors
     val dividerColor = remember(isError, isFocused, isFilled) {
@@ -135,6 +137,7 @@ fun LabelTextField(
             textStyle = BongBaekTheme.typography.body2Regular16,
             interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(
+                keyboardType = keyboardType,
                 imeAction = ImeAction.Done,
             ),
             keyboardActions = KeyboardActions(
@@ -180,7 +183,7 @@ fun LabelTextField(
                         .size(14.dp),
                 )
                 Text(
-                    text = validateResult.message.orEmpty(),
+                    text = errorText,
                     modifier = Modifier
                         .padding(start = 4.dp),
                     style = BongBaekTheme.typography.captionRegular12,
@@ -203,28 +206,25 @@ private fun LabelTextFieldPreview() {
             verticalArrangement = Arrangement.Center,
         ) {
             var text by remember { mutableStateOf("봉봉") }
-            var validateResult: TextFieldValidateResult by remember {
-                mutableStateOf(
-                    TextFieldValidateResult.Default
-                )
-            }
 
             LabelTextField(
                 labelImage = ic_nickname,
                 labelName = "별명",
                 text = text,
+                errorText = validateName(text),
                 placeholder = "placeholder",
-                validateResult = validateResult,
-                onTextChange = {
-                    text = it
-                    validateResult = TextFieldValidateResult.Default
-                },
-                onInputDone = {
-                    validateResult = if (text.length < 2)
-                        TextFieldValidateResult.Error("2자 이상 입력해주세요.")
-                    else
-                        TextFieldValidateResult.Default
-                }
+                onTextChange = { text = it },
+                onInputDone = {},
+            )
+            LabelTextField(
+                labelImage = ic_nickname,
+                labelName = "이름",
+                text = text,
+                errorText = validateName(text),
+                placeholder = "이름을 입력해주세요",
+                onTextChange = { text = it },
+                onInputDone = {},
+                isClearButtonEnabled = false,
             )
         }
     }
@@ -241,28 +241,15 @@ private fun NoClearButtonLabelTextFieldPreview() {
             verticalArrangement = Arrangement.Center,
         ) {
             var text by remember { mutableStateOf("봉봉") }
-            var validateResult: TextFieldValidateResult by remember {
-                mutableStateOf(
-                    TextFieldValidateResult.Default
-                )
-            }
 
             LabelTextField(
                 labelImage = ic_nickname,
                 labelName = "이름",
                 text = text,
+                errorText = validateName(text),
                 placeholder = "이름을 입력해주세요",
-                validateResult = validateResult,
-                onTextChange = {
-                    text = it
-                    validateResult = TextFieldValidateResult.Default
-                },
-                onInputDone = {
-                    validateResult = if (text.length < 2)
-                        TextFieldValidateResult.Error("2자 이상 입력해주세요.")
-                    else
-                        TextFieldValidateResult.Default
-                },
+                onTextChange = { text = it },
+                onInputDone = {},
                 isClearButtonEnabled = false,
             )
         }

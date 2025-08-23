@@ -14,7 +14,7 @@ object TextFieldValidator {
     }
 
     fun validateCost(cost: String) = when {
-        cost.toInt() < 1 ->"1원 이상 적어주세요"
+        (cost.toIntOrNull() ?: 0) < 1 -> "1원 이상 적어주세요"
         else -> ""
     }
 }
