@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule.component
+package com.bongtu.baekseo.presentation.schedule.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column

@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule
+package com.bongtu.baekseo.presentation.schedule
 
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -11,7 +11,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -29,19 +28,17 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.home.schedule.ScheduleContract.ScheduleState
-import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleEmptyContent
-import com.bongtu.baekseo.presentation.home.schedule.component.ScheduleListContent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
+import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
+import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ScheduleRoute(
-    setBottomBarVisible: (Boolean) -> Unit,
-    onBackClick: () -> Unit,
+    navigateToUp: () -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToEdit: () -> Unit,
     modifier: Modifier = Modifier,
@@ -53,28 +50,20 @@ fun ScheduleRoute(
     LaunchedEffect(Unit) {
         viewModel.clearPage()
         viewModel.fetchScheduleEvent()
-        viewModel.getUsername()
     }
 
     LaunchedEffect(uiState.eventCategoryType) {
         lazyListState.scrollToItem(0)
     }
 
-    DisposableEffect(Unit) {
-        setBottomBarVisible(false)
-        onDispose {
-            setBottomBarVisible(true)
-        }
-    }
-
     ScheduleScreen(
         uiState = uiState,
         onCategoryClick = viewModel::updateEventType,
-        onBackClick = onBackClick,
+        onBackClick = navigateToUp,
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
-        viewModel = viewModel,
+        updatePage = viewModel::updatePage,
         modifier = modifier,
     )
 }
@@ -87,7 +76,7 @@ private fun ScheduleScreen(
     onCardClick: (String) -> Unit,
     navigateToEdit: () -> Unit,
     lazyListState: LazyListState,
-    viewModel: ScheduleViewModel,
+    updatePage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -142,10 +131,10 @@ private fun ScheduleScreen(
 
                 is UiState.Success -> {
                     ScheduleListContent(
-                        scheduleEventList = loadState.data.events,
+                        scheduleEventList = uiState.scheduleList,
                         onCardClick = onCardClick,
                         lazyListState = lazyListState,
-                        updatePage = viewModel::updatePage,
+                        updatePage = updatePage,
                     )
                 }
             }
@@ -216,20 +205,14 @@ private fun ScheduleScreenPreview() {
     BongBaekTheme {
         ScheduleScreen(
             uiState = ScheduleState(
-                scheduleLoadState = UiState.Success(
-                    data = PageScheduleEvent(
-                        events = events,
-                        currentPage = 0,
-                        isLast = false
-                    )
-                )
+                scheduleList = events,
             ),
             onCategoryClick = {},
             onBackClick = {},
             onCardClick = {},
             navigateToEdit = {},
             lazyListState = rememberLazyListState(),
-            viewModel = hiltViewModel(),
+            updatePage = {},
             modifier = Modifier,
         )
     }
