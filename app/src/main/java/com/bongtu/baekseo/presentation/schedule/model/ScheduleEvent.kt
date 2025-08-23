@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.schedule.model
+package com.bongtu.baekseo.presentation.schedule.model
 
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
