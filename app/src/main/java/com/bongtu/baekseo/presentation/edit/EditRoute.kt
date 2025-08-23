@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
-import androidx.navigation.navOptions
 import com.bongtu.baekseo.presentation.edit.navigation.EditRoute
 import com.bongtu.baekseo.presentation.edit.navigation.nestedEditGraph
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType

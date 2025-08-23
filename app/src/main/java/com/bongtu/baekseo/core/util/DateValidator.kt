@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.core.util
 
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
-import timber.log.Timber
 import java.time.LocalDate
 import java.time.Period
 

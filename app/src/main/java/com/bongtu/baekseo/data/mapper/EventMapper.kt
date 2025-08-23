@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.data.mapper
 
 import com.bongtu.baekseo.data.dto.event.DeleteEventsDto
-import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.EventInfoDto
 import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse

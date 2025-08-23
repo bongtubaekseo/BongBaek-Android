@@ -25,7 +25,6 @@ import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
@@ -34,6 +33,7 @@ import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
