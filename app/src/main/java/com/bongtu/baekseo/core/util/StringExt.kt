@@ -29,21 +29,21 @@ fun String.toFormattedDateWithDay(): String {
 /**
  * yyyy-mm-dd -> yyyy.mm.dd, (day)
  */
-fun String.toFormattedDateAndDay(): Pair<String, String> = runCatching {
+fun String.toFormattedDateAndDay(): Pair<String, String> = try {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
     val day = localDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
     date to day
-}.getOrElse { "" to "" }
+} catch (e: Exception) { "" to "" }
 
 /**
  * yyyy-mm-dd -> "MMM dd, yyyy"
  */
-fun String.toFormattedShortEnglishDate(): String = runCatching {
+fun String.toFormattedShortEnglishDate(): String = try {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH))
     date
-}.getOrElse { this }
+} catch (e: Exception) { this }
 
 /**
  * yyyy-mm-dd -> Pair(year, month)
@@ -56,7 +56,7 @@ fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
 /**
  * yyyy-mm-dd -> MMddyyyy
  */
-fun String.toFormattedMonthDayYear(): String = runCatching {
+fun String.toFormattedMonthDayYear(): String = try {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
-}.getOrElse { this }
+} catch (e: Exception) { this }
