@@ -26,13 +26,13 @@ import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_card_weekday
+import com.bongtu.baekseo.core.common.type.HomeScheduleCardInfoType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
-import com.bongtu.baekseo.presentation.home.type.HomeScheduleCardInfoType
 
 @Composable
 fun BongBaekScheduleCard(
