@@ -84,7 +84,7 @@ class RecommendViewModel @Inject constructor(
         _searchTerm.value = searchTerm
     }
 
-    fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
+    private fun updateLoadState(newLoadState: UiState<Unit>) = _uiState.update { currentState ->
         currentState.copy(loadState = newLoadState)
     }
 
@@ -142,10 +142,6 @@ class RecommendViewModel @Inject constructor(
         _searchTerm.value = newLocation?.name.orEmpty()
     }
 
-    fun updateExpense(newExpense: Int) = _uiState.update {
-        it.copy(expense = newExpense)
-    }
-
     fun updateButtonState(): Boolean {
         with(uiState.value) {
             return when (pageIndex) {
@@ -165,10 +161,10 @@ class RecommendViewModel @Inject constructor(
 
             eventRepository.postEventCost(
                 event = Event(
-                    eventType = eventType!!.label,
-                    relationType = relationType!!.label,
+                    eventType = requireNotNull(eventType).label,
+                    relationType = requireNotNull(relationType).label,
                     cost = expense,
-                    isEventParticipated = isEventParticipated!!,
+                    isEventParticipated = requireNotNull(isEventParticipated),
                     eventDate = eventDate,
                     note = "",
                 ),
@@ -219,18 +215,16 @@ class RecommendViewModel @Inject constructor(
 
     fun saveEventInformation() = viewModelScope.launch {
         with(uiState.value) {
-            // TODO: 반복되는 부분은 추후 리팩토링해서 묶을 수 있게끔 설정
-            // TODO: null-assertion vs elvis 멘토링 이후에 리팩
             eventRepository.postEventInfo(
                 host = Host(
                     name = name,
                     nickname = nickname,
                 ),
                 event = Event(
-                    eventType = eventType!!.label,
-                    relationType = relationType!!.label,
+                    eventType = requireNotNull(eventType).label,
+                    relationType = requireNotNull(relationType).label,
                     cost = expense,
-                    isEventParticipated = isEventParticipated!!,
+                    isEventParticipated = requireNotNull(isEventParticipated),
                     eventDate = eventDate.toFormattedDate(),
                     note = "",
                 ),
@@ -259,10 +253,10 @@ class RecommendViewModel @Inject constructor(
             eventId = "",
             hostName = name,
             hostNickname = nickname,
-            eventCategory = eventType!!.label,
-            relationship = relationType!!.label,
+            eventCategory = requireNotNull(eventType).label,
+            relationship = requireNotNull(relationType).label,
             cost = expense,
-            isEventParticipated = isEventParticipated!!,
+            isEventParticipated = requireNotNull(isEventParticipated),
             eventDate = eventDate,
             note = "",
             location = selectedPlace?.name.orEmpty(),
