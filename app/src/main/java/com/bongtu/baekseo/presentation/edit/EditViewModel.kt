@@ -2,8 +2,9 @@ package com.bongtu.baekseo.presentation.edit
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.designsystem.component.textfield.TextFieldValidateResult
 import com.bongtu.baekseo.core.local.cache.EventCache
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
 import com.bongtu.baekseo.data.model.event.Event
@@ -51,18 +52,6 @@ class EditViewModel @Inject constructor(
     private val _isManualSearch = MutableStateFlow(true)
 
     private val _entryType = MutableStateFlow<EditEntryType?>(null)
-
-    private val _nameValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val nameValidate = _nameValidate.asStateFlow()
-
-    private val _nicknameValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val nickNameValidate = _nicknameValidate.asStateFlow()
-
-    private val _costValidate =
-        MutableStateFlow<TextFieldValidateResult>(TextFieldValidateResult.Default)
-    val costValidate = _costValidate.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -122,14 +111,18 @@ class EditViewModel @Inject constructor(
         }
     }
 
-    fun updateName(newName: String) {
-        _uiState.update { it.copy(name = newName) }
-        _nameValidate.update { TextFieldValidateResult.validate(newName) }
+    fun updateName(newName: String) = _uiState.update {
+        it.copy(
+            name = newName,
+            nameError = validateName(newName),
+        )
     }
 
-    fun updateNickname(newNickname: String) {
-        _uiState.update { it.copy(nickname = newNickname) }
-        _nicknameValidate.update { TextFieldValidateResult.validate(newNickname) }
+    fun updateNickname(newNickname: String) = _uiState.update {
+        it.copy(
+            nickname = newNickname,
+            nicknameError = validateName(newNickname),
+        )
     }
 
     fun updateEventCategory(newEventCategory: String) = _uiState.update {
@@ -140,9 +133,13 @@ class EditViewModel @Inject constructor(
         it.copy(relationship = newRelationship)
     }
 
-    fun updateCost(newCost: String) {
-        _uiState.update { it.copy(cost = newCost) }
-        _costValidate.update { TextFieldValidateResult.validateCost(newCost) }
+    fun updateCost(newCost: String) = _uiState.update {
+        val digits = newCost.filter { it.isDigit() }
+        val costText = if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
+        it.copy(
+            cost = costText,
+            costError = validateCost(costText)
+        )
     }
 
     fun updateAttendLabel(newAttendLabel: String) = _uiState.update {
@@ -170,11 +167,14 @@ class EditViewModel @Inject constructor(
     fun clearSearchResult() = _uiState.update { it.copy(searchResult = persistentListOf()) }
 
     fun updateButtonState(): Boolean = with(uiState.value) {
-        name.isNotBlank() && nameValidate.value == TextFieldValidateResult.Default &&
-                nickname.isNotBlank() && nickNameValidate.value == TextFieldValidateResult.Default &&
+        name.isNotBlank() &&
+                nameError.isBlank() &&
+                nickname.isNotBlank() &&
+                nicknameError.isBlank() &&
                 eventCategory.isNotBlank() &&
                 relationship.isNotBlank() &&
-                cost.isNotBlank() && costValidate.value == TextFieldValidateResult.Default &&
+                cost.isNotBlank() &&
+                costError.isBlank() &&
                 attendLabel.isNotBlank() &&
                 eventDate.isNotBlank()
     }
