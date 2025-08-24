@@ -24,10 +24,10 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
@@ -172,7 +172,7 @@ private fun RecordScreen(
 
                 is UiState.Success -> {
                     RecordListContent(
-                        recordEventList = loadState.data.events,
+                        scheduleEventList = loadState.data.events,
                         isDeleteMode = uiState.isDeleteMode,
                         selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                         onCardClick = navigateToDetail,
@@ -183,7 +183,7 @@ private fun RecordScreen(
                 }
 
                 else -> {
-                    ScheduleEmptyContent(
+                    BongBaekScheduleEmptyContent(
                         eventType = category.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
