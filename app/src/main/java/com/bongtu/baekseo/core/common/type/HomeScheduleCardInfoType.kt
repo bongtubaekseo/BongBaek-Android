@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.home.type
+package com.bongtu.baekseo.core.common.type
 
 enum class HomeScheduleCardInfoType {
     LOCATION, DATE;

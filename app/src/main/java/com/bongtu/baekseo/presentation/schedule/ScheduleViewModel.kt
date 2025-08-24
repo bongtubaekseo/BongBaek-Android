@@ -104,11 +104,10 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
-    fun clearPage() =
-        viewModelScope.launch {
-            _page.value = 0
-            _isLast.value = false
-        }
+    fun clearPage() {
+        _page.value = 0
+        _isLast.value = false
+    }
 
     private fun getUsername() =
         viewModelScope.launch {
