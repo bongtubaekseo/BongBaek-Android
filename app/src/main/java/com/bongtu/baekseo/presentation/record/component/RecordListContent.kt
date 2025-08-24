@@ -2,8 +2,12 @@ package com.bongtu.baekseo.presentation.record.component
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyListState
@@ -40,6 +44,17 @@ fun RecordListContent(
     onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val contentBottomPadding =
+        if (isDeleteMode) 20.dp + WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding() else 20.dp
+
+    val contentPadding = PaddingValues(
+        start = 20.dp,
+        top = 20.dp,
+        end = 20.dp,
+        bottom = contentBottomPadding,
+    )
+
     BongBaekScheduleList(
         scheduleEventList = scheduleEventList,
         card = { event, padding ->
@@ -58,6 +73,7 @@ fun RecordListContent(
         lazyListState = lazyListState,
         updatePage = updatePage,
         modifier = modifier,
+        contentPadding = contentPadding,
     )
 }
 
