@@ -15,7 +15,7 @@ class DetailContract {
         val relationship: String = "",
         val cost: Int = 0,
         val isEventParticipated: Boolean = false,
-        val eventDate: String = "2025-07-19",
+        val eventDate: String = "",
         val note: String? = null,
         val locationInfo: Location? = null,
     )
