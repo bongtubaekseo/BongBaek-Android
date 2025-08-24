@@ -38,9 +38,5 @@ class EditContract {
             data object NavigateToSchedule : EditMainSideEffect()
             data object NavigateToLocation : EditMainSideEffect()
         }
-
-        sealed class EditLocationSideEffect : EditSideEffect {
-            data object NavigateToEditMain : EditLocationSideEffect()
-        }
     }
 }

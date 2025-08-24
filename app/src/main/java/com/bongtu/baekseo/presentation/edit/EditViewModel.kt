@@ -16,7 +16,6 @@ import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditLocationSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
@@ -282,10 +281,6 @@ class EditViewModel @Inject constructor(
 
     fun navigateToLocation() = viewModelScope.launch {
         _sideEffect.emit(EditMainSideEffect.NavigateToLocation)
-    }
-
-    fun navigateToEditMain() = viewModelScope.launch {
-        _sideEffect.emit(EditLocationSideEffect.NavigateToEditMain)
     }
 
     fun navigateToComplete() = viewModelScope.launch {
