@@ -19,7 +19,10 @@ import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import com.bongtu.baekseo.presentation.record.navigation.Record
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToEdit(navOptions: NavOptions? = null) = navigate(Edit, navOptions)
+fun NavController.navigateToEdit(
+    editEvent: EditEvent? = null,
+    navOptions: NavOptions? = null,
+) = navigate(Edit(editEvent), navOptions)
 
 fun NavGraphBuilder.editGraph(
     navController: NavController,
@@ -27,7 +30,9 @@ fun NavGraphBuilder.editGraph(
     navigateToFinal: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    composable<Edit> { backStackEntry ->
+    composable<Edit>(
+        typeMap = EditNavType.TYPE_MAP,
+    ) { backStackEntry ->
         val previousDestination = navController.previousBackStackEntry?.destination
 
         val entryType: EditEntryType = when {
@@ -87,4 +92,23 @@ fun NavGraphBuilder.nestedEditGraph(
 }
 
 @Serializable
-data object Edit : Route
+data class EditEvent(
+    val eventId: String,
+    val hostName: String,
+    val hostNickname: String,
+    val eventCategory: String,
+    val relationship: String,
+    val cost: Int,
+    val isEventParticipated: Boolean,
+    val eventDate: String,
+    val note: String,
+    val location: String,
+    val address: String,
+    val latitude: Double,
+    val longitude: Double,
+)
+
+@Serializable
+data class Edit(
+    val editEvent: EditEvent?,
+) : Route
