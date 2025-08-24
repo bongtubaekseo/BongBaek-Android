@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.detail
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.event.Location
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 
 class DetailContract {
     @Immutable
@@ -22,6 +23,6 @@ class DetailContract {
 
     sealed class DetailSideEffect {
         data object NavigateToRecord : DetailSideEffect()
-        data object NavigateToEdit : DetailSideEffect()
+        data class NavigateToEdit(val editEvent: EditEvent) : DetailSideEffect()
     }
 }

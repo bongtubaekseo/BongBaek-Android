@@ -66,13 +66,14 @@ import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.Na
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
 import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 
 private const val MEMO_RATIO = 320f / 152f
 
 @Composable
 fun DetailRoute(
     navigateUp: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
@@ -85,7 +86,7 @@ fun DetailRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToEdit -> navigateToEdit()
+                    is NavigateToEdit -> navigateToEdit(sideEffect.editEvent)
                     is NavigateToRecord -> navigateUp()
                 }
             }

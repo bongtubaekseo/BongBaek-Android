@@ -7,6 +7,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.detail.DetailRoute
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToDetail(eventId: String, navOptions: NavOptions? = null) =
@@ -14,7 +15,7 @@ fun NavController.navigateToDetail(eventId: String, navOptions: NavOptions? = nu
 
 fun NavGraphBuilder.detailGraph(
     navigateUp: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Detail> { backStackEntry ->
