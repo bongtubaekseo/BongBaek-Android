@@ -28,6 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -36,6 +37,8 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -47,17 +50,17 @@ import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
 import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
 import com.bongtu.baekseo.presentation.home.component.HomeRecommendCard
-import com.bongtu.baekseo.presentation.home.component.HomeScheduleCard
 import com.bongtu.baekseo.presentation.home.component.HomeScheduleEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeTopBar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
-fun HomeMainRoute(
-    navigateToEdit: () -> Unit,
+fun HomeRoute(
     navigateToRecommend: () -> Unit,
+    navigateToEdit: () -> Unit,
     navigateToSchedule: () -> Unit,
+    bottomPadding: Dp,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -80,17 +83,18 @@ fun HomeMainRoute(
             }
     }
 
-    HomeMainScreen(
+    HomeScreen(
         uiState = uiState,
         navigateToEdit = navigateToEdit,
         navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
-        modifier = modifier,
+        modifier = modifier
+            .padding(bottom = bottomPadding),
     )
 }
 
 @Composable
-fun HomeMainScreen(
+fun HomeScreen(
     uiState: HomeState,
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
@@ -117,7 +121,7 @@ fun HomeMainScreen(
         }
 
         is UiState.Success -> {
-            HomeMainSuccessScreen(
+            HomeSuccessScreen(
                 items = uiState.homeLoadState.data,
                 name = uiState.name,
                 navigateToEdit = navigateToEdit,
@@ -130,7 +134,7 @@ fun HomeMainScreen(
 }
 
 @Composable
-fun HomeMainSuccessScreen(
+fun HomeSuccessScreen(
     items: ImmutableList<HomeEvent>,
     name: String,
     navigateToEdit: () -> Unit,
@@ -293,8 +297,15 @@ fun HomeMainSuccessScreen(
             }
 
             items.forEach { item ->
-                HomeScheduleCard(
-                    event = item,
+                BongBaekScheduleCard(
+                    scheduleCardType = ScheduleCardType.HOME,
+                    hostName = item.hostName,
+                    hostNickname = item.hostNickname,
+                    eventCategory = item.eventCategory,
+                    relationship = item.relationship,
+                    cost = item.cost,
+                    eventDate = item.eventDate,
+                    location = item.location,
                 )
 
                 Spacer(modifier = Modifier.size(10.dp))
@@ -316,7 +327,7 @@ fun HomeMainSuccessScreen(
 
 @Preview
 @Composable
-private fun HomeMainSuccessScreenPreview() {
+private fun HomeSuccessScreenPreview() {
     val items = persistentListOf(
         HomeEvent(
             eventId = "eventId1",
@@ -325,7 +336,7 @@ private fun HomeMainSuccessScreenPreview() {
             eventCategory = "생일",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11",
+            eventDate = "2025-02-11",
             dDay = 1,
             location = "강남",
         ),
@@ -336,7 +347,7 @@ private fun HomeMainSuccessScreenPreview() {
             eventCategory = "생일",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11",
+            eventDate = "2025-02-11",
             dDay = 1,
             location = "강남",
         ),
@@ -347,14 +358,14 @@ private fun HomeMainSuccessScreenPreview() {
             eventCategory = "생일",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11",
+            eventDate = "2025-02-11",
             dDay = 1,
             location = "강남",
         ),
     )
 
     BongBaekTheme {
-        HomeMainSuccessScreen(
+        HomeSuccessScreen(
             items = items,
             name = "",
             navigateToEdit = {},

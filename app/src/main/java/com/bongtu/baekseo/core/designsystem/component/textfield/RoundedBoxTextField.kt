@@ -1,8 +1,6 @@
 package com.bongtu.baekseo.core.designsystem.component.textfield
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -38,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
@@ -45,11 +44,11 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *
  *  @param text 입력값
  *  @param placeholder 힌트
+ *  @param errorText error 문구
  *  @param isEditable write / read
  *  @param onClick TextField 영역 전체 클릭
  *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
- *  @param validateResult TextFieldValidateResult.Default / TextFieldValidateResult.Error
  */
 @Composable
 fun RoundedBoxTextField(
@@ -62,7 +61,6 @@ fun RoundedBoxTextField(
     onClick: () -> Unit = {},
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
-    validateResult: TextFieldValidateResult = TextFieldValidateResult.Default,
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
     visualTransformation: VisualTransformation = VisualTransformation.None,
 ) {
@@ -178,27 +176,13 @@ private fun RoundedBoxTextFieldPreview() {
         verticalArrangement = Arrangement.Center,
     ) {
         var text by remember { mutableStateOf("봉봉") }
-        var validateResult: TextFieldValidateResult by remember {
-            mutableStateOf(
-                TextFieldValidateResult.Default
-            )
-        }
 
         RoundedBoxTextField(
             text = text,
             placeholder = "placeholder",
-            errorText = "",
-            validateResult = validateResult,
-            onTextChange = {
-                text = it
-                validateResult = TextFieldValidateResult.Default
-            },
-            onInputDone = {
-                validateResult = if (text.length < 2)
-                    TextFieldValidateResult.Error("2자 이상 입력해주세요.")
-                else
-                    TextFieldValidateResult.Default
-            },
+            onTextChange = { text = it },
+            errorText = validateName(text),
+            onInputDone = {},
             isEditable = false,
         )
     }
