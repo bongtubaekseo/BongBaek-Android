@@ -38,7 +38,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import kotlinx.collections.immutable.persistentListOf
 

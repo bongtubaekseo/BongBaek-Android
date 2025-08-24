@@ -4,7 +4,7 @@ import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 
 class RecordContract {
     @Immutable
