@@ -4,12 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow

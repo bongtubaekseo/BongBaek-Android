@@ -6,8 +6,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.Route
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.DetailRoute
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToDetail(eventId: String, navOptions: NavOptions? = null) =

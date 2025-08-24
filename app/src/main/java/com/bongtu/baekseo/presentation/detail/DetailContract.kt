@@ -2,8 +2,8 @@ package com.bongtu.baekseo.presentation.detail
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.model.event.Location
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 
 class DetailContract {
     @Immutable

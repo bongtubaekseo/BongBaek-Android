@@ -36,7 +36,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal

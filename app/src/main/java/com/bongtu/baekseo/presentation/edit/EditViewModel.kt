@@ -8,6 +8,7 @@ import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -19,7 +20,6 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditLoca
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import com.bongtu.baekseo.presentation.edit.navigation.EditNavType
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import dagger.hilt.android.lifecycle.HiltViewModel

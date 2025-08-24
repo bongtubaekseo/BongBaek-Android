@@ -10,7 +10,7 @@ import androidx.navigation.compose.navigation
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.core.util.sharedViewModel
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.recommend.RecommendFinalRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendIntroScreen
 import com.bongtu.baekseo.presentation.recommend.RecommendLoadingRoute

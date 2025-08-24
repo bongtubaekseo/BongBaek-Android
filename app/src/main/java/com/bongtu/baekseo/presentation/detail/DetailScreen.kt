@@ -62,11 +62,11 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
 import com.bongtu.baekseo.presentation.detail.component.DetailDropDown
-import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 
 private const val MEMO_RATIO = 320f / 152f
 
@@ -267,7 +267,7 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) =  remember(eventDate) { eventDate.toFormattedDateAndDay() }
+    val (date, weekDay) = remember(eventDate) { eventDate.toFormattedDateAndDay() }
 
     Column(
         modifier = modifier

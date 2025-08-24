@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.Route
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.edit.EditLocationRoute
 import com.bongtu.baekseo.presentation.edit.EditMainRoute
@@ -90,23 +91,6 @@ fun NavGraphBuilder.nestedEditGraph(
         )
     }
 }
-
-@Serializable
-data class EditEvent(
-    val eventId: String,
-    val hostName: String,
-    val hostNickname: String,
-    val eventCategory: String,
-    val relationship: String,
-    val cost: Int,
-    val isEventParticipated: Boolean,
-    val eventDate: String,
-    val note: String,
-    val location: String,
-    val address: String,
-    val latitude: Double,
-    val longitude: Double,
-)
 
 @Serializable
 data class Edit(

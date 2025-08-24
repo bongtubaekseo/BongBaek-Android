@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.edit.navigation
 import android.net.Uri
 import android.os.Bundle
 import androidx.navigation.NavType
+import com.bongtu.baekseo.data.model.event.EditEvent
 import kotlinx.serialization.json.Json
 import kotlin.reflect.typeOf
 
