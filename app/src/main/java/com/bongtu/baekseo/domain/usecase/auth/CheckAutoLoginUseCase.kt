@@ -15,6 +15,7 @@ class CheckAutoLoginUseCase @Inject constructor(
         authRepository.postTokenReissue(refreshToken).onSuccess { response ->
             tokenDataStore.setTokens(response.accessToken, response.refreshToken)
         }.onFailure { error ->
+            tokenDataStore.clearInfo()
             throw error
         }
     }
