@@ -2,7 +2,6 @@ package com.bongtu.baekseo.domain.usecase.auth
 
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
-import timber.log.Timber
 import javax.inject.Inject
 
 class CheckAutoLoginUseCase @Inject constructor(
