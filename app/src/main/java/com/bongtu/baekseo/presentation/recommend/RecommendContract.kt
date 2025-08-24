@@ -5,6 +5,7 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.data.model.map.Place
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -39,7 +40,7 @@ class RecommendContract {
 
         sealed class ResultSideEffect : RecommendSideEffect {
             data object NavigateToFinal : ResultSideEffect()
-            data object NavigateToEdit : ResultSideEffect()
+            data class NavigateToEdit(val editEvent: EditEvent) : ResultSideEffect()
         }
     }
 }

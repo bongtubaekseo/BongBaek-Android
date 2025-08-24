@@ -36,6 +36,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect.ResultSideEffect.NavigateToFinal
@@ -49,7 +50,7 @@ private const val ENVELOPE_RATIO = 320 / 291f
 @Composable
 fun RecommendResultRoute(
     navigateToFinal: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditEvent) -> Unit,
     navigateBackToMain: () -> Unit,
     viewModel: RecommendViewModel,
     modifier: Modifier = Modifier,
@@ -63,7 +64,7 @@ fun RecommendResultRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToFinal -> navigateToFinal()
-                    is NavigateToEdit -> navigateToEdit()
+                    is NavigateToEdit -> navigateToEdit(sideEffect.editEvent)
                 }
             }
     }
