@@ -1,8 +1,9 @@
 package com.bongtu.baekseo.presentation.edit
 
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.local.cache.EventCache
+import androidx.navigation.toRoute
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
@@ -17,6 +18,9 @@ import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditLocationSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
+import com.bongtu.baekseo.presentation.edit.navigation.Edit
+import com.bongtu.baekseo.presentation.edit.navigation.EditEvent
+import com.bongtu.baekseo.presentation.edit.navigation.EditNavType
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
@@ -32,14 +36,19 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.time.LocalDate
+import java.time.format.DateTimeParseException
 import javax.inject.Inject
 
 @OptIn(FlowPreview::class)
 @HiltViewModel
 class EditViewModel @Inject constructor(
+    savedStateHandle: SavedStateHandle,
     private val eventRepository: EventRepository,
     private val kakaoMapRepository: KakaoMapRepository,
 ) : ViewModel() {
+    private val initialEvent: EditEvent? =
+        savedStateHandle.toRoute<Edit>(typeMap = EditNavType.TYPE_MAP).editEvent
+
     private val _uiState = MutableStateFlow(EditUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -54,6 +63,8 @@ class EditViewModel @Inject constructor(
     private val _entryType = MutableStateFlow<EditEntryType?>(null)
 
     init {
+        getEditEvent()
+
         viewModelScope.launch {
             combine(
                 _searchTerm,
@@ -73,40 +84,38 @@ class EditViewModel @Inject constructor(
     fun updateEntryType(type: EditEntryType) = _entryType.update { type }
 
     fun getEditEvent() {
-        val cachedEvent = EventCache.load()
-        cachedEvent?.let {
-            with(cachedEvent) {
-                _uiState.update {
-                    it.copy(
-                        eventId = eventId,
-                        name = hostName,
-                        nickname = hostNickname,
-                        eventCategory = eventCategory,
-                        relationship = relationship,
-                        cost = cost.toString(),
-                        attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
-                        eventDate = eventDate.toFormattedMonthDayYear(),
-                        previousDate = runCatching { LocalDate.parse(eventDate) }.getOrElse { LocalDate.now() },
-                        note = note,
-                        selectedPlace = if (
-                            location.isEmpty() &&
-                            address.isEmpty() &&
-                            latitude == 0.0 &&
-                            longitude == 0.0
-                        ) {
-                            null
-                        } else {
-                            Place(
-                                id = "",
-                                name = location,
-                                address = address,
-                                roadAddress = "",
-                                latitude = latitude,
-                                longitude = longitude,
-                            )
-                        },
+        initialEvent?.run {
+            val previousDate = try {
+                LocalDate.parse(eventDate)
+            } catch (_: DateTimeParseException) {
+                _uiState.value.previousDate
+            }
+            val place =
+                if (location.isEmpty() && address.isEmpty() && latitude == 0.0 && longitude == 0.0) null
+                else
+                    Place(
+                        id = "",
+                        name = location,
+                        address = address,
+                        roadAddress = "",
+                        latitude = latitude,
+                        longitude = longitude
                     )
-                }
+
+            _uiState.update {
+                it.copy(
+                    eventId = eventId,
+                    name = hostName,
+                    nickname = hostNickname,
+                    eventCategory = eventCategory,
+                    relationship = relationship,
+                    cost = cost.toString(),
+                    attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
+                    eventDate = eventDate.toFormattedMonthDayYear(),
+                    previousDate = previousDate,
+                    note = note,
+                    selectedPlace = place,
+                )
             }
         }
     }
