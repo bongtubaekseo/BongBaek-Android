@@ -13,8 +13,6 @@ class RecordContract {
         val selectedDeleteEventIds: Set<String> = emptySet(),
         val eventCategoryType: EventCategoryType = EventCategoryType.ALL,
         val isDeleteMode: Boolean = false,
-        val page: Int = 0,
-        val isLast: Boolean = false,
         val attendType: AttendType = AttendType.ATTEND,
     )
 

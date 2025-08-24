@@ -45,8 +45,8 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun ScheduleRoute(
     navigateToUp: () -> Unit,
-    navigateToDetail: (String) -> Unit,
     navigateToEdit: () -> Unit,
+    navigateToDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ScheduleViewModel = hiltViewModel(),
 ) {
