@@ -45,8 +45,9 @@ class EditViewModel @Inject constructor(
     private val eventRepository: EventRepository,
     private val kakaoMapRepository: KakaoMapRepository,
 ) : ViewModel() {
-    private val initialEvent: EditEvent? =
+    private val initialEvent: EditEvent? = runCatching {
         savedStateHandle.toRoute<Edit>(typeMap = EditNavType.TYPE_MAP).editEvent
+    }.getOrNull()
 
     private val _uiState = MutableStateFlow(EditUiState())
     val uiState = _uiState.asStateFlow()
@@ -143,7 +144,8 @@ class EditViewModel @Inject constructor(
 
     fun updateCost(newCost: String) = _uiState.update {
         val digits = newCost.filter { it.isDigit() }
-        val costText = if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
+        val costText =
+            if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
         it.copy(
             cost = costText,
             costError = validateCost(costText)
