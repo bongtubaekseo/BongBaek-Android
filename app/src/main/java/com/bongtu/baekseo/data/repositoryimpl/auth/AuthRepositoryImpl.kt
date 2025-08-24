@@ -50,10 +50,19 @@ class AuthRepositoryImpl @Inject constructor(
                     refreshToken = refreshToken,
                 )
             )
-            if (response.success || response.status == 200) {
+            if (response.success || response.status == 200)
                 response.data.toModel()
-            } else {
+            else
                 throw IllegalStateException("토큰 재발급 실패: ${response.status} ${response.message}")
+        }.recoverCatching { error ->
+            if (error is retrofit2.HttpException) {
+                val code = error.code()
+                if (code == 401 || code == 404) {
+                    throw IllegalStateException("리프레시 토큰이 유효하지 않거나 만료되었습니다.")
+                }
+                throw IllegalStateException("토큰 재발급 실패: $code", error)
+            } else {
+                throw error
             }
         }
 }

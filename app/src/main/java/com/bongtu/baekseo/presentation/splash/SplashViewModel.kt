@@ -26,11 +26,9 @@ class SplashViewModel @Inject constructor(
                 .onSuccess {
                     _sideEffect.emit(NavigateToHome)
                 }.onFailure { error ->
-                    val message = error.message.orEmpty()
-
-                    if (message.contains("401") || message.contains("404"))
+                    if (error is IllegalStateException) {
                         _sideEffect.emit(RestartApp)
-                    else
+                    } else
                         _sideEffect.emit(NavigateToOnBoarding)
                 }
         }
