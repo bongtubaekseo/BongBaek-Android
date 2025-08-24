@@ -28,6 +28,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
@@ -38,7 +39,6 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import kotlinx.collections.immutable.persistentListOf
 
@@ -181,52 +181,52 @@ private fun ScheduleScreenPreview() {
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11 (목)",
+            eventDate = "2025-02-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "2",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.09.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "3",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.08.11 (목)",
+            eventDate = "2025-08-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "4",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.07.11 (목)",
+            eventDate = "2025-07-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "5",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.06.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "6",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.05.11 (목)",
+            eventDate = "2025-05-11",
         ),
     )
 
@@ -234,6 +234,7 @@ private fun ScheduleScreenPreview() {
         ScheduleScreen(
             uiState = ScheduleState(
                 scheduleList = events,
+                scheduleLoadState = UiState.Success(Unit),
             ),
             onCategoryClick = {},
             onBackClick = {},
