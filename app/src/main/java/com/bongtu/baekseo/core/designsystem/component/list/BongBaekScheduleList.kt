@@ -21,9 +21,8 @@ import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
+import com.bongtu.baekseo.core.util.toFormattedYearWithMonthPair
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.schedule.model.ScheduleYearMonthEventItem
-import com.bongtu.baekseo.presentation.schedule.model.toYearMonthEventItemList
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -35,8 +34,6 @@ fun BongBaekScheduleList(
     modifier: Modifier = Modifier,
     contentPadding: PaddingValues = PaddingValues(20.dp),
 ) {
-    val yearMonthEventItems = scheduleEventList.toYearMonthEventItemList()
-
     val hasUserScrolled = remember(lazyListState) {
         derivedStateOf {
             lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
@@ -50,57 +47,52 @@ fun BongBaekScheduleList(
         contentPadding = contentPadding,
     ) {
         itemsIndexed(
-            items = yearMonthEventItems,
-        ) { index, item ->
-            val previousItem = yearMonthEventItems.getOrNull(index - 1)
+            items = scheduleEventList,
+            key = { _, item -> item.eventId }
+        ) { index, event ->
+            val prev = scheduleEventList.getOrNull(index - 1)
 
-            val topPadding = remember(item, previousItem) {
-                when (item) {
-                    is ScheduleYearMonthEventItem.YearHeader -> if (previousItem == null) 0.dp else 40.dp
-                    is ScheduleYearMonthEventItem.MonthHeader -> 30.dp
-                    is ScheduleYearMonthEventItem.Event -> {
-                        if (previousItem is ScheduleYearMonthEventItem.Event) 10.dp else 20.dp
-                    }
-                }
+            val (curYear, curMonth) = event.eventDate.toFormattedYearWithMonthPair()
+            val (prevYear, prevMonth) = prev?.run { eventDate.toFormattedYearWithMonthPair() }
+                ?: (null to null)
+
+            val isNewYear = prevYear == null || prevYear != curYear
+            val isNewMonth = prevMonth == null || prevMonth != curMonth || isNewYear
+
+            if (isNewYear) {
+                Text(
+                    text = stringResource(record_card_list_year, curYear),
+                    color = BongBaekTheme.colors.white,
+                    style = BongBaekTheme.typography.headBold24,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = if (prev == null) 0.dp else 40.dp),
+                )
             }
 
-            when (item) {
-                is ScheduleYearMonthEventItem.YearHeader -> {
+            if (isNewMonth) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 4.dp)
+                        .padding(top = 30.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
                     Text(
-                        text = stringResource(record_card_list_year, item.year),
+                        text = stringResource(record_card_list_month, curMonth),
                         color = BongBaekTheme.colors.white,
-                        style = BongBaekTheme.typography.headBold24,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(top = topPadding),
+                        style = BongBaekTheme.typography.titleSemiBold16,
+                        modifier = Modifier.padding(end = 12.dp),
+                    )
+                    HorizontalDivider(
+                        thickness = 1.dp,
+                        color = BongBaekTheme.colors.gray750,
                     )
                 }
-
-                is ScheduleYearMonthEventItem.MonthHeader -> {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 4.dp)
-                            .padding(top = topPadding),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-                        Text(
-                            text = stringResource(record_card_list_month, item.month),
-                            color = BongBaekTheme.colors.white,
-                            style = BongBaekTheme.typography.titleSemiBold16,
-                            modifier = Modifier.padding(end = 12.dp),
-                        )
-                        HorizontalDivider(
-                            thickness = 1.dp,
-                            color = BongBaekTheme.colors.gray750,
-                        )
-                    }
-                }
-
-                is ScheduleYearMonthEventItem.Event -> {
-                    card.invoke(item.event, PaddingValues(top = topPadding))
-                }
             }
+
+            val cardTopPadding = if (prev != null && !isNewMonth) 10.dp else 20.dp
+            card(event, PaddingValues(top = cardTopPadding))
         }
     }
 
