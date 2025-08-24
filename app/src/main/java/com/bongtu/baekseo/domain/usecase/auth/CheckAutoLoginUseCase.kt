@@ -15,7 +15,9 @@ class CheckAutoLoginUseCase @Inject constructor(
         authRepository.postTokenReissue(refreshToken).onSuccess { response ->
             tokenDataStore.setTokens(response.accessToken, response.refreshToken)
         }.onFailure { error ->
-            tokenDataStore.clearInfo()
+            val message = error.message.orEmpty()
+            if (message.contains("401") || message.contains("404"))
+                tokenDataStore.clearInfo()
             throw error
         }
     }
