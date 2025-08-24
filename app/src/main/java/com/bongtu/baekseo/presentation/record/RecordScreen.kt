@@ -81,7 +81,6 @@ fun RecordRoute(
 
     RecordScreen(
         uiState = uiState,
-        innerPadding = innerPadding,
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
@@ -106,7 +105,6 @@ fun RecordRoute(
 @Composable
 private fun RecordScreen(
     uiState: RecordUiState,
-    innerPadding: PaddingValues,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
     onTabClick: (AttendType) -> Unit,
@@ -127,13 +125,7 @@ private fun RecordScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .then(
-                if (uiState.isDeleteMode) {
-                    Modifier.padding(innerPadding)
-                } else {
-                    Modifier.statusBarsPadding()
-                }
-            )
+            .statusBarsPadding(),
     ) {
         RecordTopBar(
             isDeleteMode = uiState.isDeleteMode,
@@ -274,7 +266,6 @@ private fun RecordDefaultScreenPreview() {
             onDeleteClick = {},
             navigateToDetail = {},
             navigateToAdd = {},
-            innerPadding = PaddingValues(),
             updatePage = {},
             lazyListState = rememberLazyListState(),
             modifier = Modifier,
