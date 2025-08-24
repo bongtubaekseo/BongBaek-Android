@@ -19,12 +19,12 @@ fun String.toFormattedDate(): String {
 /**
  * yyyy-mm-dd -> yyyy. mm. dd (day)
  */
-fun String.toFormattedDateWithDay(): String {
+fun String.toFormattedDateWithDay(): String = try {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = parsedDate.format(DateTimeFormatter.ofPattern("yyyy. MM. dd"))
     val day = parsedDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
-    return "$date ($day)"
-}
+    "$date ($day)"
+} catch (_: Exception) { this }
 
 /**
  * yyyy-mm-dd -> yyyy.mm.dd, (day)
@@ -34,7 +34,7 @@ fun String.toFormattedDateAndDay(): Pair<String, String> = try {
     val date = localDate.format(DateTimeFormatter.ofPattern("yyyy.MM.dd"))
     val day = localDate.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
     date to day
-} catch (e: Exception) { "" to "" }
+} catch (_: Exception) { "" to "" }
 
 /**
  * yyyy-mm-dd -> "MMM dd, yyyy"
@@ -43,15 +43,15 @@ fun String.toFormattedShortEnglishDate(): String = try {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     val date = localDate.format(DateTimeFormatter.ofPattern("MMM dd, yyyy", Locale.ENGLISH))
     date
-} catch (e: Exception) { this }
+} catch (_: Exception) { this }
 
 /**
  * yyyy-mm-dd -> Pair(year, month)
  */
-fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
+fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> = try {
     val localDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
-    return localDate.year to localDate.monthValue
-}
+    localDate.year to localDate.monthValue
+} catch (_: Exception) { 0 to 0 }
 
 /**
  * yyyy-mm-dd -> MMddyyyy
@@ -59,4 +59,4 @@ fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> {
 fun String.toFormattedMonthDayYear(): String = try {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
-} catch (e: Exception) { this }
+} catch (_: Exception) { this }
