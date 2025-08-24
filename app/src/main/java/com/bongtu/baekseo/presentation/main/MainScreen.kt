@@ -42,13 +42,6 @@ import kotlinx.collections.immutable.toImmutableList
 fun MainScreen(
     navigator: MainNavigator = rememberMainNavigator(),
 ) {
-    val activity = LocalActivity.current as Activity
-    val startOnboarding = remember {
-        activity.intent.getBooleanExtra("startDestination", false)
-    }
-
-    val startDestination = if (startOnboarding) OnBoarding else Splash
-
     Scaffold(
         bottomBar = {
             MainBottomBar(
@@ -65,7 +58,6 @@ fun MainScreen(
         MainNavHost(
             navigator = navigator,
             innerPadding = innerPadding,
-            startDestination = startDestination,
             modifier = Modifier,
         )
     }
@@ -75,9 +67,15 @@ fun MainScreen(
 private fun MainNavHost(
     navigator: MainNavigator,
     innerPadding: PaddingValues,
-    startDestination: Any,
     modifier: Modifier = Modifier,
 ) {
+    val activity = LocalActivity.current as Activity
+    val startOnboarding = remember {
+        activity.intent.getBooleanExtra("startDestination", false)
+    }
+
+    val startDestination = if (startOnboarding) OnBoarding else Splash
+
     NavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
