@@ -267,7 +267,7 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = if (eventDate.isBlank()) "-" to "0" else eventDate.toFormattedDateAndDay()
+    val (date, weekDay) =  remember(eventDate) { eventDate.toFormattedDateAndDay() }
 
     Column(
         modifier = modifier
