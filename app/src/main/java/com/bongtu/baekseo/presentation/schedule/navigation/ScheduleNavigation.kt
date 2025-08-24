@@ -21,8 +21,8 @@ fun NavGraphBuilder.scheduleGraph(
     composable<Schedule> {
         ScheduleRoute(
             navigateToUp = navigateToUp,
-            navigateToDetail = navigateToDetail,
             navigateToEdit = navigateToEdit,
+            navigateToDetail = navigateToDetail,
             modifier = modifier,
         )
     }
