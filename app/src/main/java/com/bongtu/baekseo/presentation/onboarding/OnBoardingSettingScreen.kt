@@ -1,8 +1,6 @@
 package com.bongtu.baekseo.presentation.onboarding
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.EnterTransition
-import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -56,7 +54,6 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
-import com.jakewharton.processphoenix.ProcessPhoenix
 
 @Composable
 fun OnBoardingSettingScreen(
@@ -199,10 +196,7 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = {
-                    viewModel.postSignUp()
-                    ProcessPhoenix.triggerRebirth(context)
-                },
+                onClick = viewModel::postSignUp,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()

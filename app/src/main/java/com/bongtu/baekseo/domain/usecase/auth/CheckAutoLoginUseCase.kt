@@ -10,11 +10,14 @@ class CheckAutoLoginUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(): Result<Unit> = runCatching {
         val refreshToken =
-            tokenDataStore.getRefreshToken() ?: throw IllegalStateException("refreshToken 없음")
+            tokenDataStore.getRefreshToken() ?: throw NoSuchElementException("refreshToken 없음")
 
         authRepository.postTokenReissue(refreshToken).onSuccess { response ->
             tokenDataStore.setTokens(response.accessToken, response.refreshToken)
         }.onFailure { error ->
+            if (error is IllegalStateException) {
+                tokenDataStore.clearInfo()
+            }
             throw error
         }
     }
