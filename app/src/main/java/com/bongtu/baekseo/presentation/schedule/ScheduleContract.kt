@@ -3,7 +3,7 @@ package com.bongtu.baekseo.presentation.schedule
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 

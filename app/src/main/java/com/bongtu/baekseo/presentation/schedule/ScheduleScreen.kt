@@ -3,7 +3,11 @@ package com.bongtu.baekseo.presentation.schedule
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -24,16 +28,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
+import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
+import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
-import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
-import com.bongtu.baekseo.presentation.schedule.component.ScheduleListContent
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -112,7 +118,7 @@ private fun ScheduleScreen(
         ) { (loadState, category) ->
             when (loadState) {
                 is UiState.Empty -> {
-                    ScheduleEmptyContent(
+                    BongBaekScheduleEmptyContent(
                         eventType = category.label,
                         onButtonClick = navigateToEdit,
                         modifier = Modifier
@@ -130,11 +136,35 @@ private fun ScheduleScreen(
                 }
 
                 is UiState.Success -> {
-                    ScheduleListContent(
-                        scheduleEventList = uiState.scheduleList,
-                        onCardClick = onCardClick,
+                    val navigationBarsPadding =
+                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+
+                    BongBaekScheduleList(
+                        items = uiState.scheduleList,
+                        getKey = { event -> event.eventId },
+                        getDate = { event -> event.eventDate },
+                        card = { event, padding ->
+                            BongBaekScheduleCard(
+                                scheduleCardType = ScheduleCardType.SCHEDULE,
+                                hostName = event.hostName,
+                                hostNickname = event.hostNickname,
+                                eventCategory = event.eventCategory,
+                                relationship = event.relationship,
+                                cost = event.cost,
+                                eventDate = event.eventDate,
+                                onCardClick = { onCardClick(event.eventId) },
+                                modifier = Modifier.padding(padding),
+                            )
+                        },
                         lazyListState = lazyListState,
                         updatePage = updatePage,
+                        modifier = modifier,
+                        contentPadding = PaddingValues(
+                            start = 20.dp,
+                            top = 20.dp,
+                            end = 20.dp,
+                            bottom = 20.dp + navigationBarsPadding,
+                        ),
                     )
                 }
             }
@@ -153,52 +183,52 @@ private fun ScheduleScreenPreview() {
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11 (목)",
+            eventDate = "2025-02-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "2",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.09.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "3",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.08.11 (목)",
+            eventDate = "2025-08-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "4",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.07.11 (목)",
+            eventDate = "2025-07-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "5",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.06.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "6",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.05.11 (목)",
+            eventDate = "2025-05-11",
         ),
     )
 
@@ -206,6 +236,7 @@ private fun ScheduleScreenPreview() {
         ScheduleScreen(
             uiState = ScheduleState(
                 scheduleList = events,
+                scheduleLoadState = UiState.Success(Unit),
             ),
             onCategoryClick = {},
             onBackClick = {},

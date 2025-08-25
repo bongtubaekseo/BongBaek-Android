@@ -15,7 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.component.chip.BongBaekFilterChip
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 
 @Composable
 fun EventCategoryBar(

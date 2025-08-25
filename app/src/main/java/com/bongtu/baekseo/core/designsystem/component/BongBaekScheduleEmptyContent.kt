@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.schedule.component
+package com.bongtu.baekseo.core.designsystem.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -24,13 +24,13 @@ import com.bongtu.baekseo.R.string.schedule_empty_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
 
 @Composable
-fun ScheduleEmptyContent(
+fun BongBaekScheduleEmptyContent(
     eventType: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -96,7 +96,7 @@ fun ScheduleEmptyContent(
 @Composable
 private fun ScheduleEmptyContentPreview() {
     BongBaekTheme {
-        ScheduleEmptyContent(
+        BongBaekScheduleEmptyContent(
             eventType = EventCategoryType.BIRTHDAY.label,
             onButtonClick = {},
             modifier = Modifier,

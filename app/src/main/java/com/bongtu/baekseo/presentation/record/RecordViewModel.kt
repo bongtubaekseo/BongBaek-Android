@@ -11,7 +11,7 @@ import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
