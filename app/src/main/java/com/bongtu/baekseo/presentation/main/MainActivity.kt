@@ -12,7 +12,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 
-const val IS_START_ONBOARDING = "is_start_onBoarding"
+private const val IS_START_ONBOARDING = "is_start_onBoarding"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
