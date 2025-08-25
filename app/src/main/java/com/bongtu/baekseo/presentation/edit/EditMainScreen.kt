@@ -20,7 +20,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -80,7 +79,6 @@ import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropd
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -104,7 +102,7 @@ fun EditMainRoute(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToLocation: () -> Unit,
+    navigateToEditLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -120,20 +118,13 @@ fun EditMainRoute(
                     is NavigateToDetail -> navigateUp()
                     is NavigateToSchedule -> navigateUp()
                     is NavigateToFinal -> navigateToFinal()
-                    is NavigateToLocation -> navigateToLocation()
+                    is NavigateToLocation -> navigateToEditLocation()
                 }
             }
     }
 
     LaunchedEffect(Unit) {
-        viewModel.getEditEvent()
         viewModel.updateEntryType(editEntryType)
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            EventCache.clear()
-        }
     }
 
     EditMainScreen(

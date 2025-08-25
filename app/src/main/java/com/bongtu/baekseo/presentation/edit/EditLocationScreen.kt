@@ -33,9 +33,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_close
 import com.bongtu.baekseo.R.string.edit_location_button
 import com.bongtu.baekseo.R.string.edit_location_top_bar_title
@@ -49,11 +47,9 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.map.Place
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
 import com.kakao.vectormap.LatLng
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.coroutines.flow.filterIsInstance
 
 private const val MAP_RATIO = 320 / 468f
 private const val DEFAULT_LATITUDE = 37.5665
@@ -67,13 +63,6 @@ fun EditLocationRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
-
-    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<EditSideEffect.EditLocationSideEffect>()
-            .collect { navigateUp() }
-    }
 
     EditLocationScreen(
         searchValue = searchTerm,

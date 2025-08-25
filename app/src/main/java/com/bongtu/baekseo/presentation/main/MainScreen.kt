@@ -156,11 +156,7 @@ private fun MainNavHost(
 
         recordGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                )
-            },
+            navigateToDetail = navigator.navController::navigateToDetail,
             navigateToAdd = navigator.navController::navigateToEdit,
             innerPadding = innerPadding,
             modifier = modifier,
@@ -190,11 +186,7 @@ private fun MainNavHost(
         scheduleGraph(
             navigateToUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                )
-            },
+            navigateToDetail = navigator.navController::navigateToDetail,
             modifier = modifier,
         )
     }

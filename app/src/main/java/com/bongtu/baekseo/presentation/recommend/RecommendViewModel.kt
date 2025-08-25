@@ -5,11 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
-import com.bongtu.baekseo.core.local.cache.EventCache
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.core.util.toFormattedDate
-import com.bongtu.baekseo.data.model.event.CachingEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
 import com.bongtu.baekseo.data.model.event.Host
@@ -248,28 +247,25 @@ class RecommendViewModel @Inject constructor(
         }
     }
 
-    private fun saveCachingEventInformation() = with(uiState.value) {
-        val editEvent = CachingEvent(
-            eventId = "",
-            hostName = name,
-            hostNickname = nickname,
-            eventCategory = requireNotNull(eventType).label,
-            relationship = requireNotNull(relationType).label,
-            cost = expense,
-            isEventParticipated = requireNotNull(isEventParticipated),
-            eventDate = eventDate,
-            note = "",
-            location = selectedPlace?.name.orEmpty(),
-            address = selectedPlace?.address.orEmpty(),
-            latitude = selectedPlace?.latitude ?: 0.0,
-            longitude = selectedPlace?.longitude ?: 0.0,
-        )
-        EventCache.save(editEvent)
-    }
-
     fun navigateToEdit() = viewModelScope.launch {
-        saveCachingEventInformation()
-        _sideEffect.emit(RecommendSideEffect.ResultSideEffect.NavigateToEdit)
+        val editEvent = with(uiState.value) {
+            EditEvent(
+                eventId = "",
+                hostName = name,
+                hostNickname = nickname,
+                eventCategory = requireNotNull(eventType).label,
+                relationship = requireNotNull(relationType).label,
+                cost = expense,
+                isEventParticipated = requireNotNull(isEventParticipated),
+                eventDate = eventDate,
+                note = "",
+                location = selectedPlace?.name.orEmpty(),
+                address = selectedPlace?.address.orEmpty(),
+                latitude = selectedPlace?.latitude ?: 0.0,
+                longitude = selectedPlace?.longitude ?: 0.0,
+            )
+        }
+        _sideEffect.emit(RecommendSideEffect.ResultSideEffect.NavigateToEdit(editEvent))
     }
 
     companion object {

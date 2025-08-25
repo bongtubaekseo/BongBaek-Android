@@ -3,9 +3,8 @@ package com.bongtu.baekseo.presentation.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bongtu.baekseo.core.local.cache.EventCache
-import com.bongtu.baekseo.data.model.event.CachingEvent
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
@@ -50,27 +49,6 @@ class DetailViewModel @Inject constructor(
         }
     }
 
-    private fun saveCachingEventInformation() = viewModelScope.launch {
-        with(uiState.value) {
-            val editEvent = CachingEvent(
-                eventId = eventId,
-                hostName = hostName,
-                hostNickname = hostNickname,
-                eventCategory = eventCategory,
-                relationship = relationship,
-                cost = cost,
-                isEventParticipated = isEventParticipated,
-                eventDate = eventDate,
-                note = note ?: "",
-                location = locationInfo?.location ?: "",
-                address = locationInfo?.address ?: "",
-                latitude = locationInfo?.latitude ?: 0.0,
-                longitude = locationInfo?.longitude ?: 0.0,
-            )
-            EventCache.save(editEvent)
-        }
-    }
-
     private fun updateDetailEvent(value: DetailEvent) =
         _uiState.update { currentState ->
             currentState.copy(
@@ -88,8 +66,24 @@ class DetailViewModel @Inject constructor(
         }
 
     fun navigateToEdit() = viewModelScope.launch {
-        saveCachingEventInformation()
-        _sideEffect.emit(NavigateToEdit)
+        val editEvent = with(uiState.value) {
+            EditEvent(
+                eventId = eventId,
+                hostName = hostName,
+                hostNickname = hostNickname,
+                eventCategory = eventCategory,
+                relationship = relationship,
+                cost = cost,
+                isEventParticipated = isEventParticipated,
+                eventDate = eventDate,
+                note = note ?: "",
+                location = locationInfo?.location ?: "",
+                address = locationInfo?.address ?: "",
+                latitude = locationInfo?.latitude ?: 0.0,
+                longitude = locationInfo?.longitude ?: 0.0,
+            )
+        }
+        _sideEffect.emit(NavigateToEdit(editEvent))
     }
 
     fun removeDetailEvent(eventId: String) = viewModelScope.launch {
