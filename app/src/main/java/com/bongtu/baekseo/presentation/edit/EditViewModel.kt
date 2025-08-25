@@ -63,8 +63,45 @@ class EditViewModel @Inject constructor(
     private val _entryType = MutableStateFlow<EditEntryType?>(null)
 
     init {
-        getEditEvent()
+        initializeUiState()
+        observeSearchTerm()
+    }
 
+    private fun initializeUiState() {
+        initialEvent?.let { event ->
+            val previousDate = try {
+                LocalDate.parse(event.eventDate)
+            } catch (_: DateTimeParseException) {
+                _uiState.value.previousDate
+            }
+            val place = Place(
+                id = "",
+                name = event.location,
+                address = event.address,
+                roadAddress = "",
+                latitude = event.latitude,
+                longitude = event.longitude
+            ).takeIf { it.name.isNotEmpty() || it.address.isNotEmpty() }
+
+            _uiState.update {
+                it.copy(
+                    eventId = event.eventId,
+                    name = event.hostName,
+                    nickname = event.hostNickname,
+                    eventCategory = event.eventCategory,
+                    relationship = event.relationship,
+                    cost = event.cost.toString(),
+                    attendLabel = if (event.isEventParticipated) ATTENDED else ABSENT,
+                    eventDate = event.eventDate.toFormattedMonthDayYear(),
+                    previousDate = previousDate,
+                    note = event.note,
+                    selectedPlace = place,
+                )
+            }
+        }
+    }
+
+    private fun observeSearchTerm() {
         viewModelScope.launch {
             combine(
                 _searchTerm,
@@ -83,55 +120,12 @@ class EditViewModel @Inject constructor(
 
     fun updateEntryType(type: EditEntryType) = _entryType.update { type }
 
-    fun getEditEvent() {
-        initialEvent?.run {
-            val previousDate = try {
-                LocalDate.parse(eventDate)
-            } catch (_: DateTimeParseException) {
-                _uiState.value.previousDate
-            }
-            val place =
-                if (location.isEmpty() && address.isEmpty() && latitude == 0.0 && longitude == 0.0) null
-                else
-                    Place(
-                        id = "",
-                        name = location,
-                        address = address,
-                        roadAddress = "",
-                        latitude = latitude,
-                        longitude = longitude
-                    )
-
-            _uiState.update {
-                it.copy(
-                    eventId = eventId,
-                    name = hostName,
-                    nickname = hostNickname,
-                    eventCategory = eventCategory,
-                    relationship = relationship,
-                    cost = cost.toString(),
-                    attendLabel = if (isEventParticipated) ATTENDED else ABSENT,
-                    eventDate = eventDate.toFormattedMonthDayYear(),
-                    previousDate = previousDate,
-                    note = note,
-                    selectedPlace = place,
-                )
-            }
-        }
-    }
-
     fun updateName(newName: String) = _uiState.update {
-        it.copy(
-            name = newName,
-            nameError = validateName(newName),
-        )
+        it.copy(name = newName, nameError = validateName(newName))
     }
 
     fun updateNickname(newNickname: String) = _uiState.update {
-        it.copy(
-            nickname = newNickname,
-            nicknameError = validateName(newNickname),
-        )
+        it.copy(nickname = newNickname, nicknameError = validateName(newNickname))
     }
 
     fun updateEventCategory(newEventCategory: String) = _uiState.update {
@@ -142,157 +136,119 @@ class EditViewModel @Inject constructor(
         it.copy(relationship = newRelationship)
     }
 
-    fun updateCost(newCost: String) = _uiState.update {
+    fun updateCost(newCost: String) {
         val digits = newCost.filter { it.isDigit() }
-        val costText =
-            if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
-        it.copy(
-            cost = costText,
-            costError = validateCost(costText)
-        )
+        val costText = if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
+        _uiState.update { it.copy(cost = costText, costError = validateCost(costText)) }
     }
 
-    fun updateAttendLabel(newAttendLabel: String) = _uiState.update {
-        it.copy(
-            attendLabel = newAttendLabel,
-        )
-    }
+    fun updateAttendLabel(newAttendLabel: String) =
+        _uiState.update { it.copy(attendLabel = newAttendLabel) }
 
-    fun updateEventDate(newEventDate: String) = _uiState.update {
-        it.copy(
-            eventDate = newEventDate,
-        )
-    }
+    fun updateEventDate(newEventDate: String) =
+        _uiState.update { it.copy(eventDate = newEventDate) }
 
-    fun updateNote(newNote: String) = _uiState.update {
-        it.copy(note = newNote)
-    }
+    fun updateNote(newNote: String) = _uiState.update { it.copy(note = newNote) }
 
-    fun updatePlace(newPlace: Place?) = _uiState.update {
-        it.copy(selectedPlace = newPlace)
-    }
+    fun updatePlace(newPlace: Place?) = _uiState.update { it.copy(selectedPlace = newPlace) }
 
     fun updateSearchTerm(newSearchTerm: String) = _searchTerm.update { newSearchTerm }
 
     fun clearSearchResult() = _uiState.update { it.copy(searchResult = persistentListOf()) }
 
     fun updateButtonState(): Boolean = with(uiState.value) {
-        name.isNotBlank() &&
-                nameError.isBlank() &&
-                nickname.isNotBlank() &&
-                nicknameError.isBlank() &&
-                eventCategory.isNotBlank() &&
-                relationship.isNotBlank() &&
-                cost.isNotBlank() &&
-                costError.isBlank() &&
-                attendLabel.isNotBlank() &&
-                eventDate.isNotBlank()
+        name.isNotBlank() && nameError.isBlank() &&
+                nickname.isNotBlank() && nicknameError.isBlank() &&
+                eventCategory.isNotBlank() && relationship.isNotBlank() &&
+                cost.isNotBlank() && costError.isBlank() &&
+                attendLabel.isNotBlank() && eventDate.isNotBlank()
     }
 
     fun submitEventInformation(entryType: EditEntryType) {
         when (entryType) {
-            EditEntryType.FROM_RECORD -> saveEventInformation()
-            EditEntryType.FROM_SCHEDULE -> saveEventInformation()
+            EditEntryType.FROM_RECORD, EditEntryType.FROM_SCHEDULE, EditEntryType.FROM_RESULT -> saveEventInformation()
             EditEntryType.FROM_DETAIL -> patchEventInformation()
-            EditEntryType.FROM_RESULT -> saveEventInformation()
         }
     }
 
     private fun searchPlaces() = viewModelScope.launch {
-        kakaoMapRepository.searchPlaces(searchTerm.value).onSuccess { response ->
-            _uiState.update {
-                it.copy(
-                    searchResult = response,
-                )
+        kakaoMapRepository.searchPlaces(searchTerm.value)
+            .onSuccess { response ->
+                _uiState.update { it.copy(searchResult = response) }
+                Timber.d("searchPlaces: $response")
+            }.onFailure {
+                // TODO: 실패 처리
+                Timber.d("searchPlaces: $it")
             }
-            Timber.d("searchPlaces: $response")
+    }
+
+    private fun patchEventInformation() = viewModelScope.launch {
+        val state = uiState.value
+        eventRepository.putEventInfo(
+            eventId = state.eventId,
+            host = state.toHost(),
+            event = state.toEvent(),
+            location = state.toLocation(),
+        ).onSuccess { response ->
+            Timber.tag("patchEditEventInformation").d("response: $response")
+            navigateToComplete()
         }.onFailure {
             // TODO: 실패 처리
-            Timber.d("searchPlaces: $it")
+            Timber.tag("patchEditEventInformation").d("Error: $it")
         }
     }
 
-    private fun patchEventInformation() =
-        viewModelScope.launch {
-            with(uiState.value) {
-                eventRepository.putEventInfo(
-                    eventId = eventId,
-                    host = Host(
-                        name = name,
-                        nickname = nickname,
-                    ),
-                    event = Event(
-                        eventType = eventCategory,
-                        relationType = relationship,
-                        cost = cost.toInt(),
-                        isEventParticipated = attendLabel == ATTENDED,
-                        eventDate = eventDate.toFormattedDate(),
-                        note = note,
-                    ),
-                    location = Location(
-                        location = selectedPlace?.name.orEmpty(),
-                        address = selectedPlace?.address.orEmpty(),
-                        latitude = selectedPlace?.latitude ?: 0.0,
-                        longitude = selectedPlace?.longitude ?: 0.0,
-                    ),
-                ).onSuccess { response ->
-                    Timber.tag("patchEditEventInformation").d("response: $response")
-                    navigateToComplete()
-                }.onFailure {
-                    // TODO: 실패 처리
-                    Timber.tag("patchEditEventInformation").d("Error: $it")
-                }
-            }
+    private fun saveEventInformation() = viewModelScope.launch {
+        val state = uiState.value
+        eventRepository.postEventInfo(
+            host = state.toHost(),
+            event = state.toEvent(),
+            location = state.toLocation(),
+            highAccuracy = HighAccuracy(
+                contactFrequency = DEFAULT_WEIGHT,
+                meetFrequency = DEFAULT_WEIGHT,
+            ),
+        ).onSuccess { response ->
+            Timber.tag("saveEditEventInformation").d("response: $response")
+            navigateToComplete()
+        }.onFailure {
+            // TODO: 실패 처리
+            Timber.tag("saveEditEventInformation").d("Error: $it")
         }
-
-    private fun saveEventInformation() =
-        viewModelScope.launch {
-            with(uiState.value) {
-                eventRepository.postEventInfo(
-                    host = Host(
-                        name = name,
-                        nickname = nickname,
-                    ),
-                    event = Event(
-                        eventType = eventCategory,
-                        relationType = relationship,
-                        cost = cost.toInt(),
-                        isEventParticipated = attendLabel == ATTENDED,
-                        eventDate = eventDate.toFormattedDate(),
-                        note = "",
-                    ),
-                    location = Location(
-                        location = selectedPlace?.name.orEmpty(),
-                        address = selectedPlace?.address.orEmpty(),
-                        latitude = selectedPlace?.latitude ?: 0.0,
-                        longitude = selectedPlace?.longitude ?: 0.0,
-                    ),
-                    highAccuracy = HighAccuracy(
-                        contactFrequency = DEFAULT_WEIGHT,
-                        meetFrequency = DEFAULT_WEIGHT,
-                    ),
-                ).onSuccess { response ->
-                    Timber.tag("saveEditEventInformation").d("response: $response")
-                    navigateToComplete()
-                }.onFailure {
-                    // TODO: 실패 처리
-                    Timber.tag("saveEditEventInformation").d("Error: $it")
-                }
-            }
-        }
+    }
 
     fun navigateToLocation() = viewModelScope.launch {
         _sideEffect.emit(EditMainSideEffect.NavigateToLocation)
     }
 
     fun navigateToComplete() = viewModelScope.launch {
-        when (_entryType.value!!) {
-            EditEntryType.FROM_RECORD -> _sideEffect.emit(EditMainSideEffect.NavigateToRecord)
-            EditEntryType.FROM_SCHEDULE -> _sideEffect.emit(EditMainSideEffect.NavigateToSchedule)
-            EditEntryType.FROM_DETAIL -> _sideEffect.emit(EditMainSideEffect.NavigateToDetail)
-            EditEntryType.FROM_RESULT -> _sideEffect.emit(EditMainSideEffect.NavigateToFinal)
+        val destination = when (_entryType.value) {
+            EditEntryType.FROM_RECORD -> EditMainSideEffect.NavigateToRecord
+            EditEntryType.FROM_SCHEDULE -> EditMainSideEffect.NavigateToSchedule
+            EditEntryType.FROM_DETAIL -> EditMainSideEffect.NavigateToDetail
+            EditEntryType.FROM_RESULT -> EditMainSideEffect.NavigateToFinal
+            null -> null
         }
+        destination?.let { _sideEffect.emit(it) }
     }
+
+    private fun EditUiState.toHost() = Host(name = name, nickname = nickname)
+
+    private fun EditUiState.toEvent() = Event(
+        eventType = eventCategory,
+        relationType = relationship,
+        cost = cost.toIntOrNull() ?: 0,
+        isEventParticipated = attendLabel == ATTENDED,
+        eventDate = eventDate.toFormattedDate(),
+        note = note
+    )
+
+    private fun EditUiState.toLocation() = Location(
+        location = selectedPlace?.name.orEmpty(),
+        address = selectedPlace?.address.orEmpty(),
+        latitude = selectedPlace?.latitude ?: 0.0,
+        longitude = selectedPlace?.longitude ?: 0.0
+    )
 
     companion object {
         private const val DEBOUNCE_DELAY = 500L
