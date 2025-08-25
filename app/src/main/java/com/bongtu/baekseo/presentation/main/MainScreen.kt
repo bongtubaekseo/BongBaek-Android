@@ -43,6 +43,8 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainScreen(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator = rememberMainNavigator(),
 ) {
     Scaffold(
@@ -65,6 +67,8 @@ fun MainScreen(
     ) { innerPadding ->
         CompositionLocalProvider(LocalBottomNavigationBarsPadding provides innerPadding) {
             MainNavHost(
+                isStartOnBoarding = isStartOnBoarding,
+                onRestartApp = onRestartApp,
                 navigator = navigator,
                 modifier = Modifier,
             )
@@ -74,18 +78,23 @@ fun MainScreen(
 
 @Composable
 private fun MainNavHost(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator,
     modifier: Modifier = Modifier,
 ) {
+    val startDestination = if (isStartOnBoarding) OnBoarding else Splash
+
     NavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
         navController = navigator.navController,
-        startDestination = navigator.startDestination,
+        startDestination = startDestination,
     ) {
         splashGraph(
+            onRestartApp = onRestartApp,
             navigateToOnBoarding = {
                 navigator.navController.navigateToOnBoarding(
                     navOptions = navOptions {

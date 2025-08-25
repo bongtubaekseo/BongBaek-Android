@@ -6,11 +6,11 @@ import com.bongtu.baekseo.domain.usecase.auth.CheckAutoLoginUseCase
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
+import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.RestartApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -26,8 +26,10 @@ class SplashViewModel @Inject constructor(
                 .onSuccess {
                     _sideEffect.emit(NavigateToHome)
                 }.onFailure { error ->
-                    Timber.tag("SplashScreen").e("${error.message}")
-                    _sideEffect.emit(NavigateToOnBoarding)
+                    if (error is IllegalStateException) {
+                        _sideEffect.emit(RestartApp)
+                    } else
+                        _sideEffect.emit(NavigateToOnBoarding)
                 }
         }
     }
