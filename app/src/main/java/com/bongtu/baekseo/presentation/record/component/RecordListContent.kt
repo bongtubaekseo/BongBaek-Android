@@ -4,7 +4,6 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,18 +25,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_check_secondary_red
 import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
-import com.bongtu.baekseo.R.string.record_card_cost
-import com.bongtu.baekseo.R.string.record_card_list_month
-import com.bongtu.baekseo.R.string.record_card_list_year
-import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
-import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.plus
-import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf

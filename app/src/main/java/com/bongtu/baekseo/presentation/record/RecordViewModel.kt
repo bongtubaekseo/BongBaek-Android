@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.data.model.event.DeleteEvent
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
@@ -11,7 +12,6 @@ import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
-import com.bongtu.baekseo.core.common.type.EventCategoryType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList

@@ -22,9 +22,9 @@ import com.bongtu.baekseo.R.string.record_empty_description
 import com.bongtu.baekseo.R.string.record_empty_title
 import com.bongtu.baekseo.R.string.schedule_empty_title
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.common.type.EventCategoryType
 
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
