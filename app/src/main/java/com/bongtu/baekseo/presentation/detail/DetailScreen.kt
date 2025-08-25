@@ -62,6 +62,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.DetailEvent
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailUiState
@@ -72,7 +73,7 @@ private const val MEMO_RATIO = 320f / 152f
 @Composable
 fun DetailRoute(
     navigateUp: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: DetailViewModel = hiltViewModel(),
 ) {
@@ -85,7 +86,7 @@ fun DetailRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToEdit -> navigateToEdit()
+                    is NavigateToEdit -> navigateToEdit(sideEffect.editEvent)
                     is NavigateToRecord -> navigateUp()
                 }
             }
@@ -266,7 +267,7 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) =  remember(eventDate) { eventDate.toFormattedDateAndDay() }
+    val (date, weekDay) = remember(eventDate) { eventDate.toFormattedDateAndDay() }
 
     Column(
         modifier = modifier

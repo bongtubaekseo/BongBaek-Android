@@ -22,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
@@ -32,8 +33,7 @@ import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
-import com.bongtu.baekseo.presentation.record.type.EventCategoryType
-import com.bongtu.baekseo.presentation.schedule.component.ScheduleEmptyContent
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -152,7 +152,7 @@ private fun RecordScreen(
 
                 is UiState.Success -> {
                     RecordListContent(
-                        recordEventList = loadState.data.events,
+                        scheduleEventList = loadState.data.events,
                         isDeleteMode = uiState.isDeleteMode,
                         selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                         onCardClick = navigateToDetail,
@@ -163,7 +163,7 @@ private fun RecordScreen(
                 }
 
                 else -> {
-                    ScheduleEmptyContent(
+                    BongBaekScheduleEmptyContent(
                         eventType = category.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
@@ -187,52 +187,52 @@ private fun RecordDefaultScreenPreview() {
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.02.11 (목)",
+            eventDate = "2025-02-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "2",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.09.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "3",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.08.11 (목)",
+            eventDate = "2025-08-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "4",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.07.11 (목)",
+            eventDate = "2025-07-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "5",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.06.11 (목)",
+            eventDate = "2025-06-11",
         ),
         ScheduleEvent(
-            eventId = "1",
+            eventId = "6",
             hostName = "공승준",
             hostNickname = "초록승준",
             eventCategory = "결혼식",
             relationship = "친구",
             cost = 10000,
-            eventDate = "2025.05.11 (목)",
+            eventDate = "2025-05-11",
         ),
     )
     BongBaekTheme {

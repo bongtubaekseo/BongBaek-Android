@@ -1,10 +1,9 @@
 package com.bongtu.baekseo.data.model.event
 
-import android.os.Parcelable
-import kotlinx.parcelize.Parcelize
+import kotlinx.serialization.Serializable
 
-@Parcelize
-data class CachingEvent(
+@Serializable
+data class EditEvent(
     val eventId: String,
     val hostName: String,
     val hostNickname: String,
@@ -18,4 +17,4 @@ data class CachingEvent(
     val address: String,
     val latitude: Double,
     val longitude: Double,
-) : Parcelable
+)

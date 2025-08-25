@@ -1,6 +1,4 @@
-package com.bongtu.baekseo.presentation.record.type
-
-import com.bongtu.baekseo.core.common.type.EventType
+package com.bongtu.baekseo.core.common.type
 
 enum class EventCategoryType(
     val label: String,

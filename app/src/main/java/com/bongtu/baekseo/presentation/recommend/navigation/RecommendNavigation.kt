@@ -10,6 +10,7 @@ import androidx.navigation.compose.navigation
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.core.util.sharedViewModel
+import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.recommend.RecommendFinalRoute
 import com.bongtu.baekseo.presentation.recommend.RecommendIntroScreen
 import com.bongtu.baekseo.presentation.recommend.RecommendLoadingRoute
@@ -41,7 +42,7 @@ fun NavGraphBuilder.recommendGraph(
     navigateBackToMain: () -> Unit,
     navigateToHome: () -> Unit,
     navigateToRecord: () -> Unit,
-    navigateToEdit: () -> Unit,
+    navigateToEdit: (EditEvent) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     navigation<Recommend>(
