@@ -4,17 +4,17 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavGraphBuilder
+import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.navigation
 import com.bongtu.baekseo.core.common.navigation.Route
+import com.bongtu.baekseo.core.util.sharedViewModel
 import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.navigation.Detail
 import com.bongtu.baekseo.presentation.edit.EditLocationRoute
 import com.bongtu.baekseo.presentation.edit.EditMainRoute
-import com.bongtu.baekseo.presentation.edit.EditRoute
 import com.bongtu.baekseo.presentation.edit.EditViewModel
-import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Location
-import com.bongtu.baekseo.presentation.edit.navigation.EditRoute.Main
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import com.bongtu.baekseo.presentation.recommend.navigation.RecommendResult
 import com.bongtu.baekseo.presentation.record.navigation.Record
@@ -25,70 +25,62 @@ fun NavController.navigateToEdit(
     navOptions: NavOptions? = null,
 ) = navigate(Edit(editEvent), navOptions)
 
+fun NavController.navigateToEditLocation(
+    navOptions: NavOptions? = null
+) = navigate(EditLocation, navOptions)
+
 fun NavGraphBuilder.editGraph(
-    navController: NavController,
+    navController: NavHostController,
     navigateToUp: () -> Unit,
     navigateToFinal: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    composable<Edit>(
+    navigation<Edit>(
         typeMap = EditNavType.TYPE_MAP,
-    ) { backStackEntry ->
-        val previousDestination = navController.previousBackStackEntry?.destination
+        startDestination = EditMain,
+    ) {
+        composable<EditMain> { backStackEntry ->
+            val previousDestination = navController.previousBackStackEntry?.destination
 
-        val entryType: EditEntryType = when {
-            previousDestination?.hasRoute(Detail::class) == true -> {
-                EditEntryType.FROM_DETAIL
+            val entryType: EditEntryType = when {
+                previousDestination?.hasRoute(Detail::class) == true -> {
+                    EditEntryType.FROM_DETAIL
+                }
+
+                previousDestination?.hasRoute(RecommendResult::class) == true -> {
+                    EditEntryType.FROM_RESULT
+                }
+
+                previousDestination?.hasRoute(Record::class) == true -> {
+                    EditEntryType.FROM_RECORD
+                }
+
+                else -> {
+                    EditEntryType.FROM_SCHEDULE
+                }
             }
 
-            previousDestination?.hasRoute(RecommendResult::class) == true -> {
-                EditEntryType.FROM_RESULT
-            }
+            val viewModel = backStackEntry.sharedViewModel<EditViewModel>(navController)
 
-            previousDestination?.hasRoute(Record::class) == true -> {
-                EditEntryType.FROM_RECORD
-            }
-
-            else -> {
-                EditEntryType.FROM_SCHEDULE
-            }
+            EditMainRoute(
+                editEntryType = entryType,
+                navigateUp = navigateToUp,
+                navigateToFinal = navigateToFinal,
+                navigateToEditLocation = navController::navigateToEditLocation,
+                viewModel = viewModel,
+                modifier = modifier,
+            )
         }
 
-        EditRoute(
-            editEntryType = entryType,
-            navigateUp = navigateToUp,
-            navigateToFinal = navigateToFinal,
-            modifier = modifier,
-        )
-    }
-}
+        composable<EditLocation> { backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<EditViewModel>(navController)
 
-fun NavGraphBuilder.nestedEditGraph(
-    editEntryType: EditEntryType,
-    navigateUp: () -> Unit,
-    nestedNavigateUp: () -> Unit,
-    navigateToFinal: () -> Unit,
-    navigateToLocation: () -> Unit,
-    viewModel: EditViewModel,
-    modifier: Modifier = Modifier,
-) {
-    composable<Main> {
-        EditMainRoute(
-            editEntryType = editEntryType,
-            navigateUp = navigateUp,
-            navigateToFinal = navigateToFinal,
-            navigateToLocation = navigateToLocation,
-            viewModel = viewModel,
-            modifier = modifier,
-        )
-    }
-
-    composable<Location> {
-        EditLocationRoute(
-            navigateUp = nestedNavigateUp,
-            viewModel = viewModel,
-            modifier = modifier,
-        )
+            EditLocationRoute(
+                navigateUp = navController::navigateUp,
+                viewModel = viewModel,
+                modifier = modifier,
+            )
+        }
     }
 }
 
@@ -96,3 +88,9 @@ fun NavGraphBuilder.nestedEditGraph(
 data class Edit(
     val editEvent: EditEvent?,
 ) : Route
+
+@Serializable
+data object EditMain : Route
+
+@Serializable
+data object EditLocation : Route

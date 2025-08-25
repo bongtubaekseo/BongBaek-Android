@@ -102,7 +102,7 @@ fun EditMainRoute(
     editEntryType: EditEntryType,
     navigateUp: () -> Unit,
     navigateToFinal: () -> Unit,
-    navigateToLocation: () -> Unit,
+    navigateToEditLocation: () -> Unit,
     viewModel: EditViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -118,7 +118,7 @@ fun EditMainRoute(
                     is NavigateToDetail -> navigateUp()
                     is NavigateToSchedule -> navigateUp()
                     is NavigateToFinal -> navigateToFinal()
-                    is NavigateToLocation -> navigateToLocation()
+                    is NavigateToLocation -> navigateToEditLocation()
                 }
             }
     }
