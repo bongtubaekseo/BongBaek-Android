@@ -27,7 +27,7 @@ import kotlinx.collections.immutable.ImmutableList
 @Composable
 fun <T> BongBaekScheduleList(
     items: ImmutableList<T>,
-    getKey: (T) -> Any,
+    getKey: (T) -> String,
     getDate: (T) -> String,
     card: @Composable (T, PaddingValues) -> Unit,
     lazyListState: LazyListState,
