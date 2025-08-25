@@ -37,6 +37,8 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainScreen(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator = rememberMainNavigator(),
 ) {
     Scaffold(
@@ -53,6 +55,8 @@ fun MainScreen(
             .background(BongBaekTheme.colors.gray900),
     ) { innerPadding ->
         MainNavHost(
+            isStartOnBoarding = isStartOnBoarding,
+            onRestartApp = onRestartApp,
             navigator = navigator,
             innerPadding = innerPadding,
             modifier = Modifier,
@@ -62,19 +66,24 @@ fun MainScreen(
 
 @Composable
 private fun MainNavHost(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
+    val startDestination = if (isStartOnBoarding) OnBoarding else Splash
+
     NavHost(
         enterTransition = { EnterTransition.None },
         exitTransition = { ExitTransition.None },
         popEnterTransition = { EnterTransition.None },
         popExitTransition = { ExitTransition.None },
         navController = navigator.navController,
-        startDestination = navigator.startDestination,
+        startDestination = startDestination,
     ) {
         splashGraph(
+            onRestartApp = onRestartApp,
             navigateToOnBoarding = {
                 navigator.navController.navigateToOnBoarding(
                     navOptions = navOptions {
@@ -147,11 +156,7 @@ private fun MainNavHost(
 
         recordGraph(
             setBottomBarVisible = navigator::updateBottomBarVisible,
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                )
-            },
+            navigateToDetail = navigator.navController::navigateToDetail,
             navigateToAdd = navigator.navController::navigateToEdit,
             innerPadding = innerPadding,
             modifier = modifier,
@@ -181,11 +186,7 @@ private fun MainNavHost(
         scheduleGraph(
             navigateToUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToDetail = { eventId ->
-                navigator.navController.navigateToDetail(
-                    eventId = eventId,
-                )
-            },
+            navigateToDetail = navigator.navController::navigateToDetail,
             modifier = modifier,
         )
     }

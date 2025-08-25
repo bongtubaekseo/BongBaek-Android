@@ -32,15 +32,11 @@ class EditContract {
 
         sealed class EditMainSideEffect : EditSideEffect {
             data object NavigateToRecord : EditMainSideEffect()
-            data object NavigateToDetail: EditMainSideEffect()
+            data object NavigateToDetail : EditMainSideEffect()
 
             data object NavigateToFinal : EditMainSideEffect()
             data object NavigateToSchedule : EditMainSideEffect()
             data object NavigateToLocation : EditMainSideEffect()
-        }
-
-        sealed class EditLocationSideEffect : EditSideEffect {
-            data object NavigateToEditMain : EditLocationSideEffect()
         }
     }
 }
