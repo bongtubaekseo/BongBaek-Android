@@ -22,13 +22,14 @@ import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.toFormattedYearWithMonthPair
-import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
-fun BongBaekScheduleList(
-    scheduleEventList: ImmutableList<ScheduleEvent>,
-    card: @Composable (ScheduleEvent, PaddingValues) -> Unit,
+fun <T> BongBaekScheduleList(
+    items: ImmutableList<T>,
+    getKey: (T) -> Any,
+    getDate: (T) -> String,
+    card: @Composable (T, PaddingValues) -> Unit,
     lazyListState: LazyListState,
     updatePage: () -> Unit,
     modifier: Modifier = Modifier,
@@ -47,13 +48,13 @@ fun BongBaekScheduleList(
         contentPadding = contentPadding,
     ) {
         itemsIndexed(
-            items = scheduleEventList,
-            key = { _, item -> item.eventId }
-        ) { index, event ->
-            val prev = scheduleEventList.getOrNull(index - 1)
+            items = items,
+            key = { _, item -> getKey(item) }
+        ) { index, item ->
+            val prev = items.getOrNull(index - 1)
 
-            val (curYear, curMonth) = event.eventDate.toFormattedYearWithMonthPair()
-            val (prevYear, prevMonth) = prev?.run { eventDate.toFormattedYearWithMonthPair() }
+            val (curYear, curMonth) = getDate(item).toFormattedYearWithMonthPair()
+            val (prevYear, prevMonth) = prev?.let { getDate(it).toFormattedYearWithMonthPair() }
                 ?: (null to null)
 
             val isNewYear = prevYear == null || prevYear != curYear
@@ -92,7 +93,7 @@ fun BongBaekScheduleList(
             }
 
             val cardTopPadding = if (prev != null && !isNewMonth) 10.dp else 20.dp
-            card(event, PaddingValues(top = cardTopPadding))
+            card(item, PaddingValues(top = cardTopPadding))
         }
     }
 

@@ -140,7 +140,9 @@ private fun ScheduleScreen(
                         WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
 
                     BongBaekScheduleList(
-                        scheduleEventList = uiState.scheduleList,
+                        items = uiState.scheduleList,
+                        getKey = { event -> event.eventId },
+                        getDate = { event -> event.eventDate },
                         card = { event, padding ->
                             BongBaekScheduleCard(
                                 scheduleCardType = ScheduleCardType.SCHEDULE,

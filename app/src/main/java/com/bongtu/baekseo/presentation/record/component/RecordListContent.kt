@@ -56,7 +56,9 @@ fun RecordListContent(
     )
 
     BongBaekScheduleList(
-        scheduleEventList = scheduleEventList,
+        items = scheduleEventList,
+        getKey = { event -> event.eventId },
+        getDate = { event -> event.eventDate },
         card = { event, padding ->
             RecordCard(
                 event = event,
