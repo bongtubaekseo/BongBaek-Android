@@ -1,7 +1,5 @@
 package com.bongtu.baekseo.presentation.main
 
-import android.app.Activity
-import androidx.activity.compose.LocalActivity
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
@@ -9,7 +7,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
@@ -40,6 +37,8 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainScreen(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator = rememberMainNavigator(),
 ) {
     Scaffold(
@@ -56,6 +55,8 @@ fun MainScreen(
             .background(BongBaekTheme.colors.gray900),
     ) { innerPadding ->
         MainNavHost(
+            isStartOnBoarding = isStartOnBoarding,
+            onRestartApp = onRestartApp,
             navigator = navigator,
             innerPadding = innerPadding,
             modifier = Modifier,
@@ -65,16 +66,13 @@ fun MainScreen(
 
 @Composable
 private fun MainNavHost(
+    isStartOnBoarding: Boolean,
+    onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator,
     innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
-    val activity = LocalActivity.current as Activity
-    val startOnboarding = remember {
-        activity.intent.getBooleanExtra("startDestination", false)
-    }
-
-    val startDestination = if (startOnboarding) OnBoarding else Splash
+    val startDestination = if (isStartOnBoarding) OnBoarding else Splash
 
     NavHost(
         enterTransition = { EnterTransition.None },
@@ -85,6 +83,7 @@ private fun MainNavHost(
         startDestination = startDestination,
     ) {
         splashGraph(
+            onRestartApp = onRestartApp,
             navigateToOnBoarding = {
                 navigator.navController.navigateToOnBoarding(
                     navOptions = navOptions {

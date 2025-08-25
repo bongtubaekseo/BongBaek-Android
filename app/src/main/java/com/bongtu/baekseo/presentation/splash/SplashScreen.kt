@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.presentation.splash
 
-import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,22 +26,20 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_splash_logo
 import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.presentation.main.MainActivity
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.RestartApp
-import com.jakewharton.processphoenix.ProcessPhoenix
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashRoute(
+    onRestartApp: (Boolean) -> Unit,
     navigateToOnBoarding: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel()
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
-    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         delay(1500)
@@ -56,13 +52,7 @@ fun SplashRoute(
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
                     is NavigateToOnBoarding -> navigateToOnBoarding()
-                    is RestartApp -> {
-                        val intent = Intent(context, MainActivity::class.java).apply {
-                            putExtra("startDestination", true)
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-                        }
-                        ProcessPhoenix.triggerRebirth(context, intent)
-                    }
+                    is RestartApp -> onRestartApp(true)
                 }
             }
     }
