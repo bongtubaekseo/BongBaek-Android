@@ -7,10 +7,12 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
@@ -28,7 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
@@ -38,8 +39,10 @@ import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
@@ -60,7 +63,6 @@ fun HomeRoute(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToSchedule: () -> Unit,
-    bottomPadding: Dp,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -88,8 +90,7 @@ fun HomeRoute(
         navigateToEdit = navigateToEdit,
         navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
-        modifier = modifier
-            .padding(bottom = bottomPadding),
+        modifier = modifier,
     )
 }
 
@@ -263,7 +264,9 @@ fun HomeSuccessScreen(
         }
 
         Column(
-            modifier = Modifier.padding(horizontal = 20.dp),
+            modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop()),
         ) {
             HomeRecommendCard(
                 onClick = navigateToRecommend,

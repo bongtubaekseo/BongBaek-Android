@@ -1,15 +1,21 @@
 package com.bongtu.baekseo.presentation.main
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.EnterTransition
 import androidx.compose.animation.ExitTransition
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
+import androidx.compose.animation.slideOut
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.IntOffset
 import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
+import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
@@ -43,24 +49,30 @@ fun MainScreen(
 ) {
     Scaffold(
         bottomBar = {
-            MainBottomBar(
-                isVisible = navigator.showBottomBar(),
-                tabs = MainTab.entries.toImmutableList(),
-                currentTab = navigator.currentTab,
-                onTabSelected = navigator::navigate,
-            )
+            AnimatedVisibility(
+                visible = navigator.showBottomBar(),
+                enter = fadeIn() + slideIn { IntOffset(0, it.height) },
+                exit = fadeOut() + slideOut { IntOffset(0, it.height) },
+            ) {
+                MainBottomBar(
+                    tabs = MainTab.entries.toImmutableList(),
+                    currentTab = navigator.currentTab,
+                    onTabSelected = navigator::navigate,
+                )
+            }
         },
+        containerColor = BongBaekTheme.colors.gray900,
         modifier = Modifier
-            .fillMaxSize()
-            .background(BongBaekTheme.colors.gray900),
+            .fillMaxSize(),
     ) { innerPadding ->
-        MainNavHost(
-            isStartOnBoarding = isStartOnBoarding,
-            onRestartApp = onRestartApp,
-            navigator = navigator,
-            innerPadding = innerPadding,
-            modifier = Modifier,
-        )
+        CompositionLocalProvider(LocalBottomNavigationBarsPadding provides innerPadding) {
+            MainNavHost(
+                isStartOnBoarding = isStartOnBoarding,
+                onRestartApp = onRestartApp,
+                navigator = navigator,
+                modifier = Modifier,
+            )
+        }
     }
 }
 
@@ -69,7 +81,6 @@ private fun MainNavHost(
     isStartOnBoarding: Boolean,
     onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator,
-    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
 ) {
     val startDestination = if (isStartOnBoarding) OnBoarding else Splash
@@ -122,7 +133,6 @@ private fun MainNavHost(
             navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToSchedule = navigator.navController::navigateToSchedule,
-            bottomPadding = innerPadding.calculateBottomPadding(),
             modifier = modifier,
         )
 
@@ -158,7 +168,6 @@ private fun MainNavHost(
             setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToDetail = navigator.navController::navigateToDetail,
             navigateToAdd = navigator.navController::navigateToEdit,
-            innerPadding = innerPadding,
             modifier = modifier,
         )
 

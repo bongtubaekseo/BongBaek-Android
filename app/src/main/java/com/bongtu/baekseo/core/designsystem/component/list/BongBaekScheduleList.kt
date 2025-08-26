@@ -49,7 +49,7 @@ fun <T> BongBaekScheduleList(
     ) {
         itemsIndexed(
             items = items,
-            key = { _, item -> getKey(item) }
+            key = { _, item -> getKey(item) },
         ) { index, item ->
             val prev = items.getOrNull(index - 1)
 

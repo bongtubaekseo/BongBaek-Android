@@ -3,10 +3,10 @@ package com.bongtu.baekseo.presentation.schedule
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
-import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList

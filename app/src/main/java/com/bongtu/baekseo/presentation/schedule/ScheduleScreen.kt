@@ -136,9 +136,6 @@ private fun ScheduleScreen(
                 }
 
                 is UiState.Success -> {
-                    val navigationBarsPadding =
-                        WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
-
                     BongBaekScheduleList(
                         items = uiState.scheduleList,
                         getKey = { event -> event.eventId },
@@ -159,12 +156,7 @@ private fun ScheduleScreen(
                         lazyListState = lazyListState,
                         updatePage = updatePage,
                         modifier = modifier,
-                        contentPadding = PaddingValues(
-                            start = 20.dp,
-                            top = 20.dp,
-                            end = 20.dp,
-                            bottom = 20.dp + navigationBarsPadding,
-                        ),
+                        contentPadding = PaddingValues(20.dp),
                     )
                 }
             }

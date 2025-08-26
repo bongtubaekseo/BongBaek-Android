@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.data.repository.event
 
-import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.model.event.Cost
 import com.bongtu.baekseo.data.model.event.DeleteEvent
 import com.bongtu.baekseo.data.model.event.DetailEvent

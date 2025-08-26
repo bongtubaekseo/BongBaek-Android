@@ -5,10 +5,8 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
@@ -24,6 +22,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.PageScheduleEvent
@@ -35,7 +34,6 @@ import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
-import com.bongtu.baekseo.core.common.type.EventCategoryType
 import kotlinx.collections.immutable.persistentListOf
 
 @Composable
@@ -43,13 +41,11 @@ fun RecordRoute(
     setBottomBarVisible: (Boolean) -> Unit,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
-    innerPadding: PaddingValues,
     modifier: Modifier = Modifier,
     viewModel: RecordViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
-    val bottomPadding = innerPadding.calculateBottomPadding()
     val lazyListState = rememberLazyListState()
 
     if (uiState.isDeleteMode) {
@@ -91,14 +87,7 @@ fun RecordRoute(
         onDeleteClick = viewModel::fetchSelectedDeleteEventIds,
         lazyListState = lazyListState,
         updatePage = viewModel::updateNextPage,
-        modifier = modifier
-            .then(
-                if (uiState.isDeleteMode) {
-                    Modifier
-                } else {
-                    Modifier.padding(bottom = bottomPadding)
-                }
-            ),
+        modifier = modifier,
     )
 }
 
@@ -124,8 +113,7 @@ private fun RecordScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
-            .statusBarsPadding(),
+            .background(color = BongBaekTheme.colors.gray900),
     ) {
         RecordTopBar(
             isDeleteMode = uiState.isDeleteMode,

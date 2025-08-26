@@ -1,11 +1,10 @@
 package com.bongtu.baekseo.data.datasource.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
-import com.bongtu.baekseo.data.dto.event.DeleteEventsDto
 import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
+import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
 import com.bongtu.baekseo.data.dto.event.GetScheduleEventsResponse
-import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.PostEventCostRequest
 import com.bongtu.baekseo.data.dto.event.PostEventCostResponse
 import com.bongtu.baekseo.data.dto.event.PostEventInfoRequest
