@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
@@ -25,11 +24,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_check_secondary_red
 import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
-import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
+import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
+import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
+import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.plus
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -45,19 +45,17 @@ fun RecordListContent(
     onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val contentBottomPadding =
-        if (isDeleteMode) 20.dp + WindowInsets.navigationBars.asPaddingValues()
-            .calculateBottomPadding() else 20.dp
+    val animBottom by animateDpAsState(
+        targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
+    )
 
-    LazyColumn(
-        modifier = modifier
-            .fillMaxSize(),
-        state = lazyListState,
-        contentPadding = PaddingValues(horizontal = 20.dp)
-                + WindowInsets.safeDrawingWithBottomNavBar.excludeTop().asPaddingValues(),
-    ) {
-        itemsIndexed(yearMonthEventItems) { index, item ->
-            val previousItem = yearMonthEventItems.getOrNull(index - 1)
+    val contentPadding = PaddingValues(
+        start = 20.dp,
+        end = 20.dp,
+        top = 20.dp,
+        bottom = 20.dp + animBottom,
+    )
 
     BongBaekScheduleList(
         items = scheduleEventList,
