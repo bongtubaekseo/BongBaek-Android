@@ -6,14 +6,12 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.data.model.event.DeleteEvent
-import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -71,30 +69,18 @@ class RecordViewModel @Inject constructor(
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
-                    if (isFirstPage) {
-                        newEvents
-                    } else {
-                        val existingEvents =
-                            (uiState.value.recordLoadState as? UiState.Success)?.data?.events
-                                ?: persistentListOf()
-                        existingEvents + newEvents
-                    }
+                    if (isFirstPage) newEvents
+                    else uiState.value.scheduleList + newEvents
 
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        recordLoadState = if (updatedList.isEmpty()) {
-                            UiState.Empty
-                        } else {
-                            UiState.Success(
-                                PageScheduleEvent(
-                                    events = updatedList.toPersistentList(),
-                                    currentPage = response.currentPage,
-                                    isLast = response.isLast,
-                                )
-                            )
-                        },
+                _uiState.update { current ->
+                    current.copy(
+                        scheduleList = updatedList.toPersistentList(),
+                        recordLoadState =
+                            if (updatedList.isEmpty()) UiState.Empty
+                            else UiState.Success(Unit),
                     )
                 }
+
                 _isLast.value = response.isLast
                 _page.value = response.currentPage
             }.onFailure {
@@ -107,7 +93,7 @@ class RecordViewModel @Inject constructor(
         updateDeleteModeCancel()
     }
 
-    private fun updateRecordUiState(value: UiState<PageScheduleEvent>) =
+    private fun updateRecordUiState(value: UiState<Unit>) =
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
