@@ -6,14 +6,13 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.data.model.event.DeleteEvent
-import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -106,6 +105,7 @@ class RecordViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
+                scheduleList = persistentListOf(),
             )
         }
         fetchRecordEvent()
@@ -127,13 +127,6 @@ class RecordViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 recordLoadState = value,
-            )
-        }
-
-    private fun updateScheduleList(value: ImmutableList<ScheduleEvent>) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                scheduleList = value,
             )
         }
 
