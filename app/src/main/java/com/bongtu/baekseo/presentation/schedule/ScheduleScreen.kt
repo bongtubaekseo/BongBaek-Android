@@ -4,10 +4,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
-import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -64,7 +61,7 @@ fun ScheduleRoute(
 
     ScheduleScreen(
         uiState = uiState,
-        onCategoryClick = viewModel::updateEventType,
+        onCategoryClick = viewModel::selectEventType,
         onBackClick = navigateToUp,
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,

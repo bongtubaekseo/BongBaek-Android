@@ -6,12 +6,14 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.data.model.event.DeleteEvent
+import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -34,26 +36,6 @@ class RecordViewModel @Inject constructor(
     private val _page = MutableStateFlow(0)
 
     private val _isLast = MutableStateFlow(false)
-
-    private fun deleteEvents() =
-        viewModelScope.launch {
-            eventRepository.deleteEvents(
-                request = DeleteEvent(uiState.value.selectedDeleteEventIds),
-            ).onSuccess {
-                updateSelectedDeleteEventIds(emptySet())
-                updateDeleteModeCancel()
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        attendType = uiState.value.attendType,
-                        eventCategoryType = uiState.value.eventCategoryType,
-                    )
-                }
-                clearPage()
-                fetchRecordEvent(requestedPage = 0)
-            }.onFailure {
-                updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
-            }
-        }
 
     fun fetchRecordEvent(requestedPage: Int? = null) =
         viewModelScope.launch {
@@ -88,69 +70,37 @@ class RecordViewModel @Inject constructor(
             }
         }
 
+    private fun deleteEvents() =
+        viewModelScope.launch {
+            eventRepository.deleteEvents(
+                request = DeleteEvent(uiState.value.selectedDeleteEventIds),
+            ).onSuccess {
+                updateSelectedDeleteEventIds(emptySet())
+                updateDeleteModeCancel()
+                _uiState.update { currentState ->
+                    currentState.copy(
+                        attendType = uiState.value.attendType,
+                        eventCategoryType = uiState.value.eventCategoryType,
+                    )
+                }
+                clearPage()
+                fetchRecordEvent(requestedPage = 0)
+            }.onFailure {
+                updateRecordUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            }
+        }
+
     fun fetchSelectedDeleteEventIds() {
         deleteEvents()
         updateDeleteModeCancel()
     }
-
-    private fun updateRecordUiState(value: UiState<Unit>) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                recordLoadState = value,
-            )
-        }
-
-    private fun updateSelectedDeleteEventIds(newSelectedDeleteEventIds: Set<String>) =
-        _uiState.update { currentState ->
-            currentState.copy(
-                selectedDeleteEventIds = newSelectedDeleteEventIds,
-            )
-        }
-
-    fun updateNextPage() =
-        viewModelScope.launch {
-            if (!_isLast.value) {
-                val next = _page.value + 1
-                fetchRecordEvent(requestedPage = next)
-            }
-        }
 
     fun clearPage() {
         _page.value = 0
         _isLast.value = false
     }
 
-    fun updateDeleteMode() =
-        _uiState.update { currentState ->
-            currentState.copy(
-                isDeleteMode = true,
-            )
-        }
-
-    fun updateDeleteModeCancel() =
-        _uiState.update { currentState ->
-            currentState.copy(
-                isDeleteMode = false,
-                selectedDeleteEventIds = emptySet(),
-            )
-        }
-
-    fun updateSelectedDeleteEventId(eventId: String) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                val newSelected = if (currentState.selectedDeleteEventIds.contains(eventId)) {
-                    currentState.selectedDeleteEventIds - eventId
-                } else {
-                    currentState.selectedDeleteEventIds + eventId
-                }
-
-                currentState.copy(
-                    selectedDeleteEventIds = newSelected
-                )
-            }
-        }
-
-    fun updateEventType(eventCategoryType: EventCategoryType) {
+    fun selectEventType(eventCategoryType: EventCategoryType) {
         clearPage()
 
         _uiState.update { currentState ->
@@ -172,6 +122,62 @@ class RecordViewModel @Inject constructor(
         }
         fetchRecordEvent()
     }
+
+    private fun updateRecordUiState(value: UiState<Unit>) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                recordLoadState = value,
+            )
+        }
+
+    private fun updateScheduleList(value: ImmutableList<ScheduleEvent>) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                scheduleList = value,
+            )
+        }
+
+    private fun updateSelectedDeleteEventIds(newSelectedDeleteEventIds: Set<String>) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                selectedDeleteEventIds = newSelectedDeleteEventIds,
+            )
+        }
+
+    fun updateNextPage() = {
+        if (!_isLast.value) {
+            val next = _page.value + 1
+            fetchRecordEvent(requestedPage = next)
+        }
+    }
+
+    fun updateDeleteMode() =
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleteMode = true,
+            )
+        }
+
+    fun updateDeleteModeCancel() =
+        _uiState.update { currentState ->
+            currentState.copy(
+                isDeleteMode = false,
+                selectedDeleteEventIds = emptySet(),
+            )
+        }
+
+    fun updateSelectedDeleteEventId(eventId: String) =
+        _uiState.update { currentState ->
+            val newSelected = if (currentState.selectedDeleteEventIds.contains(eventId)) {
+                currentState.selectedDeleteEventIds - eventId
+            } else {
+                currentState.selectedDeleteEventIds + eventId
+            }
+
+            currentState.copy(
+                selectedDeleteEventIds = newSelected
+            )
+        }
 
     fun navigateToDetail(eventId: String) = viewModelScope.launch {
         _sideEffect.emit(NavigateToDetail(eventId))

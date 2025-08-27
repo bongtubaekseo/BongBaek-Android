@@ -78,7 +78,7 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
-        onCategoryClick = viewModel::updateEventType,
+        onCategoryClick = viewModel::selectEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,

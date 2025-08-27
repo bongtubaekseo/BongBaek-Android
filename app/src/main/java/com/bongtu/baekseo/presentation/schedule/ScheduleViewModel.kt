@@ -65,56 +65,48 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
+    fun selectEventType(eventCategoryType: EventCategoryType) {
+        clearPage()
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                eventCategoryType = eventCategoryType,
+            )
+        }
+        fetchScheduleEvent()
+    }
+
     private fun updateScheduleUiState(value: UiState<Unit>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    scheduleLoadState = value,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                scheduleLoadState = value,
+            )
         }
 
     private fun updateScheduleList(value: ImmutableList<ScheduleEvent>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    scheduleList = value,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                scheduleList = value,
+            )
         }
 
-    fun updateEventType(eventCategoryType: EventCategoryType) =
-        viewModelScope.launch {
-            _page.value = 0
-            _isLast.value = false
-
-            _uiState.update { currentState ->
-                currentState.copy(
-                    eventCategoryType = eventCategoryType,
-                )
-            }
-            fetchScheduleEvent()
+    fun updatePage() {
+        if (!_isLast.value) {
+            val next = _page.value + 1
+            fetchScheduleEvent(requestedPage = next)
         }
-
-    fun updatePage() =
-        viewModelScope.launch {
-            if (!_isLast.value) {
-                val next = _page.value + 1
-                fetchScheduleEvent(requestedPage = next)
-            }
-        }
+    }
 
     fun clearPage() {
         _page.value = 0
         _isLast.value = false
     }
 
-    private fun getUsername() =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    name = usernameDataStore.getUsername()
-                )
-            }
+    private fun getUsername() = viewModelScope.launch {
+        _uiState.update { currentState ->
+            currentState.copy(
+                name = usernameDataStore.getUsername()
+            )
         }
+    }
 }
