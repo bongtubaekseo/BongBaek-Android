@@ -69,7 +69,7 @@ fun ScheduleRoute(
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
-        updatePage = viewModel::updatePage,
+        updatePage = viewModel::updateNextPage,
         modifier = modifier,
     )
 }

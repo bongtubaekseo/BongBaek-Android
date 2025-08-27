@@ -83,7 +83,7 @@ class ScheduleViewModel @Inject constructor(
             )
         }
 
-    fun updatePage() {
+    fun updateNextPage() {
         if (!_isLast.value) {
             val next = _page.value + 1
             fetchScheduleEvent(requestedPage = next)
