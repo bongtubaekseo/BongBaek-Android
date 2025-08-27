@@ -4,7 +4,10 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -133,6 +136,13 @@ private fun ScheduleScreen(
                 }
 
                 is UiState.Success -> {
+                    val contentPadding = PaddingValues(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 20.dp,
+                        bottom = 20.dp + WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                    )
                     BongBaekScheduleList(
                         items = uiState.scheduleList,
                         getKey = { event -> event.eventId },
@@ -153,7 +163,7 @@ private fun ScheduleScreen(
                         lazyListState = lazyListState,
                         updatePage = updatePage,
                         modifier = modifier,
-                        contentPadding = PaddingValues(20.dp),
+                        contentPadding = contentPadding,
                     )
                 }
             }
