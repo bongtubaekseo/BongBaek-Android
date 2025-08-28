@@ -168,7 +168,6 @@ fun HomeSuccessScreen(
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900)
-            .fillMaxSize()
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop())
             .verticalScroll(rememberScrollState()),
     ) {
