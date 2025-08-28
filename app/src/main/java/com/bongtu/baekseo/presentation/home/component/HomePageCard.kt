@@ -7,13 +7,11 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -21,6 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -28,9 +30,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
-import com.bongtu.baekseo.R.drawable.img_black_alarm
-import com.bongtu.baekseo.R.drawable.img_home_card_multiple
-import com.bongtu.baekseo.R.drawable.img_home_card_single
+import com.bongtu.baekseo.R.drawable.img_home_black_alarm
+import com.bongtu.baekseo.R.drawable.img_home_clock
 import com.bongtu.baekseo.R.string.badge_schedule_empty
 import com.bongtu.baekseo.R.string.home_page_card_description
 import com.bongtu.baekseo.R.string.home_page_card_empty
@@ -40,13 +41,11 @@ import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 
-private const val SINGLE_RATIO = 320 / 250f
-private const val MULTIPLE_RATIO = 308 / 250f
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
 
 @Composable
-fun HomePageSingleCard(
+fun HomePageCard(
     hostname: String,
     eventType: String,
     eventDate: String,
@@ -54,10 +53,7 @@ fun HomePageSingleCard(
     modifier: Modifier = Modifier,
 ) {
     val date = eventDate.toFormattedDateWithDay()
-    val postposition = remember(eventType) {
-        if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
-    }
-
+    val postposition = if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     val pageTitle = if (daysLeft == 0) stringResource(
         home_page_card_today_title,
         hostname,
@@ -69,19 +65,41 @@ fun HomePageSingleCard(
         postposition,
         daysLeft,
     )
+    val colors = BongBaekTheme.colors
+    val colorStops = remember {
+        arrayOf(
+            0f to colors.gradientCardStop1,
+            0.37f to colors.gradientCardStop2,
+
+            0.37f to colors.gradientCardStop2,
+            0.61f to colors.gradientCardStop3,
+
+            0.61f to colors.gradientCardStop3,
+            0.82f to colors.gradientCardStop4,
+
+            0.82f to colors.gradientCardStop4,
+            1f to colors.gradientCardStop5,
+        )
+    }
 
     Box(
         modifier = modifier
-            .aspectRatio(SINGLE_RATIO)
-            .wrapContentSize(),
+            .fillMaxWidth()
+            .height(250.dp)
+            .drawWithCache {
+                val brush = Brush.linearGradient(
+                    colorStops = colorStops,
+                    start = Offset(size.width * 0.33f, 0f),
+                    end = Offset(size.width * 0.66f, size.height),
+                )
+                onDrawBehind {
+                    drawRoundRect(
+                        brush = brush,
+                        cornerRadius = CornerRadius(10.dp.toPx()),
+                    )
+                }
+            },
     ) {
-        Image(
-            painter = painterResource(id = img_home_card_single),
-            contentDescription = null,
-            modifier = Modifier
-                .aspectRatio(SINGLE_RATIO),
-        )
-
         Column(
             modifier = Modifier
                 .padding(top = 30.dp)
@@ -91,7 +109,7 @@ fun HomePageSingleCard(
             Text(
                 text = pageTitle,
                 style = BongBaekTheme.typography.headBold24,
-                color = BongBaekTheme.colors.white,
+                color = colors.white,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -99,88 +117,30 @@ fun HomePageSingleCard(
             Text(
                 text = stringResource(home_page_card_description),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray100,
+                color = colors.gray100,
+            )
+
+            Spacer(modifier = Modifier.weight(1f))
+
+            HomePageCardDate(
+                date = date,
+                modifier = Modifier
+                    .padding(
+                        bottom = 30.dp,
+                    ),
             )
         }
 
-        HomePageCardDate(
-            date = date,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .padding(
-                    start = 20.dp,
-                    bottom = 30.dp,
-                ),
-        )
-    }
-}
-
-@Composable
-fun HomePageMultipleCard(
-    hostname: String,
-    eventType: String,
-    eventDate: String,
-    daysLeft: Int,
-    modifier: Modifier = Modifier,
-) {
-    val date = eventDate.toFormattedDateWithDay()
-    val postposition = remember(eventType) {
-        if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
-    }
-
-    val pageTitle = if (daysLeft == 0) stringResource(
-        home_page_card_today_title,
-        hostname,
-        eventType,
-    ) else stringResource(
-        home_page_card_title,
-        hostname,
-        eventType,
-        postposition,
-        daysLeft,
-    )
-
-    Box(
-        modifier = modifier
-            .aspectRatio(MULTIPLE_RATIO)
-            .wrapContentSize(),
-    ) {
         Image(
-            painter = painterResource(id = img_home_card_multiple),
+            painter = painterResource(img_home_clock),
             contentDescription = null,
             modifier = Modifier
-                .aspectRatio(MULTIPLE_RATIO),
-        )
-
-        Column(
-            modifier = Modifier
-                .padding(top = 30.dp)
-                .padding(horizontal = 20.dp),
-            horizontalAlignment = Alignment.Start,
-        ) {
-            Text(
-                text = pageTitle,
-                style = BongBaekTheme.typography.headBold24,
-                color = BongBaekTheme.colors.white,
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = stringResource(home_page_card_description),
-                style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray100,
-            )
-        }
-
-        HomePageCardDate(
-            date = date,
-            modifier = Modifier
-                .align(Alignment.BottomStart)
+                .align(Alignment.BottomEnd)
                 .padding(
-                    start = 20.dp,
-                    bottom = 30.dp,
-                ),
+                    end = 14.dp,
+                    bottom = 24.dp,
+                )
+                .size(130.dp),
         )
     }
 }
@@ -218,7 +178,7 @@ fun HomePageEmptyCard(
             )
 
             Image(
-                painter = painterResource(id = img_black_alarm),
+                painter = painterResource(id = img_home_black_alarm),
                 contentDescription = null,
                 modifier = Modifier
                     .size(126.dp),
@@ -234,7 +194,6 @@ private fun HomePageCardDate(
 ) {
     Row(
         modifier = modifier
-            .wrapContentSize()
             .background(
                 color = BongBaekTheme.colors.gray750,
                 shape = RoundedCornerShape(4.dp),
@@ -274,23 +233,12 @@ private fun HomePageCardBadgePreview() {
 @Composable
 private fun HomePageCardPreview() {
     BongBaekTheme {
-        Column(
-            verticalArrangement = Arrangement.spacedBy(4.dp),
-        ) {
-            HomePageSingleCard(
-                hostname = "헤헤",
-                eventType = "생일",
-                daysLeft = 10,
-                eventDate = "2025.02.11 (목)",
-            )
-
-            HomePageMultipleCard(
-                hostname = "헤헤",
-                eventType = "생일",
-                daysLeft = 10,
-                eventDate = "2025.02.11 (목)",
-            )
-        }
+        HomePageCard(
+            hostname = "헤헤",
+            eventType = "생일",
+            daysLeft = 10,
+            eventDate = "2025.02.11 (목)",
+        )
     }
 }
 
