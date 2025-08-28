@@ -70,13 +70,7 @@ fun HomePageCard(
         arrayOf(
             0f to colors.gradientCardStop1,
             0.37f to colors.gradientCardStop2,
-
-            0.37f to colors.gradientCardStop2,
             0.61f to colors.gradientCardStop3,
-
-            0.61f to colors.gradientCardStop3,
-            0.82f to colors.gradientCardStop4,
-
             0.82f to colors.gradientCardStop4,
             1f to colors.gradientCardStop5,
         )
