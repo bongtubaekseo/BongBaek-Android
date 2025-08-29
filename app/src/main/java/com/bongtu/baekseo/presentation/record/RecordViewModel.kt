@@ -137,7 +137,7 @@ class RecordViewModel @Inject constructor(
             )
         }
 
-    fun updateNextPage() = {
+    fun updateNextPage() {
         if (!_isLast.value) {
             val next = _page.value + 1
             fetchRecordEvent(requestedPage = next)
