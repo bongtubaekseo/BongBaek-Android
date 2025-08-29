@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.record
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -25,7 +24,6 @@ import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.data.model.event.PageScheduleEvent
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
@@ -80,7 +78,7 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
-        onCategoryClick = viewModel::updateEventType,
+        onCategoryClick = viewModel::selectEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
         onDeleteSelectedButtonClick = viewModel::updateSelectedDeleteEventId,
@@ -140,35 +138,33 @@ private fun RecordScreen(
             targetState = uiState.recordLoadState to uiState.eventCategoryType,
         ) { (loadState, category) ->
             when (loadState) {
-                is UiState.Loading -> {
-                    // TODO: 로딩 상태 화면
-                    // 임시로 흰 화면이 깜빡거려 같은 배경색으로 대체
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(color = BongBaekTheme.colors.gray900),
-                    )
-                }
-
-                is UiState.Success -> {
-                    RecordListContent(
-                        scheduleEventList = loadState.data.events,
-                        isDeleteMode = uiState.isDeleteMode,
-                        selectedDeleteEventIds = uiState.selectedDeleteEventIds,
-                        onCardClick = navigateToDetail,
-                        onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
-                        lazyListState = lazyListState,
-                        updatePage = updatePage,
-                    )
-                }
-
-                else -> {
+                is UiState.Empty -> {
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(top = 58.dp)
                             .padding(horizontal = 20.dp),
+                    )
+                }
+
+                is UiState.Failure -> {
+                    // TODO: 에러 상태
+                }
+
+                is UiState.Loading -> {
+                    // TODO: 로딩 상태
+                }
+
+                is UiState.Success -> {
+                    RecordListContent(
+                        scheduleEventList = uiState.scheduleList,
+                        isDeleteMode = uiState.isDeleteMode,
+                        selectedDeleteEventIds = uiState.selectedDeleteEventIds,
+                        onCardClick = navigateToDetail,
+                        onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
+                        lazyListState = lazyListState,
+                        updatePage = updatePage,
                     )
                 }
             }
@@ -238,13 +234,10 @@ private fun RecordDefaultScreenPreview() {
     BongBaekTheme {
         RecordScreen(
             uiState = RecordUiState(
-                recordLoadState = UiState.Success(
-                    data = PageScheduleEvent(
-                        events = events,
-                        currentPage = 0,
-                        isLast = false
-                    )
-                )
+                attendType = AttendType.ATTEND,
+                eventCategoryType = EventCategoryType.ALL,
+                scheduleList = events,
+                recordLoadState = UiState.Success(Unit),
             ),
             onTabClick = {},
             onCategoryClick = {},

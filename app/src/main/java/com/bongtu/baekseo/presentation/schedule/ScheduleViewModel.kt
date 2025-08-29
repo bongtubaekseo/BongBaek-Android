@@ -5,11 +5,10 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
-import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -65,56 +64,42 @@ class ScheduleViewModel @Inject constructor(
             }
         }
 
+    fun selectEventType(eventCategoryType: EventCategoryType) {
+        clearPage()
+
+        _uiState.update { currentState ->
+            currentState.copy(
+                eventCategoryType = eventCategoryType,
+                scheduleList = persistentListOf(),
+            )
+        }
+        fetchScheduleEvent()
+    }
+
     private fun updateScheduleUiState(value: UiState<Unit>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    scheduleLoadState = value,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                scheduleLoadState = value,
+            )
         }
 
-    private fun updateScheduleList(value: ImmutableList<ScheduleEvent>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    scheduleList = value,
-                )
-            }
+    fun updateNextPage() {
+        if (!_isLast.value) {
+            val next = _page.value + 1
+            fetchScheduleEvent(requestedPage = next)
         }
-
-    fun updateEventType(eventCategoryType: EventCategoryType) =
-        viewModelScope.launch {
-            _page.value = 0
-            _isLast.value = false
-
-            _uiState.update { currentState ->
-                currentState.copy(
-                    eventCategoryType = eventCategoryType,
-                )
-            }
-            fetchScheduleEvent()
-        }
-
-    fun updatePage() =
-        viewModelScope.launch {
-            if (!_isLast.value) {
-                val next = _page.value + 1
-                fetchScheduleEvent(requestedPage = next)
-            }
-        }
+    }
 
     fun clearPage() {
         _page.value = 0
         _isLast.value = false
     }
 
-    private fun getUsername() =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    name = usernameDataStore.getUsername()
-                )
-            }
+    private fun getUsername() = viewModelScope.launch {
+        _uiState.update { currentState ->
+            currentState.copy(
+                name = usernameDataStore.getUsername()
+            )
         }
+    }
 }

@@ -64,12 +64,12 @@ fun ScheduleRoute(
 
     ScheduleScreen(
         uiState = uiState,
-        onCategoryClick = viewModel::updateEventType,
+        onCategoryClick = viewModel::selectEventType,
         onBackClick = navigateToUp,
         onCardClick = navigateToDetail,
         navigateToEdit = navigateToEdit,
         lazyListState = lazyListState,
-        updatePage = viewModel::updatePage,
+        updatePage = viewModel::updateNextPage,
         modifier = modifier,
     )
 }
@@ -136,6 +136,13 @@ private fun ScheduleScreen(
                 }
 
                 is UiState.Success -> {
+                    val contentPadding = PaddingValues(
+                        start = 20.dp,
+                        end = 20.dp,
+                        top = 20.dp,
+                        bottom = 20.dp + WindowInsets.navigationBars.asPaddingValues()
+                            .calculateBottomPadding(),
+                    )
                     BongBaekScheduleList(
                         items = uiState.scheduleList,
                         getKey = { event -> event.eventId },
@@ -156,7 +163,7 @@ private fun ScheduleScreen(
                         lazyListState = lazyListState,
                         updatePage = updatePage,
                         modifier = modifier,
-                        contentPadding = PaddingValues(20.dp),
+                        contentPadding = contentPadding,
                     )
                 }
             }
