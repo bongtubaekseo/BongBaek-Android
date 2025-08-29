@@ -51,23 +51,32 @@ fun WithdrawRoute(
     val buttonEnabled = remember(uiState.reasonType, uiState.etcReason) {
         viewModel.updateButtonState()
     }
+    val pageIndex = remember { mutableStateOf(0) }
 
-    WithdrawScreen(
-        uiState = uiState,
-        buttonEnabled = buttonEnabled,
-        navigateToUp = {},
-        onReasonSelect = viewModel::updateReasonType,
-        modifier = modifier,
-        onEtcValueChange = viewModel::updateEtcReason,
-    )
+    when (pageIndex.value) {
+        0 -> WithdrawReasonScreen(
+            uiState = uiState,
+            buttonEnabled = buttonEnabled,
+            navigateToUp = {},
+            onReasonSelect = viewModel::updateReasonType,
+            modifier = modifier,
+            onEtcValueChange = viewModel::updateEtcReason,
+            onConfirmClick = {
+                pageIndex.value = 1
+            },
+        )
+
+        1 -> WithdrawQuitScreen()
+    }
 }
 
 @Composable
-private fun WithdrawScreen(
+private fun WithdrawReasonScreen(
     uiState: WithdrawUiState,
     buttonEnabled: Boolean,
     navigateToUp: () -> Unit,
     onReasonSelect: (WithdrawType) -> Unit,
+    onConfirmClick: () -> Unit,
     modifier: Modifier = Modifier,
     onEtcValueChange: (String) -> Unit = {},
 ) {
@@ -154,6 +163,7 @@ private fun WithdrawScreen(
                 },
                 onConfirmClick = {
                     isWithdrawDialogVisible = false
+                    onConfirmClick()
                 },
             )
         }
@@ -162,15 +172,16 @@ private fun WithdrawScreen(
 
 @Preview
 @Composable
-private fun WithdrawScreenPreview() {
+private fun WithdrawReasonScreenPreview() {
     BongBaekTheme {
-        WithdrawScreen(
+        WithdrawReasonScreen(
             uiState = WithdrawUiState(
                 reasonType = WithdrawType.UNCOMFORTABLE,
             ),
             buttonEnabled = true,
             navigateToUp = {},
             onReasonSelect = {},
+            onConfirmClick = {},
         )
     }
 }
