@@ -63,6 +63,9 @@ fun WithdrawReasonSelector(
     onEtcFocusChange: (Boolean) -> Unit = {},
 ) {
     val showOtherReasons = selectedReason != WithdrawType.ETC || !etcFocused
+    val withdrawReasons = remember {
+        WithdrawType.entries.filter { it != WithdrawType.ETC }
+    }
 
     Column(
         modifier = modifier
@@ -73,7 +76,7 @@ fun WithdrawReasonSelector(
             .padding(12.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
-        WithdrawType.entries.filter { it != WithdrawType.ETC }.forEach { item ->
+        withdrawReasons.forEach { item ->
             AnimatedVisibility(
                 visible = showOtherReasons,
                 enter = slideInVertically(
