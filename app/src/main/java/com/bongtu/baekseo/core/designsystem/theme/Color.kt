@@ -44,20 +44,21 @@ val white = Color(0xFFFFFFFF)
 val black = Color(0xFF000000)
 val transparent = Color(0x00000000)
 val kakaoYellow = Color(0xFFFEE500)
+val onboardingTitle = Color(0xFFCDC9FF)
+val pageIndicator = Color(0x4DFFFFFF)
 
 // Gradient
 val gradientSlider = Color(0xFF8B5CF6)
 val gradientEnvelopeStart = Color(0xE6A6BEF3)
 val gradientEnvelopeEnd = Color(0xE6D3D9FF)
-val gradientExpenseStart = Color(0xFF4E62FF)
-val gradientExpenseEnd = Color(0xFF502EFF)
-val onboardingTitle = Color(0xFFCDC9FF)
-
-// Page Indicator
-val pageIndicator = Color(0x4DFFFFFF)
-
+val gradientExpense = Color(0xFF4E62FF)
 val gradientCostCardBackGround = Color(0xFF6F53FF)
 val gradientCostCardBorder = Color(0xFFBFB8FF)
+val gradientCardStop1 = Color(0xFF150857)
+val gradientCardStop2 = Color(0xFF5F57FF)
+val gradientCardStop3 = Color(0xFF7384FF)
+val gradientCardStop4 = Color(0xFF9EA5FF)
+val gradientCardStop5 = Color(0xFFCDCBFF)
 
 @Immutable
 data class BongBaekColors(
@@ -83,15 +84,19 @@ data class BongBaekColors(
     val black: Color,
     val transparent: Color,
     val kakaoYellow: Color,
+    val onboardingTitle: Color,
+    val pageIndicator: Color,
     val gradientSlider: Color,
     val gradientEnvelopeStart: Color,
     val gradientEnvelopeEnd: Color,
-    val gradientExpenseStart: Color,
-    val gradientExpenseEnd: Color,
-    val pageIndicator: Color,
+    val gradientExpense: Color,
     val gradientCostCardBackGround: Color,
     val gradientCostCardBorder: Color,
-    val onboardingTitle: Color,
+    val gradientCardStop1: Color,
+    val gradientCardStop2: Color,
+    val gradientCardStop3: Color,
+    val gradientCardStop4: Color,
+    val gradientCardStop5: Color,
 )
 
 val defaultBongBaekColors = BongBaekColors(
@@ -117,15 +122,19 @@ val defaultBongBaekColors = BongBaekColors(
     black = black,
     transparent = transparent,
     kakaoYellow = kakaoYellow,
+    onboardingTitle = onboardingTitle,
+    pageIndicator = pageIndicator,
     gradientSlider = gradientSlider,
     gradientEnvelopeStart = gradientEnvelopeStart,
     gradientEnvelopeEnd = gradientEnvelopeEnd,
-    gradientExpenseStart = gradientExpenseStart,
-    gradientExpenseEnd = gradientExpenseEnd,
-    pageIndicator = pageIndicator,
+    gradientExpense = gradientExpense,
     gradientCostCardBackGround = gradientCostCardBackGround,
     gradientCostCardBorder = gradientCostCardBorder,
-    onboardingTitle = onboardingTitle,
+    gradientCardStop1 = gradientCardStop1,
+    gradientCardStop2 = gradientCardStop2,
+    gradientCardStop3 = gradientCardStop3,
+    gradientCardStop4 = gradientCardStop4,
+    gradientCardStop5 = gradientCardStop5,
 )
 
 val LocalBongBaekColors = staticCompositionLocalOf { defaultBongBaekColors }
@@ -158,25 +167,31 @@ private fun BongBaekColorsPreview() {
                 colors.black,
                 colors.transparent,
                 colors.kakaoYellow,
+                colors.onboardingTitle,
+                colors.pageIndicator,
                 colors.gradientSlider,
                 colors.gradientEnvelopeStart,
                 colors.gradientEnvelopeEnd,
-                colors.gradientExpenseStart,
-                colors.gradientExpenseEnd,
-                colors.pageIndicator,
+                colors.gradientExpense,
                 colors.gradientCostCardBackGround,
                 colors.gradientCostCardBorder,
-                colors.onboardingTitle,
-            ).forEach { color ->
+                colors.gradientCardStop1,
+                colors.gradientCardStop2,
+                colors.gradientCardStop3,
+                colors.gradientCardStop4,
+                colors.gradientCardStop5,
+            ).chunked(4).forEach { color ->
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp),
                 ) {
-                    Box(
-                        modifier = Modifier
-                            .size(24.dp)
-                            .background(color)
-                            .padding(end = 8.dp),
-                    )
+                    color.forEach {
+                        Box(
+                            modifier = Modifier
+                                .size(24.dp)
+                                .background(it)
+                                .padding(end = 8.dp),
+                        )
+                    }
                 }
             }
         }

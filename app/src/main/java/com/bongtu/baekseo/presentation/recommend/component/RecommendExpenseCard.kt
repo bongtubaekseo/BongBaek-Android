@@ -64,8 +64,8 @@ fun RecommendExpenseCard(
     val gradientText = remember {
         Brush.linearGradient(
             colors = listOf(
-                bongBaekColors.gradientExpenseStart,
-                bongBaekColors.gradientExpenseEnd,
+                bongBaekColors.gradientExpense,
+                bongBaekColors.primaryStrong,
             ),
         )
     }
