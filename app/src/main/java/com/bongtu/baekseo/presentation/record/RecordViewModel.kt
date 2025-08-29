@@ -75,13 +75,6 @@ class RecordViewModel @Inject constructor(
                 request = DeleteEvent(uiState.value.selectedDeleteEventIds),
             ).onSuccess {
                 updateSelectedDeleteEventIds(emptySet())
-                updateDeleteModeCancel()
-                _uiState.update { currentState ->
-                    currentState.copy(
-                        attendType = uiState.value.attendType,
-                        eventCategoryType = uiState.value.eventCategoryType,
-                    )
-                }
                 clearPage()
                 fetchRecordEvent(requestedPage = 0)
             }.onFailure {
