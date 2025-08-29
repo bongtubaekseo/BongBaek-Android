@@ -175,4 +175,12 @@
     <string name="withdraw_reason_error">오류나 문제가 있었어요</string>
     <string name="withdraw_reason_account">새로운 계정으로 사용하고 싶어요</string>
     <string name="withdraw_reason_etc">기타</string>
+    <string name="withdraw_topbar">서비스 탈퇴</string>
+    <string name="withdraw_title">탈퇴를 도와드릴게요</string>
+    <string name="withdraw_information">더 나은 서비스를 위해 탈퇴 이유를 알려주세요</string>
+    <string name="withdraw_button_title">탈퇴하기</string>
+    <string name="withdraw_dialog_confirm">탈퇴</string>
+    <string name="withdraw_dialog_cancel">취소</string>
+    <string name="withdraw_dialog_title">봉투백서를 탈퇴하시겠습니까?</string>
+    <string name="withdraw_dialog_description">탈퇴시 데이터 복구가 어렵습니다</string>
 </resources>
