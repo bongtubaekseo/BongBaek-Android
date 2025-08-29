@@ -79,6 +79,13 @@ private fun WithdrawSelectorItem(
             WithdrawType.ETC -> withdraw_reason_etc
         }
     }
+    val titleColor = remember(isSelected) {
+        when (isSelected) {
+            true -> bongBaekColors.white
+            false -> bongBaekColors.gray400
+            else -> bongBaekColors.gray100
+        }
+    }
 
     Row(
         modifier = modifier
@@ -111,7 +118,7 @@ private fun WithdrawSelectorItem(
         Text(
             text = stringResource(id = titleRes),
             style = BongBaekTheme.typography.body1Medium16,
-            color = BongBaekTheme.colors.gray100,
+            color = titleColor,
         )
     }
 }
