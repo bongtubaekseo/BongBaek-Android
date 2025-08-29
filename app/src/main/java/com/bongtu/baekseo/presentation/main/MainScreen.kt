@@ -39,6 +39,8 @@ import com.bongtu.baekseo.presentation.schedule.navigation.navigateToSchedule
 import com.bongtu.baekseo.presentation.schedule.navigation.scheduleGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
+import com.bongtu.baekseo.presentation.withdraw.navigation.Withdraw
+import com.bongtu.baekseo.presentation.withdraw.navigation.withdrawGraph
 import kotlinx.collections.immutable.toImmutableList
 
 @Composable
@@ -196,6 +198,10 @@ private fun MainNavHost(
             navigateToUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToDetail = navigator.navController::navigateToDetail,
+            modifier = modifier,
+        )
+
+        withdrawGraph(
             modifier = modifier,
         )
     }
