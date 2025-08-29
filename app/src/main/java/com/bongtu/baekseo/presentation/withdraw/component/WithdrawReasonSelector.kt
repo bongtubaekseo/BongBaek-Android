@@ -12,8 +12,10 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -35,6 +37,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
 import com.bongtu.baekseo.R.string.input_text_field_placeholder
@@ -56,8 +59,9 @@ fun WithdrawReasonSelector(
     selectedReason: WithdrawType?,
     onReasonSelect: (WithdrawType) -> Unit,
     modifier: Modifier = Modifier,
+    etcFocused: Boolean = false,
+    onEtcFocusChange: (Boolean) -> Unit = {},
 ) {
-    var etcFocused by remember { mutableStateOf(false) }
     val showOtherReasons = selectedReason != WithdrawType.ETC || !etcFocused
 
     Column(
@@ -81,11 +85,11 @@ fun WithdrawReasonSelector(
                 ) + scaleOut(
                     targetScale = 0.95f,
                     animationSpec = tween(250, easing = FastOutSlowInEasing),
-                )
+                ),
             ) {
                 WithdrawSelectorItem(
                     reason = item,
-                    isSelected = selectedReason == item,
+                    isSelected = if (selectedReason == null) null else selectedReason == item,
                     modifier = Modifier.noRippleClickable { onReasonSelect(item) },
                 )
             }
@@ -93,11 +97,12 @@ fun WithdrawReasonSelector(
 
         WithdrawSelectorItem(
             reason = WithdrawType.ETC,
-            isSelected = selectedReason == WithdrawType.ETC,
+            isSelected = if (selectedReason == null) null else selectedReason == WithdrawType.ETC,
             modifier = Modifier.noRippleClickable { onReasonSelect(WithdrawType.ETC) },
+            etcFocused = etcFocused,
             value = value,
             onValueChange = onValueChange,
-            onFocusChange = { etcFocused = it },
+            onFocusChange = onEtcFocusChange,
         )
     }
 }
@@ -107,6 +112,7 @@ private fun WithdrawSelectorItem(
     reason: WithdrawType,
     isSelected: Boolean?,
     modifier: Modifier = Modifier,
+    etcFocused: Boolean = false,
     value: String = "",
     onValueChange: (String) -> Unit = {},
     onFocusChange: (Boolean) -> Unit = {},
@@ -164,24 +170,42 @@ private fun WithdrawSelectorItem(
         )
 
         if (reason == WithdrawType.ETC && isSelected == true) {
-            BongBaekInnerTextField(
-                text = value,
-                onTextChange = onValueChange,
-                textColor = BongBaekTheme.colors.white,
-                textStyle = BongBaekTheme.typography.body1Medium16,
-                placeholder = stringResource(id = input_text_field_placeholder),
-                placeholderColor = BongBaekTheme.colors.gray400,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { onFocusChange(it.isFocused) },
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = { focusManager.clearFocus() }
-                ),
-                isSingleLine = false,
-            )
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                BongBaekInnerTextField(
+                    text = value,
+                    onTextChange = onValueChange,
+                    textColor = BongBaekTheme.colors.white,
+                    textStyle = BongBaekTheme.typography.body1Medium16,
+                    placeholder = stringResource(id = input_text_field_placeholder),
+                    placeholderColor = BongBaekTheme.colors.gray400,
+                    modifier = Modifier
+                        .weight(1f)
+                        .onFocusChanged { onFocusChange(it.isFocused) },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() }
+                    ),
+                    isSingleLine = false,
+                    maxLines = 2,
+                )
+
+                if (value.isNotEmpty() && etcFocused) {
+                    Spacer(modifier = Modifier.size(8.dp))
+
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_cancel),
+                        contentDescription = null,
+                        modifier = Modifier.noRippleClickable {
+                            onValueChange("")
+                        },
+                        tint = Color.Unspecified,
+                    )
+                }
+            }
         } else {
             Text(
                 text = stringResource(id = titleRes),

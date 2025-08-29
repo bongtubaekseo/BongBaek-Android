@@ -1,5 +1,12 @@
 package com.bongtu.baekseo.presentation.withdraw
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -82,6 +89,7 @@ private fun WithdrawReasonScreen(
 ) {
     var isWithdrawDialogVisible by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+    var etcFocused by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -117,27 +125,45 @@ private fun WithdrawReasonScreen(
             Column {
                 Spacer(modifier = Modifier.height(18.dp))
 
-                Text(
-                    text = stringResource(id = R.string.withdraw_title),
-                    style = BongBaekTheme.typography.headBold24,
-                    color = BongBaekTheme.colors.gray100,
-                )
+                AnimatedVisibility (
+                    visible = !(uiState.reasonType == WithdrawType.ETC && etcFocused),
+                    enter = slideInVertically(
+                        animationSpec = tween(250, easing = FastOutSlowInEasing),
+                        initialOffsetY = { it }
+                    ) + fadeIn(animationSpec = tween(250)),
+                    exit = fadeOut(
+                        animationSpec = tween(250)
+                    ) + scaleOut(
+                        targetScale = 0.95f,
+                        animationSpec = tween(250, easing = FastOutSlowInEasing),
+                    ),
+                ) {
+                    Column {
+                        Text(
+                            text = stringResource(id = R.string.withdraw_title),
+                            style = BongBaekTheme.typography.headBold24,
+                            color = BongBaekTheme.colors.gray100,
+                        )
 
-                Spacer(modifier = Modifier.height(12.dp))
+                        Spacer(modifier = Modifier.height(12.dp))
 
-                Text(
-                    text = stringResource(id = R.string.withdraw_information),
-                    style = BongBaekTheme.typography.body2Regular14,
-                    color = BongBaekTheme.colors.gray400,
-                )
+                        Text(
+                            text = stringResource(id = R.string.withdraw_information),
+                            style = BongBaekTheme.typography.body2Regular14,
+                            color = BongBaekTheme.colors.gray400,
+                        )
 
-                Spacer(modifier = Modifier.height(20.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
+                    }
+                }
 
                 WithdrawReasonSelector(
                     value = uiState.etcReason,
                     onValueChange = onEtcValueChange,
                     selectedReason = uiState.reasonType,
                     onReasonSelect = onReasonSelect,
+                    etcFocused = etcFocused,
+                    onEtcFocusChange = { etcFocused = it },
                 )
             }
 
