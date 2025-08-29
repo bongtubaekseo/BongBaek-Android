@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -58,61 +57,48 @@ fun WithdrawDialog(
                         bottom = 16.dp,
                     ),
             ) {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                ) {
-                    Text(
-                        text = stringResource(id = withdraw_dialog_title),
-                        style = BongBaekTheme.typography.titleSemiBold20,
-                        color = BongBaekTheme.colors.white,
-                    )
+                Text(
+                    text = stringResource(id = withdraw_dialog_title),
+                    style = BongBaekTheme.typography.titleSemiBold20,
+                    color = BongBaekTheme.colors.white,
+                )
 
-                    Spacer(modifier = Modifier.size(6.dp))
+                Spacer(modifier = Modifier.size(6.dp))
 
-                    Text(
-                        text = stringResource(id = withdraw_dialog_description),
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
-                    )
-                }
+                Text(
+                    text = stringResource(id = withdraw_dialog_description),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.gray300,
+                )
 
                 Row(
                     modifier = Modifier
-                        .wrapContentSize()
                         .align(Alignment.End)
                         .padding(top = 10.dp),
                 ) {
-                    Box(
+                    Text(
+                        text = stringResource(id = withdraw_dialog_cancel),
                         modifier = Modifier
                             .padding(
                                 horizontal = 16.dp,
                                 vertical = 8.dp,
                             )
                             .noRippleClickable(onDismissRequest),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = stringResource(id = withdraw_dialog_cancel),
-                            style = BongBaekTheme.typography.body2Regular16,
-                            color = BongBaekTheme.colors.gray300,
-                        )
-                    }
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = BongBaekTheme.colors.gray300,
+                    )
 
-                    Box(
+                    Text(
+                        text = stringResource(id = withdraw_dialog_confirm),
                         modifier = Modifier
                             .padding(
                                 horizontal = 16.dp,
                                 vertical = 8.dp,
                             )
                             .noRippleClickable(onConfirmClick),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = stringResource(id = withdraw_dialog_confirm),
-                            style = BongBaekTheme.typography.body2Regular16,
-                            color = BongBaekTheme.colors.secondaryRed,
-                        )
-                    }
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = BongBaekTheme.colors.secondaryRed,
+                    )
                 }
             }
         }
