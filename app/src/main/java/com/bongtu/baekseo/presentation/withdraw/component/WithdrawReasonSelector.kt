@@ -37,6 +37,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
+import com.bongtu.baekseo.R.string.input_text_field_placeholder
 import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
 import com.bongtu.baekseo.R.string.withdraw_reason_etc
@@ -168,17 +169,18 @@ private fun WithdrawSelectorItem(
                 onTextChange = onValueChange,
                 textColor = BongBaekTheme.colors.white,
                 textStyle = BongBaekTheme.typography.body1Medium16,
-                placeholder = "직접 입력해주세요",
+                placeholder = stringResource(id = input_text_field_placeholder),
                 placeholderColor = BongBaekTheme.colors.gray400,
-                keyboardOptions = KeyboardOptions.Default.copy(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .onFocusChanged { onFocusChange(it.isFocused) },
+                keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = { focusManager.clearFocus() }
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .onFocusChanged { onFocusChange(it.isFocused) },
+                isSingleLine = false,
             )
         } else {
             Text(
