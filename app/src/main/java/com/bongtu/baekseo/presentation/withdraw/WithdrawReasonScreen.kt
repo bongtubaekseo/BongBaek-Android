@@ -45,7 +45,7 @@ import com.bongtu.baekseo.presentation.withdraw.component.WithdrawReasonSelector
 @Composable
 fun WithdrawRoute(
     modifier: Modifier = Modifier,
-    viewModel: WithdrawViewModel = hiltViewModel()
+    viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val buttonEnabled = remember(uiState.reasonType, uiState.etcReason) {
