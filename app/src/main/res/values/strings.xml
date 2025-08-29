@@ -168,4 +168,11 @@
     <string name="edit_save_button">기록 저장하기</string>
     <string name="edit_location_top_bar_title">행사장 검색</string>
     <string name="edit_location_button">위치 저장하기</string>
+    <!--Withdraw    -->
+    <string name="withdraw_reason_uncomfortable">사용이 불편했어요</string>
+    <string name="withdraw_reason_privacy">개인정보 보호가 걱정돼요</string>
+    <string name="withdraw_reason_use">앱을 자주 사용하지 않아요</string>
+    <string name="withdraw_reason_error">오류나 문제가 있었어요</string>
+    <string name="withdraw_reason_account">새로운 계정으로 사용하고 싶어요</string>
+    <string name="withdraw_reason_etc">기타</string>
 </resources>
