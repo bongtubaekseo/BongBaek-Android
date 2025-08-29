@@ -113,6 +113,7 @@
     <string name="name_text_field_placeholder">이름을 입력해주세요</string>
     <string name="birth_text_field_label">생년월일</string>
     <string name="birth_text_field_placeholder">생년월일을 입력해주세요</string>
+    <string name="input_text_field_placeholder">직접 입력해주세요</string>
     <!--BongBaekDatePicker    -->
     <string name="date_picker_description_birth">생년월일을 입력해주세요</string>
     <string name="date_picker_description_date">날짜를 입력해주세요</string>
