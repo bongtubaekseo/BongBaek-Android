@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
@@ -125,7 +126,7 @@ private fun WithdrawReasonScreen(
             Column {
                 Spacer(modifier = Modifier.height(18.dp))
 
-                AnimatedVisibility (
+                AnimatedVisibility(
                     visible = !(uiState.reasonType == WithdrawType.ETC && etcFocused),
                     enter = slideInVertically(
                         animationSpec = tween(250, easing = FastOutSlowInEasing),
@@ -177,7 +178,8 @@ private fun WithdrawReasonScreen(
                     .fillMaxWidth()
                     .padding(
                         bottom = 36.dp,
-                    ),
+                    )
+                    .navigationBarsPadding(),
                 enabled = buttonEnabled,
             )
         }
