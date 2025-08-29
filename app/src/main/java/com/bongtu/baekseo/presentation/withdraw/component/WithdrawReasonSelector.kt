@@ -185,7 +185,7 @@ private fun WithdrawSelectorItem(
         } else {
             Text(
                 text = stringResource(id = titleRes),
-                style = BongBaekTheme.typography.body1Medium16,
+                style = BongBaekTheme.typography.body2Regular16,
                 color = titleColor,
             )
         }
