@@ -184,4 +184,7 @@
     <string name="withdraw_dialog_cancel">취소</string>
     <string name="withdraw_dialog_title">봉투백서를 탈퇴하시겠습니까?</string>
     <string name="withdraw_dialog_description">탈퇴시 데이터 복구가 어렵습니다</string>
+    <string name="withdraw_quit_title">소중한 의견 감사합니다</string>
+    <string name="withdraw_quit_information">봉투백서는 다시 만나는 날을 기원해요</string>
+    <string name="withdraw_quit_button">종료</string>
 </resources>
