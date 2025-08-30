@@ -2,6 +2,7 @@ package com.bongtu.baekseo.presentation.mypage
 
 import androidx.lifecycle.ViewModel
 import com.bongtu.baekseo.core.common.type.IncomeType
+import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,16 +32,16 @@ class MyPageViewModel @Inject constructor(
         }
 
     fun updateUserName(newName: String) = _uiState.update {
-            it.copy(userName = newName)
-        }
+        it.copy(userName = newName, nameError = validateName(newName))
+    }
 
     fun updateUserBirth(newBirth: String) = _uiState.update {
-            it.copy(userBirth = newBirth)
-        }
+        it.copy(userBirth = newBirth)
+    }
 
     fun updateDialogBirth(newDialogBirth: String) = _uiState.update {
         it.copy(dialogBirth = newDialogBirth)
-        }
+    }
 
     fun updateUserIncome(newIncome: String) = _uiState.update {
         it.copy(userIncome = newIncome)
