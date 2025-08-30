@@ -11,7 +11,7 @@ class MyPageContract {
         val userName: String = "",
         val nameError: String = "",
         val userBirth: String = "",
-        var dialogBirth: String = "",
+        val dialogBirth: String = "",
         val userIncome: String = IncomeType.NONE.label,
     )
 }
