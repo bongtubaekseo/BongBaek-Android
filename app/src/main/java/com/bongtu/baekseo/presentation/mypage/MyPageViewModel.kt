@@ -21,7 +21,7 @@ class MyPageViewModel @Inject constructor(
             currentState.copy(
                 userName = "봉투백서의겸손한야수",
                 userBirth = "2000년 01월 05일",
-                userIncome = IncomeType.NONE,
+                userIncome = IncomeType.NONE.label,
             )
         }
 }

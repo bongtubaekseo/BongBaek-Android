@@ -9,7 +9,8 @@ class MyPageContract {
     data class MyPageUiState(
         val myPageLoadState: UiState<Unit> = UiState.Empty,
         val userName: String = "",
+        val nameError: String = "",
         val userBirth: String = "",
-        val userIncome: IncomeType = IncomeType.NONE,
+        val userIncome: String = IncomeType.NONE.label,
     )
 }

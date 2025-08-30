@@ -122,7 +122,7 @@ private fun MyPageScreen(
             ProfileSection(
                 userName = uiState.userName,
                 userBirth = uiState.userBirth,
-                userIncome = uiState.userIncome.label,
+                userIncome = uiState.userIncome,
                 onProfileEditButtonClick = navigateToEditProfile,
             )
 
@@ -410,7 +410,7 @@ private fun MyPageScreenPreview() {
             uiState = MyPageUiState(
                 userName = "봉투백서의겸손한야수",
                 userBirth = "2000년 01월 05일",
-                userIncome = IncomeType.NONE,
+                userIncome = IncomeType.NONE.label,
             ),
             navigateUp = {},
             navigateToEditProfile = {},
