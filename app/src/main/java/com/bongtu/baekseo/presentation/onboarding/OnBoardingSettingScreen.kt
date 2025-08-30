@@ -20,7 +20,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -46,6 +45,7 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
+import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -53,7 +53,6 @@ import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
-import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingSwitch
 
 @Composable
 fun OnBoardingSettingScreen(
@@ -79,8 +78,6 @@ fun OnBoardingSettingScreen(
         viewModel.updateButtonState()
     }
     var incomeSelected by remember { mutableStateOf(true) }
-
-    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -146,7 +143,7 @@ fun OnBoardingSettingScreen(
                         style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.white,
                     )
-                    OnBoardingSwitch(
+                    BongBaekSwitch(
                         checked = switchChecked,
                         onCheckedChange = {
                             switchChecked = it
