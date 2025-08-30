@@ -180,13 +180,15 @@ fun HomeSuccessScreen(
             .fillMaxSize()
             .verticalScroll(rememberScrollState()),
     ) {
-        HomeTopBar()
+        HomeTopBar(
+            onLogoIconClick = {},
+            modifier = Modifier.padding(20.dp),
+        )
 
         if (items.isEmpty()) {
             HomePageEmptyCard(
                 onBadgeClick = navigateToEdit,
                 modifier = Modifier
-                    .padding(top = 20.dp)
                     .padding(horizontal = 20.dp),
             )
         } else {
@@ -198,10 +200,7 @@ fun HomeSuccessScreen(
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
-                        .fillMaxSize()
-                        .padding(
-                            top = 20.dp,
-                        ),
+                        .fillMaxSize(),
                     contentPadding = PaddingValues(
                         start = pagerStartContentPadding,
                         end = pagerEndContentPadding,
