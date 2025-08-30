@@ -116,6 +116,7 @@ private fun ProfileEditScreen(
                     text = uiState.userName,
                     placeholder = stringResource(id = name_text_field_placeholder),
                     errorText = uiState.nameError,
+                    isRequired = true,
                     onTextChange = onUserNameTextChange,
                     isClearButtonEnabled = false,
                 )
@@ -132,6 +133,7 @@ private fun ProfileEditScreen(
                         },
                     onTextChange = onUserBirthTextChange,
                     isEditable = false,
+                    isRequired = true,
                     isClearButtonEnabled = false,
                 )
 

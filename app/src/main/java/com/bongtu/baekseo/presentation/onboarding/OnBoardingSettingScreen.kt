@@ -104,6 +104,7 @@ fun OnBoardingSettingScreen(
                     placeholder = stringResource(id = name_text_field_placeholder),
                     modifier = Modifier,
                     errorText = uiState.nameError,
+                    isRequired = true,
                     onTextChange = viewModel::updateName,
                     isClearButtonEnabled = false,
                 )
@@ -120,6 +121,7 @@ fun OnBoardingSettingScreen(
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,
+                    isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
