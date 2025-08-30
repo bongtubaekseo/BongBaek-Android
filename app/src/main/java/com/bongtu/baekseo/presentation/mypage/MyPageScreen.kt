@@ -92,7 +92,6 @@ private fun MyPageScreen(
 ) {
     Column(
         modifier = modifier
-            .systemBarsPadding()
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900),
     ) {
@@ -140,7 +139,8 @@ private fun MyPageScreen(
                         start = 20.dp,
                         end = 20.dp,
                         bottom = 17.dp,
-                    ),
+                    )
+                    .systemBarsPadding(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
@@ -162,8 +162,7 @@ private fun MyPageScreen(
                         .padding(
                             vertical = 4.dp,
                             horizontal = 54.dp,
-                        )
-                        .navigationBarsPadding(),
+                        ),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.captionRegular12,
                 )
