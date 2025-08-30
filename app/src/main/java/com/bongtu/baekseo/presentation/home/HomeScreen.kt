@@ -63,6 +63,7 @@ fun HomeRoute(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -90,6 +91,7 @@ fun HomeRoute(
         navigateToEdit = navigateToEdit,
         navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
+        navigateToMyPage = navigateToMyPage,
         modifier = modifier,
     )
 }
@@ -100,6 +102,7 @@ fun HomeScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState.homeLoadState) {
@@ -128,6 +131,7 @@ fun HomeScreen(
                 navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
+                navigateToMyPage = navigateToMyPage,
                 modifier = modifier,
             )
         }
@@ -141,6 +145,7 @@ fun HomeSuccessScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
@@ -181,7 +186,7 @@ fun HomeSuccessScreen(
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar(
-            onLogoIconClick = {},
+            onLogoIconClick = navigateToMyPage,
             modifier = Modifier.padding(20.dp),
         )
 
@@ -373,6 +378,7 @@ private fun HomeSuccessScreenPreview() {
             navigateToEdit = {},
             navigateToRecommend = {},
             navigateToSchedule = {},
+            navigateToMyPage = {},
         )
     }
 }

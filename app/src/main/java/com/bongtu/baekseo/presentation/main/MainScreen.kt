@@ -25,6 +25,8 @@ import com.bongtu.baekseo.presentation.edit.navigation.navigateToEdit
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
+import com.bongtu.baekseo.presentation.mypage.navigation.myPageGraph
+import com.bongtu.baekseo.presentation.mypage.navigation.navigateToMyPage
 import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
@@ -133,6 +135,7 @@ private fun MainNavHost(
             navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToSchedule = navigator.navController::navigateToSchedule,
+            navigateToMyPage = navigator.navController::navigateToMyPage,
             modifier = modifier,
         )
 
@@ -196,6 +199,13 @@ private fun MainNavHost(
             navigateToUp = navigator::navigateUp,
             navigateToEdit = navigator.navController::navigateToEdit,
             navigateToDetail = navigator.navController::navigateToDetail,
+            modifier = modifier,
+        )
+
+        myPageGraph(
+            navController = navigator.navController,
+            navigateUp = navigator::navigateUp,
+            navigateToWithDraw = {},
             modifier = modifier,
         )
     }
