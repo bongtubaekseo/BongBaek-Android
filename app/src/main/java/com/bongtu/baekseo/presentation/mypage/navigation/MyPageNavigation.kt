@@ -8,11 +8,17 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import com.bongtu.baekseo.core.common.navigation.Route
+import com.bongtu.baekseo.core.util.sharedViewModel
 import com.bongtu.baekseo.presentation.mypage.MyPageRoute
+import com.bongtu.baekseo.presentation.mypage.MyPageViewModel
+import com.bongtu.baekseo.presentation.mypage.ProfileEditRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToMyPage(navOptions: NavOptions? = null) =
     navigate(MyPage, navOptions)
+
+fun NavController.navigateToProfileEdit(navOptions: NavOptions? = null) =
+    navigate(ProfileEdit, navOptions)
 
 fun NavGraphBuilder.myPageGraph(
     navController: NavHostController,
@@ -23,11 +29,24 @@ fun NavGraphBuilder.myPageGraph(
     navigation<MyPage>(
         startDestination = MyPageMain,
     ) {
-        composable<MyPageMain> {
+        composable<MyPageMain> {  backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
+
             MyPageRoute(
                 navigateUp = navigateUp,
-                navigateToEditProfile = {},
+                navigateToEditProfile = navController::navigateToProfileEdit,
                 navigateToWithDraw = navigateToWithDraw,
+                viewModel = viewModel,
+                modifier = modifier,
+            )
+        }
+
+        composable<ProfileEdit> { backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
+
+            ProfileEditRoute(
+                navigateUp = navigateUp,
+                viewModel = viewModel,
                 modifier = modifier,
             )
         }
@@ -39,3 +58,6 @@ data object MyPage : Route
 
 @Serializable
 data object MyPageMain : Route
+
+@Serializable
+data object ProfileEdit : Route

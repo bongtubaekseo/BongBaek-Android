@@ -30,7 +30,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
@@ -65,8 +64,8 @@ fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithDraw: () -> Unit,
+    viewModel: MyPageViewModel,
     modifier: Modifier = Modifier,
-    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
