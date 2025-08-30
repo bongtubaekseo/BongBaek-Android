@@ -24,4 +24,25 @@ class MyPageViewModel @Inject constructor(
                 userIncome = IncomeType.NONE.label,
             )
         }
+
+    fun updateButtonState(): Boolean =
+        with(uiState.value) {
+            userName.isNotEmpty() && userBirth.isNotEmpty() && nameError.isEmpty()
+        }
+
+    fun updateUserName(newName: String) = _uiState.update {
+            it.copy(userName = newName)
+        }
+
+    fun updateUserBirth(newBirth: String) = _uiState.update {
+            it.copy(userBirth = newBirth)
+        }
+
+    fun updateDialogBirth(newDialogBirth: String) = _uiState.update {
+        it.copy(dialogBirth = newDialogBirth)
+        }
+
+    fun updateUserIncome(newIncome: String) = _uiState.update {
+        it.copy(userIncome = newIncome)
+    }
 }
