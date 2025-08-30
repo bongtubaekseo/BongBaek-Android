@@ -375,7 +375,8 @@ private fun ServiceItem(
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
     Row(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
         Icon(
