@@ -42,12 +42,12 @@ import com.bongtu.baekseo.R.string.mypage_inquiry
 import com.bongtu.baekseo.R.string.mypage_logout
 import com.bongtu.baekseo.R.string.mypage_personal_privacy
 import com.bongtu.baekseo.R.string.mypage_profile_edit_button
-import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_service_terms
 import com.bongtu.baekseo.R.string.mypage_service_title
 import com.bongtu.baekseo.R.string.mypage_topbar_title
 import com.bongtu.baekseo.R.string.mypage_user_birth
 import com.bongtu.baekseo.R.string.mypage_user_income
+import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_withdrawal
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
@@ -112,9 +112,9 @@ private fun MyPageScreen(
             )
 
             ServiceSection(
-                onInquiryClick = {},
-                onTermsClick = {},
-                onPrivacyClick = {},
+                onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
+                onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
+                onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/},
             )
 
             Spacer(Modifier.weight(1f))
