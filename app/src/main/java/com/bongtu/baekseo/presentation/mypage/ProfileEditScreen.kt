@@ -51,7 +51,6 @@ import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 
