@@ -17,6 +17,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -28,6 +30,8 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
@@ -49,10 +53,12 @@ import com.bongtu.baekseo.R.string.mypage_user_birth
 import com.bongtu.baekseo.R.string.mypage_user_income
 import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_withdrawal
+import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 
 @Composable
 fun MyPageRoute(
@@ -60,8 +66,16 @@ fun MyPageRoute(
     navigateToEditProfile: () -> Unit,
     navigateToWithDraw: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: MyPageViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+
+    LaunchedEffect(Unit) {
+        viewModel.fetchUserProfile()
+    }
+
     MyPageScreen(
+        uiState = uiState,
         navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithDraw = navigateToWithDraw,
@@ -71,6 +85,7 @@ fun MyPageRoute(
 
 @Composable
 private fun MyPageScreen(
+    uiState: MyPageUiState,
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithDraw: () -> Unit,
@@ -105,16 +120,16 @@ private fun MyPageScreen(
                 .background(BongBaekTheme.colors.gray800),
         ) {
             ProfileSection(
-                userName = "봉투백서의겸손한야수",
-                userBirth = "2000년 01월 05일",
-                userIncome = "없음",
+                userName = uiState.userName,
+                userBirth = uiState.userBirth,
+                userIncome = uiState.userIncome.label,
                 onProfileEditButtonClick = navigateToEditProfile,
             )
 
             ServiceSection(
                 onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
                 onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
-                onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/},
+                onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
             )
 
             Spacer(Modifier.weight(1f))
@@ -392,6 +407,11 @@ private fun ServiceItem(
 private fun MyPageScreenPreview() {
     BongBaekTheme {
         MyPageScreen(
+            uiState = MyPageUiState(
+                userName = "봉투백서의겸손한야수",
+                userBirth = "2000년 01월 05일",
+                userIncome = IncomeType.NONE,
+            ),
             navigateUp = {},
             navigateToEditProfile = {},
             navigateToWithDraw = {},
