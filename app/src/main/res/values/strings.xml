@@ -180,4 +180,5 @@
     <string name="mypage_personal_privacy">개인정보 처리방침</string>
     <string name="mypage_logout">로그아웃</string>
     <string name="mypage_withdrawal">서비스 탈퇴</string>
+    <string name="mypage_version_format">v %1$s</string>
 </resources>

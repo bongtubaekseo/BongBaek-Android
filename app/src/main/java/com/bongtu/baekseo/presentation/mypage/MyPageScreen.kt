@@ -29,6 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
+import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.drawable.ic_mypage_book
@@ -41,6 +42,7 @@ import com.bongtu.baekseo.R.string.mypage_inquiry
 import com.bongtu.baekseo.R.string.mypage_logout
 import com.bongtu.baekseo.R.string.mypage_personal_privacy
 import com.bongtu.baekseo.R.string.mypage_profile_edit_button
+import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_service_terms
 import com.bongtu.baekseo.R.string.mypage_service_title
 import com.bongtu.baekseo.R.string.mypage_topbar_title
@@ -110,7 +112,6 @@ private fun MyPageScreen(
             )
 
             ServiceSection(
-                appVersion = "1.0.0",
                 onInquiryClick = {},
                 onTermsClick = {},
                 onPrivacyClick = {},
@@ -274,7 +275,6 @@ private fun ProfileSection(
 
 @Composable
 private fun ServiceSection(
-    appVersion: String,
     onInquiryClick: () -> Unit,
     onTermsClick: () -> Unit,
     onPrivacyClick: () -> Unit,
@@ -304,7 +304,7 @@ private fun ServiceSection(
             titleRes = mypage_app_version,
             trailingIcon = {
                 Text(
-                    text = appVersion,
+                    text = stringResource(mypage_version_format, BuildConfig.VERSION_NAME),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body1Medium16,
                 )
