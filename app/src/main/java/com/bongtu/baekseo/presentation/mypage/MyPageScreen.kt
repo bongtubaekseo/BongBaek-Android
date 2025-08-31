@@ -6,12 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -91,8 +90,8 @@ private fun MyPageScreen(
 ) {
     Column(
         modifier = modifier
-            .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.gray900)
+            .fillMaxSize(),
     ) {
         BongBaekTopBar(
             title = stringResource(mypage_topbar_title),
@@ -113,57 +112,49 @@ private fun MyPageScreen(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .background(BongBaekTheme.colors.gray800),
+                .background(BongBaekTheme.colors.gray800)
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.SpaceBetween,
         ) {
-            ProfileSection(
-                userName = uiState.userName,
-                userBirth = uiState.userBirth,
-                userIncome = uiState.userIncome,
-                onProfileEditButtonClick = navigateToEditProfile,
-            )
+            Column {
+                ProfileSection(
+                    userName = uiState.userName,
+                    userBirth = uiState.userBirth,
+                    userIncome = uiState.userIncome,
+                    onProfileEditButtonClick = navigateToEditProfile,
+                )
 
-            ServiceSection(
-                onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
-                onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
-                onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
-            )
-
-            Spacer(Modifier.weight(1f))
+                ServiceSection(
+                    onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
+                    onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
+                    onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
+                )
+            }
 
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = 20.dp,
-                        end = 20.dp,
-                        bottom = 17.dp,
+                        horizontal = 60.dp,
+                        vertical = 14.dp,
                     )
-                    .systemBarsPadding(),
+                    .navigationBarsPadding(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = { /* TODO: 로그아웃 */ })
-                        .padding(
-                            vertical = 4.dp,
-                            horizontal = 54.dp,
-                        ),
+                        .noRippleClickable(onClick = { /* TODO: 로그아웃 */ }),
                     color = BongBaekTheme.colors.gray400,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body2Regular14,
                 )
 
                 Text(
                     text = stringResource(mypage_withdrawal),
                     modifier = Modifier
-                        .noRippleClickable(onClick = navigateToWithDraw)
-                        .padding(
-                            vertical = 4.dp,
-                            horizontal = 54.dp,
-                        ),
+                        .noRippleClickable(onClick = navigateToWithDraw),
                     color = BongBaekTheme.colors.gray400,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body2Regular14,
                 )
             }
         }
@@ -211,7 +202,6 @@ private fun ProfileSection(
         Text(
             text = stringResource(mypage_profile_edit_button),
             modifier = Modifier
-                .padding(top = 16.dp)
                 .background(
                     color = BongBaekTheme.colors.primaryNormal,
                     shape = RoundedCornerShape(20.dp),
@@ -230,7 +220,7 @@ private fun ProfileSection(
             modifier = Modifier
                 .padding(
                     start = 20.dp,
-                    top = 24.dp,
+                    top = 16.dp,
                     end = 20.dp,
                     bottom = 26.dp,
                 )
@@ -239,14 +229,14 @@ private fun ProfileSection(
                     shape = RoundedCornerShape(20.dp),
                 )
                 .padding(
-                    vertical = 14.dp,
+                    vertical = 16.dp,
                     horizontal = 20.dp,
                 ),
         ) {
             Row(
                 modifier = Modifier
                     .padding(
-                        bottom = 4.dp,
+                        bottom = 8.dp,
                     )
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
@@ -254,13 +244,13 @@ private fun ProfileSection(
                 Text(
                     text = stringResource(mypage_user_birth),
                     color = BongBaekTheme.colors.gray200,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body1Medium14,
                 )
 
                 Text(
                     text = userBirth,
                     color = BongBaekTheme.colors.gray100,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body1Medium14,
                 )
             }
 
@@ -272,13 +262,13 @@ private fun ProfileSection(
                 Text(
                     text = stringResource(mypage_user_income),
                     color = BongBaekTheme.colors.gray200,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body1Medium14,
                 )
 
                 Text(
                     text = userIncome,
                     color = BongBaekTheme.colors.gray100,
-                    style = BongBaekTheme.typography.captionRegular12,
+                    style = BongBaekTheme.typography.body1Medium14,
                 )
             }
         }
