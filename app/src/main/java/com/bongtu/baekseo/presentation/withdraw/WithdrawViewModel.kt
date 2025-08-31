@@ -16,8 +16,13 @@ class WithdrawViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(WithdrawUiState())
     val uiState = _uiState.asStateFlow()
 
-    fun updateReasonType(newReasonType: WithdrawType) = _uiState.update {
-        it.copy(reasonType = newReasonType)
+    fun updateReasonType(newReasonType: WithdrawType) {
+        _uiState.update {
+            it.copy(
+                reasonType = newReasonType,
+            )
+        }
+        if (newReasonType != WithdrawType.ETC) updateEtcReason("")
     }
 
     fun updateButtonState(): Boolean =
