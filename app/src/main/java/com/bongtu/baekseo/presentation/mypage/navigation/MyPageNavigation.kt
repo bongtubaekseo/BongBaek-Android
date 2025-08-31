@@ -45,7 +45,7 @@ fun NavGraphBuilder.myPageGraph(
             val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
 
             ProfileEditRoute(
-                navigateUp = navigateUp,
+                navigateUp = navController::navigateUp,
                 viewModel = viewModel,
                 modifier = modifier,
             )
