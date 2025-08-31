@@ -56,7 +56,6 @@ android {
 
     buildTypes {
         debug {
-            applicationIdSuffix = ".debug"
             isDebuggable = true
             buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
             buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
