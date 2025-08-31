@@ -43,7 +43,7 @@
 
 # lookup for plugin generated serializable classes
 -if @kotlinx.serialization.Serializable class com.bongtu.baekseo.**
--keepclassmembers class com.bongtu.baekseo.<1>$Companion {
+-keepclassmembers class <1>$Companion {
     kotlinx.serialization.KSerializer serializer(...);
 }
 
