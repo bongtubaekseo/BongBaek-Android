@@ -57,7 +57,6 @@
     @kotlinx.serialization.SerialName <fields>;
 }
 
-
 ## Coroutines
 -keep class kotlinx.coroutines.android.AndroidDispatcherFactory
 -keep class kotlinx.coroutines.android.AndroidExceptionPreHandler
