@@ -93,8 +93,7 @@ private fun MyPageScreen(
 ) {
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900)
-            .fillMaxSize(),
+            .background(color = BongBaekTheme.colors.gray900),
     ) {
         Column(
             modifier = Modifier
