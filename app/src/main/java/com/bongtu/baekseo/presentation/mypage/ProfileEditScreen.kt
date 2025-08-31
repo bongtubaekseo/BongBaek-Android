@@ -70,9 +70,9 @@ fun ProfileEditRoute(
         uiState = uiState,
         isEditButtonEnabled = isEditButtonEnabled,
         navigateUp = navigateUp,
-        onUserNameTextChange = viewModel::updateUserName,
-        onUserBirthTextChange = viewModel::updateUserBirth,
-        onDialogBirthTextChange = viewModel::updateDialogBirth,
+        onUserNameChange = viewModel::updateUserName,
+        onUserBirthChange = viewModel::updateUserBirth,
+        onDialogBirthChange = viewModel::updateDialogBirth,
         onIncomeButtonClick = viewModel::updateUserIncome,
         modifier = modifier,
     )
@@ -83,9 +83,9 @@ private fun ProfileEditScreen(
     uiState: MyPageUiState,
     isEditButtonEnabled: Boolean,
     navigateUp: () -> Unit,
-    onUserNameTextChange: (String) -> Unit,
-    onUserBirthTextChange: (String) -> Unit,
-    onDialogBirthTextChange: (String) -> Unit,
+    onUserNameChange: (String) -> Unit,
+    onUserBirthChange: (String) -> Unit,
+    onDialogBirthChange: (String) -> Unit,
     onIncomeButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -128,7 +128,7 @@ private fun ProfileEditScreen(
                     placeholder = stringResource(id = name_text_field_placeholder),
                     errorText = uiState.nameError,
                     isRequired = true,
-                    onTextChange = onUserNameTextChange,
+                    onTextChange = onUserNameChange,
                     isClearButtonEnabled = false,
                 )
 
@@ -142,7 +142,7 @@ private fun ProfileEditScreen(
                         .noRippleClickable {
                             isDatePickerDialogVisible = true
                         },
-                    onTextChange = onUserBirthTextChange,
+                    onTextChange = onUserBirthChange,
                     isEditable = false,
                     isRequired = true,
                     isClearButtonEnabled = false,
@@ -231,15 +231,15 @@ private fun ProfileEditScreen(
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
                 value = uiState.dialogBirth,
-                onValueChange = onDialogBirthTextChange,
+                onValueChange = onDialogBirthChange,
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
-                    onDialogBirthTextChange("")
+                    onDialogBirthChange("")
                 },
                 onConfirmClick = {
                     isDatePickerDialogVisible = false
-                    onUserBirthTextChange(uiState.dialogBirth)
-                    onDialogBirthTextChange("")
+                    onUserBirthChange(uiState.dialogBirth)
+                    onDialogBirthChange("")
                 },
             )
         }
@@ -302,9 +302,9 @@ private fun ProfileEditScreenPreview() {
             uiState = MyPageUiState(),
             isEditButtonEnabled = false,
             navigateUp = {},
-            onUserNameTextChange = {},
-            onUserBirthTextChange = {},
-            onDialogBirthTextChange = {},
+            onUserNameChange = {},
+            onUserBirthChange = {},
+            onDialogBirthChange = {},
             onIncomeButtonClick = {},
         )
     }
