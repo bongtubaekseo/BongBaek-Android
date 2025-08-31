@@ -62,7 +62,7 @@ import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
-    navigateToWithDraw: () -> Unit,
+    navigateToWithdraw: () -> Unit,
     viewModel: MyPageViewModel,
     modifier: Modifier = Modifier,
 ) {
@@ -76,7 +76,7 @@ fun MyPageRoute(
         uiState = uiState,
         navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
-        navigateToWithDraw = navigateToWithDraw,
+        navigateToWithdraw = navigateToWithdraw,
         modifier = modifier,
     )
 }
@@ -86,7 +86,7 @@ private fun MyPageScreen(
     uiState: MyPageUiState,
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
-    navigateToWithDraw: () -> Unit,
+    navigateToWithdraw: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -153,7 +153,7 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_withdrawal),
                     modifier = Modifier
-                        .noRippleClickable(onClick = navigateToWithDraw),
+                        .noRippleClickable(onClick = navigateToWithdraw),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -404,7 +404,7 @@ private fun MyPageScreenPreview() {
             ),
             navigateUp = {},
             navigateToEditProfile = {},
-            navigateToWithDraw = {},
+            navigateToWithdraw = {},
         )
     }
 }

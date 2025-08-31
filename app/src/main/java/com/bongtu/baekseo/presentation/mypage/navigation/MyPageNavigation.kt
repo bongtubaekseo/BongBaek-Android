@@ -23,7 +23,7 @@ fun NavController.navigateToProfileEdit(navOptions: NavOptions? = null) =
 fun NavGraphBuilder.myPageGraph(
     navController: NavHostController,
     navigateUp: () -> Unit,
-    navigateToWithDraw: () -> Unit,
+    navigateToWithdraw: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     navigation<MyPage>(
@@ -35,7 +35,7 @@ fun NavGraphBuilder.myPageGraph(
             MyPageRoute(
                 navigateUp = navigateUp,
                 navigateToEditProfile = navController::navigateToProfileEdit,
-                navigateToWithDraw = navigateToWithDraw,
+                navigateToWithdraw = navigateToWithdraw,
                 viewModel = viewModel,
                 modifier = modifier,
             )
