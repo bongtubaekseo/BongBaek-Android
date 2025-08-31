@@ -26,13 +26,14 @@ class MyPageViewModel @Inject constructor(
             )
         }
 
-    fun initEditProfileState() = _uiState.update {
-        it.copy(
-            originalName = it.userName,
-            originalBirth = it.userBirth,
-            originalIncome = it.userIncome,
-        )
-    }
+    fun updateOriginProfileState(newName: String, newBirth: String, newIncome: String) =
+        _uiState.update {
+            it.copy(
+                originalName = newName,
+                originalBirth = newBirth,
+                originalIncome = newIncome,
+            )
+        }
 
     fun updateUserName(newName: String) = _uiState.update {
         it.copy(userName = newName, nameError = validateName(newName))

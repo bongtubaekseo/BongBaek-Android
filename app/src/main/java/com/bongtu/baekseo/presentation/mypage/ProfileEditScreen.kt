@@ -16,6 +16,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +69,21 @@ fun ProfileEditRoute(
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
 
     LaunchedEffect(Unit) {
-        viewModel.initEditProfileState()
+        viewModel.updateOriginProfileState(
+            newName = uiState.userName,
+            newBirth = uiState.userBirth,
+            newIncome = uiState.userIncome,
+        )
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.updateOriginProfileState(
+                newName = "",
+                newBirth = "",
+                newIncome = IncomeType.NONE.label,
+            )
+        }
     }
 
     ProfileEditScreen(
