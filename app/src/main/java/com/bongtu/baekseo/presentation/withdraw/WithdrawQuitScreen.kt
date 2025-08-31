@@ -81,8 +81,6 @@ fun WithdrawQuitScreen(
 @Composable
 private fun WithdrawQuitScreenPreview() {
     BongBaekTheme {
-        WithdrawQuitScreen(
-
-        )
+        WithdrawQuitScreen()
     }
 }
