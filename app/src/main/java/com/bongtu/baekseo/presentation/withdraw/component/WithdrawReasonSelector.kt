@@ -1,12 +1,11 @@
 package com.bongtu.baekseo.presentation.withdraw.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -78,16 +77,6 @@ fun WithdrawReasonSelector(
     ) {
         AnimatedVisibility(
             visible = showOtherReasons,
-            enter = slideInVertically(
-                animationSpec = tween(250, easing = FastOutSlowInEasing),
-                initialOffsetY = { it }
-            ) + fadeIn(animationSpec = tween(250)),
-            exit = fadeOut(
-                animationSpec = tween(250)
-            ) + scaleOut(
-                targetScale = 0.95f,
-                animationSpec = tween(250, easing = FastOutSlowInEasing),
-            ),
         ) {
             Column(
                 verticalArrangement = Arrangement.spacedBy(8.dp),
@@ -107,8 +96,8 @@ fun WithdrawReasonSelector(
             reason = WithdrawType.ETC,
             isSelected = if (selectedReason == null) null else selectedReason == WithdrawType.ETC,
             modifier = Modifier
-                .padding(
-                    top = 8.dp,
+                .then(
+                    if (!etcFocused) Modifier.padding(top = 8.dp) else Modifier
                 )
                 .noRippleClickable { onReasonSelect(WithdrawType.ETC) },
             etcFocused = etcFocused,
