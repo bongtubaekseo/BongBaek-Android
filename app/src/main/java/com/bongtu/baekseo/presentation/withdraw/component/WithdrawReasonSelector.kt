@@ -31,7 +31,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
@@ -41,6 +40,7 @@ import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
 import com.bongtu.baekseo.R.string.withdraw_reason_etc
 import com.bongtu.baekseo.R.string.withdraw_reason_etc_error
+import com.bongtu.baekseo.R.string.withdraw_reason_etc_length
 import com.bongtu.baekseo.R.string.withdraw_reason_privacy
 import com.bongtu.baekseo.R.string.withdraw_reason_uncomfortable
 import com.bongtu.baekseo.R.string.withdraw_reason_use
@@ -116,10 +116,10 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
-    val (iconRes, titleColor) = remember(isSelected) {
-        when (isSelected) {
-            true -> ic_check to bongBaekColors.white
-            false -> ic_withdraw_check_gray to bongBaekColors.gray400
+    val (iconRes, titleColor) = remember(isSelected, value.length) {
+        when {
+            isSelected == true && value.length < 50 -> ic_check to bongBaekColors.white
+            isSelected == false || value.length >= 50 -> ic_withdraw_check_gray to bongBaekColors.gray400
             else -> ic_withdraw_check to bongBaekColors.gray100
         }
     }
@@ -133,8 +133,9 @@ private fun WithdrawSelectorItem(
             WithdrawType.ETC -> withdraw_reason_etc
         }
     }
-    val borderColor = remember(value) {
-        if (value.length >= 50) bongBaekColors.secondaryRed else bongBaekColors.primaryNormal
+    val (lengthColor, borderColor) = remember(value.length) {
+        if (value.length >= 50) bongBaekColors.secondaryRed to bongBaekColors.secondaryRed
+        else bongBaekColors.white to bongBaekColors.primaryNormal
     }
 
     val focusManager = LocalFocusManager.current
@@ -142,7 +143,7 @@ private fun WithdrawSelectorItem(
     Column(
         modifier = modifier,
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .then(
@@ -159,56 +160,53 @@ private fun WithdrawSelectorItem(
                     shape = RoundedCornerShape(10.dp),
                 )
                 .padding(12.dp),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Icon(
-                imageVector = ImageVector.vectorResource(iconRes),
-                contentDescription = null,
-                tint = Color.Unspecified,
-            )
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Icon(
+                    imageVector = ImageVector.vectorResource(iconRes),
+                    contentDescription = null,
+                    modifier = Modifier.align(Alignment.Top),
+                    tint = Color.Unspecified,
+                )
 
-            if (reason == WithdrawType.ETC && isSelected == true) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
+                if (reason == WithdrawType.ETC && isSelected == true) {
                     BongBaekInnerTextField(
                         text = value,
                         onTextChange = onValueChange,
                         textColor = BongBaekTheme.colors.white,
                         textStyle = BongBaekTheme.typography.body1Medium16,
                         placeholder = stringResource(id = input_text_field_placeholder),
-                        placeholderColor = BongBaekTheme.colors.gray400,
+                        placeholderColor = bongBaekColors.gray400,
                         modifier = Modifier
                             .weight(1f)
                             .onFocusChanged { onFocusChange(it.isFocused) },
                         keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done
+                            imeAction = ImeAction.Done,
                         ),
                         keyboardActions = KeyboardActions(
-                            onDone = { focusManager.clearFocus() }
+                            onDone = { focusManager.clearFocus() },
                         ),
                         isSingleLine = false,
                     )
-
-                    if (value.isNotEmpty() && etcFocused) {
-                        Spacer(modifier = Modifier.size(8.dp))
-
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_cancel),
-                            contentDescription = null,
-                            modifier = Modifier.noRippleClickable {
-                                onValueChange("")
-                            },
-                            tint = BongBaekTheme.colors.gray500,
-                        )
-                    }
+                } else {
+                    Text(
+                        text = stringResource(id = titleRes),
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = titleColor,
+                    )
                 }
-            } else {
+            }
+            if (etcFocused) {
+                Spacer(modifier = Modifier.size(4.dp))
+
                 Text(
-                    text = stringResource(id = titleRes),
-                    style = BongBaekTheme.typography.body2Regular16,
-                    color = titleColor,
+                    text = stringResource(id = withdraw_reason_etc_length, value.length),
+                    modifier = Modifier.align(Alignment.End),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = lengthColor,
                 )
             }
         }
@@ -235,7 +233,6 @@ private fun WithdrawSelectorItem(
             }
         }
     }
-
 }
 
 @Preview
