@@ -1,3 +1,4 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import java.util.Properties
 
 plugins {
@@ -11,8 +12,10 @@ plugins {
 }
 
 val properties = Properties().apply {
-    load(project.rootProject.file("local.properties").inputStream())
+    val f = project.rootProject.file("local.properties")
+    if (f.exists()) f.inputStream().use { load(it) }
 }
+
 val kakaoApiKey = properties.getProperty("kakao.api.key")
 val kakaoNativeKey = properties.getProperty("kakao.native.key")
 val kakaoBaseUrl = properties.getProperty("kakao.base.url")
@@ -38,23 +41,32 @@ android {
 
     signingConfigs {
         getByName("debug") {
-            keyAlias = "androiddebugkey"
-            keyPassword = "android"
-            storeFile = File("${project.rootDir.absolutePath}/keystore/debug.keystore")
-            storePassword = "android"
+            keyAlias = properties.getProperty("debug.key.alias")
+            keyPassword = properties.getProperty("debug.key.password")
+            storeFile = File("${project.rootDir.absolutePath}/keystore/bongbaek-debug-key.jks")
+            storePassword = properties.getProperty("debug.store.password")
+        }
+        create("release") {
+            keyAlias = properties.getProperty("release.key.alias")
+            keyPassword = properties.getProperty("release.key.password")
+            storeFile = File("${project.rootDir.absolutePath}/keystore/bongbaek-release-key.jks")
+            storePassword = properties.getProperty("release.store.password")
         }
     }
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
             isDebuggable = true
             buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
             buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
             buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
+            signingConfig = signingConfigs.getByName("debug")
         }
 
         release {
-            isMinifyEnabled = false
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -62,14 +74,17 @@ android {
             buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
             buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
             buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
+            signingConfig = signingConfigs.getByName("release")
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "11"
+    kotlin {
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
     buildFeatures {
         compose = true
