@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.rememberScrollState
@@ -49,9 +49,8 @@ import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.Navigate
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
+import com.bongtu.baekseo.presentation.home.component.HomePageCard
 import com.bongtu.baekseo.presentation.home.component.HomePageEmptyCard
-import com.bongtu.baekseo.presentation.home.component.HomePageMultipleCard
-import com.bongtu.baekseo.presentation.home.component.HomePageSingleCard
 import com.bongtu.baekseo.presentation.home.component.HomeRecommendCard
 import com.bongtu.baekseo.presentation.home.component.HomeScheduleEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeTopBar
@@ -151,38 +150,30 @@ fun HomeSuccessScreen(
     val pagerState = rememberPagerState(pageCount = {
         items.size
     })
-    val isMultipleCard = remember {
-        items.size > 1
-    }
-    val isFirstPage by remember {
-        derivedStateOf { pagerState.currentPage == 0 }
-    }
-    val isLastPage by remember {
-        derivedStateOf { pagerState.currentPage == pagerState.pageCount - 1 }
-    }
-
-    val recommendCardPadding = remember(isMultipleCard) {
-        if (isMultipleCard) 0.dp else 30.dp
-    }
-    val pagerStartContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
-        when {
-            !isMultipleCard || isFirstPage -> 20.dp
-            isLastPage -> 32.dp
-            else -> 26.dp
-        }
-    }
-    val pagerEndContentPadding = remember(isMultipleCard, isFirstPage, isLastPage) {
-        when {
-            !isMultipleCard || isLastPage -> 20.dp
-            isFirstPage -> 32.dp
-            else -> 26.dp
+    val isCardMultiple = items.size > 1
+    val recommendCardPadding = if (isCardMultiple) 0.dp else 30.dp
+    val contentPadding by remember(pagerState) {
+        derivedStateOf {
+            val page = pagerState.currentPage
+            val last = (pagerState.pageCount - 1).coerceAtLeast(0)
+            val start = when {
+                !isCardMultiple || page == 0 -> 20.dp
+                page == last -> 32.dp
+                else -> 26.dp
+            }
+            val end = when {
+                !isCardMultiple || page == last -> 20.dp
+                page == 0 -> 32.dp
+                else -> 26.dp
+            }
+            PaddingValues(start = start, end = end)
         }
     }
 
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900)
-            .fillMaxSize()
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop())
             .verticalScroll(rememberScrollState()),
     ) {
         HomeTopBar(
@@ -200,16 +191,12 @@ fun HomeSuccessScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 HorizontalPager(
                     state = pagerState,
                     modifier = Modifier
                         .fillMaxSize(),
-                    contentPadding = PaddingValues(
-                        start = pagerStartContentPadding,
-                        end = pagerEndContentPadding,
-                    ),
+                    contentPadding = contentPadding,
                     pageSpacing = 8.dp,
                     key = { page ->
                         items[page].eventId
@@ -217,51 +204,39 @@ fun HomeSuccessScreen(
                 ) { page ->
                     val item = items[page]
 
-                    when (items.size) {
-                        1 -> {
-                            HomePageSingleCard(
-                                hostname = item.hostName,
-                                eventType = item.eventCategory,
-                                daysLeft = item.dDay,
-                                eventDate = item.eventDate,
-                            )
-                        }
-
-                        else -> {
-                            HomePageMultipleCard(
-                                hostname = item.hostName,
-                                eventType = item.eventCategory,
-                                daysLeft = item.dDay,
-                                eventDate = item.eventDate,
-                            )
-                        }
-                    }
+                    HomePageCard(
+                        hostname = item.hostName,
+                        eventType = item.eventCategory,
+                        daysLeft = item.dDay,
+                        eventDate = item.eventDate,
+                    )
                 }
-            }
 
-            if (isMultipleCard) {
-                Row(
-                    modifier = Modifier
-                        .wrapContentHeight()
-                        .fillMaxWidth()
-                        .padding(
-                            top = 22.dp,
-                            bottom = 24.dp,
+                if (isCardMultiple) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                top = 22.dp,
+                                bottom = 24.dp,
+                            ),
+                        horizontalArrangement = Arrangement.spacedBy(
+                            space = 6.dp,
+                            alignment = Alignment.CenterHorizontally,
                         ),
-                    horizontalArrangement = Arrangement.spacedBy(
-                        6.dp,
-                        Alignment.CenterHorizontally,
-                    ),
-                ) {
-                    repeat(pagerState.pageCount) { iteration ->
-                        val color =
-                            if (pagerState.currentPage == iteration) BongBaekTheme.colors.white else BongBaekTheme.colors.pageIndicator
-                        Box(
-                            modifier = Modifier
-                                .clip(CircleShape)
-                                .background(color)
-                                .size(5.dp),
-                        )
+                    ) {
+                        repeat(pagerState.pageCount) { iteration ->
+                            val color =
+                                if (pagerState.currentPage == iteration) BongBaekTheme.colors.white
+                                else BongBaekTheme.colors.pageIndicator
+
+                            Box(
+                                modifier = Modifier
+                                    .clip(CircleShape)
+                                    .background(color)
+                                    .size(5.dp),
+                            )
+                        }
                     }
                 }
             }
@@ -269,8 +244,7 @@ fun HomeSuccessScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 20.dp)
-                .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop()),
+                .padding(horizontal = 20.dp),
         ) {
             HomeRecommendCard(
                 onClick = navigateToRecommend,
@@ -297,13 +271,13 @@ fun HomeSuccessScreen(
                     Text(
                         text = stringResource(id = home_schedule_more),
                         modifier = Modifier.noRippleClickable(navigateToSchedule),
-                        style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray200,
+                        style = BongBaekTheme.typography.captionRegular12,
                     )
                 }
             }
 
-            items.forEach { item ->
+            items.forEachIndexed { index, item ->
                 BongBaekScheduleCard(
                     scheduleCardType = ScheduleCardType.HOME,
                     hostName = item.hostName,
@@ -312,14 +286,11 @@ fun HomeSuccessScreen(
                     relationship = item.relationship,
                     cost = item.cost,
                     eventDate = item.eventDate,
+                    modifier = Modifier.padding(
+                        bottom = if (index == items.lastIndex) 36.dp else 10.dp
+                    ),
                     location = item.location,
                 )
-
-                Spacer(modifier = Modifier.size(10.dp))
-
-                if (item == items.last()) {
-                    Spacer(modifier = Modifier.size(28.dp))
-                }
             }
 
             if (items.isEmpty()) {
@@ -335,7 +306,7 @@ fun HomeSuccessScreen(
 @Preview
 @Composable
 private fun HomeSuccessScreenPreview() {
-    val items = persistentListOf(
+    val items = persistentListOf<HomeEvent>(
         HomeEvent(
             eventId = "eventId1",
             hostName = "헤헤",
