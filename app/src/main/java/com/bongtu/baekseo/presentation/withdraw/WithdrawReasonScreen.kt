@@ -12,12 +12,13 @@ import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -38,10 +39,12 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.withdraw_button_title
+import com.bongtu.baekseo.R.string.withdraw_information
 import com.bongtu.baekseo.R.string.withdraw_topbar
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.common.type.WithdrawType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -96,6 +99,7 @@ private fun WithdrawReasonScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .pointerInput(Unit) {
                 detectTapGestures(onTap = { focusManager.clearFocus() })
             },
@@ -149,7 +153,7 @@ private fun WithdrawReasonScreen(
                         Spacer(modifier = Modifier.height(12.dp))
 
                         Text(
-                            text = stringResource(id = R.string.withdraw_information),
+                            text = stringResource(id = withdraw_information),
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.gray400,
                         )
@@ -178,8 +182,7 @@ private fun WithdrawReasonScreen(
                     .fillMaxWidth()
                     .padding(
                         bottom = 36.dp,
-                    )
-                    .navigationBarsPadding(),
+                    ),
                 enabled = buttonEnabled,
             )
         }

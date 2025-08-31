@@ -5,12 +5,14 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -23,6 +25,7 @@ import com.bongtu.baekseo.R.string.withdraw_quit_button
 import com.bongtu.baekseo.R.string.withdraw_quit_information
 import com.bongtu.baekseo.R.string.withdraw_quit_title
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -35,6 +38,7 @@ fun WithdrawQuitScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .statusBarsPadding()
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -71,8 +75,7 @@ fun WithdrawQuitScreen(
                 .fillMaxWidth()
                 .padding(
                     bottom = 36.dp,
-                )
-                .navigationBarsPadding(),
+                ),
         )
     }
 }
