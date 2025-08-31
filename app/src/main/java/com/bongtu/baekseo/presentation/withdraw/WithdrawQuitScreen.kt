@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.withdraw
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +10,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -20,6 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.bongtu.baekseo.R.drawable.img_withdraw_gift
 import com.bongtu.baekseo.R.string.withdraw_quit_button
 import com.bongtu.baekseo.R.string.withdraw_quit_information
@@ -31,8 +32,14 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
 fun WithdrawQuitScreen(
+    onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
+    BackHandler {
+        // 뒤로 가기 방지
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -68,7 +75,8 @@ fun WithdrawQuitScreen(
         BongBaekButton(
             title = stringResource(id = withdraw_quit_button),
             onClick = {
-                // TODO: 로그인으로 이동
+                onRestartApp(false)
+                viewModel.clearToken()
             },
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier
@@ -84,6 +92,8 @@ fun WithdrawQuitScreen(
 @Composable
 private fun WithdrawQuitScreenPreview() {
     BongBaekTheme {
-        WithdrawQuitScreen()
+        WithdrawQuitScreen(
+            onRestartApp = {},
+        )
     }
 }

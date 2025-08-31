@@ -13,10 +13,14 @@ fun NavController.navigateToWithdraw(navOptions: NavOptions? = null) =
     navigate(Withdraw, navOptions)
 
 fun NavGraphBuilder.withdrawGraph(
+    navigateToUp: () -> Unit,
+    onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Withdraw> {
         WithdrawRoute(
+            navigateToUp = navigateToUp,
+            onRestartApp = onRestartApp,
             modifier = modifier,
         )
     }

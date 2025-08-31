@@ -41,7 +41,7 @@ import com.bongtu.baekseo.presentation.schedule.navigation.navigateToSchedule
 import com.bongtu.baekseo.presentation.schedule.navigation.scheduleGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
-import com.bongtu.baekseo.presentation.withdraw.navigation.Withdraw
+import com.bongtu.baekseo.presentation.withdraw.navigation.navigateToWithdraw
 import com.bongtu.baekseo.presentation.withdraw.navigation.withdrawGraph
 import kotlinx.collections.immutable.toImmutableList
 
@@ -207,11 +207,13 @@ private fun MainNavHost(
         myPageGraph(
             navController = navigator.navController,
             navigateUp = navigator::navigateUp,
-            navigateToWithdraw = { /* TODO: 탈퇴하기 뷰 이동 */ },
+            navigateToWithdraw = navigator.navController::navigateToWithdraw,
             modifier = modifier,
         )
 
         withdrawGraph(
+            navigateToUp = navigator::navigateUp,
+            onRestartApp = onRestartApp,
             modifier = modifier,
         )
     }

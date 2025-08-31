@@ -1,13 +1,6 @@
 package com.bongtu.baekseo.presentation.withdraw
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -56,6 +49,8 @@ import com.bongtu.baekseo.presentation.withdraw.component.WithdrawReasonSelector
 
 @Composable
 fun WithdrawRoute(
+    navigateToUp: () -> Unit,
+    onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
@@ -69,7 +64,7 @@ fun WithdrawRoute(
         0 -> WithdrawReasonScreen(
             uiState = uiState,
             buttonEnabled = buttonEnabled,
-            navigateToUp = {},
+            navigateToUp = navigateToUp,
             onReasonSelect = viewModel::updateReasonType,
             modifier = modifier,
             onEtcValueChange = viewModel::updateEtcReason,
@@ -78,7 +73,10 @@ fun WithdrawRoute(
             },
         )
 
-        1 -> WithdrawQuitScreen()
+        1 -> WithdrawQuitScreen(
+            onRestartApp = onRestartApp,
+            modifier = modifier,
+        )
     }
 }
 
