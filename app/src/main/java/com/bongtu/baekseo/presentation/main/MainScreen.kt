@@ -205,7 +205,7 @@ private fun MainNavHost(
         myPageGraph(
             navController = navigator.navController,
             navigateUp = navigator::navigateUp,
-            navigateToWithDraw = {},
+            navigateToWithDraw = { /* TODO: 탈퇴하기 뷰 이동 */ },
             modifier = modifier,
         )
     }
