@@ -134,12 +134,6 @@ private fun MyPageScreen(
                     onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
                     onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
                 )
-
-                ServiceSection(
-                    onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
-                    onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
-                    onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
-                )
             }
 
             Row(
