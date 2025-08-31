@@ -124,7 +124,7 @@ private fun WithdrawReasonScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Spacer(modifier = Modifier.height(18.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 AnimatedVisibility(
                     visible = !(uiState.reasonType == WithdrawType.ETC && etcFocused),
