@@ -1,58 +1,58 @@
 [versions]
-compileSdk = "35"
+compileSdk = "36"
 minSdk = "30"
-targetSdk = "35"
+targetSdk = "36"
 jvmTarget = "11"
 versionCode = "1"
 versionName = "1.0.0"
 kotlinCompilerExtensionVersion = "1.5.15"
 
 # Kotlin
-agp = "8.7.3"
-kotlin = "2.0.0"
+agp = "8.12.2"
+kotlin = "2.2.10"
 kotlinxImmutable = "0.4.0"
-kotlinParcelize = "1.8.20"
+kotlinParcelize = "2.2.10"
 
 # Test
 junit = "4.13.2"
-junitVersion = "1.2.1"
-espressoCore = "3.6.1"
+junitVersion = "1.3.0"
+espressoCore = "3.7.0"
 
 # AndroidX
 coreSplachscreen = "1.0.1"
-coreKtx = "1.16.0"
+coreKtx = "1.17.0"
 androidxAppCompat = "1.7.1"
-lifecycleRuntimeKtx = "2.9.1"
+lifecycleRuntimeKtx = "2.9.3"
 activityCompose = "1.10.1"
-composeBom = "2025.06.01"
-composeNavigation = "2.9.0"
-security = "1.1.0-alpha06"
-lifecycleRuntimeComposeAndroid = "2.9.1"
+composeBom = "2025.08.01"
+composeNavigation = "2.9.3"
+security = "1.1.0"
+lifecycleRuntimeComposeAndroid = "2.9.3"
 datastorePreferences = "1.1.7"
 
 # Third Party
-okhttp = "4.12.0"
-retrofit = "2.11.0"
+okhttp = "5.1.0"
+retrofit = "3.0.0"
 retrofitKotlinSerializationConverter = "1.0.0"
-kotlinxSerializationJson = "1.8.1"
-daggerHilt = "2.51"
+kotlinxSerializationJson = "1.9.0"
+daggerHilt = "2.57.1"
 hiltNavigationCompose = "1.2.0"
-coil = "3.2.0"
+coil = "3.3.0"
 timber = "5.0.1"
-lottieCompose = "6.6.1"
+lottieCompose = "6.6.7"
 coroutine = "1.10.2"
-ktlint = "11.5.1"
+ktlint = "13.1.0"
 
-## Kotlin Symbol Processing
-ksp = "2.0.0-1.0.24"
+# Kotlin Symbol Processing
+ksp = "2.2.0-2.0.2"
 appcompat = "1.7.0"
 
 # Kakao SDK
-kakao = "2.21.4"
+kakao = "2.21.6"
 kakaoMap = "2.12.8"
 
 # Process Phoenix
-process-phoenix = "2.1.2"
+process-phoenix = "3.0.0"
 
 [libraries]
 # Test
