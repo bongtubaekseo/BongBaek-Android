@@ -32,6 +32,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
+import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check_gray
@@ -39,6 +40,7 @@ import com.bongtu.baekseo.R.string.input_text_field_placeholder
 import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
 import com.bongtu.baekseo.R.string.withdraw_reason_etc
+import com.bongtu.baekseo.R.string.withdraw_reason_etc_error
 import com.bongtu.baekseo.R.string.withdraw_reason_privacy
 import com.bongtu.baekseo.R.string.withdraw_reason_uncomfortable
 import com.bongtu.baekseo.R.string.withdraw_reason_use
@@ -131,80 +133,109 @@ private fun WithdrawSelectorItem(
             WithdrawType.ETC -> withdraw_reason_etc
         }
     }
+    val borderColor = remember(value) {
+        if (value.length >= 50) bongBaekColors.secondaryRed else bongBaekColors.primaryNormal
+    }
 
     val focusManager = LocalFocusManager.current
 
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .then(
-                if (isSelected == true)
-                    Modifier.border(
-                        width = 1.dp,
-                        color = bongBaekColors.primaryNormal,
-                        shape = RoundedCornerShape(10.dp),
-                    )
-                else Modifier
-            )
-            .background(
-                color = bongBaekColors.gray750,
-                shape = RoundedCornerShape(10.dp),
-            )
-            .padding(12.dp),
-        horizontalArrangement = Arrangement.spacedBy(8.dp),
-        verticalAlignment = Alignment.CenterVertically,
+    Column(
+        modifier = modifier,
     ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(iconRes),
-            contentDescription = null,
-            tint = Color.Unspecified,
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .then(
+                    if (isSelected == true)
+                        Modifier.border(
+                            width = 1.dp,
+                            color = borderColor,
+                            shape = RoundedCornerShape(10.dp),
+                        )
+                    else Modifier
+                )
+                .background(
+                    color = bongBaekColors.gray750,
+                    shape = RoundedCornerShape(10.dp),
+                )
+                .padding(12.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Icon(
+                imageVector = ImageVector.vectorResource(iconRes),
+                contentDescription = null,
+                tint = Color.Unspecified,
+            )
 
-        if (reason == WithdrawType.ETC && isSelected == true) {
+            if (reason == WithdrawType.ETC && isSelected == true) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    BongBaekInnerTextField(
+                        text = value,
+                        onTextChange = onValueChange,
+                        textColor = BongBaekTheme.colors.white,
+                        textStyle = BongBaekTheme.typography.body1Medium16,
+                        placeholder = stringResource(id = input_text_field_placeholder),
+                        placeholderColor = BongBaekTheme.colors.gray400,
+                        modifier = Modifier
+                            .weight(1f)
+                            .onFocusChanged { onFocusChange(it.isFocused) },
+                        keyboardOptions = KeyboardOptions(
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = { focusManager.clearFocus() }
+                        ),
+                        isSingleLine = false,
+                    )
+
+                    if (value.isNotEmpty() && etcFocused) {
+                        Spacer(modifier = Modifier.size(8.dp))
+
+                        Icon(
+                            imageVector = ImageVector.vectorResource(ic_cancel),
+                            contentDescription = null,
+                            modifier = Modifier.noRippleClickable {
+                                onValueChange("")
+                            },
+                            tint = BongBaekTheme.colors.gray500,
+                        )
+                    }
+                }
+            } else {
+                Text(
+                    text = stringResource(id = titleRes),
+                    style = BongBaekTheme.typography.body2Regular16,
+                    color = titleColor,
+                )
+            }
+        }
+        if (value.length >= 50) {
+            Spacer(modifier = Modifier.size(8.dp))
+
             Row(
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                BongBaekInnerTextField(
-                    text = value,
-                    onTextChange = onValueChange,
-                    textColor = BongBaekTheme.colors.white,
-                    textStyle = BongBaekTheme.typography.body1Medium16,
-                    placeholder = stringResource(id = input_text_field_placeholder),
-                    placeholderColor = BongBaekTheme.colors.gray400,
-                    modifier = Modifier
-                        .weight(1f)
-                        .onFocusChanged { onFocusChange(it.isFocused) },
-                    keyboardOptions = KeyboardOptions(
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = { focusManager.clearFocus() }
-                    ),
-                    isSingleLine = false,
-                    maxLines = 2,
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_caution),
+                    contentDescription = null,
+                    modifier = Modifier.size(14.dp),
+                    tint = bongBaekColors.secondaryRed,
                 )
 
-                if (value.isNotEmpty() && etcFocused) {
-                    Spacer(modifier = Modifier.size(8.dp))
+                Spacer(modifier = Modifier.size(4.dp))
 
-                    Icon(
-                        imageVector = ImageVector.vectorResource(ic_cancel),
-                        contentDescription = null,
-                        modifier = Modifier.noRippleClickable {
-                            onValueChange("")
-                        },
-                        tint = BongBaekTheme.colors.gray500,
-                    )
-                }
+                Text(
+                    text = stringResource(id = withdraw_reason_etc_error),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = bongBaekColors.secondaryRed,
+                )
             }
-        } else {
-            Text(
-                text = stringResource(id = titleRes),
-                style = BongBaekTheme.typography.body2Regular16,
-                color = titleColor,
-            )
         }
     }
+
 }
 
 @Preview

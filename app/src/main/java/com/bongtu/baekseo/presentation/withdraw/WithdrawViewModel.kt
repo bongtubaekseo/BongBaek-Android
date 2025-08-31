@@ -22,7 +22,7 @@ class WithdrawViewModel @Inject constructor(
 
     fun updateButtonState(): Boolean =
         with(uiState.value) {
-            return reasonType != null && (reasonType != WithdrawType.ETC || etcReason.isNotBlank())
+            return reasonType != null && (reasonType != WithdrawType.ETC || etcReason.isNotBlank() && etcReason.length < 50)
         }
 
     fun updateEtcReason(newEtcReason: String) = _uiState.update {
