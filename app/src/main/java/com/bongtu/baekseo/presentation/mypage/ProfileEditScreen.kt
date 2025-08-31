@@ -28,6 +28,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.drawable.ic_select
@@ -100,7 +101,17 @@ private fun ProfileEditScreen(
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_setting),
-            topBarType = TopBarType.TEXT_ONLY_START,
+            topBarType = TopBarType.LEADING_ICON,
+            leadingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_arrow_back),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .noRippleClickable(onClick = navigateUp),
+                    tint = BongBaekTheme.colors.white,
+                )
+            },
         )
 
         Column(
