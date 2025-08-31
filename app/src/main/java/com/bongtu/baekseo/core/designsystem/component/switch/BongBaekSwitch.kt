@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.onboarding.component
+package com.bongtu.baekseo.core.designsystem.component.switch
 
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -28,7 +28,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun OnBoardingSwitch(
+fun BongBaekSwitch(
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -91,11 +91,11 @@ fun OnBoardingSwitch(
 
 @Preview
 @Composable
-private fun OnBoardingSwitchPreview() {
+private fun BongBaekSwitchPreview() {
     var isChecked by remember { mutableStateOf(false) }
 
     BongBaekTheme {
-        OnBoardingSwitch(
+        BongBaekSwitch(
             checked = isChecked,
             onCheckedChange = {
                 isChecked = it

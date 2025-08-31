@@ -6,11 +6,9 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -62,6 +60,7 @@ fun HomeRoute(
     navigateToRecommend: () -> Unit,
     navigateToEdit: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -89,6 +88,7 @@ fun HomeRoute(
         navigateToEdit = navigateToEdit,
         navigateToRecommend = navigateToRecommend,
         navigateToSchedule = navigateToSchedule,
+        navigateToMyPage = navigateToMyPage,
         modifier = modifier,
     )
 }
@@ -99,6 +99,7 @@ fun HomeScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     when (uiState.homeLoadState) {
@@ -127,6 +128,7 @@ fun HomeScreen(
                 navigateToEdit = navigateToEdit,
                 navigateToRecommend = navigateToRecommend,
                 navigateToSchedule = navigateToSchedule,
+                navigateToMyPage = navigateToMyPage,
                 modifier = modifier,
             )
         }
@@ -140,6 +142,7 @@ fun HomeSuccessScreen(
     navigateToEdit: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToSchedule: () -> Unit,
+    navigateToMyPage: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val pagerState = rememberPagerState(pageCount = {
@@ -171,9 +174,10 @@ fun HomeSuccessScreen(
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop())
             .verticalScroll(rememberScrollState()),
     ) {
-        HomeTopBar()
-
-        Spacer(modifier = Modifier.height(20.dp))
+        HomeTopBar(
+            onLogoIconClick = navigateToMyPage,
+            modifier = Modifier.padding(20.dp),
+        )
 
         if (items.isEmpty()) {
             HomePageEmptyCard(
@@ -343,6 +347,7 @@ private fun HomeSuccessScreenPreview() {
             navigateToEdit = {},
             navigateToRecommend = {},
             navigateToSchedule = {},
+            navigateToMyPage = {},
         )
     }
 }
