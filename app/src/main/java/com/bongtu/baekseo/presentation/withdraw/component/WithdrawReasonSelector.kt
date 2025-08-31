@@ -40,6 +40,7 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
+import com.bongtu.baekseo.R.drawable.ic_withdraw_check_gray
 import com.bongtu.baekseo.R.string.input_text_field_placeholder
 import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
@@ -73,35 +74,43 @@ fun WithdrawReasonSelector(
                 color = BongBaekTheme.colors.gray800,
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp),
+            .padding(20.dp),
     ) {
-        withdrawReasons.forEach { item ->
-            AnimatedVisibility(
-                visible = showOtherReasons,
-                enter = slideInVertically(
-                    animationSpec = tween(250, easing = FastOutSlowInEasing),
-                    initialOffsetY = { it }
-                ) + fadeIn(animationSpec = tween(250)),
-                exit = fadeOut(
-                    animationSpec = tween(250)
-                ) + scaleOut(
-                    targetScale = 0.95f,
-                    animationSpec = tween(250, easing = FastOutSlowInEasing),
-                ),
+        AnimatedVisibility(
+            visible = showOtherReasons,
+            enter = slideInVertically(
+                animationSpec = tween(250, easing = FastOutSlowInEasing),
+                initialOffsetY = { it }
+            ) + fadeIn(animationSpec = tween(250)),
+            exit = fadeOut(
+                animationSpec = tween(250)
+            ) + scaleOut(
+                targetScale = 0.95f,
+                animationSpec = tween(250, easing = FastOutSlowInEasing),
+            ),
+        ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(8.dp),
             ) {
-                WithdrawSelectorItem(
-                    reason = item,
-                    isSelected = if (selectedReason == null) null else selectedReason == item,
-                    modifier = Modifier.noRippleClickable { onReasonSelect(item) },
-                )
+                withdrawReasons.forEach { item ->
+                    WithdrawSelectorItem(
+                        reason = item,
+                        isSelected = if (selectedReason == null) null else selectedReason == item,
+                        modifier = Modifier
+                            .noRippleClickable { onReasonSelect(item) },
+                    )
+                }
             }
         }
 
         WithdrawSelectorItem(
             reason = WithdrawType.ETC,
             isSelected = if (selectedReason == null) null else selectedReason == WithdrawType.ETC,
-            modifier = Modifier.noRippleClickable { onReasonSelect(WithdrawType.ETC) },
+            modifier = Modifier
+                .padding(
+                    top = 8.dp,
+                )
+                .noRippleClickable { onReasonSelect(WithdrawType.ETC) },
             etcFocused = etcFocused,
             value = value,
             onValueChange = onValueChange,
@@ -121,9 +130,12 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
-    val iconRes = remember(isSelected) {
-        if (isSelected == true) ic_check
-        else ic_withdraw_check
+    val (iconRes, titleColor) = remember(isSelected) {
+        when (isSelected) {
+            true -> ic_check to bongBaekColors.white
+            false -> ic_withdraw_check_gray to bongBaekColors.gray400
+            else -> ic_withdraw_check to bongBaekColors.gray100
+        }
     }
     val titleRes = remember(reason) {
         when (reason) {
@@ -135,13 +147,7 @@ private fun WithdrawSelectorItem(
             WithdrawType.ETC -> withdraw_reason_etc
         }
     }
-    val titleColor = remember(isSelected) {
-        when (isSelected) {
-            true -> bongBaekColors.white
-            false -> bongBaekColors.gray400
-            else -> bongBaekColors.gray100
-        }
-    }
+
     val focusManager = LocalFocusManager.current
 
     Row(
@@ -205,7 +211,7 @@ private fun WithdrawSelectorItem(
                         modifier = Modifier.noRippleClickable {
                             onValueChange("")
                         },
-                        tint = Color.Unspecified,
+                        tint = BongBaekTheme.colors.gray500,
                     )
                 }
             }
