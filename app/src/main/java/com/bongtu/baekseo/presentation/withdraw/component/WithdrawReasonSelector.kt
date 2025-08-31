@@ -1,11 +1,6 @@
 package com.bongtu.baekseo.presentation.withdraw.component
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -143,15 +138,13 @@ private fun WithdrawSelectorItem(
         modifier = modifier
             .fillMaxWidth()
             .then(
-                if (isSelected == true) {
+                if (isSelected == true)
                     Modifier.border(
                         width = 1.dp,
                         color = bongBaekColors.primaryNormal,
                         shape = RoundedCornerShape(10.dp),
                     )
-                } else {
-                    Modifier
-                }
+                else Modifier
             )
             .background(
                 color = bongBaekColors.gray750,
