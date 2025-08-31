@@ -12,7 +12,9 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -94,35 +96,43 @@ private fun MyPageScreen(
             .background(color = BongBaekTheme.colors.gray900)
             .fillMaxSize(),
     ) {
-        BongBaekTopBar(
-            title = stringResource(mypage_topbar_title),
-            topBarType = TopBarType.LEADING_ICON,
-            modifier = Modifier
-                .statusBarsPadding(),
-            leadingIcon = {
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_arrow_back),
-                    contentDescription = null,
-                    modifier = Modifier
-                        .padding(12.dp)
-                        .noRippleClickable(onClick = navigateUp),
-                    tint = BongBaekTheme.colors.white,
-                )
-            },
-        )
-
         Column(
             modifier = Modifier
                 .background(BongBaekTheme.colors.gray800)
-                .fillMaxSize(),
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
+                BongBaekTopBar(
+                    title = stringResource(mypage_topbar_title),
+                    topBarType = TopBarType.LEADING_ICON,
+                    modifier = Modifier
+                        .background(BongBaekTheme.colors.gray900)
+                        .statusBarsPadding(),
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(ic_arrow_back),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(12.dp)
+                                .noRippleClickable(onClick = navigateUp),
+                            tint = BongBaekTheme.colors.white,
+                        )
+                    },
+                )
+
                 ProfileSection(
                     userName = uiState.userName,
                     userBirth = uiState.userBirth,
                     userIncome = uiState.userIncome,
                     onProfileEditButtonClick = navigateToEditProfile,
+                )
+
+                ServiceSection(
+                    onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
+                    onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
+                    onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
                 )
 
                 ServiceSection(
@@ -370,6 +380,7 @@ private fun ServiceItem(
         modifier = modifier
             .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
