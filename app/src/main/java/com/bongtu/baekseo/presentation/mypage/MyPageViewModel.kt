@@ -22,14 +22,17 @@ class MyPageViewModel @Inject constructor(
             currentState.copy(
                 userName = "봉투백서의겸손한야수",
                 userBirth = "2000년 01월 05일",
-                userIncome = IncomeType.NONE.label,
+                userIncome = IncomeType.OVER_200.label,
             )
         }
 
-    fun updateButtonState(): Boolean =
-        with(uiState.value) {
-            userName.isNotEmpty() && userBirth.isNotEmpty() && nameError.isEmpty()
-        }
+    fun initEditProfileState() = _uiState.update {
+        it.copy(
+            originalName = it.userName,
+            originalBirth = it.userBirth,
+            originalIncome = it.userIncome,
+        )
+    }
 
     fun updateUserName(newName: String) = _uiState.update {
         it.copy(userName = newName, nameError = validateName(newName))

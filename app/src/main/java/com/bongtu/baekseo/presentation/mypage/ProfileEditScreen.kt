@@ -16,9 +16,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -64,18 +66,19 @@ fun ProfileEditRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val isEditButtonEnabled = remember(uiState.userName, uiState.userBirth) {
-        viewModel.updateButtonState()
+
+    LaunchedEffect(Unit) {
+        viewModel.initEditProfileState()
     }
 
     ProfileEditScreen(
         uiState = uiState,
-        isEditButtonEnabled = isEditButtonEnabled,
+        isEditButtonEnabled = uiState.isEditButtonEnabled,
         navigateUp = navigateUp,
         onUserNameChange = viewModel::updateUserName,
         onUserBirthChange = viewModel::updateUserBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
-        onIncomeButtonClick = viewModel::updateUserIncome,
+        onUserIncomeChange = viewModel::updateUserIncome,
         modifier = modifier,
     )
 }
@@ -88,12 +91,19 @@ private fun ProfileEditScreen(
     onUserNameChange: (String) -> Unit,
     onUserBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
-    onIncomeButtonClick: (String) -> Unit,
+    onUserIncomeChange: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-    var switchChecked by remember { mutableStateOf(false) }
-    var incomeSelected by remember { mutableStateOf(true) }
+    val switchChecked = uiState.userIncome != IncomeType.NONE.label
+    val incomeSelected = uiState.userIncome != IncomeType.OVER_200.label
+
+    var lastOnIncome by rememberSaveable { mutableStateOf(IncomeType.UNDER_200.label) }
+    LaunchedEffect(uiState.userIncome) {
+        if (uiState.userIncome != IncomeType.NONE.label) {
+            lastOnIncome = uiState.userIncome
+        }
+    }
 
     Column(
         modifier = modifier
@@ -170,8 +180,10 @@ private fun ProfileEditScreen(
                     )
                     BongBaekSwitch(
                         checked = switchChecked,
-                        onCheckedChange = {
-                            switchChecked = it
+                        onCheckedChange = { isChecked ->
+                            onUserIncomeChange(
+                                if (isChecked) lastOnIncome else IncomeType.NONE.label,
+                            )
                         },
                     )
                 }
@@ -196,20 +208,14 @@ private fun ProfileEditScreen(
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_down),
                             selected = incomeSelected,
-                            onClick = {
-                                if (!incomeSelected) incomeSelected = true
-                                onIncomeButtonClick(IncomeType.UNDER_200.label)
-                            },
+                            onClick = { onUserIncomeChange(IncomeType.UNDER_200.label) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_up),
                             selected = !incomeSelected,
-                            onClick = {
-                                if (incomeSelected) incomeSelected = false
-                                onIncomeButtonClick(IncomeType.OVER_200.label)
-                            },
+                            onClick = { onUserIncomeChange(IncomeType.OVER_200.label) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
@@ -307,7 +313,7 @@ private fun ProfileEditScreenPreview() {
             onUserNameChange = {},
             onUserBirthChange = {},
             onDialogBirthChange = {},
-            onIncomeButtonClick = {},
+            onUserIncomeChange = {},
         )
     }
 }
