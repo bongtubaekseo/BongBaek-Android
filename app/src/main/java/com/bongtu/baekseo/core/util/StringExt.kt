@@ -60,3 +60,12 @@ fun String.toFormattedMonthDayYear(): String = try {
     val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
     parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
 } catch (_: Exception) { this }
+
+/**
+ * yyyyMMdd -> yyyy-MM-dd
+ */
+fun String.toLocalDateFormat(): String = try {
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+    val date = LocalDate.parse(this, formatter)
+    date.toString()
+} catch (_: Exception) { this }
