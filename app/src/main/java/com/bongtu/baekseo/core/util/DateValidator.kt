@@ -8,7 +8,6 @@ object DateValidator {
     fun validateDate(
         input: String,
         type: DatePickerDialogType,
-        previousDate: LocalDate,
     ): String {
         if (input.length != 8) return "유효한 날짜 형식이 아닙니다"
 
@@ -33,15 +32,12 @@ object DateValidator {
                 else ""
             }
 
-            DatePickerDialogType.DATE -> {
-                if (previousDate >= today && date < today) {
-                    "미래 날짜만 입력 가능합니다"
-                } else if (previousDate < today && date >= today) {
-                    "과거 날짜만 입력 가능합니다"
-                } else {
-                    ""
-                }
+            DatePickerDialogType.DATE_FUTURE -> {
+                if (date < today) "미래 날짜만 입력 가능합니다"
+                else ""
             }
+
+            DatePickerDialogType.DATE -> ""
         }
     }
 }
