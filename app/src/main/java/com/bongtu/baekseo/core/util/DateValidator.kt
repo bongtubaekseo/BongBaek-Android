@@ -16,18 +16,18 @@ object DateValidator {
         val day = input.substring(6, 8).toIntOrNull()
 
         if (month == null || day == null || year == null) return "유효한 날짜 형식이 아닙니다"
-        if (month !in 1..12 || day !in 1..31) return "유효한 날짜 형식이 아닙니다" // 월: 1~12, 일: 1~31
+        if (month !in 1..12 || day !in 1..31) return "유효한 날짜 형식이 아닙니다"
 
         val date = LocalDate.of(year, month, day)
         val today = LocalDate.now()
 
         return when (type) {
-            DatePickerDialogType.BIRTH -> {  // 만 14세 이상
+            DatePickerDialogType.BIRTH -> {
                 if (Period.between(date, today).years < 14) "만 14세 이상만 가입이 가능합니다"
                 else ""
             }
 
-            DatePickerDialogType.DATE_PRESENT -> { // 현재 날짜
+            DatePickerDialogType.DATE_PRESENT -> {
                 if (date.isBefore(today)) "과거 날짜는 입력할 수 없습니다"
                 else ""
             }
