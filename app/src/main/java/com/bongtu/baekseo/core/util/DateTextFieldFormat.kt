@@ -13,9 +13,9 @@ class DateTextFieldFormat : VisualTransformation {
             return TransformedText(AnnotatedString(""), OffsetMapping.Identity)
         }
 
-        val month = input.substring(0, 2).toIntOrNull()
-        val day = input.substring(2, 4).toIntOrNull()
-        val year = input.substring(4, 8).toIntOrNull()
+        val year = input.substring(0, 4).toIntOrNull()
+        val month = input.substring(5, 7).toIntOrNull()
+        val day = input.substring(8, 10).toIntOrNull()
 
         val formatted = buildString {
             if (year != null) append("${year}년 ")
