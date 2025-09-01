@@ -21,7 +21,7 @@ class MyPageViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 userName = "봉투백서의겸손한야수",
-                userBirth = "2000년 01월 05일",
+                userBirth = "2000-01-05",
                 userIncome = IncomeType.OVER_200.label,
             )
         }
