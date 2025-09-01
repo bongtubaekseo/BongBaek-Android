@@ -390,10 +390,7 @@ private fun EditMainScreen(
                     isDatePickerDialogVisible = false
                     text = ""
                 },
-                onConfirmClick = {
-                    onDateChange(text)
-                    text = ""
-                },
+                onConfirmClick = onDateChange,
                 previousDate = uiState.previousDate,
             )
         }
