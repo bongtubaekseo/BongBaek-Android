@@ -39,14 +39,10 @@ fun RecommendDateCard(
     text: String,
     onFocusChange: (Boolean) -> Unit,
     onTextChange: (String) -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isDialogOpen by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isDialogOpen) {
-        if (!isDialogOpen && date.isEmpty()) onTextChange("")
-    }
 
     Column(
         modifier = modifier
@@ -95,6 +91,7 @@ fun RecommendDateCard(
                 onDismissRequest = {
                     isDialogOpen = false
                     onFocusChange(true)
+                    onTextChange("")
                 },
                 onConfirmClick = onConfirmClick,
             )
