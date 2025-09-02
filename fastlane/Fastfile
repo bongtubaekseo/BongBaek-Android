@@ -1,12 +1,29 @@
+require 'json'
+
 default_platform(:android)
 
 platform :android do
-  desc "Firebase App Distribution"
+  private_lane :get_version_info do |options|
+    UI.message("버전 정보 가져오는 중...")
+
+    is_aab = options[:is_aab]
+    path = is_aab ? "app/build/outputs/bundle/release/output-metadata.json" : "app/build/outputs/apk/release/output-metadata.json"
+
+    meta = JSON.parse(File.read(path))
+    version_code = meta["elements"][0]["versionCode"]
+    version_name = meta["elements"][0]["versionName"]
+
+    { version_code: version_code, version_name: version_name }
+  end
+
+  desc "Firebase App Distribution(QA)"
   lane :qa do
     begin
       gradle(
           task: "clean assembleRelease"
       )
+
+      version_info = get_version_info(is_aab: false)
 
       firebase_app_distribution(
           app: ENV['FIREBASE_APP_ID'],
@@ -16,8 +33,8 @@ platform :android do
 
       discord_notifier(
           webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
-          title: "✅ 새로운 릴리즈 빌드가 배포되었습니다! Firebase에서 확인해주세요. 🚀",
-          description: "✅ 봉투백서가 배포되었습니다!"
+          title: "✅ 새로운 QA 빌드가 배포되었습니다! Firebase에서 확인해주세요. 🚀",
+          description: "✅ 봉투백서 v#{version_info[:version_name]}(#{version_info[:version_code]})가 배포되었습니다!"
       )
 
     rescue => exception
@@ -31,32 +48,41 @@ platform :android do
   end
 
   desc "Google Play Store Upload"
-    lane :release do |options|
-      begin
-        target_track = options[:track] || 'beta'
+  lane :release do |options|
+    begin
+      target_track = options[:track] || 'internal'
+      rollout_percentage = "30%"
 
-        gradle(
-            task: "bundleRelease"
-        )
+      gradle(
+          task: "bundleRelease"
+      )
 
-        upload_to_play_store(
-            track: target_track,
-            aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
-            release_status: 'completed'
-        )
+      version_info = get_version_info(is_aab: true)
 
-        discord_notifier(
-            webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
-            title: "✅ 새로운 릴리즈 빌드가 Play 스토어에 배포되었습니다! 🚀",
-            description: "✅ 봉투백서가 '#{target_track}' 트랙에 성공적으로 업로드되었습니다."
-        )
+      sh("mkdir -p fastlane/metadata/android/ko-KR/changelogs")
+      sh("cp fastlane/release-notes.txt fastlane/metadata/android/ko-KR/changelogs/default.txt")
 
-      rescue => exception
-        discord_notifier(
-            webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
-            title: "❌ 릴리즈 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
-            description: "에러: #{exception}"
-        )
+      upload_to_play_store(
+          track: target_track,
+          aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+          metadata_path: "fastlane/metadata/android",
+          # 하기 release_status는 충분한 검증 이후 completed으로 수정
+          release_status: "inProgress",
+          rollout: 0.3
+      )
+
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "✅ 새로운 릴리즈 빌드가 Play Store에 배포되었습니다! 🚀",
+          description: "✅ 봉투백서 v#{version_info[:version_name]}(#{version_info[:version_code]}) 버전이 '#{target_track}' 트랙에 성공적으로 업로드되었습니다. (#{rollout_percentage} 단계적 출시 시작)"
+      )
+
+    rescue => exception
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "❌ 릴리즈 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
+          description: "에러: #{exception}"
+      )
       raise exception
     end
   end
