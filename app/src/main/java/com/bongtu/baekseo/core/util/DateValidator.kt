@@ -23,7 +23,7 @@ object DateValidator {
 
         return when (type) {
             DatePickerDialogType.BIRTH -> {
-                if (Period.between(date, today).years < 14) "만 14세 이상만 가입이 가능합니다"
+                if (Period.between(date, today).years < 14) "만 14세 이상부터 사용할 수 있어요"
                 else ""
             }
 
