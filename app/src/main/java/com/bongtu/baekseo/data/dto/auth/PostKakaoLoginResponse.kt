@@ -21,14 +21,4 @@ data class PostKakaoLoginResponse (
         @SerialName("refreshToken")
         val refreshToken: TokenInfo,
     )
-
-    @Serializable
-    data class TokenInfo(
-        @SerialName("token")
-        val token: String,
-        @SerialName("expiredAt")
-        val expiredAt: Long,
-        @SerialName("calculatedExpiredAt")
-        val calculatedExpiredAt: Long,
-    )
 }
