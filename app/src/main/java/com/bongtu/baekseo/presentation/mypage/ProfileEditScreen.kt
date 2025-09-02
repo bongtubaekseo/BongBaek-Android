@@ -174,7 +174,7 @@ private fun ProfileEditScreen(
                     isEditable = false,
                     isRequired = true,
                     isClearButtonEnabled = false,
-                    visualTransformation = DateTextFieldFormat()
+                    visualTransformation = DateTextFieldFormat(),
                 )
 
                 Row(
