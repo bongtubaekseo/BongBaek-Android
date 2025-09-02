@@ -17,8 +17,8 @@ data class PostKakaoLoginResponse (
     @Serializable
     data class TokenType(
         @SerialName("accessToken")
-        val accessToken: TokenInfo,
+        val accessToken: TokenInfoDto,
         @SerialName("refreshToken")
-        val refreshToken: TokenInfo,
+        val refreshToken: TokenInfoDto,
     )
 }

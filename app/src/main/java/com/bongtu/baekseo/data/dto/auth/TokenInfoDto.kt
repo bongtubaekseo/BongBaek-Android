@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TokenInfo(
+data class TokenInfoDto(
     @SerialName("token")
     val token: String,
     @SerialName("expiredAt")
