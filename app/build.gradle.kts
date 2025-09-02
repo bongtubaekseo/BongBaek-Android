@@ -16,9 +16,11 @@ val properties = Properties().apply {
     if (f.exists()) f.inputStream().use { load(it) }
 }
 
-val kakaoApiKey = properties.getProperty("kakao.api.key")
-val kakaoNativeKey = properties.getProperty("kakao.native.key")
-val kakaoBaseUrl = properties.getProperty("kakao.base.url")
+val kakaoNativeKey: String =
+    providers.gradleProperty("KAKAO_KEY").orNull
+        ?: System.getenv("KAKAO_KEY")
+        ?: properties.getProperty("kakao.native.key")
+        ?: throw GradleException("KAKAO_APP_KEY (or local kakao.app.key) is missing")
 
 android {
     namespace = "com.bongtu.baekseo"
@@ -34,7 +36,9 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
         buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
-        buildConfigField("String", "USER_TOKEN", properties.getProperty("user.token"))
+        buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
+        buildConfigField("String", "KAKAO_API_KEY", "\"${properties.getProperty("kakao.api.key")}\"")
+        buildConfigField("String", "KAKAO_BASE_URL", properties.getProperty("kakao.base.url"))
 
         manifestPlaceholders["KAKAO_KEY"] = kakaoNativeKey
     }
@@ -57,9 +61,6 @@ android {
     buildTypes {
         debug {
             isDebuggable = true
-            buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
-            buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
-            buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
             signingConfig = signingConfigs.getByName("debug")
         }
 
@@ -70,9 +71,6 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-            buildConfigField("String", "KAKAO_API_KEY", "\"$kakaoApiKey\"")
-            buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
-            buildConfigField("String", "KAKAO_BASE_URL", "$kakaoBaseUrl")
             signingConfig = signingConfigs.getByName("release")
         }
     }
