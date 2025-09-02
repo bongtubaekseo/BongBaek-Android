@@ -6,8 +6,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.core.util.toFormattedDate
-import com.bongtu.baekseo.core.util.toFormattedMonthDayYear
 import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
@@ -92,7 +90,7 @@ class EditViewModel @Inject constructor(
                     relationship = event.relationship,
                     cost = event.cost.toString(),
                     attendLabel = if (event.isEventParticipated) ATTENDED else ABSENT,
-                    eventDate = event.eventDate.toFormattedMonthDayYear(),
+                    eventDate = event.eventDate,
                     previousDate = previousDate,
                     note = event.note,
                     selectedPlace = place,
@@ -138,7 +136,8 @@ class EditViewModel @Inject constructor(
 
     fun updateCost(newCost: String) {
         val digits = newCost.filter { it.isDigit() }
-        val costText = if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
+        val costText =
+            if (digits.isEmpty()) "" else digits.toLong().coerceAtMost(99_999_999).toString()
         _uiState.update { it.copy(cost = costText, costError = validateCost(costText)) }
     }
 
@@ -239,7 +238,7 @@ class EditViewModel @Inject constructor(
         relationType = relationship,
         cost = cost.toIntOrNull() ?: 0,
         isEventParticipated = attendLabel == ATTENDED,
-        eventDate = eventDate.toFormattedDate(),
+        eventDate = eventDate,
         note = note
     )
 

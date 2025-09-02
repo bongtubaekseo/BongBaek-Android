@@ -301,10 +301,7 @@ private fun RecommendMainScreen(
                                 text = text,
                                 onFocusChange = { isTitleVisible = it },
                                 onTextChange = { text = it },
-                                onConfirmClick = {
-                                    onDateChange(text)
-                                    text = ""
-                                },
+                                onConfirmClick = onDateChange
                             )
 
                             RecommendParticipationCard(

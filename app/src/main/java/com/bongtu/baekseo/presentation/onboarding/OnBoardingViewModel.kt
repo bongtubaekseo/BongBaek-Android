@@ -6,7 +6,6 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
@@ -80,7 +79,7 @@ class OnBoardingViewModel @Inject constructor(
             authRepository.postSignUp(
                 kakaoId = uiState.value.kakaoId,
                 memberName = uiState.value.name,
-                memberBirthday = uiState.value.birth.toFormattedDate(),
+                memberBirthday = uiState.value.birth,
                 memberIncome = uiState.value.income,
             ).onSuccess { response ->
                 saveUsername(response.name)

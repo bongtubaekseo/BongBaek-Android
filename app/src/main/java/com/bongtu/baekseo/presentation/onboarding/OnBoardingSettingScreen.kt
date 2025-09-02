@@ -215,11 +215,9 @@ fun OnBoardingSettingScreen(
                 },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
+                    viewModel.updateDialogBirth("")
                 },
-                onConfirmClick = {
-                    isDatePickerDialogVisible = false
-                    viewModel.updateBirth(uiState.dialogBirth)
-                },
+                onConfirmClick = viewModel::updateBirth,
             )
         }
     }

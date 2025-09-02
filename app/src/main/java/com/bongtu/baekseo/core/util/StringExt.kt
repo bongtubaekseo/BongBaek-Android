@@ -6,17 +6,6 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 /**
- * mmddyyyy -> yyyy-mm-dd
- */
-fun String.toFormattedDate(): String {
-    if (this.length != 8) return ""
-    val month = this.substring(0, 2)
-    val day = this.substring(2, 4)
-    val year = this.substring(4, 8)
-    return "$year-$month-$day"
-}
-
-/**
  * yyyy-mm-dd -> yyyy. mm. dd (day)
  */
 fun String.toFormattedDateWithDay(): String = try {
@@ -54,9 +43,10 @@ fun String.toFormattedYearWithMonthPair(): Pair<Int, Int> = try {
 } catch (_: Exception) { 0 to 0 }
 
 /**
- * yyyy-mm-dd -> MMddyyyy
+ * yyyyMMdd -> yyyy-MM-dd
  */
-fun String.toFormattedMonthDayYear(): String = try {
-    val parsedDate = LocalDate.parse(this, DateTimeFormatter.ISO_DATE)
-    parsedDate.format(DateTimeFormatter.ofPattern("MMddyyyy"))
+fun String.toLocalDateFormat(): String = try {
+    val formatter = DateTimeFormatter.ofPattern("yyyyMMdd")
+    val date = LocalDate.parse(this, formatter)
+    date.toString()
 } catch (_: Exception) { this }

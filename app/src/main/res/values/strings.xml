@@ -118,7 +118,7 @@
     <string name="date_picker_description_birth">생년월일을 입력해주세요</string>
     <string name="date_picker_description_date">날짜를 입력해주세요</string>
     <string name="date_picker_title">Enter date</string>
-    <string name="date_picker_placeholder">mm/dd/yyyy</string>
+    <string name="date_picker_placeholder">yyyy년 mm월 dd일</string>
     <string name="date_picker_cancel">cancel</string>
     <string name="date_picker_ok">ok</string>
     <!--Button    -->
