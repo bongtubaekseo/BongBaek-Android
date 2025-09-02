@@ -29,10 +29,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.bongtu.baekseo.R
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.string.withdraw_button_title
 import com.bongtu.baekseo.R.string.withdraw_information
+import com.bongtu.baekseo.R.string.withdraw_title
 import com.bongtu.baekseo.R.string.withdraw_topbar
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -131,7 +131,7 @@ private fun WithdrawReasonScreen(
                 ) {
                     Column {
                         Text(
-                            text = stringResource(id = R.string.withdraw_title),
+                            text = stringResource(id = withdraw_title),
                             style = BongBaekTheme.typography.headBold24,
                             color = BongBaekTheme.colors.gray100,
                         )
