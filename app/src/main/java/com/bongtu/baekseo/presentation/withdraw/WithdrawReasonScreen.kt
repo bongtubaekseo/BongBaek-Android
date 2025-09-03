@@ -69,6 +69,7 @@ fun WithdrawRoute(
             onEtcValueChange = viewModel::updateEtcReason,
             onConfirmClick = {
                 pageIndex.value = 1
+                viewModel.withdraw()
             },
         )
 
