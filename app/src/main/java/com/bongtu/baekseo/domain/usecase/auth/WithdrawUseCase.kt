@@ -10,7 +10,7 @@ class WithdrawUseCase @Inject constructor(
 ) {
     suspend operator fun invoke(
         withdrawalReason: String,
-        detail: String? = null,
+        detail: String?,
     ): Result<Unit> = runCatching {
         val accessToken =
             tokenDataStore.getAccessToken() ?: throw NoSuchElementException("accessToken 없음")

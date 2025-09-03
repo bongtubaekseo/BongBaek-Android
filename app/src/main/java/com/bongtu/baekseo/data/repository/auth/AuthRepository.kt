@@ -26,6 +26,6 @@ interface AuthRepository {
     suspend fun postWithdraw(
         accessToken: String?,
         withdrawalReason: String,
-        detail: String? = null,
+        detail: String?,
     ): Result<Unit>
 }

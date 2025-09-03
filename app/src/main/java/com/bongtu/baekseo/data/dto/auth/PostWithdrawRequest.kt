@@ -8,5 +8,5 @@ data class PostWithdrawRequest(
     @SerialName("withdrawalReason")
     val withdrawalReason: String,
     @SerialName("detail")
-    val detail: String? = null,
+    val detail: String?,
 )
