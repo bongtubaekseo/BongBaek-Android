@@ -54,7 +54,7 @@ class WithdrawViewModel @Inject constructor(
         it.copy(etcReason = newEtcReason)
     }
 
-    fun clearToken() = viewModelScope.launch {
+    private fun clearToken() = viewModelScope.launch {
         tokenDataStore.clearInfo()
     }
 }
