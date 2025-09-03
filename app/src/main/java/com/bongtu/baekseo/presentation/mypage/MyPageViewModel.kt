@@ -22,6 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
     private val logoutUseCase: LogoutUseCase,
+    private val tokenDataStore: TokenDataStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyPageUiState())
     val uiState = _uiState.asStateFlow()
@@ -43,6 +44,7 @@ class MyPageViewModel @Inject constructor(
             logoutUseCase()
                 .onSuccess {
                     _sideEffect.emit(RestartApp)
+                    tokenDataStore.clearInfo()
                 }
                 .onFailure {
                     Timber.d("logout: $it")
