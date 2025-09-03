@@ -30,7 +30,7 @@ class AuthDataSourceImpl @Inject constructor(
 
     override suspend fun postWithdraw(
         accessToken: String?,
-        request: PostWithdrawRequest
+        request: PostWithdrawRequest,
     ): BaseResponse<Unit> =
         authService.postWithdraw(
             accessToken = "Bearer $accessToken",
