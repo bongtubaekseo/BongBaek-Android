@@ -7,6 +7,7 @@ import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
 import retrofit2.http.Body
+import retrofit2.http.Header
 import retrofit2.http.POST
 
 interface AuthService {
@@ -24,4 +25,9 @@ interface AuthService {
     suspend fun postTokenReissue(
         @Body request: PostTokenReissueRequest,
     ): BaseResponse<PostTokenReissueResponse>
+
+    @POST("/api/v1/member/logout")
+    suspend fun postLogout(
+        @Header("Authorization") accessToken: String,
+    ): BaseResponse<Unit>
 }
