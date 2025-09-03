@@ -65,4 +65,8 @@ class AuthRepositoryImpl @Inject constructor(
                 throw error
             }
         }
+
+    override suspend fun postLogout(accessToken: String?): Result<Unit> = runCatching {
+        authDataSource.postLogout(accessToken)
+    }
 }
