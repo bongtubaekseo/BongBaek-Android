@@ -6,7 +6,7 @@ import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginResponse
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
-import com.bongtu.baekseo.data.dto.auth.PostWithdrawRequest
+import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 
 interface AuthDataSource {
     suspend fun postKakaoLogin(
@@ -20,13 +20,4 @@ interface AuthDataSource {
     suspend fun postTokenReissue(
         request: PostTokenReissueRequest,
     ): BaseResponse<PostTokenReissueResponse>
-
-    suspend fun postLogout(
-        accessToken: String?,
-    ): BaseResponse<Unit>
-
-    suspend fun postWithdraw(
-        accessToken: String?,
-        request: PostWithdrawRequest,
-    ): BaseResponse<Unit>
 }

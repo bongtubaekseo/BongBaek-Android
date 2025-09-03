@@ -18,14 +18,4 @@ interface AuthRepository {
     suspend fun postTokenReissue(
         refreshToken: String?,
     ): Result<TokenReissue>
-
-    suspend fun postLogout(
-        accessToken: String?,
-    ): Result<Unit>
-
-    suspend fun postWithdraw(
-        accessToken: String?,
-        withdrawalReason: String,
-        detail: String?,
-    ): Result<Unit>
 }
