@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.domain.usecase.auth.LogoutUseCase
+import com.bongtu.baekseo.data.repository.member.MemberRepository
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
@@ -21,7 +21,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class MyPageViewModel @Inject constructor(
-    private val logoutUseCase: LogoutUseCase,
+    private val memberRepository: MemberRepository,
     private val tokenDataStore: TokenDataStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyPageUiState())
@@ -41,7 +41,7 @@ class MyPageViewModel @Inject constructor(
 
     fun logout() =
         viewModelScope.launch {
-            logoutUseCase()
+            memberRepository.postLogout()
                 .onSuccess {
                     _sideEffect.emit(RestartApp)
                     tokenDataStore.clearInfo()

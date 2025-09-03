@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.WithdrawType
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
-import com.bongtu.baekseo.domain.usecase.auth.WithdrawUseCase
+import com.bongtu.baekseo.data.repository.member.MemberRepository
 import com.bongtu.baekseo.presentation.withdraw.WithdrawContract.WithdrawUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class WithdrawViewModel @Inject constructor(
+    private val memberRepository: MemberRepository,
     private val tokenDataStore: TokenDataStore,
-    private val withdrawUseCase: WithdrawUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(WithdrawUiState())
     val uiState = _uiState.asStateFlow()
@@ -35,7 +35,7 @@ class WithdrawViewModel @Inject constructor(
         val reasonType = uiState.value.reasonType?.name
         val etcReason = uiState.value.etcReason
 
-        withdrawUseCase(
+        memberRepository.postWithdraw(
             withdrawalReason = reasonType.orEmpty(),
             detail = etcReason.takeIf { it.isNotBlank() },
         ).onSuccess {
