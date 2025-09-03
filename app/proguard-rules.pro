@@ -66,5 +66,9 @@
 -keep class timber.log.Timber$DebugTree { *; }
 
 # Kakao SDK
--keep class com.kakao.sdk.** { *; }
+-keep class com.kakao.** { *; }
+-keep interface com.kakao.** { *; }
+-keepclasseswithmembernames class * {
+    native <methods>;
+}
 -dontwarn com.kakao.sdk.**

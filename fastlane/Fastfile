@@ -1,0 +1,81 @@
+require 'json'
+
+default_platform(:android)
+
+platform :android do
+  private_lane :get_version_info do
+    UI.message("버전 정보 가져오는 중...")
+
+    version_code = gradle(task: ":app:printVersionCode", flags: "--quiet").strip
+    version_name = gradle(task: ":app:printVersionName", flags: "--quiet").strip
+
+    { version_code: version_code, version_name: version_name }
+  end
+
+  desc "Firebase App Distribution(QA)"
+  lane :qa do
+    begin
+      gradle(
+          task: "clean assembleRelease"
+      )
+
+      version_info = get_version_info
+
+      firebase_app_distribution(
+          app: ENV['FIREBASE_APP_ID'],
+          groups: "bongbaek_qa",
+          release_notes_file: "fastlane/metadata/android/ko-KR/changelogs/default.txt"
+      )
+
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "✅ 새로운 QA 빌드가 배포되었습니다! Firebase에서 확인해주세요. 🚀",
+          description: "✅ 봉투백서 v#{version_info[:version_name]}(#{version_info[:version_code]})가 배포되었습니다!"
+      )
+
+    rescue => exception
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "❌ QA 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
+          description: "에러: #{exception}"
+      )
+      raise exception
+    end
+  end
+
+  desc "Google Play Store Upload"
+  lane :release do |options|
+    begin
+      target_track = options[:track] || 'internal'
+
+      gradle(
+          task: "bundleRelease"
+      )
+
+      version_info = get_version_info
+
+      upload_to_play_store(
+          track: target_track,
+          aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
+          metadata_path: "fastlane/metadata/android",
+          # 하기 release_status는 충분한 검증 이후 completed으로 수정
+          release_status: "drad",
+          # rollout: 0.3
+      )
+
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "✅ 새로운 릴리즈 빌드가 Play Store에 배포되었습니다! 🚀",
+          description: "✅ 봉투백서 v#{version_info[:version_name]}(#{version_info[:version_code]}) 버전이 '#{target_track}' 트랙에 성공적으로 업로드되었습니다."
+      )
+
+    rescue => exception
+      discord_notifier(
+          webhook_url: ENV['DISCORD_DEPLOY_WEBHOOK_URL'],
+          title: "❌ 릴리즈 빌드 배포에 실패했습니다. 로그를 확인해주세요.",
+          description: "에러: #{exception}"
+      )
+      raise exception
+    end
+  end
+end
