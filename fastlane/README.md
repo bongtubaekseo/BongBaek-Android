@@ -21,7 +21,7 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 [bundle exec] fastlane android qa
 ```
 
-Firebase App Distribution
+Firebase App Distribution(QA)
 
 ### android release
 

@@ -126,3 +126,18 @@ dependencies {
     // Process Phoenix
     implementation(libs.process.phoenix)
 }
+
+/*
+VersionCode 및 VersionName을 출력하는 Task
+ */
+tasks.register("printVersionCode") {
+    doLast {
+        println(android.defaultConfig.versionCode)
+    }
+}
+
+tasks.register("printVersionName") {
+    doLast {
+        println(android.defaultConfig.versionName)
+    }
+}
