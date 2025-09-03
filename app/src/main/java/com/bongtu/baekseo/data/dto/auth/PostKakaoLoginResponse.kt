@@ -8,17 +8,17 @@ data class PostKakaoLoginResponse (
     @SerialName("name")
     val name: String? = null,
     @SerialName("token")
-    val token: TokenInfo? = null,
+    val token: TokenType? = null,
     @SerialName("isCompletedSignUp")
     val isCompletedSignUp: Boolean,
     @SerialName("kakaoId")
     val kakaoId: Long,
 ) {
     @Serializable
-    data class TokenInfo(
+    data class TokenType(
         @SerialName("accessToken")
-        val accessToken: String,
+        val accessToken: TokenInfoDto,
         @SerialName("refreshToken")
-        val refreshToken: String,
+        val refreshToken: TokenInfoDto,
     )
 }
