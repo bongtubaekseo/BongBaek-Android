@@ -42,7 +42,9 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DatePickerFormat
 import com.bongtu.baekseo.core.util.DateValidator.validateDate
 import com.bongtu.baekseo.core.util.noRippleClickable
-import java.time.LocalDate
+import com.bongtu.baekseo.core.util.toLocalDateFormat
+
+private const val DATE_INPUT_MAX_LENGTH = 8
 
 /**
  * Bong baek date picker
@@ -53,24 +55,20 @@ import java.time.LocalDate
  * @param value - date textfield 입력값
  * @param onValueChange - date textfield 입력값 변경
  * @param onDismissRequest - dialog 닫기
- * @param onConfirmClick - ok 버튼 클릭 이벤트
+ * @param onConfirmClick - ok 버튼 클릭 이벤트 (호출시 dissmiss 수행, "yyyy-MM-dd" 형식 문자열 반환)
  */
-private const val DATE_INPUT_MAX_LENGTH = 8
-
 @Composable
 fun BongBaekDatePickerDialog(
     datePickerDialogType: DatePickerDialogType,
     value: String,
     onValueChange: (String) -> Unit,
     onDismissRequest: () -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    previousDate: LocalDate = LocalDate.now(),
 ) {
     val dateError = validateDate(
         input = value,
         type = datePickerDialogType,
-        previousDate = previousDate,
     )
     val isValid = dateError.isEmpty()
     val bongBaekColors = BongBaekTheme.colors
@@ -172,7 +170,7 @@ fun BongBaekDatePickerDialog(
                             )
                             .noRippleClickable {
                                 if (isValid) {
-                                    onConfirmClick()
+                                    onConfirmClick(value.toLocalDateFormat())
                                     onDismissRequest()
                                 }
                             },

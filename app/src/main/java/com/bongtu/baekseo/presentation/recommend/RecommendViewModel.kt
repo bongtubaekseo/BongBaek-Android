@@ -7,7 +7,6 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.core.util.toFormattedDate
 import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.model.event.Event
 import com.bongtu.baekseo.data.model.event.HighAccuracy
@@ -224,7 +223,7 @@ class RecommendViewModel @Inject constructor(
                     relationType = requireNotNull(relationType).label,
                     cost = expense,
                     isEventParticipated = requireNotNull(isEventParticipated),
-                    eventDate = eventDate.toFormattedDate(),
+                    eventDate = eventDate,
                     note = "",
                 ),
                 location = Location(

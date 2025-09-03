@@ -113,11 +113,12 @@
     <string name="name_text_field_placeholder">이름을 입력해주세요</string>
     <string name="birth_text_field_label">생년월일</string>
     <string name="birth_text_field_placeholder">생년월일을 입력해주세요</string>
+    <string name="input_text_field_placeholder">직접 입력해주세요</string>
     <!--BongBaekDatePicker    -->
     <string name="date_picker_description_birth">생년월일을 입력해주세요</string>
     <string name="date_picker_description_date">날짜를 입력해주세요</string>
     <string name="date_picker_title">Enter date</string>
-    <string name="date_picker_placeholder">mm/dd/yyyy</string>
+    <string name="date_picker_placeholder">yyyy년 mm월 dd일</string>
     <string name="date_picker_cancel">cancel</string>
     <string name="date_picker_ok">ok</string>
     <!--Button    -->
@@ -182,4 +183,24 @@
     <string name="mypage_withdrawal">서비스 탈퇴</string>
     <string name="mypage_version_format">v %1$s</string>
     <string name="profile_edit_button">수정하기</string>
+    <!--Withdraw    -->
+    <string name="withdraw_reason_uncomfortable">사용이 불편했어요</string>
+    <string name="withdraw_reason_privacy">개인정보 보호가 걱정돼요</string>
+    <string name="withdraw_reason_use">앱을 자주 사용하지 않아요</string>
+    <string name="withdraw_reason_error">오류나 문제가 있었어요</string>
+    <string name="withdraw_reason_account">새로운 계정으로 사용하고 싶어요</string>
+    <string name="withdraw_reason_etc">기타</string>
+    <string name="withdraw_reason_etc_error">50자 이내로 작성해주세요</string>
+    <string name="withdraw_reason_etc_length">%d/50</string>
+    <string name="withdraw_topbar">서비스 탈퇴</string>
+    <string name="withdraw_title">탈퇴를 도와드릴게요</string>
+    <string name="withdraw_information">더 나은 서비스를 위해 탈퇴 이유를 알려주세요</string>
+    <string name="withdraw_button_title">탈퇴하기</string>
+    <string name="withdraw_dialog_confirm">탈퇴</string>
+    <string name="withdraw_dialog_cancel">취소</string>
+    <string name="withdraw_dialog_title">봉투백서를 탈퇴하시겠습니까?</string>
+    <string name="withdraw_dialog_description">탈퇴시 데이터 복구가 어렵습니다</string>
+    <string name="withdraw_quit_title">소중한 의견 감사합니다</string>
+    <string name="withdraw_quit_information">봉투백서는 다시 만나는 날을 기원해요</string>
+    <string name="withdraw_quit_button">종료</string>
 </resources>

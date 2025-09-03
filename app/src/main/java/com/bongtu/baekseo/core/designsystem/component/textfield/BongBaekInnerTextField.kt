@@ -31,6 +31,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
  * @param placeholder 입력 텍스트가 비어 있을 때 표시되는 힌트 텍스트
  * @param placeholderColor 힌트 텍스트 색상
  * @param isSingleLine single / multi line
+ * @param maxLines 최대 줄 수
  * @param isReadOnly 읽기 전용 여부
  * @param isEnabled 활성화 여부
  * @param suffix
@@ -50,6 +51,7 @@ fun BongBaekInnerTextField(
     keyboardActions: KeyboardActions = KeyboardActions.Default,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isSingleLine: Boolean = true,
+    maxLines: Int = if (isSingleLine) 1 else Int.MAX_VALUE,
     cursorColor: Color = BongBaekTheme.colors.white,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     suffix: (@Composable (() -> Unit))? = null,
@@ -64,6 +66,7 @@ fun BongBaekInnerTextField(
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = isSingleLine,
+        maxLines = maxLines,
         cursorBrush = SolidColor(cursorColor),
         interactionSource = interactionSource,
         visualTransformation = visualTransformation,

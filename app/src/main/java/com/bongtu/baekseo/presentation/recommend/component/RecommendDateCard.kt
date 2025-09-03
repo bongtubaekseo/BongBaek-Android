@@ -12,7 +12,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -39,14 +38,10 @@ fun RecommendDateCard(
     text: String,
     onFocusChange: (Boolean) -> Unit,
     onTextChange: (String) -> Unit,
-    onConfirmClick: () -> Unit,
+    onConfirmClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isDialogOpen by remember { mutableStateOf(false) }
-
-    LaunchedEffect(isDialogOpen) {
-        if (!isDialogOpen && date.isEmpty()) onTextChange("")
-    }
 
     Column(
         modifier = modifier
@@ -95,6 +90,7 @@ fun RecommendDateCard(
                 onDismissRequest = {
                     isDialogOpen = false
                     onFocusChange(true)
+                    onTextChange("")
                 },
                 onConfirmClick = onConfirmClick,
             )
