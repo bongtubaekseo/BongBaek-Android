@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.mypage
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.type.IncomeType
+import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.domain.usecase.auth.LogoutUseCase
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
@@ -39,7 +40,7 @@ class MyPageViewModel @Inject constructor(
 
     fun logout() =
         viewModelScope.launch {
-            logoutUseCase.invoke()
+            logoutUseCase()
                 .onSuccess {
                     _sideEffect.emit(RestartApp)
                 }

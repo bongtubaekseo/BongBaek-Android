@@ -35,7 +35,7 @@ class WithdrawViewModel @Inject constructor(
         val reasonType = uiState.value.reasonType?.name
         val etcReason = uiState.value.etcReason
 
-        withdrawUseCase.invoke(
+        withdrawUseCase(
             withdrawalReason = reasonType.orEmpty(),
             detail = etcReason.takeIf { it.isNotBlank() },
         ).onSuccess {
