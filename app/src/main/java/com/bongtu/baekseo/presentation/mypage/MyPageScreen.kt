@@ -31,7 +31,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
@@ -58,6 +60,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 
 @Composable
@@ -65,13 +68,24 @@ fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    onRestartApp: (Boolean) -> Unit,
     viewModel: MyPageViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchUserProfile()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    RestartApp -> onRestartApp(false)
+                }
+            }
     }
 
     MyPageScreen(
@@ -79,6 +93,7 @@ fun MyPageRoute(
         navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
+        logout = viewModel::logout,
         modifier = modifier,
     )
 }
@@ -89,6 +104,7 @@ private fun MyPageScreen(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    logout: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -148,7 +164,7 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = { /* TODO: 로그아웃 */ }),
+                        .noRippleClickable(onClick = logout),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -409,6 +425,7 @@ private fun MyPageScreenPreview() {
             navigateUp = {},
             navigateToEditProfile = {},
             navigateToWithdraw = {},
+            logout = {},
         )
     }
 }
