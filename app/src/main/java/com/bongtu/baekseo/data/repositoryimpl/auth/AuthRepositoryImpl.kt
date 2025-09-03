@@ -4,6 +4,7 @@ import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
 import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
+import com.bongtu.baekseo.data.dto.auth.PostWithdrawRequest
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.auth.KakaoLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
@@ -68,5 +69,19 @@ class AuthRepositoryImpl @Inject constructor(
 
     override suspend fun postLogout(accessToken: String?): Result<Unit> = runCatching {
         authDataSource.postLogout(accessToken)
+    }
+
+    override suspend fun postWithdraw(
+        accessToken: String?,
+        withdrawalReason: String,
+        detail: String?,
+    ): Result<Unit> = runCatching {
+        authDataSource.postWithdraw(
+            accessToken = accessToken,
+            request = PostWithdrawRequest(
+                withdrawalReason = withdrawalReason,
+                detail = detail,
+            )
+        )
     }
 }

@@ -22,4 +22,10 @@ interface AuthRepository {
     suspend fun postLogout(
         accessToken: String?,
     ): Result<Unit>
+
+    suspend fun postWithdraw(
+        accessToken: String?,
+        withdrawalReason: String,
+        detail: String? = null,
+    ): Result<Unit>
 }
