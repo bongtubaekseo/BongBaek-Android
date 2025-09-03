@@ -19,4 +19,8 @@ interface AuthDataSource {
     suspend fun postTokenReissue(
         request: PostTokenReissueRequest,
     ): BaseResponse<PostTokenReissueResponse>
+
+    suspend fun postLogout(
+        accessToken: String?,
+    ): BaseResponse<Unit>
 }

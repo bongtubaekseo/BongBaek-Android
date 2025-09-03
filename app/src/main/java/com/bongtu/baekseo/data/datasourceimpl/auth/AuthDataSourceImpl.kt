@@ -21,4 +21,9 @@ class AuthDataSourceImpl @Inject constructor(
 
     override suspend fun postTokenReissue(request: PostTokenReissueRequest): BaseResponse<PostTokenReissueResponse> =
         authService.postTokenReissue(request)
+
+    override suspend fun postLogout(accessToken: String?): BaseResponse<Unit> =
+        authService.postLogout(
+            accessToken = "Bearer $accessToken"
+        )
 }
