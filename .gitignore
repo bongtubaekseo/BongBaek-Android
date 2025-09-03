@@ -33,6 +33,11 @@ render.experimental.xml
 # Google Services (e.g. APIs or Firebase)
 google-services.json
 
+# Fastlane
+fastlane/report.xml
+fastlane/.env
+fastlane/keys
+
 # Android Profiling
 *.hprof
 
