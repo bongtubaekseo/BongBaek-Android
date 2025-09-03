@@ -127,7 +127,7 @@ private fun WithdrawReasonScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 AnimatedVisibility(
-                    visible = !(uiState.reasonType == WithdrawType.ETC && etcFocused),
+                    visible = !(uiState.reasonType == WithdrawType.OTHER && etcFocused),
                 ) {
                     Column {
                         Text(
@@ -193,7 +193,7 @@ private fun WithdrawReasonScreenPreview() {
     BongBaekTheme {
         WithdrawReasonScreen(
             uiState = WithdrawUiState(
-                reasonType = WithdrawType.UNCOMFORTABLE,
+                reasonType = WithdrawType.INCONVENIENT,
             ),
             buttonEnabled = true,
             navigateToUp = {},
