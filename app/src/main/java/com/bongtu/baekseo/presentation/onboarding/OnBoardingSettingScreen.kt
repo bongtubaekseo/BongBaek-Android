@@ -170,7 +170,7 @@ fun OnBoardingSettingScreen(
 
                 AnimatedVisibility(
                     visible = switchChecked,
-                    modifier = Modifier.padding(top = 30.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Column(
                         modifier = Modifier
