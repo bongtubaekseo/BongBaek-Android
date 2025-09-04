@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.data.service.member
 
-import com.bongtu.baekseo.core.network.model.BaseResponse
 import com.bongtu.baekseo.core.network.model.BaseResponseWithoutData
 import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 import retrofit2.http.Body
