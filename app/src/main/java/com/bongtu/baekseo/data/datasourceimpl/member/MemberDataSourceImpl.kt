@@ -2,7 +2,7 @@ package com.bongtu.baekseo.data.datasourceimpl.member
 
 import com.bongtu.baekseo.data.datasource.member.MemberDataSource
 import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
-import com.bongtu.baekseo.data.dto.profile.ProfileInfoDto
+import com.bongtu.baekseo.data.dto.member.ProfileInfoDto
 import com.bongtu.baekseo.data.service.member.MemberService
 import javax.inject.Inject
 
