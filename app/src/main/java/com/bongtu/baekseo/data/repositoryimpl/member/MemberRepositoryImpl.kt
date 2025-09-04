@@ -27,9 +27,7 @@ class MemberRepositoryImpl @Inject constructor(
         )
     }
 
-    override suspend fun getProfileInfo(
-
-    ): Result<ProfileInfo> = runCatching {
+    override suspend fun getProfileInfo(): Result<ProfileInfo> = runCatching {
         memberDataSource.getProfileInfo()
     }.mapCatching { response ->
         response.data.toModel()
