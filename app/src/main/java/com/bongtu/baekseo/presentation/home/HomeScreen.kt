@@ -150,7 +150,6 @@ fun HomeSuccessScreen(
         items.size
     })
     val isCardMultiple = items.size > 1
-    val recommendCardPadding = if (isCardMultiple) 0.dp else 30.dp
     val contentPadding by remember(pagerState) {
         derivedStateOf {
             val page = pagerState.currentPage
@@ -221,8 +220,7 @@ fun HomeSuccessScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = 22.dp,
-                                bottom = 24.dp,
+                                vertical = 16.dp,
                             ),
                         horizontalArrangement = Arrangement.spacedBy(
                             space = 6.dp,
@@ -248,20 +246,22 @@ fun HomeSuccessScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 20.dp),
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 60.dp,
+                ),
         ) {
             HomeRecommendCard(
                 onClick = navigateToRecommend,
-                modifier = Modifier.padding(top = recommendCardPadding),
+                modifier = Modifier
+                    .padding(vertical = 32.dp),
             )
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 60.dp,
-                        bottom = 20.dp,
-                    ),
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -291,7 +291,7 @@ fun HomeSuccessScreen(
                     cost = item.cost,
                     eventDate = DateFormatter.formatDate(item.eventDate),
                     modifier = Modifier.padding(
-                        bottom = if (index == items.lastIndex) 36.dp else 10.dp
+                        bottom = if (index == items.lastIndex) 0.dp else 14.dp
                     ),
                     location = item.location,
                 )
@@ -300,7 +300,6 @@ fun HomeSuccessScreen(
             if (items.isEmpty()) {
                 HomeScheduleEmptyCard(
                     onBadgeClick = navigateToEdit,
-                    modifier = Modifier.padding(bottom = 40.dp),
                 )
             }
         }
