@@ -30,6 +30,7 @@ import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.common.type.ScheduleType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
@@ -120,10 +121,12 @@ private fun ScheduleScreen(
                 is UiState.Empty -> {
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
+                        scheduleType = ScheduleType.SCHEDULE,
                         onButtonClick = navigateToEdit,
                         modifier = Modifier
-                            .padding(top = 58.dp)
-                            .padding(horizontal = 20.dp),
+                            .padding(
+                                top = 100.dp,
+                            ),
                     )
                 }
 
