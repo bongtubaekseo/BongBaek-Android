@@ -6,7 +6,7 @@ import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.data.model.profile.ProfileInfo
+import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState

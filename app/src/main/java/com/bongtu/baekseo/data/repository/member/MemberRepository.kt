@@ -1,6 +1,6 @@
 package com.bongtu.baekseo.data.repository.member
 
-import com.bongtu.baekseo.data.model.profile.ProfileInfo
+import com.bongtu.baekseo.data.model.member.ProfileInfo
 
 interface MemberRepository {
     suspend fun postLogout(): Result<Unit>

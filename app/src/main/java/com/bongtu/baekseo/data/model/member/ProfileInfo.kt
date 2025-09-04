@@ -1,6 +1,4 @@
-package com.bongtu.baekseo.data.model.profile
-
-import kotlinx.serialization.SerialName
+package com.bongtu.baekseo.data.model.member
 
 data class ProfileInfo(
     val memberName: String,

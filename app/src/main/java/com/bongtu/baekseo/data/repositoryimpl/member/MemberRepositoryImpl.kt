@@ -4,7 +4,7 @@ import com.bongtu.baekseo.data.datasource.member.MemberDataSource
 import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 import com.bongtu.baekseo.data.dto.member.ProfileInfoDto
 import com.bongtu.baekseo.data.mapper.toModel
-import com.bongtu.baekseo.data.model.profile.ProfileInfo
+import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
 import javax.inject.Inject
 
