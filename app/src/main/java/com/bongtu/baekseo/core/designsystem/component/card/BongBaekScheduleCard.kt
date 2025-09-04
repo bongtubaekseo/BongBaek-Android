@@ -25,14 +25,11 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.string.record_card_cost
-import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.common.type.HomeScheduleCardInfoType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateAndDay
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 
 @Composable
 fun BongBaekScheduleCard(
@@ -49,9 +46,6 @@ fun BongBaekScheduleCard(
 ) {
     val isHomeCard = scheduleCardType == ScheduleCardType.HOME
     val isScheduleCard = scheduleCardType == ScheduleCardType.SCHEDULE
-
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
-    val homeDate = eventDate.toFormattedDateWithDay()
 
     val spacerHeight = if (isHomeCard) 10.dp else 8.dp
     val spacerBadgeHeight = if (isHomeCard) 4.dp else 8.dp
@@ -105,7 +99,6 @@ fun BongBaekScheduleCard(
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
             BongBaekSmallBadge(
                 title = eventCategory,
@@ -121,16 +114,10 @@ fun BongBaekScheduleCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = date,
+                    text = eventDate,
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.captionRegular12,
                     modifier = Modifier.padding(end = 4.dp),
-                )
-
-                Text(
-                    text = stringResource(record_card_weekday, weekDay),
-                    color = BongBaekTheme.colors.gray400,
-                    style = BongBaekTheme.typography.captionRegular12,
                 )
             }
         }
@@ -147,7 +134,7 @@ fun BongBaekScheduleCard(
 
             HomeScheduleCardInfo(
                 infoType = HomeScheduleCardInfoType.DATE,
-                content = homeDate,
+                content = eventDate,
             )
         }
     }
@@ -201,7 +188,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025-02-11",
+                eventDate = "2025년 02월 11일",
                 location = "강남",
                 onCardClick = {},
             )
@@ -212,7 +199,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025-02-11",
+                eventDate = "2025년 02월 11일",
                 location = "강남",
                 onCardClick = {},
             )
