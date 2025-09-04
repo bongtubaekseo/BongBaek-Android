@@ -37,6 +37,7 @@ import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
@@ -158,7 +159,7 @@ private fun ScheduleScreen(
                                 eventCategory = event.eventCategory,
                                 relationship = event.relationship,
                                 cost = event.cost,
-                                eventDate = event.eventDate,
+                                eventDate = DateFormatter.formatDate(event.eventDate),
                                 onCardClick = { onCardClick(event.eventId) },
                                 modifier = Modifier.padding(padding),
                             )
