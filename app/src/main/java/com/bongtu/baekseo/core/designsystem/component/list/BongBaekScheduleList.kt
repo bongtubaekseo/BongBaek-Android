@@ -64,7 +64,7 @@ fun <T> BongBaekScheduleList(
                 Text(
                     text = stringResource(record_card_list_year, curYear),
                     color = BongBaekTheme.colors.white,
-                    style = BongBaekTheme.typography.headBold24,
+                    style = BongBaekTheme.typography.titleSemiBold18,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = if (prev == null) 0.dp else 32.dp),
