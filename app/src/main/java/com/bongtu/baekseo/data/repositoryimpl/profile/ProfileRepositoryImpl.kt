@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.repositoryimpl.profile
 
 import com.bongtu.baekseo.data.datasource.profile.ProfileDataSource
-import com.bongtu.baekseo.data.dto.profile.ProfileInfoDto
+import com.bongtu.baekseo.data.dto.member.ProfileInfoDto
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.profile.ProfileInfo
 import com.bongtu.baekseo.data.repository.profile.ProfileRepository
