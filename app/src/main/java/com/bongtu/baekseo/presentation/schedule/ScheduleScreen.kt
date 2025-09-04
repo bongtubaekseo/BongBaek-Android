@@ -145,7 +145,7 @@ private fun ScheduleScreen(
                         start = 20.dp,
                         end = 20.dp,
                         top = 20.dp,
-                        bottom = 20.dp + WindowInsets.navigationBars.asPaddingValues()
+                        bottom = 60.dp + WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding(),
                     )
                     BongBaekScheduleList(
