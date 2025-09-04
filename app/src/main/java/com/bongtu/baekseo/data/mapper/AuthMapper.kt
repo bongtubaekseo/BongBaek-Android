@@ -7,13 +7,13 @@ import com.bongtu.baekseo.data.model.auth.TokenReissue
 
 fun PostKakaoLoginResponse.toModel() = KakaoLogin(
     name = name.orEmpty(),
-    accessToken = token?.accessToken.orEmpty(),
-    refreshToken = token?.refreshToken.orEmpty(),
+    accessToken = token?.accessToken?.token.orEmpty(),
+    refreshToken = token?.refreshToken?.token.orEmpty(),
     isCompletedSignUp = isCompletedSignUp,
     kakaoId = kakaoId,
 )
 
 fun PostTokenReissueResponse.toModel() = TokenReissue(
-    accessToken = accessToken,
-    refreshToken = refreshToken,
+    accessToken = accessToken.token,
+    refreshToken = refreshToken.token,
 )
