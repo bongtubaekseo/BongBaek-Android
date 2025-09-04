@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.data.dto.profile
+package com.bongtu.baekseo.data.dto.member
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
