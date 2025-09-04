@@ -35,12 +35,12 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
+import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import kotlinx.collections.immutable.persistentListOf
 
@@ -109,10 +109,11 @@ private fun ScheduleScreen(
             },
         )
 
-        EventCategoryBar(
+        BongBaekCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
             isEnabled = true,
+            modifier = Modifier.padding(vertical = 16.dp),
         )
 
         Crossfade(
