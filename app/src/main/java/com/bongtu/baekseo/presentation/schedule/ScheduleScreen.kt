@@ -159,7 +159,7 @@ private fun ScheduleScreen(
                                 eventCategory = event.eventCategory,
                                 relationship = event.relationship,
                                 cost = event.cost,
-                                eventDate = DateFormatter.formatDate(event.eventDate),
+                                eventDate = DateFormatter.formatToKorean(event.eventDate),
                                 onCardClick = { onCardClick(event.eventId) },
                                 modifier = Modifier.padding(padding),
                             )

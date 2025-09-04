@@ -211,7 +211,7 @@ fun HomeSuccessScreen(
                         hostname = item.hostName,
                         eventType = item.eventCategory,
                         daysLeft = item.dDay,
-                        eventDate = DateFormatter.formatDate(item.eventDate),
+                        eventDate = DateFormatter.formatToKorean(item.eventDate),
                     )
                 }
 
@@ -289,7 +289,7 @@ fun HomeSuccessScreen(
                     eventCategory = item.eventCategory,
                     relationship = item.relationship,
                     cost = item.cost,
-                    eventDate = DateFormatter.formatDate(item.eventDate),
+                    eventDate = DateFormatter.formatToKorean(item.eventDate),
                     modifier = Modifier.padding(
                         bottom = if (index == items.lastIndex) 0.dp else 14.dp
                     ),
@@ -309,7 +309,7 @@ fun HomeSuccessScreen(
 @Preview
 @Composable
 private fun HomeSuccessScreenPreview() {
-    val items = persistentListOf<HomeEvent>(
+    val items = persistentListOf(
         HomeEvent(
             eventId = "eventId1",
             hostName = "헤헤",
