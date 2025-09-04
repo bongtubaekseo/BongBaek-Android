@@ -45,7 +45,7 @@ import com.bongtu.baekseo.R.string.onboarding_button_income_up
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.profile_edit_button
-import com.bongtu.baekseo.R.string.topbar_profile_setting
+import com.bongtu.baekseo.R.string.topbar_profile_edit
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
@@ -128,7 +128,7 @@ private fun ProfileEditScreen(
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar),
     ) {
         BongBaekTopBar(
-            title = stringResource(id = topbar_profile_setting),
+            title = stringResource(id = topbar_profile_edit),
             topBarType = TopBarType.LEADING_ICON,
             leadingIcon = {
                 Icon(
