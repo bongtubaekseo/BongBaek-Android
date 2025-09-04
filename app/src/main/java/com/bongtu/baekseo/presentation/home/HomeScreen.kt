@@ -176,7 +176,12 @@ fun HomeSuccessScreen(
     ) {
         HomeTopBar(
             onLogoIconClick = navigateToMyPage,
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(
+                start = 20.dp,
+                top = 20.dp,
+                end = 20.dp,
+                bottom = 32.dp,
+            ),
         )
 
         if (items.isEmpty()) {
