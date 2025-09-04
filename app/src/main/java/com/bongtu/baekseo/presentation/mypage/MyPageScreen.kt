@@ -93,7 +93,7 @@ fun MyPageRoute(
         navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
-        logout = viewModel::logout,
+        onLogoutClick = viewModel::logout,
         modifier = modifier,
     )
 }
@@ -104,7 +104,7 @@ private fun MyPageScreen(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
-    logout: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -164,7 +164,7 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = logout),
+                        .noRippleClickable(onClick = onLogoutClick),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -425,7 +425,7 @@ private fun MyPageScreenPreview() {
             navigateUp = {},
             navigateToEditProfile = {},
             navigateToWithdraw = {},
-            logout = {},
+            onLogoutClick = {},
         )
     }
 }
