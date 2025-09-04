@@ -383,11 +383,7 @@ private fun EditMainScreen(
         }
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
-                datePickerDialogType = if (editEntryType == EditEntryType.FROM_RESULT) {
-                    DatePickerDialogType.DATE_FUTURE
-                } else {
-                    DatePickerDialogType.DATE
-                },
+                datePickerDialogType = DatePickerDialogType.DATE,
                 value = text,
                 onValueChange = { text = it },
                 onDismissRequest = {
