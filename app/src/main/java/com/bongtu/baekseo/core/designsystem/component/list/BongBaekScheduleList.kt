@@ -92,7 +92,7 @@ fun <T> BongBaekScheduleList(
                 }
             }
 
-            val cardTopPadding = if (prev != null && !isNewMonth) 10.dp else 20.dp
+            val cardTopPadding = if (prev != null && !isNewMonth) 14.dp else 16.dp
             card(item, PaddingValues(top = cardTopPadding))
         }
     }
