@@ -40,6 +40,7 @@ import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -211,7 +212,7 @@ fun HomeSuccessScreen(
                         hostname = item.hostName,
                         eventType = item.eventCategory,
                         daysLeft = item.dDay,
-                        eventDate = item.eventDate,
+                        eventDate = DateFormatter.formatDate(item.eventDate),
                     )
                 }
 
@@ -288,7 +289,7 @@ fun HomeSuccessScreen(
                     eventCategory = item.eventCategory,
                     relationship = item.relationship,
                     cost = item.cost,
-                    eventDate = item.eventDate,
+                    eventDate = DateFormatter.formatDate(item.eventDate),
                     modifier = Modifier.padding(
                         bottom = if (index == items.lastIndex) 36.dp else 10.dp
                     ),
