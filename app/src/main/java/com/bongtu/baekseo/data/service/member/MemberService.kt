@@ -1,16 +1,17 @@
 package com.bongtu.baekseo.data.service.member
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.core.network.model.BaseResponseWithoutData
 import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface MemberService {
     @POST("/api/v1/member/logout")
-    suspend fun postLogout(): BaseResponse<Unit>
+    suspend fun postLogout(): BaseResponseWithoutData
 
     @POST("/api/v1/member/withdraw")
     suspend fun postWithdraw(
         @Body request: PostWithdrawRequest,
-    ): BaseResponse<Unit>
+    ): BaseResponseWithoutData
 }
