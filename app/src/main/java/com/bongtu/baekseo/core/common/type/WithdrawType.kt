@@ -1,5 +1,5 @@
 package com.bongtu.baekseo.core.common.type
 
 enum class WithdrawType {
-    UNCOMFORTABLE, PRIVACY, USE, ERROR, ACCOUNT, ETC;
+    INCONVENIENT, PRIVACY_CONCERN, RARELY_USED, BUG_OR_ERROR, NEW_ACCOUNT, OTHER;
 }
