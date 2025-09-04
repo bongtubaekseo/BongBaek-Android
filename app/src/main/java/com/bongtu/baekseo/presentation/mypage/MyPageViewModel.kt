@@ -32,7 +32,7 @@ class MyPageViewModel @Inject constructor(
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun fetchUserProfile() = viewModelScope.launch {
-        updateMyPageRoadUiState(UiState.Loading)
+        updateMyPageLoadUiState(UiState.Loading)
 
         memberRepository.getProfileInfo()
             .onSuccess { response ->
@@ -43,10 +43,10 @@ class MyPageViewModel @Inject constructor(
                         userIncome = IncomeType.getIncomeType(response.memberIncome).label,
                     )
                 }
-                updateMyPageRoadUiState(UiState.Success(Unit))
+                updateMyPageLoadUiState(UiState.Success(Unit))
             }
             .onFailure {
-                updateMyPageRoadUiState(UiState.Failure(it.message ?: "Unknown Error"))
+                updateMyPageLoadUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
     }
 
@@ -102,7 +102,7 @@ class MyPageViewModel @Inject constructor(
         it.copy(userIncome = newIncome)
     }
 
-    fun updateMyPageRoadUiState(newUiState: UiState<Unit>) = _uiState.update {
+    fun updateMyPageLoadUiState(newUiState: UiState<Unit>) = _uiState.update {
         it.copy(myPageLoadState = newUiState)
     }
 }
