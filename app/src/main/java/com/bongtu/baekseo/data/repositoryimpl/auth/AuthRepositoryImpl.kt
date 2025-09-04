@@ -4,6 +4,7 @@ import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
 import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
+import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 import com.bongtu.baekseo.data.mapper.toModel
 import com.bongtu.baekseo.data.model.auth.KakaoLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
