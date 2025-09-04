@@ -276,7 +276,7 @@ fun HomeSuccessScreen(
                         text = stringResource(id = home_schedule_more),
                         modifier = Modifier.noRippleClickable(navigateToSchedule),
                         color = BongBaekTheme.colors.gray200,
-                        style = BongBaekTheme.typography.captionRegular12,
+                        style = BongBaekTheme.typography.body2Regular14,
                     )
                 }
             }
