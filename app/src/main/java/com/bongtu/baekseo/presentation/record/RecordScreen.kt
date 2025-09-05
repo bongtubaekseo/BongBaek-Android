@@ -147,7 +147,7 @@ private fun RecordScreen(
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(
-                                top = 100.dp,
+                                top = 60.dp,
                             ),
                     )
                 }
