@@ -198,7 +198,7 @@
     <!--Withdraw    -->
     <string name="dialog_cancel">취소</string>
     <string name="dialog_withdraw_title">봉투백서를 탈퇴하시겠습니까?</string>
-    <string name="dialog_withdraw_description">탈퇴시 데이터 복구가 어렵습니다</string>
+    <string name="dialog_withdraw_description">탈퇴 시 데이터 복구가 어렵습니다</string>
     <string name="dialog_withdraw_confirm">탈퇴</string>
     <string name="dialog_delete_title">경조사 기록을 삭제하겠습니까?</string>
     <string name="dialog_delete_description">이 기록의 모든 내용이 삭제됩니다.</string>
