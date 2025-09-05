@@ -35,15 +35,16 @@ import com.bongtu.baekseo.R.string.withdraw_information
 import com.bongtu.baekseo.R.string.withdraw_title
 import com.bongtu.baekseo.R.string.withdraw_topbar
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.common.type.WithdrawType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.withdraw.WithdrawContract.WithdrawUiState
-import com.bongtu.baekseo.presentation.withdraw.component.WithdrawDialog
 import com.bongtu.baekseo.presentation.withdraw.component.WithdrawReasonSelector
 
 @Composable
@@ -172,18 +173,18 @@ private fun WithdrawReasonScreen(
                     ),
                 enabled = buttonEnabled,
             )
-        }
-
-        if (isWithdrawDialogVisible) {
-            WithdrawDialog(
-                onDismissRequest = {
-                    isWithdrawDialogVisible = false
-                },
-                onConfirmClick = {
-                    isWithdrawDialogVisible = false
-                    onConfirmClick()
-                },
-            )
+            if (isWithdrawDialogVisible) {
+                BongBaekDialog(
+                    dialogType = DialogType.WITHDRAW,
+                    onDismissRequest = {
+                        isWithdrawDialogVisible = false
+                    },
+                    onConfirmClick = {
+                        isWithdrawDialogVisible = false
+                        onConfirmClick()
+                    },
+                )
+            }
         }
     }
 }
