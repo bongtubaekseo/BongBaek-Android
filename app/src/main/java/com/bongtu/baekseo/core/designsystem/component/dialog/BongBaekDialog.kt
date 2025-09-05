@@ -2,6 +2,7 @@ package com.bongtu.baekseo.core.designsystem.component.dialog
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -54,12 +55,19 @@ fun BongBaekDialog(
             usePlatformDefaultWidth = false,
         ),
     ) {
-        BongBaekDialogContent(
-            dialogType = dialogType,
-            onDismissRequest = onDismissRequest,
-            onConfirmClick = onConfirmClick,
-            modifier = modifier,
-        )
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            BongBaekDialogContent(
+                dialogType = dialogType,
+                onDismissRequest = onDismissRequest,
+                onConfirmClick = onConfirmClick,
+                modifier = Modifier,
+            )
+        }
     }
 }
 
