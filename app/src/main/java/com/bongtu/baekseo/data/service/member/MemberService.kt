@@ -23,6 +23,6 @@ interface MemberService {
 
     @PUT("/api/v1/member/profile")
     suspend fun putProfileInfo(
-        @Body request: ProfileInfoDto
+        @Body request: ProfileInfoDto,
     ): BaseResponseWithoutData
 }
