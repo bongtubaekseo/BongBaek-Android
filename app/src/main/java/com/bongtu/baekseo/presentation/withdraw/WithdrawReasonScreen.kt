@@ -173,18 +173,15 @@ private fun WithdrawReasonScreen(
                     ),
                 enabled = buttonEnabled,
             )
-            if (isWithdrawDialogVisible) {
-                BongBaekDialog(
-                    dialogType = DialogType.WITHDRAW,
-                    onDismissRequest = {
-                        isWithdrawDialogVisible = false
-                    },
-                    onConfirmClick = {
-                        isWithdrawDialogVisible = false
-                        onConfirmClick()
-                    },
-                )
-            }
+        }
+        if (isWithdrawDialogVisible) {
+            BongBaekDialog(
+                dialogType = DialogType.WITHDRAW,
+                onDismissRequest = {
+                    isWithdrawDialogVisible = false
+                },
+                onConfirmClick = onConfirmClick,
+            )
         }
     }
 }

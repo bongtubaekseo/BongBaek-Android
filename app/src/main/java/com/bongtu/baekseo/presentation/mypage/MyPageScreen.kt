@@ -20,6 +20,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -55,8 +58,10 @@ import com.bongtu.baekseo.R.string.mypage_user_birth
 import com.bongtu.baekseo.R.string.mypage_user_income
 import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_withdrawal
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -107,6 +112,8 @@ private fun MyPageScreen(
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isLogoutDialogVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900),
@@ -164,7 +171,9 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = onLogoutClick),
+                        .noRippleClickable{
+                            isLogoutDialogVisible = true
+                        },
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -177,6 +186,18 @@ private fun MyPageScreen(
                     style = BongBaekTheme.typography.body2Regular14,
                 )
             }
+        }
+        if (isLogoutDialogVisible) {
+            BongBaekDialog(
+                dialogType = DialogType.LOGOUT,
+                onDismissRequest = {
+                    isLogoutDialogVisible = false
+                },
+                onConfirmClick = {
+                    isLogoutDialogVisible = false
+                    onLogoutClick()
+                },
+            )
         }
     }
 }
