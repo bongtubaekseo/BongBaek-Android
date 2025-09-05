@@ -223,6 +223,7 @@ private fun EditMainScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .padding(top = 20.dp)
                     .background(
                         color = BongBaekTheme.colors.gray800,
                         shape = RoundedCornerShape(10.dp),
@@ -376,7 +377,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 140.dp,
+                        bottom = 150.dp,
                     ),
                 isEditable = isMemoEditable,
             )
