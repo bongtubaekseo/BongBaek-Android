@@ -143,7 +143,7 @@ private fun RecordScreen(
                 is UiState.Empty -> {
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
-                        scheduleType = ScheduleType.SCHEDULE,
+                        scheduleType = ScheduleType.RECORD,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(
