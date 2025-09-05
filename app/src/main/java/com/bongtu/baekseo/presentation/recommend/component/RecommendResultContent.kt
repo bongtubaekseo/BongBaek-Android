@@ -85,7 +85,7 @@ fun RecommendResultContent(
             modifier = paddedModifier,
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         Row(
             modifier = paddedModifier,
@@ -106,7 +106,7 @@ fun RecommendResultContent(
             )
         }
 
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         AnimatedVisibility(
             visible = isLottieEnded,
@@ -114,13 +114,6 @@ fun RecommendResultContent(
             exit = fadeOut(),
         ) {
             Column {
-                HorizontalDivider(
-                    thickness = 10.dp,
-                    color = BongBaekTheme.colors.black,
-                )
-
-                Spacer(modifier = Modifier.height(36.dp))
-
                 ResultDescriptionCard(
                     iconRes = ic_info_primary,
                     titleRes = recommendation_result_logic_title,
@@ -137,7 +130,7 @@ fun RecommendResultContent(
                     modifier = paddedModifier,
                 )
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(60.dp))
 
                 BongBaekButton(
                     title = stringResource(recommendation_result_confirm),
@@ -147,7 +140,7 @@ fun RecommendResultContent(
                         .fillMaxWidth(),
                 )
 
-                Spacer(modifier = Modifier.height(10.dp))
+                Spacer(modifier = Modifier.height(14.dp))
 
                 BongBaekButton(
                     title = stringResource(recommendation_result_edit),
@@ -160,7 +153,7 @@ fun RecommendResultContent(
                         ),
                 )
 
-                Spacer(modifier = Modifier.height(50.dp))
+                Spacer(modifier = Modifier.height(36.dp))
             }
         }
     }
