@@ -14,7 +14,7 @@ data class PostKakaoLoginResponse (
     @SerialName("kakaoId")
     val kakaoId: String,
     @SerialName("apiKey")
-    val apiKey: String,
+    val apiKey: String? = null,
 ) {
     @Serializable
     data class TokenType(
