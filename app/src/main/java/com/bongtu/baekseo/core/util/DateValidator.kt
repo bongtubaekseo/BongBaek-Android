@@ -3,22 +3,16 @@ package com.bongtu.baekseo.core.util
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import java.time.LocalDate
 import java.time.Period
+import java.time.format.DateTimeFormatter
 
 object DateValidator {
+    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd")
     fun validateDate(
         input: String,
         type: DatePickerDialogType,
     ): String {
-        if (input.length != 8) return "유효한 날짜 형식이 아니에요"
-
-        val year = input.substring(0, 4).toIntOrNull()
-        val month = input.substring(4, 6).toIntOrNull()
-        val day = input.substring(6, 8).toIntOrNull()
-
-        if (month == null || day == null || year == null) return "유효한 날짜 형식이 아니에요"
-        if (month !in 1..12 || day !in 1..31) return "유효한 날짜 형식이 아니에요"
-
-        val date = LocalDate.of(year, month, day)
+        val date = runCatching { LocalDate.parse(input, DATE_FORMATTER) }
+            .getOrNull() ?: return "유효한 날짜 형식이 아니에요"
         val today = LocalDate.now()
 
         return when (type) {
