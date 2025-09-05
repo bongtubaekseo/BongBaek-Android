@@ -88,7 +88,7 @@ fun RecommendRelationTypeContent(
             onRelationSelect = onRelationSelect,
         )
 
-        Spacer(modifier = Modifier.height(60.dp))
+        Spacer(modifier = Modifier.height(32.dp))
 
         RecommendOptionCard(
             isChecked = isChecked,
@@ -106,7 +106,7 @@ fun RecommendRelationTypeContent(
                 meetFrequency = meetFrequency,
                 onMeetFrequencyChange = onMeetFrequencyChange,
                 modifier = Modifier
-                    .padding(top = 10.dp),
+                    .padding(top = 8.dp),
             )
         }
 
