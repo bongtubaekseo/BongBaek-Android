@@ -31,7 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
@@ -59,7 +61,10 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ProfileEditRoute(
@@ -68,6 +73,17 @@ fun ProfileEditRoute(
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<MyPageSideEffect.ProfileEditSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    NavigateToMyPage -> navigateUp()
+                }
+            }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.updateOriginProfileState(
@@ -95,6 +111,7 @@ fun ProfileEditRoute(
         onUserBirthChange = viewModel::updateUserBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
         onUserIncomeChange = viewModel::updateUserIncome,
+        onEditClick = viewModel::patchUserProfile,
         modifier = modifier,
     )
 }
@@ -108,6 +125,7 @@ private fun ProfileEditScreen(
     onUserBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
     onUserIncomeChange: (String) -> Unit,
+    onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
@@ -241,7 +259,7 @@ private fun ProfileEditScreen(
 
             BongBaekButton(
                 title = stringResource(id = profile_edit_button),
-                onClick = { navigateUp() /* TODO: 프로필 수정 */ },
+                onClick = onEditClick,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -327,6 +345,7 @@ private fun ProfileEditScreenPreview() {
             onUserBirthChange = {},
             onDialogBirthChange = {},
             onUserIncomeChange = {},
+            onEditClick = {},
         )
     }
 }
