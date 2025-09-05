@@ -76,7 +76,6 @@ fun WithdrawQuitScreen(
             title = stringResource(id = withdraw_quit_button),
             onClick = {
                 onRestartApp(false)
-                viewModel.clearToken()
             },
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier

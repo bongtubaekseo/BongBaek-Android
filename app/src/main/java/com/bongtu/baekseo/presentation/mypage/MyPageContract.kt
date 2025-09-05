@@ -28,4 +28,14 @@ class MyPageContract {
         val isEditButtonEnabled: Boolean
             get() = isFormValid && isProfileChanged
     }
+
+    sealed interface MyPageSideEffect {
+        sealed class MainSideEffect: MyPageSideEffect {
+            data object RestartApp : MainSideEffect()
+        }
+
+        sealed class ProfileEditSideEffect: MyPageSideEffect {
+            data object NavigateToMyPage : ProfileEditSideEffect()
+        }
+    }
 }

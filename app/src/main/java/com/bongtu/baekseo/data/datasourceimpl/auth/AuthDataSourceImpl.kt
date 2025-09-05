@@ -7,6 +7,7 @@ import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginResponse
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
+import com.bongtu.baekseo.data.dto.member.PostWithdrawRequest
 import com.bongtu.baekseo.data.service.auth.AuthService
 import javax.inject.Inject
 
