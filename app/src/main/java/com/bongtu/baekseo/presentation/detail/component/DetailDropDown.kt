@@ -54,14 +54,13 @@ import com.bongtu.baekseo.R.string.record_detail_nickname_title
 import com.bongtu.baekseo.R.string.record_detail_relation_title
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedShortEnglishDate
 import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingChip
 import com.bongtu.baekseo.presentation.detail.type.DetailDropDownTrailingType.TrailingText
 import kotlinx.collections.immutable.persistentListOf
-import java.time.LocalDate
 
 @Composable
 fun DetailDropDown(
@@ -75,7 +74,7 @@ fun DetailDropDown(
         else
             AttendType.ABSENT
     }
-    val eventDate = remember(event.eventDate) { event.eventDate.toFormattedShortEnglishDate() }
+    val eventDate = remember(event.eventDate) { DateFormatter.formatToKorean(event.eventDate) }
 
     val isEmptyLocationInfo = remember(event.locationInfo) {
         with(event) {
@@ -283,7 +282,7 @@ private fun DetailDropDownPreview() {
                 relationship = "친구",
                 cost = 50000,
                 isEventParticipated = true,
-                eventDate = LocalDate.of(2024, 6, 10).toString(),
+                eventDate = "2024-06-10",
                 note = null,
                 locationInfo = null,
             )

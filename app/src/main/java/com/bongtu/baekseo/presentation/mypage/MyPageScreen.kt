@@ -57,6 +57,7 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 
@@ -123,7 +124,7 @@ private fun MyPageScreen(
 
                 ProfileSection(
                     userName = uiState.userName,
-                    userBirth = uiState.userBirth,
+                    userBirth = DateFormatter.formatToKorean(uiState.userBirth),
                     userIncome = uiState.userIncome,
                     onProfileEditButtonClick = navigateToEditProfile,
                 )
@@ -403,7 +404,7 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             uiState = MyPageUiState(
                 userName = "봉투백서의겸손한야수",
-                userBirth = "2000년 01월 05일",
+                userBirth = "2000-01-05",
                 userIncome = IncomeType.NONE.label,
             ),
             navigateUp = {},
