@@ -18,6 +18,7 @@ import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -70,6 +71,7 @@ class OnBoardingViewModel @Inject constructor(
                     }
                 }
                 .onFailure {
+                    Timber.d("kakaoLogin: $it")
                     _kakaoLoginState.tryEmit(SocialLoginState.Fail)
                 }
         }
@@ -100,7 +102,7 @@ class OnBoardingViewModel @Inject constructor(
             )
         }
 
-    private fun updateKakaoId(newKakaoId: Long) =
+    private fun updateKakaoId(newKakaoId: String) =
         _uiState.update {
             it.copy(kakaoId = newKakaoId)
         }

@@ -6,9 +6,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class PostSignUpRequest (
     @SerialName("kakaoId")
-    val kakaoId: Long,
+    val kakaoId: String,
     @SerialName("appleId")
-    val appleId: Long? = null,
+    val appleId: String? = null,
     @SerialName("memberName")
     val memberName: String,
     @SerialName("memberBirthday")
