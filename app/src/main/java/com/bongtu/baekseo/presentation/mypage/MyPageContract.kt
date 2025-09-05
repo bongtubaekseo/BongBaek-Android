@@ -29,7 +29,13 @@ class MyPageContract {
             get() = isFormValid && isProfileChanged
     }
 
-    sealed class MyPageSideEffect {
-        data object RestartApp : MyPageSideEffect()
+    sealed interface MyPageSideEffect {
+        sealed class MainSideEffect: MyPageSideEffect {
+            data object RestartApp : MainSideEffect()
+        }
+
+        sealed class ProfileEditSideEffect: MyPageSideEffect {
+            data object NavigateToMyPage : ProfileEditSideEffect()
+        }
     }
 }

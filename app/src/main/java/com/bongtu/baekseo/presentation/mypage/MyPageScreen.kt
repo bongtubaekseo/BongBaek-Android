@@ -60,8 +60,10 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.RestartApp
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.MainSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun MyPageRoute(
@@ -81,6 +83,7 @@ fun MyPageRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<MyPageSideEffect.MainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     RestartApp -> onRestartApp(false)
