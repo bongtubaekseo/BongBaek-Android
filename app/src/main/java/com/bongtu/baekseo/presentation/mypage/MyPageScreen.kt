@@ -189,7 +189,7 @@ private fun ProfileSection(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
-                .padding(top = 24.dp)
+                .padding(top = 16.dp)
                 .size(110.dp)
                 .clip(RoundedCornerShape(20.dp)),
             error = painterResource(img_mypage_profile),
