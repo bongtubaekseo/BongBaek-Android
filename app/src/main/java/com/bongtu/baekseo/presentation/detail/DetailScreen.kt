@@ -243,7 +243,7 @@ private fun DetailContent(
             onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
             buttonType = ButtonType.DELETE,
             modifier = Modifier
-                .padding(top = 65.dp, bottom = 40.dp)
+                .padding(top = 80.dp, bottom = 40.dp)
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
