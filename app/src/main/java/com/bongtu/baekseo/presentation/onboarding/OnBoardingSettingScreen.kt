@@ -182,7 +182,7 @@ fun OnBoardingSettingScreen(
                         Text(
                             text = stringResource(id = onboarding_income_question),
                             style = BongBaekTheme.typography.body1Medium16,
-                            color = BongBaekTheme.colors.white,
+                            color = BongBaekTheme.colors.gray100,
                         )
 
                         OnBoardingButton(
