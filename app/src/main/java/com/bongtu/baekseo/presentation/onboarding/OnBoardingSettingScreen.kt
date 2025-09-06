@@ -137,7 +137,6 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
-                            viewModel.updateDialogBirth(uiState.birth)
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,
@@ -230,9 +229,7 @@ fun OnBoardingSettingScreen(
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
                 value = uiState.dialogBirth,
-                onValueChange = {
-                    viewModel.updateDialogBirth(newDialogBirth = it)
-                },
+                onValueChange = viewModel::updateDialogBirth,
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
                     viewModel.updateDialogBirth("")
