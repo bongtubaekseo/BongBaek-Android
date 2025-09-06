@@ -8,6 +8,7 @@
     <string name="update_recommend_desc">더 편리하게 소중한 순간을 준비할 수 있도록\n최신 버전으로 업데이트해주세요!</string>
     <string name="update_confirm">업데이트</string>
     <string name="update_cancel">취소</string>
+    <string name="market_url">market://details?id=%1$s</string>
     <!--Home    -->
     <string name="home">홈</string>
     <string name="home_recommend_card_description">경조사비 추천</string>
