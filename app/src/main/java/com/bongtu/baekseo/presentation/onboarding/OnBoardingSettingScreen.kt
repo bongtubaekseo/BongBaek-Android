@@ -54,6 +54,7 @@ import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
@@ -137,6 +138,7 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
+                            viewModel.updateDialogBirth(DateFormatter.formatLocalDateToNumeric(uiState.birth))
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,

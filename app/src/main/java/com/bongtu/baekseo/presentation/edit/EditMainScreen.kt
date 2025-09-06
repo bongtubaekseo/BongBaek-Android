@@ -80,6 +80,7 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -330,6 +331,7 @@ private fun EditMainScreen(
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
+                            text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                             if (isResultEditable) isDatePickerDialogVisible = true
                         },
                     isRequired = true,

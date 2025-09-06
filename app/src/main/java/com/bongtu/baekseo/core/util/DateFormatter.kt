@@ -29,4 +29,11 @@ object DateFormatter {
     } catch (_: Exception) {
         ""
     }
+
+    fun formatLocalDateToNumeric(dateString: String): String = try {
+        val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
+        date.format(NUMERIC_DATE_FORMATTER)
+    } catch (_: Exception) {
+        ""
+    }
 }

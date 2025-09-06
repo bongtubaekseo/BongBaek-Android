@@ -30,6 +30,7 @@ import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.textfield.RoundedBoxTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 
 @Composable
@@ -76,6 +77,7 @@ fun RecommendDateCard(
             placeholder = stringResource(date_picker_description_date),
             isEditable = false,
             onClick = {
+                onTextChange(DateFormatter.formatLocalDateToNumeric(date))
                 isDialogOpen = true
                 onFocusChange(false)
             },
