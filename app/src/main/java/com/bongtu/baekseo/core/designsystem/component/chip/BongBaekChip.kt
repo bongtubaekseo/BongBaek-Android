@@ -48,10 +48,8 @@ fun BongBaekFilterChip(
             )
             .noRippleClickable(onClick)
             .padding(
-                start = 16.dp,
-                top = 5.dp,
-                end = 16.dp,
-                bottom = 7.dp,
+                horizontal = 16.dp,
+                vertical = 6.dp,
             ),
         contentAlignment = Alignment.Center,
     ) {
@@ -87,10 +85,8 @@ fun BongBaekLabelChip(
                 shape = RoundedCornerShape(6.dp),
             )
             .padding(
-                start = 16.dp,
-                top = 5.dp,
-                end = 16.dp,
-                bottom = 7.dp,
+                horizontal = 16.dp,
+                vertical = 6.dp,
             ),
         contentAlignment = Alignment.Center,
     ) {

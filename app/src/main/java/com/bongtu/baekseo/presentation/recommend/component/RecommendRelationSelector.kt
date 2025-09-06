@@ -76,7 +76,7 @@ private fun RelationSelectorItem(
     }
     val (contentColor, iconColor) = remember(isSelected) {
         if (isSelected == true) bongBaekColors.white to bongBaekColors.white
-        else bongBaekColors.gray400 to Color.Unspecified
+        else bongBaekColors.gray200 to Color.Unspecified
     }
     val iconRes = remember(relation) {
         when (relation) {

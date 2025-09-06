@@ -40,6 +40,7 @@ import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.HomeEvent
@@ -149,7 +150,6 @@ fun HomeSuccessScreen(
         items.size
     })
     val isCardMultiple = items.size > 1
-    val recommendCardPadding = if (isCardMultiple) 0.dp else 30.dp
     val contentPadding by remember(pagerState) {
         derivedStateOf {
             val page = pagerState.currentPage
@@ -176,7 +176,12 @@ fun HomeSuccessScreen(
     ) {
         HomeTopBar(
             onLogoIconClick = navigateToMyPage,
-            modifier = Modifier.padding(20.dp),
+            modifier = Modifier.padding(
+                start = 20.dp,
+                top = 20.dp,
+                end = 20.dp,
+                bottom = 32.dp,
+            ),
         )
 
         if (items.isEmpty()) {
@@ -206,7 +211,7 @@ fun HomeSuccessScreen(
                         hostname = item.hostName,
                         eventType = item.eventCategory,
                         daysLeft = item.dDay,
-                        eventDate = item.eventDate,
+                        eventDate = DateFormatter.formatToKorean(item.eventDate),
                     )
                 }
 
@@ -215,8 +220,7 @@ fun HomeSuccessScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(
-                                top = 22.dp,
-                                bottom = 24.dp,
+                                vertical = 16.dp,
                             ),
                         horizontalArrangement = Arrangement.spacedBy(
                             space = 6.dp,
@@ -242,20 +246,22 @@ fun HomeSuccessScreen(
 
         Column(
             modifier = Modifier
-                .padding(horizontal = 20.dp),
+                .padding(
+                    start = 20.dp,
+                    end = 20.dp,
+                    bottom = 60.dp,
+                ),
         ) {
             HomeRecommendCard(
                 onClick = navigateToRecommend,
-                modifier = Modifier.padding(top = recommendCardPadding),
+                modifier = Modifier
+                    .padding(vertical = 32.dp),
             )
 
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        top = 60.dp,
-                        bottom = 20.dp,
-                    ),
+                    .padding(bottom = 16.dp)
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
             ) {
@@ -270,7 +276,7 @@ fun HomeSuccessScreen(
                         text = stringResource(id = home_schedule_more),
                         modifier = Modifier.noRippleClickable(navigateToSchedule),
                         color = BongBaekTheme.colors.gray200,
-                        style = BongBaekTheme.typography.captionRegular12,
+                        style = BongBaekTheme.typography.body2Regular14,
                     )
                 }
             }
@@ -283,9 +289,9 @@ fun HomeSuccessScreen(
                     eventCategory = item.eventCategory,
                     relationship = item.relationship,
                     cost = item.cost,
-                    eventDate = item.eventDate,
+                    eventDate = DateFormatter.formatToKorean(item.eventDate),
                     modifier = Modifier.padding(
-                        bottom = if (index == items.lastIndex) 36.dp else 10.dp
+                        bottom = if (index == items.lastIndex) 0.dp else 14.dp
                     ),
                     location = item.location,
                 )
@@ -294,7 +300,6 @@ fun HomeSuccessScreen(
             if (items.isEmpty()) {
                 HomeScheduleEmptyCard(
                     onBadgeClick = navigateToEdit,
-                    modifier = Modifier.padding(bottom = 40.dp),
                 )
             }
         }
@@ -304,7 +309,7 @@ fun HomeSuccessScreen(
 @Preview
 @Composable
 private fun HomeSuccessScreenPreview() {
-    val items = persistentListOf<HomeEvent>(
+    val items = persistentListOf(
         HomeEvent(
             eventId = "eventId1",
             hostName = "헤헤",

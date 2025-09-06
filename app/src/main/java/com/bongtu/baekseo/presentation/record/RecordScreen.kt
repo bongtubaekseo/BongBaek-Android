@@ -22,14 +22,15 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.ScheduleType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
+import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
-import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import kotlinx.collections.immutable.persistentListOf
@@ -128,10 +129,11 @@ private fun RecordScreen(
             isEnabled = !uiState.isDeleteMode,
         )
 
-        EventCategoryBar(
+        BongBaekCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
-            isEnabled = !uiState.isDeleteMode,
+            isEnabled = true,
+            modifier = Modifier.padding(vertical = 20.dp),
         )
 
         Crossfade(
@@ -141,10 +143,12 @@ private fun RecordScreen(
                 is UiState.Empty -> {
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
+                        scheduleType = ScheduleType.RECORD,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
-                            .padding(top = 58.dp)
-                            .padding(horizontal = 20.dp),
+                            .padding(
+                                top = 60.dp,
+                            ),
                     )
                 }
 

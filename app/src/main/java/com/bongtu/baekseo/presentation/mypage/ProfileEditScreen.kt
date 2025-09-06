@@ -47,7 +47,7 @@ import com.bongtu.baekseo.R.string.onboarding_button_income_up
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.profile_edit_button
-import com.bongtu.baekseo.R.string.topbar_profile_setting
+import com.bongtu.baekseo.R.string.topbar_profile_edit
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
@@ -59,6 +59,7 @@ import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
@@ -146,7 +147,7 @@ private fun ProfileEditScreen(
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar),
     ) {
         BongBaekTopBar(
-            title = stringResource(id = topbar_profile_setting),
+            title = stringResource(id = topbar_profile_edit),
             topBarType = TopBarType.LEADING_ICON,
             leadingIcon = {
                 Icon(
@@ -186,6 +187,7 @@ private fun ProfileEditScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
+                            onDialogBirthChange(DateFormatter.formatLocalDateToNumeric(uiState.userBirth))
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = onUserBirthChange,
@@ -225,7 +227,7 @@ private fun ProfileEditScreen(
 
                 AnimatedVisibility(
                     visible = switchChecked,
-                    modifier = Modifier.padding(top = 30.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Column(
                         modifier = Modifier
@@ -237,7 +239,7 @@ private fun ProfileEditScreen(
                         Text(
                             text = stringResource(id = onboarding_income_question),
                             style = BongBaekTheme.typography.body1Medium16,
-                            color = BongBaekTheme.colors.white,
+                            color = BongBaekTheme.colors.gray100,
                         )
 
                         ProfileEditButton(

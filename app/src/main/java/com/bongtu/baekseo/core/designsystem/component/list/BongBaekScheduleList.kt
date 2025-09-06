@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.string.record_card_list_month
 import com.bongtu.baekseo.R.string.record_card_list_year
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.OnBottomReached
-import com.bongtu.baekseo.core.util.toFormattedYearWithMonthPair
 import kotlinx.collections.immutable.ImmutableList
 
 @Composable
@@ -53,8 +53,8 @@ fun <T> BongBaekScheduleList(
         ) { index, item ->
             val prev = items.getOrNull(index - 1)
 
-            val (curYear, curMonth) = getDate(item).toFormattedYearWithMonthPair()
-            val (prevYear, prevMonth) = prev?.let { getDate(it).toFormattedYearWithMonthPair() }
+            val (curYear, curMonth) = DateFormatter.getYearMonth(getDate(item))
+            val (prevYear, prevMonth) = prev?.let { DateFormatter.getYearMonth(getDate(it)) }
                 ?: (null to null)
 
             val isNewYear = prevYear == null || prevYear != curYear
@@ -64,10 +64,10 @@ fun <T> BongBaekScheduleList(
                 Text(
                     text = stringResource(record_card_list_year, curYear),
                     color = BongBaekTheme.colors.white,
-                    style = BongBaekTheme.typography.headBold24,
+                    style = BongBaekTheme.typography.titleSemiBold18,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = if (prev == null) 0.dp else 40.dp),
+                        .padding(top = if (prev == null) 0.dp else 32.dp),
                 )
             }
 
@@ -76,7 +76,7 @@ fun <T> BongBaekScheduleList(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 4.dp)
-                        .padding(top = 30.dp),
+                        .padding(top = 32.dp),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Text(
@@ -92,7 +92,7 @@ fun <T> BongBaekScheduleList(
                 }
             }
 
-            val cardTopPadding = if (prev != null && !isNewMonth) 10.dp else 20.dp
+            val cardTopPadding = if (prev != null && !isNewMonth) 14.dp else 16.dp
             card(item, PaddingValues(top = cardTopPadding))
         }
     }

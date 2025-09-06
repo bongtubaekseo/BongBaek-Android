@@ -1,9 +1,8 @@
-package com.bongtu.baekseo.presentation.record.component
+package com.bongtu.baekseo.core.designsystem.component.topbar
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
@@ -16,7 +15,7 @@ import com.bongtu.baekseo.core.designsystem.component.chip.BongBaekFilterChip
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun EventCategoryBar(
+fun BongBaekCategoryBar(
     selectedCategory: EventCategoryType,
     onCategoryClick: (EventCategoryType) -> Unit,
     isEnabled: Boolean,
@@ -24,10 +23,9 @@ fun EventCategoryBar(
 ) {
     LazyRow(
         modifier = modifier
-            .padding(vertical = 16.dp)
             .fillMaxWidth(),
         contentPadding = PaddingValues(horizontal = 20.dp),
-        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        horizontalArrangement = Arrangement.spacedBy(8.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
         itemsIndexed(
@@ -47,9 +45,9 @@ fun EventCategoryBar(
 
 @Preview(showBackground = true)
 @Composable
-private fun EventCategoryBarPreview() {
+private fun BongBaekCategoryBarPreview() {
     BongBaekTheme {
-        EventCategoryBar(
+        BongBaekCategoryBar(
             selectedCategory = EventCategoryType.WEDDING,
             onCategoryClick = {},
             isEnabled = true,

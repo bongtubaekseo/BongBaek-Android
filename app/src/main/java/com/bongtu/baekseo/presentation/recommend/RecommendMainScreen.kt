@@ -203,15 +203,15 @@ private fun RecommendMainScreen(
             },
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(10.dp))
 
         RecommendProgressBar(
             currentIndex = uiState.pageIndex,
             modifier = Modifier
                 .padding(
-                    start = 20.dp,
-                    end = 20.dp,
-                    bottom = 28.dp,
+                    start = 10.dp,
+                    end = 10.dp,
+                    bottom = 32.dp,
                 ),
         )
 
@@ -260,8 +260,7 @@ private fun RecommendMainScreen(
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.gray400,
                     )
-                    if (uiState.pageIndex == 4) Spacer(modifier = Modifier.height(20.dp))
-                    else Spacer(modifier = Modifier.height(30.dp))
+                    Spacer(modifier = Modifier.height(32.dp))
                 }
             }
 
@@ -334,7 +333,7 @@ private fun RecommendMainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        bottom = 24.dp,
+                        bottom = 36.dp,
                     )
                     .navigationBarsPadding(),
                 enabled = checkButtonEnabled(),

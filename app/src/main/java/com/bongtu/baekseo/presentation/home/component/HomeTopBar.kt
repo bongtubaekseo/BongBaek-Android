@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
@@ -30,16 +31,17 @@ fun HomeTopBar(
     Row(
         modifier = modifier
             .statusBarsPadding()
-            .fillMaxWidth()
-            .padding(
-                vertical = 6.dp,
-            ),
+            .fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_home_name),
             contentDescription = null,
+            modifier = Modifier
+                .padding(
+                    vertical = 6.dp,
+                ),
             tint = Color.Unspecified,
         )
 
@@ -48,6 +50,7 @@ fun HomeTopBar(
             contentDescription = null,
             modifier = Modifier
                 .clip(CircleShape)
+                .size(40.dp)
                 .noRippleClickable(onClick = onLogoIconClick),
             tint = Color.Unspecified,
         )

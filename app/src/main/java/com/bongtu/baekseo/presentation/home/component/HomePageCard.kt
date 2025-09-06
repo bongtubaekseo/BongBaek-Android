@@ -39,7 +39,6 @@ import com.bongtu.baekseo.R.string.home_page_card_title
 import com.bongtu.baekseo.R.string.home_page_card_today_title
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
@@ -52,7 +51,6 @@ fun HomePageCard(
     daysLeft: Int,
     modifier: Modifier = Modifier,
 ) {
-    val date = eventDate.toFormattedDateWithDay()
     val postposition = if (eventType == "돌잔치") POSTPOSITION_GA else POSTPOSITION_E
     val pageTitle = if (daysLeft == 0) stringResource(
         home_page_card_today_title,
@@ -117,7 +115,7 @@ fun HomePageCard(
             Spacer(modifier = Modifier.weight(1f))
 
             HomePageCardDate(
-                date = date,
+                date = eventDate,
                 modifier = Modifier
                     .padding(
                         bottom = 30.dp,
@@ -218,7 +216,7 @@ private fun HomePageCardDate(
 private fun HomePageCardBadgePreview() {
     BongBaekTheme {
         HomePageCardDate(
-            date = "2024. 02. 11 (목)",
+            date = "2024년 02월 11일",
         )
     }
 }
@@ -231,7 +229,7 @@ private fun HomePageCardPreview() {
             hostname = "헤헤",
             eventType = "생일",
             daysLeft = 10,
-            eventDate = "2025.02.11 (목)",
+            eventDate = "2025년 02월 11일",
         )
     }
 }

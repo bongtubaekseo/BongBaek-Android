@@ -9,15 +9,13 @@ enum class ScheduleCardType(
     HOME(
         padding = PaddingValues(
             horizontal = 20.dp,
-            vertical = 18.dp,
+            vertical = 16.dp,
         )
     ),
     SCHEDULE(
         padding = PaddingValues(
-            top = 16.dp,
-            bottom = 18.dp,
-            start = 20.dp,
-            end = 20.dp,
+            horizontal = 20.dp,
+            vertical = 16.dp,
         )
     ),
 }

@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.core.designsystem.component.card
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -24,15 +23,14 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_location
+import com.bongtu.baekseo.R.string.home_schedule_card_cost
+import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.R.string.record_card_cost
-import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.core.common.type.HomeScheduleCardInfoType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateAndDay
-import com.bongtu.baekseo.core.util.toFormattedDateWithDay
 
 @Composable
 fun BongBaekScheduleCard(
@@ -50,12 +48,6 @@ fun BongBaekScheduleCard(
     val isHomeCard = scheduleCardType == ScheduleCardType.HOME
     val isScheduleCard = scheduleCardType == ScheduleCardType.SCHEDULE
 
-    val (date, weekDay) = eventDate.toFormattedDateAndDay()
-    val homeDate = eventDate.toFormattedDateWithDay()
-
-    val spacerHeight = if (isHomeCard) 10.dp else 8.dp
-    val spacerBadgeHeight = if (isHomeCard) 4.dp else 8.dp
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -65,11 +57,7 @@ fun BongBaekScheduleCard(
             )
             .then(
                 if (isHomeCard) {
-                    Modifier.border(
-                        width = 1.dp,
-                        color = BongBaekTheme.colors.lineNormal,
-                        shape = RoundedCornerShape(10.dp),
-                    )
+                    Modifier
                 } else {
                     Modifier.noRippleClickable(onCardClick)
                 }
@@ -93,25 +81,42 @@ fun BongBaekScheduleCard(
                 color = BongBaekTheme.colors.white,
             )
 
-            Text(
-                text = stringResource(record_card_cost, cost),
-                style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.white,
-            )
+            if (isHomeCard) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    Text(
+                        text = stringResource(home_schedule_card_cost, cost),
+                        style = BongBaekTheme.typography.titleSemiBold18,
+                        color = BongBaekTheme.colors.white,
+                    )
+                    Text(
+                        text = stringResource(kr_won),
+                        style = BongBaekTheme.typography.body1Medium16,
+                        color = BongBaekTheme.colors.gray100,
+                    )
+                }
+            } else {
+                Text(
+                    text = stringResource(record_card_cost, cost),
+                    style = BongBaekTheme.typography.titleSemiBold18,
+                    color = BongBaekTheme.colors.white,
+                )
+            }
+
         }
 
-        Spacer(modifier = Modifier.height(spacerHeight))
+        Spacer(modifier = Modifier.height(8.dp))
 
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
         ) {
             BongBaekSmallBadge(
                 title = eventCategory,
             )
 
-            Spacer(modifier = Modifier.width(spacerBadgeHeight))
+            Spacer(modifier = Modifier.width(4.dp))
 
             BongBaekSmallBadge(
                 title = relationship,
@@ -121,14 +126,7 @@ fun BongBaekScheduleCard(
                 Spacer(modifier = Modifier.weight(1f))
 
                 Text(
-                    text = date,
-                    color = BongBaekTheme.colors.gray400,
-                    style = BongBaekTheme.typography.captionRegular12,
-                    modifier = Modifier.padding(end = 4.dp),
-                )
-
-                Text(
-                    text = stringResource(record_card_weekday, weekDay),
+                    text = eventDate,
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.captionRegular12,
                 )
@@ -136,7 +134,7 @@ fun BongBaekScheduleCard(
         }
 
         if (isHomeCard) {
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
             HomeScheduleCardInfo(
                 infoType = HomeScheduleCardInfoType.LOCATION,
@@ -147,7 +145,7 @@ fun BongBaekScheduleCard(
 
             HomeScheduleCardInfo(
                 infoType = HomeScheduleCardInfoType.DATE,
-                content = homeDate,
+                content = eventDate,
             )
         }
     }
@@ -201,7 +199,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025-02-11",
+                eventDate = "2025년 02월 11일",
                 location = "강남",
                 onCardClick = {},
             )
@@ -212,7 +210,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventCategory = "생일",
                 relationship = "친구",
                 cost = 10000,
-                eventDate = "2025-02-11",
+                eventDate = "2025년 02월 11일",
                 location = "강남",
                 onCardClick = {},
             )
