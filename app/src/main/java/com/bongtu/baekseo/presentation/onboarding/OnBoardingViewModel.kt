@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
@@ -23,6 +24,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class OnBoardingViewModel @Inject constructor(
+    private val apiKeyDataStore: ApiKeyDataStore,
     private val usernameDataStore: UsernameDataStore,
     private val tokenDataStore: TokenDataStore,
     private val authRepository: AuthRepository,
@@ -85,6 +87,7 @@ class OnBoardingViewModel @Inject constructor(
                 memberIncome = uiState.value.income,
             ).onSuccess { response ->
                 saveUsername(response.name)
+                saveApiKey(response.apiKey)
                 tokenDataStore.setTokens(
                     accessToken = response.accessToken,
                     refreshToken = response.refreshToken,
@@ -115,5 +118,10 @@ class OnBoardingViewModel @Inject constructor(
     private fun saveUsername(name: String) =
         viewModelScope.launch {
             usernameDataStore.setUsername(name)
+        }
+
+    private fun saveApiKey(apiKey: String) =
+        viewModelScope.launch {
+            apiKeyDataStore.setApiKey(apiKey)
         }
 }
