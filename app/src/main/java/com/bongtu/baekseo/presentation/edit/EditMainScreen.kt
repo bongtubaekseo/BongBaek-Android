@@ -185,10 +185,6 @@ private fun EditMainScreen(
         checkIsFormFilled()
     }
 
-    val isMemoEditable = remember(editEntryType) {
-        editEntryType == EditEntryType.FROM_DETAIL
-    }
-
     val isResultEditable = remember(editEntryType) {
         editEntryType != EditEntryType.FROM_RESULT
     }
@@ -379,7 +375,7 @@ private fun EditMainScreen(
                         top = 20.dp,
                         bottom = 150.dp,
                     ),
-                isEditable = isMemoEditable,
+                isEditable = isResultEditable,
             )
         }
         if (isDatePickerDialogVisible) {
