@@ -42,6 +42,7 @@ timber = "5.0.1"
 lottieCompose = "6.6.7"
 coroutine = "1.10.2"
 ktlint = "13.1.0"
+semver = "2.1.0"
 
 # Kotlin Symbol Processing
 ksp = "2.2.0-2.0.2"
@@ -53,6 +54,10 @@ kakaoMap = "2.12.8"
 
 # Process Phoenix
 process-phoenix = "3.0.0"
+
+# Google Services
+google-services = "4.4.3"
+firebase = "34.2.0"
 
 [libraries]
 # Test
@@ -106,6 +111,7 @@ coil-compose = { group = "io.coil-kt.coil3", name = "coil-compose", version.ref 
 coil-network = { group = "io.coil-kt.coil3", name = "coil-network-okhttp", version.ref = "coil" }
 timber = { module = "com.jakewharton.timber:timber", version.ref = "timber" }
 lottie = { group = "com.airbnb.android", name = "lottie-compose", version.ref = "lottieCompose" }
+semver = { group = "net.swiftzer.semver", name = "semver", version.ref = "semver" }
 
 # --- Kakao SDK ---
 kakao-user = { group = "com.kakao.sdk", name = "v2-user", version.ref = "kakao" }
@@ -113,6 +119,12 @@ kakao-map = { group = "com.kakao.maps.open", name = "android", version.ref = "ka
 
 # Process Phoenix
 process-phoenix = { group = "com.jakewharton", name = "process-phoenix", version.ref = "process-phoenix" }
+
+# Google Services
+firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebase" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
@@ -123,6 +135,7 @@ hilt = { id = "com.google.dagger.hilt.android", version.ref = "daggerHilt" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlinParcelize" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+google-services = { id = "com.google.gms.google-services", version.ref = "google-services" }
 
 [bundles]
 androidx = [
@@ -164,4 +177,10 @@ retrofit = [
 hilt = [
     "hilt-android",
     "hilt-navigation-compose",
+]
+
+firebase = [
+    "firebase-analytics",
+    "firebase-messaging",
+    "firebase-config"
 ]
