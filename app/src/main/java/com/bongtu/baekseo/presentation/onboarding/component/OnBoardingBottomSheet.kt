@@ -28,6 +28,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -47,6 +48,7 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.checkbox.BongBaekCheckBox
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
 import kotlinx.coroutines.launch
 
@@ -99,6 +101,7 @@ private fun OnBoardingBottomSheetAgreeContent(
     val isAllChecked = checkedStates.all { it }
     val window = (LocalView.current.parent as DialogWindowProvider).window
     window.isNavigationBarContrastEnforced = false
+    val context = LocalContext.current
 
     Column(
         modifier = modifier
@@ -140,6 +143,7 @@ private fun OnBoardingBottomSheetAgreeContent(
                 onCheckedChange = { checked ->
                     onItemCheckedChange(index, checked)
                 },
+                onIconClick = { item.url?.let { context.openUrl(it) } },
             )
             if (index < items.lastIndex) {
                 Spacer(modifier = Modifier.size(14.dp))

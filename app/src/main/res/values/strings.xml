@@ -103,10 +103,6 @@
     <string name="record_detail_memo_title">메모</string>
     <string name="record_detail_memo_placeholder">메모를 작성해주세요</string>
     <string name="record_detail_delete">기록 삭제하기</string>
-    <string name="record_detail_delete_dialog_title">경조사 기록을 삭제하겠습니까?</string>
-    <string name="record_detail_delete_dialog_description">이 기록의 모든 내용이 삭제됩니다.</string>
-    <string name="record_detail_delete_dialog_cancel_label">취소</string>
-    <string name="record_detail_delete_dialog_delete_label">삭제</string>
     <string name="record_detail_name_title">이름</string>
     <string name="record_detail_nickname_title">별명</string>
     <string name="record_detail_relation_title">관계</string>
@@ -208,11 +204,23 @@
     <string name="withdraw_title">탈퇴를 도와드릴게요</string>
     <string name="withdraw_information">더 나은 서비스를 위해 탈퇴 이유를 알려주세요</string>
     <string name="withdraw_button_title">탈퇴하기</string>
-    <string name="withdraw_dialog_confirm">탈퇴</string>
-    <string name="withdraw_dialog_cancel">취소</string>
-    <string name="withdraw_dialog_title">봉투백서를 탈퇴하시겠습니까?</string>
-    <string name="withdraw_dialog_description">탈퇴시 데이터 복구가 어렵습니다</string>
     <string name="withdraw_quit_title">소중한 의견 감사합니다</string>
     <string name="withdraw_quit_information">봉투백서는 다시 만나는 날을 기원해요</string>
     <string name="withdraw_quit_button">종료</string>
+    <!--Withdraw    -->
+    <string name="dialog_cancel">취소</string>
+    <string name="dialog_withdraw_title">봉투백서를 탈퇴하시겠습니까?</string>
+    <string name="dialog_withdraw_description">탈퇴 시 데이터 복구가 어렵습니다</string>
+    <string name="dialog_withdraw_confirm">탈퇴</string>
+    <string name="dialog_delete_title">경조사 기록을 삭제하겠습니까?</string>
+    <string name="dialog_delete_description">이 기록의 모든 내용이 삭제됩니다.</string>
+    <string name="dialog_delete_confirm">삭제</string>
+    <string name="dialog_update_confirm">업데이트</string>
+    <string name="dialog_error_update_title">앱 실행에 문제가 발생했어요</string>
+    <string name="dialog_error_update_description">안정적인 서비스 이용을 위해\n최신 버전으로 업데이트해주세요!</string>
+    <string name="dialog_feature_update_title">새로운 기능이 추가되었어요</string>
+    <string name="dialog_feature_update_description">더 편리하게 소중한 순간을 준비할 수 있도록\n최신 버전으로 업데이트해주세요!</string>
+    <string name="dialog_logout_title">로그아웃하시겠습니까?</string>
+    <string name="dialog_logout_description">로그아웃 시 서비스 이용을 위해\n다시 로그인해야 합니다</string>
+    <string name="dialog_logout_confirm">로그아웃</string>
 </resources>

@@ -20,11 +20,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -55,12 +59,16 @@ import com.bongtu.baekseo.R.string.mypage_user_birth
 import com.bongtu.baekseo.R.string.mypage_user_income
 import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_withdrawal
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
+import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.MainSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
@@ -77,6 +85,7 @@ fun MyPageRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val context = LocalContext.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchUserProfile()
@@ -98,6 +107,9 @@ fun MyPageRoute(
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
         onLogoutClick = viewModel::logout,
+        onInquiryClick = { context.openUrl(UrlConstant.INQUIRY_URL) },
+        onTermsClick = { context.openUrl(UrlConstant.TERMS_URL) },
+        onPrivacyClick = { context.openUrl(UrlConstant.PRIVACY_URL) },
         modifier = modifier,
     )
 }
@@ -109,8 +121,13 @@ private fun MyPageScreen(
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onLogoutClick: () -> Unit,
+    onInquiryClick: () -> Unit,
+    onTermsClick: () -> Unit,
+    onPrivacyClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var isLogoutDialogVisible by remember { mutableStateOf(false) }
+
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900),
@@ -149,9 +166,9 @@ private fun MyPageScreen(
                 )
 
                 ServiceSection(
-                    onInquiryClick = { /*TODO 문의하기 url 리다이렉팅 */ },
-                    onTermsClick = { /* TODO 서비스 이용약관 url 리다이렉팅*/ },
-                    onPrivacyClick = { /* TODO 개인정보 처리방침 url 리다이렉팅*/ },
+                    onInquiryClick = onInquiryClick,
+                    onTermsClick = onTermsClick,
+                    onPrivacyClick = onPrivacyClick,
                 )
             }
 
@@ -168,7 +185,9 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = onLogoutClick),
+                        .noRippleClickable {
+                            isLogoutDialogVisible = true
+                        },
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -181,6 +200,18 @@ private fun MyPageScreen(
                     style = BongBaekTheme.typography.body2Regular14,
                 )
             }
+        }
+        if (isLogoutDialogVisible) {
+            BongBaekDialog(
+                dialogType = DialogType.LOGOUT,
+                onDismissRequest = {
+                    isLogoutDialogVisible = false
+                },
+                onConfirmClick = {
+                    isLogoutDialogVisible = false
+                    onLogoutClick()
+                },
+            )
         }
     }
 }
@@ -430,6 +461,9 @@ private fun MyPageScreenPreview() {
             navigateToEditProfile = {},
             navigateToWithdraw = {},
             onLogoutClick = {},
+            onInquiryClick = {},
+            onTermsClick = {},
+            onPrivacyClick = {},
         )
     }
 }

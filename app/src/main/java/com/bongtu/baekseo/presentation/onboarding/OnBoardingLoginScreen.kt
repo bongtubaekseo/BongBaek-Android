@@ -60,6 +60,9 @@ import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
+import com.bongtu.baekseo.core.util.UrlConstant
+import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
@@ -122,6 +125,8 @@ fun OnBoardingRoute(
                 onBottomSheetVisibleChange = {
                     isBottomSheetVisible = it
                 },
+                onPrivacyClick = { context.openUrl(UrlConstant.PRIVACY_URL) },
+                onTermsClick = { context.openUrl(UrlConstant.TERMS_URL) },
                 onNext = {
                     screenState = OnBoardingType.SETTING
                 },
@@ -145,6 +150,8 @@ fun OnBoardingLoginScreen(
     onKakaoLoginClick: () -> Unit,
     isBottomSheetVisible: Boolean,
     onBottomSheetVisibleChange: (Boolean) -> Unit,
+    onPrivacyClick: () -> Unit,
+    onTermsClick: () -> Unit,
     onNext: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -160,11 +167,13 @@ fun OnBoardingLoginScreen(
                 titleRes = onboarding_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
+                url = UrlConstant.TERMS_URL,
             ),
             OnBoardingAgree(
                 titleRes = onboarding_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
+                url = UrlConstant.PRIVACY_URL,
             ),
         )
     }
@@ -258,6 +267,8 @@ fun OnBoardingLoginScreen(
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray300,
+                        modifier = Modifier
+                            .noRippleClickable(onClick = onPrivacyClick),
                     )
 
                     Spacer(modifier = Modifier.width(30.dp))
@@ -267,6 +278,8 @@ fun OnBoardingLoginScreen(
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray300,
+                        modifier = Modifier
+                            .noRippleClickable(onClick = onTermsClick),
                     )
                 }
             }
@@ -310,6 +323,8 @@ private fun OnBoardingScreenLoginPreview() {
             isBottomSheetVisible = false,
             onBottomSheetVisibleChange = {},
             onNext = {},
+            onPrivacyClick = {},
+            onTermsClick = {},
         )
     }
 }
