@@ -81,25 +81,20 @@ private fun BongBaekDialogContent(
     val bongBaekColors = BongBaekTheme.colors
     val bongBeakTypo = BongBaekTheme.typography
 
-    val (titleRes, descriptionRes) = remember(dialogType) {
-        when (dialogType) {
-            DialogType.DELETE -> dialog_delete_title to dialog_delete_description
-            DialogType.LOGOUT -> dialog_logout_title to dialog_logout_description
-            DialogType.WITHDRAW -> dialog_withdraw_title to dialog_withdraw_description
-            DialogType.ERROR_UPDATE -> dialog_error_update_title to dialog_error_update_description
-            DialogType.FEATURE_UPDATE -> dialog_feature_update_title to dialog_feature_update_description
-        }
+    val (titleRes, descriptionRes) = when (dialogType) {
+        DialogType.DELETE -> dialog_delete_title to dialog_delete_description
+        DialogType.LOGOUT -> dialog_logout_title to dialog_logout_description
+        DialogType.WITHDRAW -> dialog_withdraw_title to dialog_withdraw_description
+        DialogType.ERROR_UPDATE -> dialog_error_update_title to dialog_error_update_description
+        DialogType.FEATURE_UPDATE -> dialog_feature_update_title to dialog_feature_update_description
     }
-    val confirmRes = remember(dialogType) {
-        when (dialogType) {
+    val confirmRes = when (dialogType) {
             DialogType.DELETE -> dialog_delete_confirm
             DialogType.LOGOUT -> dialog_logout_confirm
             DialogType.WITHDRAW -> dialog_withdraw_confirm
             else -> dialog_update_confirm
         }
-    }
-    val (confirmColor, confirmStyle, confirmPadding) = remember(dialogType) {
-        when (dialogType) {
+    val (confirmColor, confirmStyle, confirmPadding) = when (dialogType) {
             DialogType.DELETE, DialogType.WITHDRAW -> Triple(
                 bongBaekColors.secondaryRed,
                 bongBeakTypo.body2Regular16,
@@ -118,7 +113,6 @@ private fun BongBaekDialogContent(
                 3.dp,
             )
         }
-    }
 
     Column(
         modifier = modifier

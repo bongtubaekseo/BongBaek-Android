@@ -8,8 +8,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -107,7 +109,7 @@ fun BongBaekDatePickerDialog(
                     color = BongBaekTheme.colors.gray300,
                 )
 
-                Spacer(modifier = Modifier.size(2.dp))
+                Spacer(modifier = Modifier.height(2.dp))
 
                 Text(
                     text = stringResource(id = date_picker_title),
@@ -115,7 +117,7 @@ fun BongBaekDatePickerDialog(
                     color = BongBaekTheme.colors.white,
                 )
 
-                Spacer(modifier = Modifier.size(10.dp))
+                Spacer(modifier = Modifier.height(10.dp))
 
                 BongBaekDatePickerTextField(
                     value = value,
@@ -136,7 +138,7 @@ fun BongBaekDatePickerDialog(
                             tint = BongBaekTheme.colors.secondaryRed,
                         )
 
-                        Spacer(modifier = Modifier.size(4.dp))
+                        Spacer(modifier = Modifier.width(4.dp))
 
                         Text(
                             text = dateError,
