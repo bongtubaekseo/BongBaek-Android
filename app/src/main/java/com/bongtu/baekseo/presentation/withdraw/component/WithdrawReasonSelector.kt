@@ -59,9 +59,9 @@ fun WithdrawReasonSelector(
     etcFocused: Boolean = false,
     onEtcFocusChange: (Boolean) -> Unit = {},
 ) {
-    val showOtherReasons = selectedReason != WithdrawType.ETC || !etcFocused
+    val showOtherReasons = selectedReason != WithdrawType.OTHER || !etcFocused
     val withdrawReasons = remember {
-        WithdrawType.entries.filter { it != WithdrawType.ETC }
+        WithdrawType.entries.filter { it != WithdrawType.OTHER }
     }
 
     Column(
@@ -90,13 +90,13 @@ fun WithdrawReasonSelector(
         }
 
         WithdrawSelectorItem(
-            reason = WithdrawType.ETC,
-            isSelected = if (selectedReason == null) null else selectedReason == WithdrawType.ETC,
+            reason = WithdrawType.OTHER,
+            isSelected = if (selectedReason == null) null else selectedReason == WithdrawType.OTHER,
             modifier = Modifier
                 .then(
                     if (!etcFocused) Modifier.padding(top = 8.dp) else Modifier
                 )
-                .noRippleClickable { onReasonSelect(WithdrawType.ETC) },
+                .noRippleClickable { onReasonSelect(WithdrawType.OTHER) },
             etcFocused = etcFocused,
             value = value,
             onValueChange = onValueChange,
@@ -125,12 +125,12 @@ private fun WithdrawSelectorItem(
     }
     val titleRes = remember(reason) {
         when (reason) {
-            WithdrawType.UNCOMFORTABLE -> withdraw_reason_uncomfortable
-            WithdrawType.PRIVACY -> withdraw_reason_privacy
-            WithdrawType.USE -> withdraw_reason_use
-            WithdrawType.ERROR -> withdraw_reason_error
-            WithdrawType.ACCOUNT -> withdraw_reason_account
-            WithdrawType.ETC -> withdraw_reason_etc
+            WithdrawType.INCONVENIENT -> withdraw_reason_uncomfortable
+            WithdrawType.PRIVACY_CONCERN -> withdraw_reason_privacy
+            WithdrawType.RARELY_USED -> withdraw_reason_use
+            WithdrawType.BUG_OR_ERROR -> withdraw_reason_error
+            WithdrawType.NEW_ACCOUNT -> withdraw_reason_account
+            WithdrawType.OTHER -> withdraw_reason_etc
         }
     }
     val (lengthColor, borderColor) = remember(value.length) {
@@ -172,7 +172,7 @@ private fun WithdrawSelectorItem(
                     tint = Color.Unspecified,
                 )
 
-                if (reason == WithdrawType.ETC && isSelected == true) {
+                if (reason == WithdrawType.OTHER && isSelected == true) {
                     BongBaekInnerTextField(
                         text = value,
                         onTextChange = onValueChange,

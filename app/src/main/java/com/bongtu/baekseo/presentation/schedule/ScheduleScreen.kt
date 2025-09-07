@@ -30,15 +30,17 @@ import com.bongtu.baekseo.R.string.schedule_title
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
+import com.bongtu.baekseo.core.common.type.ScheduleType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
 import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
+import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
-import com.bongtu.baekseo.presentation.record.component.EventCategoryBar
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import kotlinx.collections.immutable.persistentListOf
 
@@ -107,10 +109,11 @@ private fun ScheduleScreen(
             },
         )
 
-        EventCategoryBar(
+        BongBaekCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
             isEnabled = true,
+            modifier = Modifier.padding(vertical = 16.dp),
         )
 
         Crossfade(
@@ -120,10 +123,12 @@ private fun ScheduleScreen(
                 is UiState.Empty -> {
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
+                        scheduleType = ScheduleType.SCHEDULE,
                         onButtonClick = navigateToEdit,
                         modifier = Modifier
-                            .padding(top = 58.dp)
-                            .padding(horizontal = 20.dp),
+                            .padding(
+                                top = 100.dp,
+                            ),
                     )
                 }
 
@@ -140,7 +145,7 @@ private fun ScheduleScreen(
                         start = 20.dp,
                         end = 20.dp,
                         top = 20.dp,
-                        bottom = 20.dp + WindowInsets.navigationBars.asPaddingValues()
+                        bottom = 60.dp + WindowInsets.navigationBars.asPaddingValues()
                             .calculateBottomPadding(),
                     )
                     BongBaekScheduleList(
@@ -155,7 +160,7 @@ private fun ScheduleScreen(
                                 eventCategory = event.eventCategory,
                                 relationship = event.relationship,
                                 cost = event.cost,
-                                eventDate = event.eventDate,
+                                eventDate = DateFormatter.formatToKorean(event.eventDate),
                                 onCardClick = { onCardClick(event.eventId) },
                                 modifier = Modifier.padding(padding),
                             )

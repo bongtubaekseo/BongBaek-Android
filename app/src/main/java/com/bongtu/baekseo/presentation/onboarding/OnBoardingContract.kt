@@ -9,7 +9,7 @@ class OnBoardingContract {
     data class OnBoardingUiState(
         val loadState: UiState<Nothing> = UiState.Empty,
         val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
-        val kakaoId: Long = 0L,
+        val kakaoId: String = "",
         val name: String = "",
         val birth: String = "",
         var dialogBirth: String = "",

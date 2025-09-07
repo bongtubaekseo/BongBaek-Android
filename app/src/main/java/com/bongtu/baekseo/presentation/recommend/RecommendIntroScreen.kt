@@ -70,7 +70,7 @@ fun RecommendIntroScreen(
                 .statusBarsPadding(),
         )
 
-        Spacer(modifier = Modifier.height(58.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
         Column(
             modifier = Modifier
@@ -93,14 +93,14 @@ fun RecommendIntroScreen(
                 color = BongBaekTheme.colors.gray300,
             )
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(19.dp))
 
             Image(
                 painter = painterResource(img_recommend_bong),
                 contentDescription = null,
             )
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(36.dp))
 
             Row(
                 modifier = Modifier
@@ -123,7 +123,7 @@ fun RecommendIntroScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(18.dp))
+            Spacer(modifier = Modifier.height(16.dp))
 
             BongBaekButton(
                 title = stringResource(recommendation_intro_start),
@@ -131,7 +131,7 @@ fun RecommendIntroScreen(
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(bottom = 40.dp),
+                    .padding(bottom = 36.dp),
             )
         }
     }

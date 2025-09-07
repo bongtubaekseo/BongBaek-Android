@@ -3,6 +3,7 @@ package com.bongtu.baekseo.core.network.di
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.BuildConfig.BASE_URL
 import com.bongtu.baekseo.BuildConfig.KAKAO_BASE_URL
+import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.network.HeaderInterceptor
 import com.bongtu.baekseo.core.network.KakaoHeaderInterceptor
@@ -75,7 +76,9 @@ object NetworkModule {
     @Provides
     @Singleton
     @Kakao
-    fun provideKakaoHeaderInterceptor(): Interceptor = KakaoHeaderInterceptor()
+    fun provideKakaoHeaderInterceptor(
+        apiKeyDataStore: ApiKeyDataStore,
+    ): Interceptor = KakaoHeaderInterceptor(apiKeyDataStore)
 
     @Provides
     @Singleton

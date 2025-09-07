@@ -69,6 +69,7 @@ fun WithdrawRoute(
             onEtcValueChange = viewModel::updateEtcReason,
             onConfirmClick = {
                 pageIndex.value = 1
+                viewModel.withdraw()
             },
         )
 
@@ -124,12 +125,12 @@ private fun WithdrawReasonScreen(
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
-                Spacer(modifier = Modifier.height(10.dp))
-
                 AnimatedVisibility(
-                    visible = !(uiState.reasonType == WithdrawType.ETC && etcFocused),
+                    visible = !(uiState.reasonType == WithdrawType.OTHER && etcFocused),
                 ) {
                     Column {
+                        Spacer(modifier = Modifier.height(20.dp))
+
                         Text(
                             text = stringResource(id = withdraw_title),
                             style = BongBaekTheme.typography.headBold24,
@@ -193,7 +194,7 @@ private fun WithdrawReasonScreenPreview() {
     BongBaekTheme {
         WithdrawReasonScreen(
             uiState = WithdrawUiState(
-                reasonType = WithdrawType.UNCOMFORTABLE,
+                reasonType = WithdrawType.INCONVENIENT,
             ),
             buttonEnabled = true,
             navigateToUp = {},

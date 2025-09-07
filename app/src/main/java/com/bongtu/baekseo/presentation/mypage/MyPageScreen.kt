@@ -31,7 +31,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
@@ -57,21 +59,37 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.MainSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun MyPageRoute(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    onRestartApp: (Boolean) -> Unit,
     viewModel: MyPageViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         viewModel.fetchUserProfile()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .filterIsInstance<MyPageSideEffect.MainSideEffect>()
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    RestartApp -> onRestartApp(false)
+                }
+            }
     }
 
     MyPageScreen(
@@ -79,6 +97,7 @@ fun MyPageRoute(
         navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
+        onLogoutClick = viewModel::logout,
         modifier = modifier,
     )
 }
@@ -89,6 +108,7 @@ private fun MyPageScreen(
     navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -123,7 +143,7 @@ private fun MyPageScreen(
 
                 ProfileSection(
                     userName = uiState.userName,
-                    userBirth = uiState.userBirth,
+                    userBirth = DateFormatter.formatToKorean(uiState.userBirth),
                     userIncome = uiState.userIncome,
                     onProfileEditButtonClick = navigateToEditProfile,
                 )
@@ -148,7 +168,7 @@ private fun MyPageScreen(
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
-                        .noRippleClickable(onClick = { /* TODO: 로그아웃 */ }),
+                        .noRippleClickable(onClick = onLogoutClick),
                     color = BongBaekTheme.colors.gray400,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
@@ -189,7 +209,7 @@ private fun ProfileSection(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
-                .padding(top = 24.dp)
+                .padding(top = 16.dp)
                 .size(110.dp)
                 .clip(RoundedCornerShape(20.dp)),
             error = painterResource(img_mypage_profile),
@@ -403,12 +423,13 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             uiState = MyPageUiState(
                 userName = "봉투백서의겸손한야수",
-                userBirth = "2000년 01월 05일",
+                userBirth = "2000-01-05",
                 userIncome = IncomeType.NONE.label,
             ),
             navigateUp = {},
             navigateToEditProfile = {},
             navigateToWithdraw = {},
+            onLogoutClick = {},
         )
     }
 }

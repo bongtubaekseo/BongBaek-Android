@@ -80,6 +80,7 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -185,10 +186,6 @@ private fun EditMainScreen(
         checkIsFormFilled()
     }
 
-    val isMemoEditable = remember(editEntryType) {
-        editEntryType == EditEntryType.FROM_DETAIL
-    }
-
     val isResultEditable = remember(editEntryType) {
         editEntryType != EditEntryType.FROM_RESULT
     }
@@ -223,6 +220,7 @@ private fun EditMainScreen(
         ) {
             Column(
                 modifier = Modifier
+                    .padding(top = 20.dp)
                     .background(
                         color = BongBaekTheme.colors.gray800,
                         shape = RoundedCornerShape(10.dp),
@@ -333,6 +331,7 @@ private fun EditMainScreen(
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
+                            text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                             if (isResultEditable) isDatePickerDialogVisible = true
                         },
                     isRequired = true,
@@ -376,18 +375,14 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 140.dp,
+                        bottom = 150.dp,
                     ),
-                isEditable = isMemoEditable,
+                isEditable = isResultEditable,
             )
         }
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
-                datePickerDialogType = if (editEntryType == EditEntryType.FROM_RESULT) {
-                    DatePickerDialogType.DATE_FUTURE
-                } else {
-                    DatePickerDialogType.DATE
-                },
+                datePickerDialogType = DatePickerDialogType.DATE,
                 value = text,
                 onValueChange = { text = it },
                 onDismissRequest = {

@@ -39,10 +39,10 @@ import com.bongtu.baekseo.R.string.date_picker_title
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DatePickerFormat
 import com.bongtu.baekseo.core.util.DateValidator.validateDate
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toLocalDateFormat
 
 private const val DATE_INPUT_MAX_LENGTH = 8
 
@@ -170,7 +170,7 @@ fun BongBaekDatePickerDialog(
                             )
                             .noRippleClickable {
                                 if (isValid) {
-                                    onConfirmClick(value.toLocalDateFormat())
+                                    onConfirmClick(DateFormatter.formatNumericToLocalDate(value))
                                     onDismissRequest()
                                 }
                             },

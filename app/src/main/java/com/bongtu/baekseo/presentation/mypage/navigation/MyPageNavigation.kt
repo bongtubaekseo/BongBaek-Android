@@ -24,6 +24,7 @@ fun NavGraphBuilder.myPageGraph(
     navController: NavHostController,
     navigateUp: () -> Unit,
     navigateToWithdraw: () -> Unit,
+    onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     navigation<MyPage>(
@@ -36,6 +37,7 @@ fun NavGraphBuilder.myPageGraph(
                 navigateUp = navigateUp,
                 navigateToEditProfile = navController::navigateToProfileEdit,
                 navigateToWithdraw = navigateToWithdraw,
+                onRestartApp = onRestartApp,
                 viewModel = viewModel,
                 modifier = modifier,
             )

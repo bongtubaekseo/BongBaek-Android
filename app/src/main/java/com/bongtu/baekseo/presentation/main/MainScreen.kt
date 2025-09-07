@@ -208,6 +208,7 @@ private fun MainNavHost(
             navController = navigator.navController,
             navigateUp = navigator::navigateUp,
             navigateToWithdraw = navigator.navController::navigateToWithdraw,
+            onRestartApp = onRestartApp,
             modifier = modifier,
         )
 
