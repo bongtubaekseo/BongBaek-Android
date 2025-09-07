@@ -189,7 +189,6 @@ class EditViewModel @Inject constructor(
             event = state.toEvent(),
             location = state.toLocation(),
         ).onSuccess { response ->
-            Timber.tag("patchEditEventInformation").d("response: $response")
             navigateToComplete()
         }.onFailure {
             // TODO: 실패 처리
@@ -208,7 +207,6 @@ class EditViewModel @Inject constructor(
                 meetFrequency = DEFAULT_WEIGHT,
             ),
         ).onSuccess { response ->
-            Timber.tag("saveEditEventInformation").d("response: $response")
             navigateToComplete()
         }.onFailure {
             // TODO: 실패 처리
