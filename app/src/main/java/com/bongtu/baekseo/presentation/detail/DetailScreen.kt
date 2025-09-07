@@ -33,8 +33,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -44,18 +42,16 @@ import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_detail_cost_title
 import com.bongtu.baekseo.R.string.record_detail_delete
-import com.bongtu.baekseo.R.string.record_detail_delete_dialog_cancel_label
-import com.bongtu.baekseo.R.string.record_detail_delete_dialog_delete_label
-import com.bongtu.baekseo.R.string.record_detail_delete_dialog_description
-import com.bongtu.baekseo.R.string.record_detail_delete_dialog_title
 import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
 import com.bongtu.baekseo.R.string.record_detail_memo_title
 import com.bongtu.baekseo.R.string.record_detail_title
 import com.bongtu.baekseo.R.string.record_detail_title_card_title
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
@@ -252,9 +248,10 @@ private fun DetailContent(
         )
 
         if (isDeleteAlertDialogVisible) {
-            RecordDeleteAlertDialog(
+            BongBaekDialog(
+                dialogType = DialogType.DELETE,
                 onDismissRequest = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
-                onDeleteClick = onDeleteButtonClick,
+                onConfirmClick = onDeleteButtonClick,
             )
         }
     }
@@ -339,72 +336,6 @@ private fun RecordDetailCostCard(
                 color = BongBaekTheme.colors.white,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
-        }
-    }
-}
-
-@Composable
-private fun RecordDeleteAlertDialog(
-    onDismissRequest: () -> Unit,
-    onDeleteClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        properties = DialogProperties(
-            dismissOnBackPress = true,
-            dismissOnClickOutside = true,
-            usePlatformDefaultWidth = false,
-        ),
-    ) {
-        Column(
-            modifier = modifier
-                .padding(horizontal = 20.dp)
-                .fillMaxWidth()
-                .background(
-                    color = BongBaekTheme.colors.gray750,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .padding(
-                    top = 20.dp,
-                    start = 20.dp,
-                    end = 20.dp,
-                    bottom = 16.dp,
-                ),
-        ) {
-            Text(
-                text = stringResource(record_detail_delete_dialog_title),
-                color = BongBaekTheme.colors.white,
-                style = BongBaekTheme.typography.titleSemiBold20,
-                modifier = Modifier.padding(bottom = 6.dp),
-            )
-            Text(
-                text = stringResource(record_detail_delete_dialog_description),
-                color = BongBaekTheme.colors.gray300,
-                style = BongBaekTheme.typography.captionRegular12,
-                modifier = Modifier.padding(bottom = 10.dp),
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End,
-            ) {
-                Text(
-                    text = stringResource(record_detail_delete_dialog_cancel_label),
-                    color = BongBaekTheme.colors.gray300,
-                    style = BongBaekTheme.typography.body2Regular16,
-                    modifier = Modifier
-                        .padding(vertical = 8.dp, horizontal = 16.dp)
-                        .noRippleClickable(onClick = onDismissRequest),
-                )
-                Text(
-                    text = stringResource(record_detail_delete_dialog_delete_label),
-                    color = BongBaekTheme.colors.secondaryRed,
-                    style = BongBaekTheme.typography.body2Regular16,
-                    modifier = Modifier
-                        .padding(vertical = 8.dp, horizontal = 16.dp)
-                        .noRippleClickable(onClick = onDeleteClick),
-                )
-            }
         }
     }
 }
