@@ -167,11 +167,13 @@ fun OnBoardingLoginScreen(
                 titleRes = onboarding_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
+                url = UrlConstant.TERMS_URL,
             ),
             OnBoardingAgree(
                 titleRes = onboarding_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
+                url = UrlConstant.PRIVACY_URL,
             ),
         )
     }
