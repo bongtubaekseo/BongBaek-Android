@@ -132,6 +132,7 @@ fun OnBoardingRoute(
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
                 navigateToHome = navigateToHome,
+                navigateToUp = { screenState = OnBoardingType.LOGIN },
                 modifier = modifier,
             )
         }

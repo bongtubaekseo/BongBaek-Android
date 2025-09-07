@@ -16,7 +16,4 @@ enum class DatePickerDialogType(
     DATE_PRESENT(
         descriptionId = date_picker_description_date,
     ),
-    DATE_FUTURE(
-        descriptionId = date_picker_description_date,
-    ),
 }

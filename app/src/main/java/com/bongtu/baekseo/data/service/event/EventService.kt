@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.data.service.event
 
 import com.bongtu.baekseo.core.network.model.BaseResponse
+import com.bongtu.baekseo.core.network.model.BaseResponseWithoutData
 import com.bongtu.baekseo.data.dto.event.DeleteEventsRequest
 import com.bongtu.baekseo.data.dto.event.GetEventDetailResponse
 import com.bongtu.baekseo.data.dto.event.GetHomeEventsResponse
@@ -22,7 +23,7 @@ interface EventService {
     @POST("/api/v1/events")
     suspend fun postEventInfo(
         @Body request: PostEventInfoRequest,
-    ): BaseResponse<Unit>
+    ): BaseResponseWithoutData
 
     @POST("/api/v1/events/cost")
     suspend fun postEventCost(
@@ -42,12 +43,12 @@ interface EventService {
     suspend fun putEventInfo(
         @Path("eventId") eventId: String,
         @Body request: PutEventInfoRequest,
-    ): BaseResponse<Unit>
+    ): BaseResponseWithoutData
 
     @HTTP(method = "DELETE", path = "/api/v1/events", hasBody = true)
     suspend fun deleteEvents(
         @Body request: DeleteEventsRequest,
-    ): BaseResponse<Unit>
+    ): BaseResponseWithoutData
 
     @GET("/api/v1/events/history/{page}")
     suspend fun getRecordEvents(
@@ -64,5 +65,5 @@ interface EventService {
     @DELETE("/api/v1/events/{eventId}")
     suspend fun deleteEventInfo(
         @Path("eventId") eventId: String,
-    ): BaseResponse<Unit>
+    ): BaseResponseWithoutData
 }

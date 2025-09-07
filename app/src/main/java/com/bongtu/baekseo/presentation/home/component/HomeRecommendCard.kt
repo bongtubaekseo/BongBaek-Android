@@ -1,8 +1,6 @@
 package com.bongtu.baekseo.presentation.home.component
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -14,12 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.drawWithCache
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -37,16 +36,24 @@ fun HomeRecommendCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val brush = Brush.verticalGradient(
+        colorStops = arrayOf(
+            0f to BongBaekTheme.colors.gray750,
+            1f to BongBaekTheme.colors.gray850,
+        ),
+    )
+
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(10.dp))
-            .background(color = BongBaekTheme.colors.gray750)
-            .border(
-                width = 1.dp,
-                color = BongBaekTheme.colors.lineNormal,
-                shape = RoundedCornerShape(10.dp),
-            )
+            .drawWithCache {
+                onDrawBehind {
+                    drawRoundRect(
+                        brush = brush,
+                        cornerRadius = CornerRadius(10.dp.toPx()),
+                    )
+                }
+            }
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
     ) {

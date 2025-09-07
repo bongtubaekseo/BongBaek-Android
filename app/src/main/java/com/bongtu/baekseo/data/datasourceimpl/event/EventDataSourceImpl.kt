@@ -26,19 +26,19 @@ class EventDataSourceImpl @Inject constructor(
         request: PutEventInfoRequest,
     ) = eventService.putEventInfo(eventId, request)
 
-    override suspend fun deleteEvents(request: DeleteEventsRequest): BaseResponse<Unit> =
-        eventService.deleteEvents(request)
+    override suspend fun deleteEvents(
+        request: DeleteEventsRequest,
+    ) = eventService.deleteEvents(request)
 
     override suspend fun getRecordEvents(
         page: Int,
         attended: Boolean,
         category: String?,
-    ): BaseResponse<GetScheduleEventsResponse> =
-        eventService.getRecordEvents(
-            page = page,
-            attended = attended,
-            category = category,
-        )
+    ) = eventService.getRecordEvents(
+        page = page,
+        attended = attended,
+        category = category,
+    )
 
     override suspend fun getEventDetail(
         eventId: String,
@@ -49,7 +49,7 @@ class EventDataSourceImpl @Inject constructor(
     override suspend fun getScheduleEvents(
         page: Int,
         category: String?,
-    ): BaseResponse<GetScheduleEventsResponse> = eventService.getScheduleEvents(
+    ) = eventService.getScheduleEvents(
         page = page,
         category = category,
     )

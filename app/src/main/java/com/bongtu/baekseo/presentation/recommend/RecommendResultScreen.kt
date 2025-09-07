@@ -155,7 +155,7 @@ private fun RecommendResultScreen(
                 isLottieEnded = isLottieEnded,
                 onConfirmClick = onConfirmClick,
                 onEditClick = onEditClick,
-                modifier = Modifier,
+                modifier = Modifier.padding(top = 12.dp),
             )
         }
     }

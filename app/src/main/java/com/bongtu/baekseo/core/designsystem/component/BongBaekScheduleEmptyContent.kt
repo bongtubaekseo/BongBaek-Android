@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -19,10 +18,13 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.img_record_empty
 import com.bongtu.baekseo.R.string.record_empty_button
 import com.bongtu.baekseo.R.string.record_empty_description
+import com.bongtu.baekseo.R.string.record_empty_item_title
 import com.bongtu.baekseo.R.string.record_empty_title
+import com.bongtu.baekseo.R.string.schedule_empty_item_title
 import com.bongtu.baekseo.R.string.schedule_empty_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
+import com.bongtu.baekseo.core.common.type.ScheduleType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -32,6 +34,7 @@ private const val POSTPOSITION_E = "이"
 @Composable
 fun BongBaekScheduleEmptyContent(
     eventType: String,
+    scheduleType: ScheduleType,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -40,11 +43,14 @@ fun BongBaekScheduleEmptyContent(
     }
 
     val titleText = if (eventType == EventCategoryType.ALL.label) {
-        stringResource(record_empty_title)
+        stringResource(if (scheduleType == ScheduleType.SCHEDULE) schedule_empty_title else record_empty_title)
     } else {
-        stringResource(schedule_empty_title, eventType, postposition)
+        stringResource(
+            if (scheduleType == ScheduleType.SCHEDULE) schedule_empty_item_title else record_empty_item_title,
+            eventType,
+            postposition
+        )
     }
-
 
     Column(
         modifier = modifier
@@ -81,11 +87,13 @@ fun BongBaekScheduleEmptyContent(
             onClick = onButtonClick,
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier
-                .wrapContentWidth()
-                .padding(top = 30.dp),
+                .padding(
+                    top = 32.dp,
+                    bottom = 78.dp,
+                ),
             textStyle = BongBaekTheme.typography.titleSemiBold16,
             paddingValues = PaddingValues(
-                horizontal = 30.dp,
+                horizontal = 16.dp,
                 vertical = 8.dp,
             ),
         )
@@ -97,7 +105,8 @@ fun BongBaekScheduleEmptyContent(
 private fun ScheduleEmptyContentPreview() {
     BongBaekTheme {
         BongBaekScheduleEmptyContent(
-            eventType = EventCategoryType.BIRTHDAY.label,
+            eventType = EventCategoryType.ALL.label,
+            scheduleType = ScheduleType.SCHEDULE,
             onButtonClick = {},
             modifier = Modifier,
         )

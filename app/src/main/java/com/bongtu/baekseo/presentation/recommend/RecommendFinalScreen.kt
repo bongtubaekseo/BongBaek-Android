@@ -107,7 +107,7 @@ private fun RecommendFinalScreen(
                     .fillMaxWidth(),
             )
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(14.dp))
 
             BongBaekButton(
                 title = stringResource(recommendation_to_record),
@@ -116,7 +116,7 @@ private fun RecommendFinalScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        bottom = 46.dp,
+                        bottom = 36.dp,
                     ),
             )
         }

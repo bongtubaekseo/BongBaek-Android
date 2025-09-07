@@ -40,7 +40,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
 import com.bongtu.baekseo.R.string.record_card_cost
-import com.bongtu.baekseo.R.string.record_card_weekday
 import com.bongtu.baekseo.R.string.record_detail_cost_title
 import com.bongtu.baekseo.R.string.record_detail_delete
 import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
@@ -55,8 +54,8 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.core.util.toFormattedDateAndDay
 import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.presentation.detail.DetailContract.DetailSideEffect.NavigateToEdit
@@ -189,7 +188,7 @@ private fun DetailContent(
             title = stringResource(
                 record_detail_title_card_title, event.hostName, event.eventCategory
             ),
-            eventDate = event.eventDate,
+            eventDate = DateFormatter.formatToKorean(event.eventDate),
             modifier = Modifier.padding(vertical = 20.dp),
         )
 
@@ -239,7 +238,7 @@ private fun DetailContent(
             onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
             buttonType = ButtonType.DELETE,
             modifier = Modifier
-                .padding(top = 65.dp, bottom = 40.dp)
+                .padding(top = 80.dp, bottom = 40.dp)
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
@@ -264,8 +263,6 @@ private fun RecordDetailTitleCard(
     eventDate: String,
     modifier: Modifier = Modifier,
 ) {
-    val (date, weekDay) = remember(eventDate) { eventDate.toFormattedDateAndDay() }
-
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -282,13 +279,7 @@ private fun RecordDetailTitleCard(
             modifier = Modifier.padding(top = 2.dp),
         ) {
             Text(
-                text = date,
-                color = BongBaekTheme.colors.gray400,
-                style = BongBaekTheme.typography.body2Regular14,
-                modifier = Modifier.padding(end = 4.dp),
-            )
-            Text(
-                text = stringResource(record_card_weekday, weekDay),
+                text = eventDate,
                 color = BongBaekTheme.colors.gray400,
                 style = BongBaekTheme.typography.body2Regular14,
             )

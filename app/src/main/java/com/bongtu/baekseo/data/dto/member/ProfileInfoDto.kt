@@ -1,14 +1,10 @@
-package com.bongtu.baekseo.data.dto.auth
+package com.bongtu.baekseo.data.dto.member
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostSignUpRequest (
-    @SerialName("kakaoId")
-    val kakaoId: String,
-    @SerialName("appleId")
-    val appleId: String? = null,
+data class ProfileInfoDto(
     @SerialName("memberName")
     val memberName: String,
     @SerialName("memberBirthday")
