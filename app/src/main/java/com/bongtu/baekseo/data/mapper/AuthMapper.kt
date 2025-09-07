@@ -11,6 +11,7 @@ fun PostKakaoLoginResponse.toModel() = KakaoLogin(
     refreshToken = token?.refreshToken?.token.orEmpty(),
     isCompletedSignUp = isCompletedSignUp,
     kakaoId = kakaoId,
+    apiKey = apiKey.orEmpty(),
 )
 
 fun PostTokenReissueResponse.toModel() = TokenReissue(

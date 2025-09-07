@@ -9,19 +9,11 @@ class DateTextFieldFormat : VisualTransformation {
     override fun filter(text: AnnotatedString): TransformedText {
         val input = text.text
 
-        if (input.length < 8) {
+        if (input.length < 10) {
             return TransformedText(AnnotatedString(""), OffsetMapping.Identity)
         }
 
-        val year = input.substring(0, 4).toIntOrNull()
-        val month = input.substring(5, 7).toIntOrNull()
-        val day = input.substring(8, 10).toIntOrNull()
-
-        val formatted = buildString {
-            if (year != null) append("${year}년 ")
-            if (month != null) append("${month}월 ")
-            if (day != null) append("${day}일")
-        }
+        val formatted = DateFormatter.formatToKorean(input)
 
         return TransformedText(AnnotatedString(formatted), object : OffsetMapping {
             override fun originalToTransformed(offset: Int): Int {
@@ -29,7 +21,7 @@ class DateTextFieldFormat : VisualTransformation {
             }
 
             override fun transformedToOriginal(offset: Int): Int {
-                return input.length.coerceAtMost(8)
+                return input.length
             }
         })
     }

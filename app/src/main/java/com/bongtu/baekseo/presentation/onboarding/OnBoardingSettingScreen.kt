@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.onboarding
 
+import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -20,13 +22,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.string.birth_text_field_label
@@ -49,6 +54,7 @@ import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
@@ -57,11 +63,16 @@ import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 @Composable
 fun OnBoardingSettingScreen(
     navigateToHome: () -> Unit,
+    navigateToUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+
+    BackHandler {
+        navigateToUp()
+    }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -87,7 +98,17 @@ fun OnBoardingSettingScreen(
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_setting),
-            topBarType = TopBarType.TEXT_ONLY_START,
+            topBarType = TopBarType.LEADING_ICON,
+            leadingIcon = {
+                Icon(
+                    imageVector = ImageVector.vectorResource(ic_arrow_back),
+                    contentDescription = null,
+                    modifier = Modifier
+                        .padding(12.dp)
+                        .noRippleClickable(onClick = navigateToUp),
+                    tint = BongBaekTheme.colors.white,
+                )
+            }
         )
 
         Column(
@@ -117,7 +138,7 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
-                            viewModel.updateDialogBirth(uiState.birth)
+                            viewModel.updateDialogBirth(DateFormatter.formatLocalDateToNumeric(uiState.birth))
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,
@@ -155,7 +176,7 @@ fun OnBoardingSettingScreen(
 
                 AnimatedVisibility(
                     visible = switchChecked,
-                    modifier = Modifier.padding(top = 30.dp),
+                    modifier = Modifier.padding(top = 8.dp),
                 ) {
                     Column(
                         modifier = Modifier
@@ -167,7 +188,7 @@ fun OnBoardingSettingScreen(
                         Text(
                             text = stringResource(id = onboarding_income_question),
                             style = BongBaekTheme.typography.body1Medium16,
-                            color = BongBaekTheme.colors.white,
+                            color = BongBaekTheme.colors.gray100,
                         )
 
                         OnBoardingButton(
@@ -210,9 +231,7 @@ fun OnBoardingSettingScreen(
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
                 value = uiState.dialogBirth,
-                onValueChange = {
-                    viewModel.updateDialogBirth(newDialogBirth = it)
-                },
+                onValueChange = viewModel::updateDialogBirth,
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
                     viewModel.updateDialogBirth("")
@@ -230,6 +249,7 @@ private fun OnBoardingSettingScreenPreview() {
         OnBoardingSettingScreen(
             viewModel = hiltViewModel(),
             navigateToHome = {},
+            navigateToUp = {},
         )
     }
 }

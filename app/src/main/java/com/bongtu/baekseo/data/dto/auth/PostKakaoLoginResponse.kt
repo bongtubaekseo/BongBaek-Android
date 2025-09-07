@@ -12,7 +12,9 @@ data class PostKakaoLoginResponse (
     @SerialName("isCompletedSignUp")
     val isCompletedSignUp: Boolean,
     @SerialName("kakaoId")
-    val kakaoId: Long,
+    val kakaoId: String,
+    @SerialName("apiKey")
+    val apiKey: String? = null,
 ) {
     @Serializable
     data class TokenType(
