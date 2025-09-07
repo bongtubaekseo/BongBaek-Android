@@ -35,7 +35,6 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        buildConfigField("String", "BASE_URL", properties.getProperty("base.url"))
         buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
         buildConfigField("String", "KAKAO_API_KEY", "\"${properties.getProperty("kakao.api.key")}\"")
         buildConfigField("String", "KAKAO_BASE_URL", properties.getProperty("kakao.base.url"))
@@ -60,7 +59,9 @@ android {
 
     buildTypes {
         debug {
+            applicationIdSuffix = ".debug"
             isDebuggable = true
+            buildConfigField("String", "BASE_URL", properties.getProperty("dev.base.url"))
             signingConfig = signingConfigs.getByName("debug")
         }
 
@@ -71,6 +72,7 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            buildConfigField("String", "BASE_URL", properties.getProperty("prod.base.url"))
             signingConfig = signingConfigs.getByName("release")
         }
     }
