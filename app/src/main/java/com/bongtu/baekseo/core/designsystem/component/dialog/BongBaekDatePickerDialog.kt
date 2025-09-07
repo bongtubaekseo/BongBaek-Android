@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Icon
@@ -22,6 +21,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -92,33 +92,35 @@ fun BongBaekDatePickerDialog(
             Column(
                 modifier = modifier
                     .fillMaxWidth()
+                    .clip(RoundedCornerShape(10.dp))
                     .background(color = BongBaekTheme.colors.gray750)
-                    .padding(20.dp),
+                    .padding(
+                        start = 20.dp,
+                        top = 20.dp,
+                        end = 20.dp,
+                        bottom = 12.dp,
+                    ),
             ) {
-                Column(
-                    horizontalAlignment = Alignment.Start,
-                ) {
-                    Text(
-                        text = stringResource(id = datePickerDialogType.descriptionId),
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
-                    )
+                Text(
+                    text = stringResource(id = datePickerDialogType.descriptionId),
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.gray300,
+                )
 
-                    Spacer(modifier = Modifier.size(2.dp))
+                Spacer(modifier = Modifier.size(2.dp))
 
-                    Text(
-                        text = stringResource(id = date_picker_title),
-                        style = BongBaekTheme.typography.titleSemiBold20,
-                        color = BongBaekTheme.colors.white,
-                    )
+                Text(
+                    text = stringResource(id = date_picker_title),
+                    style = BongBaekTheme.typography.titleSemiBold20,
+                    color = BongBaekTheme.colors.white,
+                )
 
-                    Spacer(modifier = Modifier.size(10.dp))
+                Spacer(modifier = Modifier.size(10.dp))
 
-                    BongBaekDatePickerTextField(
-                        value = value,
-                        onValueChange = onValueChange,
-                    )
-                }
+                BongBaekDatePickerTextField(
+                    value = value,
+                    onValueChange = onValueChange,
+                )
 
                 AnimatedVisibility(
                     visible = value.isNotEmpty() && !isValid,
@@ -146,24 +148,21 @@ fun BongBaekDatePickerDialog(
 
                 Row(
                     modifier = Modifier
-                        .wrapContentSize()
                         .align(Alignment.End)
                         .padding(top = 4.dp),
+                    verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    Box(
+                    Text(
+                        text = stringResource(id = date_picker_cancel),
                         modifier = Modifier
                             .padding(8.dp)
                             .noRippleClickable(onDismissRequest),
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = stringResource(id = date_picker_cancel),
-                            style = BongBaekTheme.typography.body2Regular16,
-                            color = BongBaekTheme.colors.gray300,
-                        )
-                    }
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = BongBaekTheme.colors.gray300,
+                    )
 
-                    Box(
+                    Text(
+                        text = stringResource(id = date_picker_ok),
                         modifier = Modifier
                             .padding(
                                 horizontal = 22.dp,
@@ -175,14 +174,9 @@ fun BongBaekDatePickerDialog(
                                     onDismissRequest()
                                 }
                             },
-                        contentAlignment = Alignment.Center,
-                    ) {
-                        Text(
-                            text = stringResource(id = date_picker_ok),
-                            style = BongBaekTheme.typography.body2Regular16,
-                            color = confirmTextColor,
-                        )
-                    }
+                        style = BongBaekTheme.typography.body2Regular16,
+                        color = confirmTextColor,
+                    )
                 }
             }
         }
