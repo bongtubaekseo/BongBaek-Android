@@ -59,7 +59,7 @@ fun BongBaekDialog(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(horizontal = 20.dp),
-            contentAlignment = Alignment.Center
+            contentAlignment = Alignment.Center,
         ) {
             BongBaekDialogContent(
                 dialogType = dialogType,
