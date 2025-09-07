@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -84,9 +83,11 @@ fun BongBaekDatePickerDialog(
             usePlatformDefaultWidth = false,
         ),
     ) {
-        Card(
-            modifier = Modifier.padding(horizontal = 20.dp),
-            shape = RoundedCornerShape(10.dp),
+        Box(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(horizontal = 20.dp),
+            contentAlignment = Alignment.Center,
         ) {
             Column(
                 modifier = modifier
