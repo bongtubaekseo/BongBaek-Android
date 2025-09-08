@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.onboarding
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
@@ -54,7 +55,7 @@ class OnBoardingViewModel @Inject constructor(
         it.copy(dialogBirth = newDialogBirth)
     }
 
-    fun updateIncome(newIncome: String) = _uiState.update {
+    fun updateIncome(newIncome: IncomeType) = _uiState.update {
         it.copy(income = newIncome)
     }
 
@@ -84,7 +85,7 @@ class OnBoardingViewModel @Inject constructor(
                 kakaoId = uiState.value.kakaoId,
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth,
-                memberIncome = uiState.value.income,
+                memberIncome = uiState.value.income.label,
             ).onSuccess { response ->
                 saveUsername(response.name)
                 saveApiKey(response.apiKey)

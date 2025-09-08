@@ -88,7 +88,6 @@ fun OnBoardingSettingScreen(
     val buttonEnabled = remember(uiState.name, uiState.birth) {
         viewModel.updateButtonState()
     }
-    var incomeSelected by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier
@@ -170,6 +169,7 @@ fun OnBoardingSettingScreen(
                         checked = switchChecked,
                         onCheckedChange = {
                             switchChecked = it
+                            viewModel.updateIncome(IncomeType.NONE)
                         },
                     )
                 }
@@ -193,20 +193,18 @@ fun OnBoardingSettingScreen(
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = incomeSelected,
+                            selected = uiState.income == IncomeType.UNDER_200,
                             onClick = {
-                                if (!incomeSelected) incomeSelected = true
-                                viewModel.updateIncome(IncomeType.UNDER_200.label)
+                                viewModel.updateIncome(IncomeType.UNDER_200)
                             },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = !incomeSelected,
+                            selected = uiState.income == IncomeType.OVER_200,
                             onClick = {
-                                if (incomeSelected) incomeSelected = false
-                                viewModel.updateIncome(IncomeType.OVER_200.label)
+                                viewModel.updateIncome(IncomeType.OVER_200)
                             },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -247,7 +245,6 @@ fun OnBoardingSettingScreen(
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen(
-            viewModel = hiltViewModel(),
             navigateToHome = {},
             navigateToUp = {},
         )
