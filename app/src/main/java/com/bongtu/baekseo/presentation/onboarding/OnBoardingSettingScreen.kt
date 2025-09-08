@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.onboarding
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,6 +24,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -69,6 +72,7 @@ fun OnBoardingSettingScreen(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val focusManager = LocalFocusManager.current
 
     BackHandler {
         navigateToUp()
@@ -93,7 +97,10 @@ fun OnBoardingSettingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .pointerInput(Unit) {
+                detectTapGestures(onTap = { focusManager.clearFocus() })
+            },
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_setting),
@@ -137,6 +144,7 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
+                            focusManager.clearFocus()
                             viewModel.updateDialogBirth(DateFormatter.formatLocalDateToNumeric(uiState.birth))
                             isDatePickerDialogVisible = true
                         },
@@ -170,6 +178,7 @@ fun OnBoardingSettingScreen(
                         onCheckedChange = {
                             switchChecked = it
                             viewModel.updateIncome(IncomeType.NONE)
+                            focusManager.clearFocus()
                         },
                     )
                 }
