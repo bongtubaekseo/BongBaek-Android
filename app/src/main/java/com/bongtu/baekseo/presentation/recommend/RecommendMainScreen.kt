@@ -236,7 +236,7 @@ private fun RecommendMainScreen(
                         Text(
                             text = stringResource(titleRes),
                             style = BongBaekTheme.typography.headBold24,
-                            color = BongBaekTheme.colors.white,
+                            color = BongBaekTheme.colors.gray100,
                         )
 
                         if (uiState.pageIndex == 4) {
