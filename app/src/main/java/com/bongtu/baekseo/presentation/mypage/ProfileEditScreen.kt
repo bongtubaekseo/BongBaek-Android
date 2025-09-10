@@ -99,7 +99,7 @@ fun ProfileEditRoute(
             viewModel.updateOriginProfileState(
                 newName = "",
                 newBirth = "",
-                newIncome = IncomeType.NONE.label,
+                newIncome = IncomeType.NONE,
             )
         }
     }
@@ -125,17 +125,17 @@ private fun ProfileEditScreen(
     onUserNameChange: (String) -> Unit,
     onUserBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
-    onUserIncomeChange: (String) -> Unit,
+    onUserIncomeChange: (IncomeType) -> Unit,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-    val switchChecked = uiState.userIncome != IncomeType.NONE.label
-    val incomeSelected = uiState.userIncome != IncomeType.OVER_200.label
+    val switchChecked = uiState.userIncome != IncomeType.NONE
+    val incomeSelected = uiState.userIncome != IncomeType.OVER_200
 
-    var lastOnIncome by rememberSaveable { mutableStateOf(IncomeType.UNDER_200.label) }
+    var lastOnIncome by rememberSaveable { mutableStateOf(IncomeType.UNDER_200) }
     LaunchedEffect(uiState.userIncome) {
-        if (uiState.userIncome != IncomeType.NONE.label) {
+        if (uiState.userIncome != IncomeType.NONE) {
             lastOnIncome = uiState.userIncome
         }
     }
@@ -219,7 +219,7 @@ private fun ProfileEditScreen(
                         checked = switchChecked,
                         onCheckedChange = { isChecked ->
                             onUserIncomeChange(
-                                if (isChecked) lastOnIncome else IncomeType.NONE.label,
+                                if (isChecked) lastOnIncome else IncomeType.NONE,
                             )
                         },
                     )
@@ -245,14 +245,14 @@ private fun ProfileEditScreen(
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_down),
                             selected = incomeSelected,
-                            onClick = { onUserIncomeChange(IncomeType.UNDER_200.label) },
+                            onClick = { onUserIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_up),
                             selected = !incomeSelected,
-                            onClick = { onUserIncomeChange(IncomeType.OVER_200.label) },
+                            onClick = { onUserIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
