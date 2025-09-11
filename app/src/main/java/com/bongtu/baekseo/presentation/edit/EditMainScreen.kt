@@ -243,14 +243,13 @@ private fun EditMainScreen(
                         shape = RoundedCornerShape(10.dp),
                     )
                     .padding(vertical = 24.dp, horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
                     labelImage = ic_person,
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
-                    modifier = Modifier,
+                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
@@ -262,6 +261,7 @@ private fun EditMainScreen(
                     labelImage = ic_nickname,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
+                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
@@ -280,6 +280,7 @@ private fun EditMainScreen(
                             isEditable = isResultEditable,
                         )
                     },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 FormFieldItem(
@@ -293,7 +294,8 @@ private fun EditMainScreen(
                             onItemSelected = onEventSelect,
                             isEditable = isResultEditable,
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 Row(
@@ -313,6 +315,7 @@ private fun EditMainScreen(
                         isRequired = true,
                         keyboardType = KeyboardType.NumberPassword,
                         visualTransformation = CostTextFieldFormat(),
+                        bottomSpacer = 32.dp,
                     )
 
                     Text(
@@ -338,7 +341,8 @@ private fun EditMainScreen(
                             onItemSelected = onAttendSelect,
                             isEditable = isResultEditable,
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 LabelTextField(
@@ -350,7 +354,8 @@ private fun EditMainScreen(
                         .noRippleClickable {
                             text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                             if (isResultEditable) isDatePickerDialogVisible = true
-                        },
+                        }
+                        .padding(bottom = 32.dp),
                     isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
