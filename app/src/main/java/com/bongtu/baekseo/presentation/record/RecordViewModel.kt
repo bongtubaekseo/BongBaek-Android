@@ -87,7 +87,7 @@ class RecordViewModel @Inject constructor(
         updateDeleteModeCancel()
     }
 
-    fun clearPage() {
+    private fun clearPage() {
         _page.value = 0
         _isLast.value = false
     }
@@ -114,6 +114,19 @@ class RecordViewModel @Inject constructor(
             )
         }
         fetchRecordEvent()
+    }
+
+    fun initRecordUiState() {
+        clearPage()
+        _uiState.update {
+            it.copy(
+                attendType = AttendType.ATTEND,
+                eventCategoryType = EventCategoryType.ALL,
+                scheduleList = persistentListOf(),
+                isDeleteMode = false,
+                selectedDeleteEventIds = emptySet(),
+            )
+        }
     }
 
     private fun updateRecordUiState(value: UiState<Unit>) =
