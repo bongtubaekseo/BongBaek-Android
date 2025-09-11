@@ -11,8 +11,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -195,7 +196,7 @@ private fun EditMainScreen(
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
-            .systemBarsPadding(),
+            .statusBarsPadding(),
     ) {
         BongBaekTopBar(
             title = editEntryType.editType.title,
@@ -216,7 +217,8 @@ private fun EditMainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .navigationBarsPadding(),
         ) {
             Column(
                 modifier = Modifier
@@ -375,9 +377,18 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 150.dp,
                     ),
                 isEditable = isResultEditable,
+            )
+
+            EditSaveButton(
+                onClick = onSubmitEventButtonClick,
+                enabled = isFormFilled,
+                modifier = Modifier
+                    .padding(
+                        top = 60.dp,
+                        bottom = 36.dp,
+                    ),
             )
         }
         if (isDatePickerDialogVisible) {
@@ -393,19 +404,6 @@ private fun EditMainScreen(
             )
         }
     }
-
-    EditSaveButton(
-        onClick = onSubmitEventButtonClick,
-        enabled = isFormFilled,
-        modifier = Modifier
-            .padding(
-                top = 10.dp,
-                bottom = 36.dp,
-                start = 20.dp,
-                end = 20.dp,
-            )
-            .systemBarsPadding(),
-    )
 }
 
 @Composable
