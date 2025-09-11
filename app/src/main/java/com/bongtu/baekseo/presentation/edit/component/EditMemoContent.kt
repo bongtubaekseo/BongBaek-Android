@@ -116,7 +116,7 @@ fun EditMemoContent(
                 modifier = Modifier
                     .onFocusEvent { focusState ->
                         isFocused = focusState.isFocused
-                        bringIntoViewRequester.bringIntoView(coroutineScope, focusState)
+                        bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
                     }
                     .padding(
                         vertical = 16.dp,
