@@ -28,11 +28,12 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 @Composable
 fun RecordTopBar(
     isDeleteMode: Boolean,
-    isDeleteButtonEnabled: Boolean,
+    isEnterDeleteButtonVisible: Boolean,
+    isConfirmButtonEnabled: Boolean,
     navigateToAdd: () -> Unit,
     onEnterDeleteModeClick: () -> Unit,
     onExitDeleteModeClick: () -> Unit,
-    onDeleteClick: () -> Unit,
+    onConfirmDeleteClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (title, topBarType) = when (isDeleteMode) {
@@ -55,6 +56,7 @@ fun RecordTopBar(
         trailingIcon = if (!isDeleteMode) {
             {
                 TopBarDefaultTrailingIcon(
+                    isEnterDeleteButtonVisible = isEnterDeleteButtonVisible,
                     onAddButtonClick = navigateToAdd,
                     onEnterDeleteModeClick = onEnterDeleteModeClick,
                 )
@@ -62,8 +64,8 @@ fun RecordTopBar(
         } else {
             {
                 TopBarDeleteTrailingIcon(
-                    isDeleteButtonEnabled = isDeleteButtonEnabled,
-                    onDeleteClick = onDeleteClick,
+                    isDeleteButtonEnabled = isConfirmButtonEnabled,
+                    onDeleteClick = onConfirmDeleteClick,
                 )
             }
         },
@@ -72,6 +74,7 @@ fun RecordTopBar(
 
 @Composable
 private fun TopBarDefaultTrailingIcon(
+    isEnterDeleteButtonVisible: Boolean,
     onAddButtonClick: () -> Unit,
     onEnterDeleteModeClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -89,15 +92,17 @@ private fun TopBarDefaultTrailingIcon(
                 .noRippleClickable(onClick = onAddButtonClick),
             tint = BongBaekTheme.colors.gray400,
         )
-        Icon(
-            imageVector = ImageVector.vectorResource(ic_delete),
-            contentDescription = null,
-            modifier = Modifier
-                .padding(14.dp)
-                .size(20.dp)
-                .noRippleClickable(onClick = onEnterDeleteModeClick),
-            tint = BongBaekTheme.colors.gray400,
-        )
+        if (isEnterDeleteButtonVisible) {
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_delete),
+                contentDescription = null,
+                modifier = Modifier
+                    .padding(14.dp)
+                    .size(20.dp)
+                    .noRippleClickable(onClick = onEnterDeleteModeClick),
+                tint = BongBaekTheme.colors.gray400,
+            )
+        }
     }
 }
 
