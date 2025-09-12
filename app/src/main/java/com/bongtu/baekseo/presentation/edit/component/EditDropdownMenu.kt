@@ -26,6 +26,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
 import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
@@ -69,10 +70,11 @@ fun EditDropdownMenu(
         onItemSelect = { onItemSelected(it) },
         label = { it },
         maxItemSize = menuItems.size,
+        offset = DpOffset(0.dp, 12.dp),
     ) {
         Row(
             modifier = Modifier
-                .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 .fillMaxWidth()
                 .background(
                     color = BongBaekTheme.colors.gray750,
