@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,6 +29,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -58,6 +62,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
@@ -183,6 +188,15 @@ private fun RecommendMainScreen(
         }
     }
     val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
+    }
 
     LaunchedEffect(uiState.pageIndex) {
         isTitleVisible = true
@@ -193,6 +207,7 @@ private fun RecommendMainScreen(
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
+            .clearFocus(focusManager)
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(

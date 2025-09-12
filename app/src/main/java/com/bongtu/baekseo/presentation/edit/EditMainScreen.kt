@@ -78,7 +78,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
-import com.bongtu.baekseo.core.util.addFocusCleaner
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -189,7 +189,7 @@ private fun EditMainScreen(
                 color = BongBaekTheme.colors.gray900,
             )
             .statusBarsPadding()
-            .addFocusCleaner(focusManager),
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = editEntryType.editType.title,

@@ -75,7 +75,7 @@ inline fun Modifier.throttledNoRippleClickable(
  * @param focusManager 현재 화면의 [FocusManager] 객체
  * @param doOnClear 포커스 해제 시 추가로 실행할 동작
  */
-fun Modifier.addFocusCleaner(
+fun Modifier.clearFocus(
     focusManager: FocusManager,
     doOnClear: () -> Unit = {},
 ): Modifier = this.pointerInput(Unit) {
