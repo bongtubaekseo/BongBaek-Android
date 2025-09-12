@@ -114,6 +114,15 @@ class OnBoardingViewModel @Inject constructor(
             )
         }
 
+    fun updateOriginOnBoardingState(newName: String, newBirth: String, newIncome: IncomeType) =
+        _uiState.update {
+            it.copy(
+                name = newName,
+                birth = newBirth,
+                income = newIncome,
+            )
+        }
+
     private fun updateKakaoId(newKakaoId: String) =
         _uiState.update {
             it.copy(kakaoId = newKakaoId)

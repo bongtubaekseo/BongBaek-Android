@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -86,6 +87,16 @@ fun OnBoardingSettingScreen(
                     is NavigateToHome -> navigateToHome()
                 }
             }
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.updateOriginOnBoardingState(
+                newName = "",
+                newBirth = "",
+                newIncome = IncomeType.NONE,
+            )
+        }
     }
 
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
