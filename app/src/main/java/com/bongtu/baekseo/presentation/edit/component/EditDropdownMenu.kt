@@ -1,5 +1,8 @@
 package com.bongtu.baekseo.presentation.edit.component
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Row
@@ -18,12 +21,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.drawable.ic_arrow_up
 import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
@@ -50,6 +53,10 @@ fun EditDropdownMenu(
         else -> bongBaekColors.gray300
     }
     val borderColor = if (expanded) bongBaekColors.primaryNormal else bongBaekColors.transparent
+    val rotation by animateFloatAsState(
+        targetValue = if (expanded) 180f else 0f,
+        animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing),
+    )
 
     BongBaekDropdownMenu(
         expanded = expanded,
@@ -91,8 +98,9 @@ fun EditDropdownMenu(
             Spacer(modifier = Modifier.weight(1f))
 
             Icon(
-                imageVector = ImageVector.vectorResource(id = if (expanded) ic_arrow_up else ic_arrow_down),
+                imageVector = ImageVector.vectorResource(ic_arrow_up),
                 contentDescription = null,
+                modifier = Modifier.rotate(rotation),
                 tint = textColor,
             )
         }
