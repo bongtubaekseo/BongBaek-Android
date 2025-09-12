@@ -64,6 +64,7 @@ import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_is_attend_title
 import com.bongtu.baekseo.R.string.edit_location_add_text
 import com.bongtu.baekseo.R.string.edit_location_edit_text
+import com.bongtu.baekseo.R.string.edit_location_empty
 import com.bongtu.baekseo.R.string.edit_location_title
 import com.bongtu.baekseo.R.string.edit_name_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_name_title
@@ -195,8 +196,8 @@ private fun EditMainScreen(
         checkIsFormFilled()
     }
 
-    val isResultEditable = remember(editEntryType) {
-        editEntryType != EditEntryType.FROM_RESULT
+    val isFromResult = remember(editEntryType) {
+        editEntryType == EditEntryType.FROM_RESULT
     }
 
     val focusManager = LocalFocusManager.current
@@ -257,7 +258,8 @@ private fun EditMainScreen(
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
-                    isEditable = isResultEditable,
+                    isEditable = !isFromResult,
+                    isDimmed = isFromResult,
                 )
 
                 LabelTextField(
@@ -269,19 +271,22 @@ private fun EditMainScreen(
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
-                    isEditable = isResultEditable,
+                    isEditable = !isFromResult,
+                    isDimmed = isFromResult,
                 )
 
                 FormFieldItem(
                     iconRes = ic_relation,
                     labelRes = edit_relation_title,
+                    isDimmed = isFromResult,
                     content = {
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_relation_dropdown_placeholder),
                             menuItems = relations,
                             selectedItem = uiState.relationship,
                             onItemSelected = onRelationSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -290,13 +295,15 @@ private fun EditMainScreen(
                 FormFieldItem(
                     iconRes = ic_event,
                     labelRes = edit_event_title,
+                    isDimmed = isFromResult,
                     content = {
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
                             selectedItem = uiState.eventCategory,
                             onItemSelected = onEventSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -337,13 +344,15 @@ private fun EditMainScreen(
                 FormFieldItem(
                     iconRes = ic_check_gray,
                     labelRes = edit_is_attend_title,
+                    isDimmed = isFromResult,
                     content = {
                         FormFieldDropDown(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
                             selectedItem = uiState.attendLabel,
                             onItemSelected = onAttendSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -357,11 +366,12 @@ private fun EditMainScreen(
                     modifier = Modifier
                         .noRippleClickable {
                             text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
-                            if (isResultEditable) isDatePickerDialogVisible = true
+                            if (!isFromResult) isDatePickerDialogVisible = true
                         }
                         .padding(bottom = 32.dp),
                     isRequired = true,
                     isEditable = false,
+                    isDimmed = isFromResult,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
                 )
@@ -369,28 +379,37 @@ private fun EditMainScreen(
                 FormFieldItem(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
+                    isDimmed = isFromResult,
                     content = {
-                        uiState.selectedPlace?.let { place ->
-                            EditLocationContent(
-                                place = place,
+                        if (isFromResult) {
+                            Text(
+                                text = stringResource(id = edit_location_empty),
+                                style = BongBaekTheme.typography.body1Medium14,
+                                color = BongBaekTheme.colors.gray400,
                             )
+                        } else {
+                            uiState.selectedPlace?.let { place ->
+                                EditLocationContent(
+                                    place = place,
+                                )
+                            }
                         }
                     },
                     isRequired = false,
                     trailing = {
-                        Text(
-                            text = stringResource(
-                                uiState.selectedPlace?.let {
-                                    edit_location_edit_text
-                                } ?: edit_location_add_text
-                            ),
-                            style = BongBaekTheme.typography.body2Regular14,
-                            color = BongBaekTheme.colors.gray300,
-                            modifier = Modifier
-                                .noRippleClickable {
-                                    if (isResultEditable) navigateToLocation()
-                                },
-                        )
+                        if (!isFromResult) {
+                            Text(
+                                text = stringResource(
+                                    uiState.selectedPlace?.let {
+                                        edit_location_edit_text
+                                    } ?: edit_location_add_text
+                                ),
+                                style = BongBaekTheme.typography.body2Regular14,
+                                color = BongBaekTheme.colors.gray300,
+                                modifier = Modifier
+                                    .noRippleClickable { navigateToLocation() },
+                            )
+                        }
                     },
                 )
             }
@@ -402,7 +421,7 @@ private fun EditMainScreen(
                     .padding(
                         top = 20.dp,
                     ),
-                isEditable = isResultEditable,
+                isEditable = !isFromResult,
             )
 
             BongBaekButton(
@@ -440,8 +459,11 @@ private fun FormFieldItem(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isRequired: Boolean = true,
+    isDimmed: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
 ) {
+    val textColor = if (isDimmed) BongBaekTheme.colors.gray400 else BongBaekTheme.colors.white
+
     Column(
         modifier = modifier,
     ) {
@@ -463,7 +485,7 @@ private fun FormFieldItem(
             Text(
                 text = stringResource(id = labelRes),
                 style = BongBaekTheme.typography.body1Medium14,
-                color = BongBaekTheme.colors.white,
+                color = textColor,
             )
 
             if (isRequired) {
@@ -490,12 +512,14 @@ private fun FormFieldDropDown(
     selectedItem: String,
     onItemSelected: (String) -> Unit,
     isEditable: Boolean = true,
+    isDimmed: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val isSelected = selectedItem.isNotBlank()
     val bongBaekColors = BongBaekTheme.colors
     val text = if (isSelected) selectedItem else placeholder
     val textColor = when {
+        isDimmed -> bongBaekColors.gray400
         isSelected && expanded -> bongBaekColors.primaryNormal
         isSelected || expanded -> bongBaekColors.white
         else -> bongBaekColors.gray300

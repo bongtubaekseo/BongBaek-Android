@@ -169,6 +169,7 @@
     <string name="edit_save_button">기록 저장하기</string>
     <string name="edit_location_top_bar_title">행사장 검색</string>
     <string name="edit_location_button">위치 저장하기</string>
+    <string name="edit_location_empty">-</string>
     <!--MyPage    -->
     <string name="mypage_topbar_title">마이페이지</string>
     <string name="mypage_profile_edit_button">내 정보 수정</string>
