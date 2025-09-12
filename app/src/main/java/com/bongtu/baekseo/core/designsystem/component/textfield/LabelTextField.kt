@@ -84,7 +84,7 @@ fun LabelTextField(
     val focusManager = LocalFocusManager.current
 
     val isFilled = text.isNotEmpty()
-    val isError = errorText.isNotEmpty() && isFocused
+    val isError = errorText.isNotEmpty()
 
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
