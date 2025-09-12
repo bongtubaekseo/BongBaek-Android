@@ -13,7 +13,12 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
+import androidx.compose.material3.ExposedDropdownMenuBoxScope
+import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -42,9 +47,11 @@ import kotlinx.collections.immutable.persistentListOf
  * @param onDismissRequest 드롭 다운 메뉴가 닫힐 때 호출되는 콜백
  * @param onItemSelect 아이템이 선택될 때 호출되는 콜백
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun <T> BongBaekDropdownMenu(
     expanded: Boolean,
+    onExpandedChange: (Boolean) -> Unit,
     items: ImmutableList<T>,
     selectedItem: T?,
     onDismissRequest: () -> Unit,
@@ -53,44 +60,62 @@ fun <T> BongBaekDropdownMenu(
     modifier: Modifier = Modifier,
     maxItemSize: Int = 3,
     offset: DpOffset = DpOffset(0.dp, 14.dp),
-    isFocusable: Boolean = false,
+    focusable: Boolean = false,
+    content: @Composable ExposedDropdownMenuBoxScope.() -> Unit,
 ) {
     val bongBaekColors = BongBaekTheme.colors
     var itemHeightDp by remember { mutableStateOf(0.dp) }
+    val maxHeight =
+        if (itemHeightDp > 0.dp) itemHeightDp * maxItemSize + 4.dp * (maxItemSize - 1) + 28.dp
+        else Dp.Unspecified
 
-    DropdownMenu(
+    ExposedDropdownMenuBox(
         expanded = expanded,
-        offset = offset,
-        onDismissRequest = onDismissRequest,
-        properties = PopupProperties(
-            focusable = isFocusable,
-        ),
-        shape = RoundedCornerShape(10.dp),
-        containerColor = bongBaekColors.gray750,
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(
-                horizontal = 12.dp,
-                vertical = 4.dp,
-            )
-            .heightIn(
-                max =
-                    if (itemHeightDp > 0.dp) (itemHeightDp + 8.dp) * maxItemSize
-                    else Dp.Unspecified,
-            ),
+        onExpandedChange = onExpandedChange,
+        modifier = modifier,
     ) {
-        items.forEachIndexed { index, item ->
-            DropDownMenuItem<T>(
-                item = item,
-                index = index,
-                isSelected = item == selectedItem,
-                onFirstItemMeasured = { itemHeightDp = it },
-                onItemSelected = {
-                    onItemSelect(it)
-                    onDismissRequest()
-                },
-                label = label,
-            )
+        content()
+
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = onDismissRequest,
+            modifier = Modifier
+                .exposedDropdownSize()
+                .heightIn(
+                    max = maxHeight,
+                ),
+            offset = offset,
+            properties = PopupProperties(
+                focusable = focusable,
+            ),
+            shape = RoundedCornerShape(10.dp),
+            containerColor = bongBaekColors.gray750,
+        ) {
+            if (items.isEmpty()) {
+                EmptyDropDown()
+            } else {
+                Column(
+                    modifier = Modifier.padding(
+                        horizontal = 12.dp,
+                        vertical = 4.dp,
+                    ),
+                    verticalArrangement = Arrangement.spacedBy(4.dp),
+                ) {
+                    items.forEachIndexed { index, item ->
+                        DropDownMenuItem<T>(
+                            item = item,
+                            index = index,
+                            isSelected = item == selectedItem,
+                            onFirstItemMeasured = { itemHeightDp = it },
+                            onItemSelected = {
+                                onItemSelect(it)
+                                onDismissRequest()
+                            },
+                            label = label,
+                        )
+                    }
+                }
+            }
         }
     }
 }
@@ -127,6 +152,7 @@ private fun <T> DropDownMenuItem(
 
     Box(
         modifier = Modifier
+            .fillMaxWidth()
             .onGloballyPositioned {
                 if (index == 0) {
                     onFirstItemMeasured(with(density) { it.size.height.toDp() })
@@ -136,8 +162,7 @@ private fun <T> DropDownMenuItem(
                 color = backgroundColor,
                 shape = RoundedCornerShape(4.dp),
             )
-            .fillMaxWidth()
-            .padding(horizontal = 12.dp, vertical = 8.dp)
+            .padding(horizontal = 12.dp, vertical = 10.dp)
             .clickable(
                 interactionSource = interactionSource,
                 indication = null,
@@ -154,14 +179,13 @@ private fun <T> DropDownMenuItem(
     }
 }
 
-@Preview(showBackground = true)
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview
 @Composable
 private fun BongBaekDropdownMenuPreview() {
     BongBaekTheme {
-        val dummyItems = remember {
-            persistentListOf("강남 웨딩홀", "강남 어쩌구저쩌구", "강남 이러쿵저쩌쿵", "강남스타일", "강남 알베르")
-        }
-        var expanded by remember { mutableStateOf(true) }
+        val dummyItems = persistentListOf("강남 웨딩홀", "강남 어쩌구저쩌구", "강남 이러쿵저쩌쿵", "강남스타일", "강남 알베르")
+        var expanded by remember { mutableStateOf(false) }
         var selectedItem by remember { mutableStateOf("강남 웨딩홀") }
 
         Column(
@@ -171,6 +195,7 @@ private fun BongBaekDropdownMenuPreview() {
         ) {
             BongBaekDropdownMenu<String>(
                 expanded = expanded,
+                onExpandedChange = { expanded = !expanded },
                 items = dummyItems,
                 maxItemSize = 3,
                 selectedItem = selectedItem,
@@ -178,6 +203,16 @@ private fun BongBaekDropdownMenuPreview() {
                 onItemSelect = { selectedItem = it },
                 label = { it },
                 modifier = Modifier,
+                content = {
+                    TextField(
+                        value = selectedItem,
+                        onValueChange = {},
+                        readOnly = true,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .menuAnchor(MenuAnchorType.PrimaryNotEditable, true)
+                    )
+                },
             )
         }
     }
