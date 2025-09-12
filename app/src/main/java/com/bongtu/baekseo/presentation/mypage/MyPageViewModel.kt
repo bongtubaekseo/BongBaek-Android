@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
+import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
@@ -24,6 +25,7 @@ import javax.inject.Inject
 class MyPageViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
     private val tokenDataStore: TokenDataStore,
+    private val usernameDataStore: UsernameDataStore,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(MyPageUiState())
     val uiState = _uiState.asStateFlow()
@@ -58,6 +60,7 @@ class MyPageViewModel @Inject constructor(
                 memberIncome = uiState.value.userIncome.label,
             ),
         ).onSuccess {
+            saveUsername(uiState.value.userName)
             _sideEffect.emit(MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage)
         }.onFailure {
             // TODO: 실패 처리
@@ -105,4 +108,9 @@ class MyPageViewModel @Inject constructor(
     fun updateMyPageLoadUiState(newUiState: UiState<Unit>) = _uiState.update {
         it.copy(myPageLoadState = newUiState)
     }
+
+    private fun saveUsername(name: String) =
+        viewModelScope.launch {
+            usernameDataStore.setUsername(name)
+        }
 }
