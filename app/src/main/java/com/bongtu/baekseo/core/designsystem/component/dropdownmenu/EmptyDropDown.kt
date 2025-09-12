@@ -33,7 +33,7 @@ fun EmptyDropDown(
                 color = BongBaekTheme.colors.gray750,
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(vertical = 47.dp),
+            .padding(vertical = 49.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
