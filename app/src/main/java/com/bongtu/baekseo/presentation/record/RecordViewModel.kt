@@ -125,6 +125,7 @@ class RecordViewModel @Inject constructor(
                 scheduleList = persistentListOf(),
                 isDeleteMode = false,
                 selectedDeleteEventIds = emptySet(),
+                recordLoadState = UiState.Loading,
             )
         }
     }
