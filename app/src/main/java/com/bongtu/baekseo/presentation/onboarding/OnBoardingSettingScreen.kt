@@ -26,6 +26,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -75,6 +76,7 @@ fun OnBoardingSettingScreen(
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
     BackHandler {
         navigateToUp()
@@ -97,6 +99,9 @@ fun OnBoardingSettingScreen(
                 newIncome = IncomeType.NONE,
                 newNameError = "",
             )
+            OnBoardingLoginKakaoLauncher(
+                context = context,
+            ).logoutKakaoLogin()
         }
     }
 
