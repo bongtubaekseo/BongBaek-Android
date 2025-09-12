@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -20,6 +21,7 @@ import androidx.compose.material3.MenuAnchorType
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -63,11 +65,16 @@ fun <T> BongBaekDropdownMenu(
     focusable: Boolean = false,
     content: @Composable ExposedDropdownMenuBoxScope.() -> Unit,
 ) {
+    val scrollState = rememberScrollState()
     val bongBaekColors = BongBaekTheme.colors
     var itemHeightDp by remember { mutableStateOf(0.dp) }
     val maxHeight =
         if (itemHeightDp > 0.dp) itemHeightDp * maxItemSize + 4.dp * (maxItemSize - 1) + 28.dp
         else Dp.Unspecified
+
+    LaunchedEffect(items) {
+        scrollState.scrollTo(0)
+    }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
@@ -85,6 +92,7 @@ fun <T> BongBaekDropdownMenu(
                     max = maxHeight,
                 ),
             offset = offset,
+            scrollState = scrollState,
             properties = PopupProperties(
                 focusable = focusable,
             ),
