@@ -72,12 +72,15 @@ import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
+import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
@@ -97,7 +100,6 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMain
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
-import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -401,14 +403,17 @@ private fun EditMainScreen(
                 isEditable = isResultEditable,
             )
 
-            EditSaveButton(
+            BongBaekButton(
+                title = stringResource(id = edit_save_button),
                 onClick = onSubmitEventButtonClick,
-                enabled = isFormFilled,
+                buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
+                    .fillMaxWidth()
                     .padding(
                         top = 40.dp,
                         bottom = 36.dp,
                     ),
+                enabled = isFormFilled,
             )
         }
         if (isDatePickerDialogVisible) {
