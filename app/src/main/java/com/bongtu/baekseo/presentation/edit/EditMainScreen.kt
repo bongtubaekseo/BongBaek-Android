@@ -180,21 +180,6 @@ private fun EditMainScreen(
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isFormFilled = remember(
-        uiState.name,
-        uiState.nameError,
-        uiState.nickname,
-        uiState.nicknameError,
-        uiState.relationship,
-        uiState.eventCategory,
-        uiState.cost,
-        uiState.costError,
-        uiState.attendLabel,
-        uiState.eventDate,
-    ) {
-        checkIsFormFilled()
-    }
-
     val isResultEditable = remember(editEntryType) {
         editEntryType != EditEntryType.FROM_RESULT
     }
@@ -415,7 +400,7 @@ private fun EditMainScreen(
                         top = 40.dp,
                         bottom = 36.dp,
                     ),
-                enabled = isFormFilled,
+                enabled = checkIsFormFilled(),
             )
         }
         if (isDatePickerDialogVisible) {
