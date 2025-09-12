@@ -77,6 +77,10 @@ class RecommendViewModel @Inject constructor(
         }
     }
 
+    fun resetUiState() = _uiState.update {
+        RecommendUiState(username = _uiState.value.username)
+    }
+
     fun updateSearchTerm(searchTerm: String) {
         _isManualSearch.value = true
         _searchTerm.value = searchTerm

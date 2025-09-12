@@ -81,7 +81,10 @@ fun RecommendMainRoute(
     val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackClick: () -> Unit = {
-        if (uiState.pageIndex == 1) navigateToUp()
+        if (uiState.pageIndex == 1) {
+            navigateToUp()
+            viewModel.resetUiState()
+        }
         else viewModel.updatePageIndex(uiState.pageIndex - 1)
     }
 
