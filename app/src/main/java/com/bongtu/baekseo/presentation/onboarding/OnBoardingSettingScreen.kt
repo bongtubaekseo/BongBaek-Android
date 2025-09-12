@@ -95,6 +95,7 @@ fun OnBoardingSettingScreen(
                 newName = "",
                 newBirth = "",
                 newIncome = IncomeType.NONE,
+                newNameError = "",
             )
         }
     }
