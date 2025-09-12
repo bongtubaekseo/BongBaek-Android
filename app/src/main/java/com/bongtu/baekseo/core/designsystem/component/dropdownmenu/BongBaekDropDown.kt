@@ -53,13 +53,13 @@ import kotlinx.collections.immutable.persistentListOf
 @Composable
 fun <T> BongBaekDropdownMenu(
     expanded: Boolean,
-    onExpandedChange: (Boolean) -> Unit,
     items: ImmutableList<T>,
     selectedItem: T?,
-    onDismissRequest: () -> Unit,
     onItemSelect: (T) -> Unit,
     label: (T) -> String,
     modifier: Modifier = Modifier,
+    onExpandedChange: (Boolean) -> Unit = {},
+    onDismissRequest: () -> Unit = {},
     maxItemSize: Int = 3,
     offset: DpOffset = DpOffset(0.dp, 14.dp),
     focusable: Boolean = false,
@@ -203,14 +203,14 @@ private fun BongBaekDropdownMenuPreview() {
         ) {
             BongBaekDropdownMenu<String>(
                 expanded = expanded,
-                onExpandedChange = { expanded = !expanded },
                 items = dummyItems,
-                maxItemSize = 3,
                 selectedItem = selectedItem,
-                onDismissRequest = { expanded = false },
                 onItemSelect = { selectedItem = it },
                 label = { it },
                 modifier = Modifier,
+                onExpandedChange = { expanded = !expanded },
+                onDismissRequest = { expanded = false },
+                maxItemSize = 3,
                 content = {
                     TextField(
                         value = selectedItem,
