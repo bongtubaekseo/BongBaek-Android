@@ -216,6 +216,7 @@ class RecommendViewModel @Inject constructor(
     }
 
     fun saveEventInformation() = viewModelScope.launch {
+        updateLoadState(UiState.Loading)
         with(uiState.value) {
             eventRepository.postEventInfo(
                 host = Host(
@@ -243,10 +244,12 @@ class RecommendViewModel @Inject constructor(
             )
         }.onSuccess { response ->
             Timber.d("saveEventInformation: $response")
+            updateLoadState(UiState.Success(Unit))
             _sideEffect.emit(NavigateToFinal)
         }.onFailure {
-            // TODO: 실패 처리
             Timber.d("saveEventInformation: $it")
+            updateLoadState(UiState.Failure(ERROR_MESSAGE))
+            // TODO: 실패 처리
         }
     }
 

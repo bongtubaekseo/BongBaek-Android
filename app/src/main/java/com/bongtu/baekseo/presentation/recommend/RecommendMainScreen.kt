@@ -50,6 +50,7 @@ import com.bongtu.baekseo.R.string.recommendation_event_type_topbar
 import com.bongtu.baekseo.R.string.recommendation_relation_description
 import com.bongtu.baekseo.R.string.recommendation_relation_title
 import com.bongtu.baekseo.R.string.recommendation_relation_topbar
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -84,9 +85,9 @@ fun RecommendMainRoute(
         if (uiState.pageIndex == 1) {
             navigateToUp()
             viewModel.resetUiState()
-        }
-        else viewModel.updatePageIndex(uiState.pageIndex - 1)
+        } else viewModel.updatePageIndex(uiState.pageIndex - 1)
     }
+    val isLoading = uiState.loadState == UiState.Loading
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -99,6 +100,7 @@ fun RecommendMainRoute(
     }
 
     BackHandler {
+        if (isLoading) return@BackHandler
         onBackClick()
     }
 
@@ -107,7 +109,9 @@ fun RecommendMainRoute(
         searchTerm = searchTerm,
         onSearchTermChange = viewModel::updateSearchTerm,
         onBackClick = onBackClick,
-        fetchExpense = viewModel::fetchExpense,
+        fetchExpense = {
+            if (isLoading) viewModel.fetchExpense()
+        },
         onPageIndexChange = viewModel::updatePageIndex,
         onNameChange = viewModel::updateName,
         onNicknameChange = viewModel::updateNickname,
