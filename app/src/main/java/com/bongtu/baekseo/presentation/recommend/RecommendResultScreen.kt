@@ -79,7 +79,7 @@ fun RecommendResultRoute(
     RecommendResultScreen(
         uiState = uiState,
         onConfirmClick = {
-            if (isLoading) viewModel.saveEventInformation()
+            if (!isLoading) viewModel.saveEventInformation()
         },
         onEditClick = viewModel::navigateToEdit,
         modifier = modifier,

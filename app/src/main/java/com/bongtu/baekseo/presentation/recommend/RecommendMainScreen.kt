@@ -110,7 +110,7 @@ fun RecommendMainRoute(
         onSearchTermChange = viewModel::updateSearchTerm,
         onBackClick = onBackClick,
         fetchExpense = {
-            if (isLoading) viewModel.fetchExpense()
+            if (!isLoading) viewModel.fetchExpense()
         },
         onPageIndexChange = viewModel::updatePageIndex,
         onNameChange = viewModel::updateName,
