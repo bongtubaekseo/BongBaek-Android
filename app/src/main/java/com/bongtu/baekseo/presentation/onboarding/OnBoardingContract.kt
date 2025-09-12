@@ -7,7 +7,7 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 class OnBoardingContract {
     @Immutable
     data class OnBoardingUiState(
-        val loadState: UiState<Nothing> = UiState.Empty,
+        val loadState: UiState<Unit> = UiState.Empty,
         val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
         val kakaoId: String = "",
         val name: String = "",

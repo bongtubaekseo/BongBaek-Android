@@ -56,6 +56,7 @@ import com.bongtu.baekseo.R.string.onboarding_term_of_use
 import com.bongtu.baekseo.R.string.onboarding_title_prefix
 import com.bongtu.baekseo.R.string.onboarding_title_primary
 import com.bongtu.baekseo.R.string.onboarding_title_suffix
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -64,6 +65,7 @@ import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
 import com.bongtu.baekseo.presentation.onboarding.type.OnBoardingType
@@ -75,6 +77,7 @@ fun OnBoardingRoute(
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
     var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
     val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
@@ -110,6 +113,7 @@ fun OnBoardingRoute(
     when (screenState) {
         OnBoardingType.LOGIN -> {
             OnBoardingLoginScreen(
+                uiState = uiState,
                 onKakaoLoginClick = {
                     OnBoardingLoginKakaoLauncher(
                         context = context,
@@ -136,6 +140,7 @@ fun OnBoardingRoute(
 
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
+                uiState = uiState,
                 navigateToHome = navigateToHome,
                 navigateToUp = { screenState = OnBoardingType.LOGIN },
                 modifier = modifier,
@@ -147,6 +152,7 @@ fun OnBoardingRoute(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun OnBoardingLoginScreen(
+    uiState: OnBoardingUiState,
     onKakaoLoginClick: () -> Unit,
     isBottomSheetVisible: Boolean,
     onBottomSheetVisibleChange: (Boolean) -> Unit,
@@ -232,13 +238,11 @@ fun OnBoardingLoginScreen(
             ) {
                 BongBaekButton(
                     title = stringResource(id = button_kakao),
-                    onClick = {
-                        onKakaoLoginClick()
-                        // TODO: 이미 온 사용자이면 OnBoardingSetting으로 이동
-                    },
+                    onClick = onKakaoLoginClick,
                     buttonType = ButtonType.KAKAO,
                     modifier = Modifier
                         .fillMaxWidth(),
+                    enabled = uiState.loadState !is UiState.Loading,
                     textStyle = BongBaekTheme.typography.titleSemiBold18,
                     leadingIcon = {
                         Icon(
@@ -319,6 +323,7 @@ fun OnBoardingLoginScreen(
 private fun OnBoardingScreenLoginPreview() {
     BongBaekTheme {
         OnBoardingLoginScreen(
+            uiState = OnBoardingUiState(),
             onKakaoLoginClick = {},
             isBottomSheetVisible = false,
             onBottomSheetVisibleChange = {},

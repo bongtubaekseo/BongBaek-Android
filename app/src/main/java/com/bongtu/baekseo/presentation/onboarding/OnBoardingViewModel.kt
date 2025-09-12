@@ -64,8 +64,12 @@ class OnBoardingViewModel @Inject constructor(
 
     fun loginWithKakao(token: String) =
         viewModelScope.launch {
+            updateOnBoardingUiState(UiState.Loading)
+
             setKakaoLoginUseCase(token)
                 .onSuccess { response ->
+                    updateOnBoardingUiState(UiState.Success(Unit))
+
                     updateKakaoId(response.kakaoId)
                     if (response.isCompletedSignUp) {
                         _sideEffect.emit(NavigateToHome)
@@ -81,12 +85,16 @@ class OnBoardingViewModel @Inject constructor(
 
     fun postSignUp() =
         viewModelScope.launch {
+            updateOnBoardingUiState(UiState.Loading)
+
             authRepository.postSignUp(
                 kakaoId = uiState.value.kakaoId,
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth,
                 memberIncome = uiState.value.income.label,
             ).onSuccess { response ->
+                updateOnBoardingUiState(UiState.Success(Unit))
+
                 saveUsername(response.name)
                 saveApiKey(response.apiKey)
                 tokenDataStore.setTokens(
@@ -99,7 +107,7 @@ class OnBoardingViewModel @Inject constructor(
             }
         }
 
-    private fun updateOnBoardingUiState(value: UiState<Nothing>) =
+    private fun updateOnBoardingUiState(value: UiState<Unit>) =
         _uiState.update { currentState ->
             currentState.copy(
                 loadState = value,

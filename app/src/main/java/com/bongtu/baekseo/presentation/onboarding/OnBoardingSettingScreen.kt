@@ -32,7 +32,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
@@ -47,6 +46,7 @@ import com.bongtu.baekseo.R.string.onboarding_button_income_up
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.topbar_profile_setting
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
@@ -61,16 +61,17 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
 fun OnBoardingSettingScreen(
+    uiState: OnBoardingUiState,
     navigateToHome: () -> Unit,
     navigateToUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val focusManager = LocalFocusManager.current
 
@@ -145,7 +146,11 @@ fun OnBoardingSettingScreen(
                         .padding(top = 30.dp)
                         .noRippleClickable {
                             focusManager.clearFocus()
-                            viewModel.updateDialogBirth(DateFormatter.formatLocalDateToNumeric(uiState.birth))
+                            viewModel.updateDialogBirth(
+                                DateFormatter.formatLocalDateToNumeric(
+                                    uiState.birth,
+                                )
+                            )
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,
@@ -223,7 +228,10 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = viewModel::postSignUp,
+                onClick = {
+                    if (uiState.loadState !is UiState.Loading)
+                        viewModel.postSignUp()
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -254,6 +262,7 @@ fun OnBoardingSettingScreen(
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen(
+            uiState = OnBoardingUiState(),
             navigateToHome = {},
             navigateToUp = {},
         )
