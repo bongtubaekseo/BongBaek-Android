@@ -8,6 +8,7 @@ import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.presentation.schedule.ScheduleContract.ScheduleState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -69,6 +70,7 @@ class ScheduleViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
+                scheduleList = persistentListOf(),
             )
         }
         fetchScheduleEvent()

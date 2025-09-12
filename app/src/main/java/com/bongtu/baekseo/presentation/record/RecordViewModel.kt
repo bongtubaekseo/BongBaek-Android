@@ -12,6 +12,7 @@ import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.Na
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -97,6 +98,7 @@ class RecordViewModel @Inject constructor(
         _uiState.update { currentState ->
             currentState.copy(
                 eventCategoryType = eventCategoryType,
+                scheduleList = persistentListOf(),
             )
         }
         fetchRecordEvent()
