@@ -8,7 +8,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 /**
- * [FocusState]에 따라 [BringIntoViewRequester]가 붙은 컴포넌트를 화면 안으로 가져오는 메소드
+ * [isFocused]에 따라 [BringIntoViewRequester]가 붙은 컴포넌트를 화면 안으로 가져오는 메소드
  *
  * @param scope [BringIntoViewRequester.bringIntoView]가 실행되는 스코프
  * @param isFocused 포커스 상태 불리언 값
