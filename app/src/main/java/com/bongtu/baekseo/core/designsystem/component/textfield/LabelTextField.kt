@@ -61,6 +61,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  @param onInputDone 입력 완료
  *  @param keyboardType KeyboardType
  *  @param isClearButtonEnabled 텍스트 clear 버튼 활성화 여부
+ *  @param bottomSpacer 필드 하단에 추가로 확보할 여백 높이(dp)
  */
 @Composable
 fun LabelTextField(
