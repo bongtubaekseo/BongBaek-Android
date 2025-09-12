@@ -214,7 +214,8 @@ private fun EditMainScreen(
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
-            .statusBarsPadding(),
+            .statusBarsPadding()
+            .addFocusCleaner(focusManager),
     ) {
         BongBaekTopBar(
             title = editEntryType.editType.title,
@@ -236,7 +237,6 @@ private fun EditMainScreen(
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
                 .verticalScroll(rememberScrollState())
-                .addFocusCleaner(focusManager)
                 .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop()),
         ) {
             Column(
