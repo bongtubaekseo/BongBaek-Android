@@ -26,7 +26,7 @@ class MyPageContract {
                     userIncome != originalIncome
 
         val isEditButtonEnabled: Boolean
-            get() = isFormValid && isProfileChanged
+            get() = isFormValid && isProfileChanged && myPageLoadState !is UiState.Loading
     }
 
     sealed interface MyPageSideEffect {

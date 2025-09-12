@@ -53,6 +53,8 @@ class MyPageViewModel @Inject constructor(
     }
 
     fun patchUserProfile() = viewModelScope.launch {
+        updateMyPageLoadUiState(UiState.Loading)
+
         memberRepository.putProfileInfo(
             profileInfo = ProfileInfo(
                 memberName = uiState.value.userName,
@@ -60,8 +62,8 @@ class MyPageViewModel @Inject constructor(
                 memberIncome = uiState.value.userIncome.label,
             ),
         ).onSuccess {
-            saveUsername(uiState.value.userName)
             _sideEffect.emit(MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage)
+            saveUsername(uiState.value.userName)
         }.onFailure {
             // TODO: 실패 처리
             Timber.d("patchUserProfile: $it")
