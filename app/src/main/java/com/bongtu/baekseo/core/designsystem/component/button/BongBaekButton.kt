@@ -57,7 +57,7 @@ fun BongBaekButton(
         when (buttonType) {
             ButtonType.PRIMARY -> {
                 if (enabled) bongBaekColors.primaryNormal to bongBaekColors.white
-                else bongBaekColors.primaryNormal.copy(alpha = .1f) to bongBaekColors.gray500
+                else bongBaekColors.primaryBackground to bongBaekColors.gray500
             }
 
             ButtonType.SECONDARY -> bongBaekColors.gray700 to bongBaekColors.gray200
