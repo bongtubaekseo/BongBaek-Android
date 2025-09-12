@@ -2,22 +2,28 @@ package com.bongtu.baekseo.presentation.edit.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -27,6 +33,7 @@ import com.bongtu.baekseo.R.string.edit_memo_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_memo_title
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.bringIntoView
 
 private const val MEMO_RATIO = 320 / 152f
 private const val MEMO_INPUT_MAX_LENGTH = 50
@@ -38,9 +45,11 @@ fun EditMemoContent(
     modifier: Modifier = Modifier,
     isEditable: Boolean = false,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isFocused by interactionSource.collectIsFocusedAsState()
+    var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
+
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
     val (borderColor, backgroundColor) = remember(isFocused) {
@@ -52,7 +61,8 @@ fun EditMemoContent(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .bringIntoViewRequester(bringIntoViewRequester),
     ) {
         Text(
             text = stringResource(edit_memo_title),
@@ -88,7 +98,6 @@ fun EditMemoContent(
                 placeholder = stringResource(edit_memo_text_field_placeholder),
                 placeholderColor = BongBaekTheme.colors.gray500,
                 textStyle = BongBaekTheme.typography.body2Regular16,
-                interactionSource = interactionSource,
                 keyboardOptions = KeyboardOptions(
                     imeAction = ImeAction.Done,
                 ),
@@ -101,6 +110,10 @@ fun EditMemoContent(
                 isEnabled = isEditable,
                 isSingleLine = false,
                 modifier = Modifier
+                    .onFocusEvent { focusState ->
+                        isFocused = focusState.isFocused
+                        bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
+                    }
                     .padding(
                         vertical = 16.dp,
                         horizontal = 20.dp,
@@ -108,6 +121,7 @@ fun EditMemoContent(
                     .matchParentSize(),
             )
         }
+        Spacer(modifier = Modifier.height(20.dp))
     }
 }
 

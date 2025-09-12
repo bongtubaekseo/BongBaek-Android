@@ -9,9 +9,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -70,8 +73,13 @@ fun RecordRoute(
     }
 
     LaunchedEffect(Unit) {
-        viewModel.clearPage()
         viewModel.fetchRecordEvent()
+    }
+
+    DisposableEffect(Unit) {
+        onDispose {
+            viewModel.initRecordUiState()
+        }
     }
 
     RecordScreen(
@@ -108,6 +116,7 @@ private fun RecordScreen(
     val isDeleteButtonEnabled = remember(uiState.selectedDeleteEventIds) {
         uiState.selectedDeleteEventIds.isNotEmpty()
     }
+    var isEnterDeleteButtonVisible by remember { mutableStateOf(false) }
 
     Column(
         modifier = modifier
@@ -116,11 +125,12 @@ private fun RecordScreen(
     ) {
         RecordTopBar(
             isDeleteMode = uiState.isDeleteMode,
-            isDeleteButtonEnabled = isDeleteButtonEnabled,
+            isEnterDeleteButtonVisible = isEnterDeleteButtonVisible,
+            isConfirmButtonEnabled = isDeleteButtonEnabled,
             navigateToAdd = navigateToAdd,
             onEnterDeleteModeClick = onEnterDeleteModeClick,
             onExitDeleteModeClick = onExitDeleteModeClick,
-            onDeleteClick = onDeleteClick,
+            onConfirmDeleteClick = onDeleteClick,
         )
 
         AttendTypeTab(
@@ -141,6 +151,7 @@ private fun RecordScreen(
         ) { (loadState, category) ->
             when (loadState) {
                 is UiState.Empty -> {
+                    isEnterDeleteButtonVisible = false
                     BongBaekScheduleEmptyContent(
                         eventType = category.label,
                         scheduleType = ScheduleType.RECORD,
@@ -154,6 +165,7 @@ private fun RecordScreen(
 
                 is UiState.Failure -> {
                     // TODO: 에러 상태
+                    isEnterDeleteButtonVisible = false
                 }
 
                 is UiState.Loading -> {
@@ -161,6 +173,7 @@ private fun RecordScreen(
                 }
 
                 is UiState.Success -> {
+                    isEnterDeleteButtonVisible = true
                     RecordListContent(
                         scheduleEventList = uiState.scheduleList,
                         isDeleteMode = uiState.isDeleteMode,

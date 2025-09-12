@@ -8,12 +8,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -32,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.KeyboardType
@@ -68,12 +72,16 @@ import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
+import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.core.common.type.AttendType
+import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
@@ -82,6 +90,8 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
+import com.bongtu.baekseo.core.util.addFocusCleaner
+import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToDetail
@@ -92,7 +102,6 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMain
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
-import com.bongtu.baekseo.presentation.edit.component.EditSaveButton
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -190,12 +199,23 @@ private fun EditMainScreen(
         editEntryType != EditEntryType.FROM_RESULT
     }
 
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
+    }
+
     Column(
         modifier = modifier
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
-            .systemBarsPadding(),
+            .statusBarsPadding()
+            .addFocusCleaner(focusManager),
     ) {
         BongBaekTopBar(
             title = editEntryType.editType.title,
@@ -216,7 +236,8 @@ private fun EditMainScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 20.dp)
-                .verticalScroll(rememberScrollState()),
+                .verticalScroll(rememberScrollState())
+                .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop()),
         ) {
             Column(
                 modifier = Modifier
@@ -226,14 +247,13 @@ private fun EditMainScreen(
                         shape = RoundedCornerShape(10.dp),
                     )
                     .padding(vertical = 24.dp, horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
                     labelImage = ic_person,
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
-                    modifier = Modifier,
+                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
@@ -245,6 +265,7 @@ private fun EditMainScreen(
                     labelImage = ic_nickname,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
+                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
@@ -263,6 +284,7 @@ private fun EditMainScreen(
                             isEditable = isResultEditable,
                         )
                     },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 FormFieldItem(
@@ -276,7 +298,8 @@ private fun EditMainScreen(
                             onItemSelected = onEventSelect,
                             isEditable = isResultEditable,
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 Row(
@@ -296,6 +319,7 @@ private fun EditMainScreen(
                         isRequired = true,
                         keyboardType = KeyboardType.NumberPassword,
                         visualTransformation = CostTextFieldFormat(),
+                        bottomSpacer = 32.dp,
                     )
 
                     Text(
@@ -321,7 +345,8 @@ private fun EditMainScreen(
                             onItemSelected = onAttendSelect,
                             isEditable = isResultEditable,
                         )
-                    }
+                    },
+                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 LabelTextField(
@@ -333,7 +358,8 @@ private fun EditMainScreen(
                         .noRippleClickable {
                             text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                             if (isResultEditable) isDatePickerDialogVisible = true
-                        },
+                        }
+                        .padding(bottom = 32.dp),
                     isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
@@ -375,9 +401,21 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(
                         top = 20.dp,
-                        bottom = 150.dp,
                     ),
                 isEditable = isResultEditable,
+            )
+
+            BongBaekButton(
+                title = stringResource(id = edit_save_button),
+                onClick = onSubmitEventButtonClick,
+                buttonType = ButtonType.PRIMARY,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(
+                        top = 40.dp,
+                        bottom = 36.dp,
+                    ),
+                enabled = isFormFilled,
             )
         }
         if (isDatePickerDialogVisible) {
@@ -393,19 +431,6 @@ private fun EditMainScreen(
             )
         }
     }
-
-    EditSaveButton(
-        onClick = onSubmitEventButtonClick,
-        enabled = isFormFilled,
-        modifier = Modifier
-            .padding(
-                top = 10.dp,
-                bottom = 36.dp,
-                start = 20.dp,
-                end = 20.dp,
-            )
-            .systemBarsPadding(),
-    )
 }
 
 @Composable
