@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -64,8 +63,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
-import com.bongtu.baekseo.core.util.addFocusCleaner
-import com.bongtu.baekseo.core.util.excludeTop
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
@@ -130,7 +128,7 @@ fun OnBoardingSettingScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
-            .addFocusCleaner(focusManager),
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_setting),

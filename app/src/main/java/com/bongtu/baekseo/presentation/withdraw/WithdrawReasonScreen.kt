@@ -41,7 +41,7 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.util.addFocusCleaner
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.withdraw.WithdrawContract.WithdrawUiState
 import com.bongtu.baekseo.presentation.withdraw.component.WithdrawReasonSelector
@@ -99,7 +99,7 @@ private fun WithdrawReasonScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
-            .addFocusCleaner(focusManager),
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(withdraw_topbar),
