@@ -74,7 +74,7 @@
     <string name="recommendation_result_location">장소</string>
     <string name="recommendation_result_location_blank">미선택</string>
     <string name="recommendation_result_logic_title">이렇게 계산했어요</string>
-    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 친구 관계 (친밀도 보통)\n• 식사 참석 여부</string>
+    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 경조사 대상과의 관계\n• 식사 참석 여부</string>
     <string name="recommendation_result_inform_title">참고해주세요!</string>
     <string name="recommendation_result_inform_desc">• 홀수 금액으로 준비해주세요\n• 새 지폐로 준비하는 게 좋아요\n• 봉투에 정성스럽게 마음을 표현해보세요</string>
     <string name="recommendation_result_confirm">이 금액으로 결정하기</string>
@@ -113,6 +113,8 @@
     <string name="record_detail_location_title">행사장</string>
     <!--Badge    -->
     <string name="badge_schedule_empty">일정 추가하기</string>
+    <!--Map    -->
+    <string name="search_result_empty">검색 결과가 없습니다.</string>
     <!--TextField    -->
     <string name="label_text_field_required_text">*</string>
     <string name="search_text_field_placeholder">주소로 검색하면 빠르게 찾을 수 있어요</string>
