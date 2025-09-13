@@ -4,27 +4,27 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.component.KakaoMapView
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
@@ -39,6 +39,7 @@ private const val MAP_RATIO = 320 / 312f
 private const val DEFAULT_LATITUDE = 37.5665
 private const val DEFAULT_LONGITUDE = 126.9780
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RecommendEventLocationContent(
     selectedPlace: Place?,
@@ -49,48 +50,44 @@ fun RecommendEventLocationContent(
     onFocusChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var rowWidthPx by remember { mutableIntStateOf(0) }
+    var isFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
     val defaultPosition = selectedPlace?.let {
         LatLng.from(it.latitude, it.longitude)
     } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
-    val focusManager = LocalFocusManager.current
 
-    LaunchedEffect(searchResult) {
-        if (searchResult.isNotEmpty()) isExpanded = true
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
     }
 
     Column(
-        modifier = modifier
-            .onGloballyPositioned { coordinates ->
-                rowWidthPx = coordinates.size.width
-            },
+        modifier = modifier,
         verticalArrangement = Arrangement.spacedBy(14.dp),
     ) {
-        Column {
+        BongBaekDropdownMenu<Place>(
+            expanded = isFocused && searchValue.isNotEmpty(),
+            items = searchResult,
+            selectedItem = selectedPlace,
+            onItemSelect = { place ->
+                onPlaceSelect(place)
+                onFocusChange(false)
+                focusManager.clearFocus()
+            },
+            label = { it.name },
+        ) {
             SearchTextField(
                 text = searchValue,
-                onTextChange = {
-                    onSearchValueChange(it)
-                },
+                onTextChange = onSearchValueChange,
+                modifier = Modifier
+                    .onFocusChanged {
+                        isFocused = it.isFocused
+                    },
                 onFocusChange = onFocusChange,
                 focusManager = focusManager,
-            )
-
-            BongBaekDropdownMenu<Place>(
-                expanded = isExpanded,
-                items = searchResult,
-                selectedItem = selectedPlace,
-                onDismissRequest = { isExpanded = false },
-                onItemSelect = { place ->
-                    onPlaceSelect(place)
-                    onFocusChange(false)
-                    focusManager.clearFocus()
-                },
-                label = { it.name },
-                modifier = Modifier
-                    .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
-                offset = DpOffset(0.dp, 12.dp),
             )
         }
 

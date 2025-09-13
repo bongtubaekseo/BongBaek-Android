@@ -32,6 +32,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.raw.lottie_envelope
 import com.bongtu.baekseo.R.string.recommendation_result_location_blank
 import com.bongtu.baekseo.R.string.recommendation_result_topbar
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.LottieFiniteOverlay
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
@@ -57,6 +58,7 @@ fun RecommendResultRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val isLoading = uiState.loadState == UiState.Loading
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -70,12 +72,15 @@ fun RecommendResultRoute(
     }
 
     BackHandler {
+        if (isLoading) return@BackHandler
         navigateBackToMain()
     }
 
     RecommendResultScreen(
         uiState = uiState,
-        onConfirmClick = viewModel::saveEventInformation,
+        onConfirmClick = {
+            if (!isLoading) viewModel.saveEventInformation()
+        },
         onEditClick = viewModel::navigateToEdit,
         modifier = modifier,
     )

@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -27,6 +29,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -50,6 +54,7 @@ import com.bongtu.baekseo.R.string.recommendation_event_type_topbar
 import com.bongtu.baekseo.R.string.recommendation_relation_description
 import com.bongtu.baekseo.R.string.recommendation_relation_title
 import com.bongtu.baekseo.R.string.recommendation_relation_topbar
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.RelationType
@@ -57,6 +62,7 @@ import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.presentation.recommend.RecommendContract.RecommendSideEffect
@@ -81,9 +87,12 @@ fun RecommendMainRoute(
     val searchTerm by viewModel.searchTerm.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
     val onBackClick: () -> Unit = {
-        if (uiState.pageIndex == 1) navigateToUp()
-        else viewModel.updatePageIndex(uiState.pageIndex - 1)
+        if (uiState.pageIndex == 1) {
+            navigateToUp()
+            viewModel.resetUiState()
+        } else viewModel.updatePageIndex(uiState.pageIndex - 1)
     }
+    val isLoading = uiState.loadState == UiState.Loading
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -96,6 +105,7 @@ fun RecommendMainRoute(
     }
 
     BackHandler {
+        if (isLoading) return@BackHandler
         onBackClick()
     }
 
@@ -104,7 +114,9 @@ fun RecommendMainRoute(
         searchTerm = searchTerm,
         onSearchTermChange = viewModel::updateSearchTerm,
         onBackClick = onBackClick,
-        fetchExpense = viewModel::fetchExpense,
+        fetchExpense = {
+            if (!isLoading) viewModel.fetchExpense()
+        },
         onPageIndexChange = viewModel::updatePageIndex,
         onNameChange = viewModel::updateName,
         onNicknameChange = viewModel::updateNickname,
@@ -176,6 +188,15 @@ private fun RecommendMainScreen(
         }
     }
     val scrollState = rememberScrollState()
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
+    }
 
     LaunchedEffect(uiState.pageIndex) {
         isTitleVisible = true
@@ -186,6 +207,7 @@ private fun RecommendMainScreen(
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
+            .clearFocus(focusManager)
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(
@@ -236,7 +258,7 @@ private fun RecommendMainScreen(
                         Text(
                             text = stringResource(titleRes),
                             style = BongBaekTheme.typography.headBold24,
-                            color = BongBaekTheme.colors.white,
+                            color = BongBaekTheme.colors.gray100,
                         )
 
                         if (uiState.pageIndex == 4) {
