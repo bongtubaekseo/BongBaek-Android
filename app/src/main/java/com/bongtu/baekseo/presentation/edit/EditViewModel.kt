@@ -194,7 +194,6 @@ class EditViewModel @Inject constructor(
             location = state.toLocation(),
         ).onSuccess { response ->
             navigateToComplete()
-            updateSubmitState(UiState.Success(Unit))
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("patchEditEventInformation").d("Error: $it")
@@ -215,7 +214,6 @@ class EditViewModel @Inject constructor(
             ),
         ).onSuccess { response ->
             navigateToComplete()
-            updateSubmitState(UiState.Success(Unit))
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("saveEditEventInformation").d("Error: $it")

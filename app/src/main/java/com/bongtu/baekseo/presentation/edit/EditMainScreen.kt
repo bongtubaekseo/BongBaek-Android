@@ -181,20 +181,7 @@ private fun EditMainScreen(
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isFormFilled = remember(
-        uiState.name,
-        uiState.nameError,
-        uiState.nickname,
-        uiState.nicknameError,
-        uiState.relationship,
-        uiState.eventCategory,
-        uiState.cost,
-        uiState.costError,
-        uiState.attendLabel,
-        uiState.eventDate,
-    ) {
-        checkIsFormFilled()
-    }
+    val isFormFilled = checkIsFormFilled()
 
     val isFromResult = remember(editEntryType) {
         editEntryType == EditEntryType.FROM_RESULT
