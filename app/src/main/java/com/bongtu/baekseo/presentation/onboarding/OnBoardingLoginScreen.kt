@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.presentation.onboarding
 
 import android.app.Activity
-import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
