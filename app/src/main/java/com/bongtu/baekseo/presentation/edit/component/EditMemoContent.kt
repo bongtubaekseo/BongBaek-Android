@@ -30,12 +30,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.string.edit_memo_text_field_placeholder
+import com.bongtu.baekseo.R.string.edit_memo_text_length
 import com.bongtu.baekseo.R.string.edit_memo_title
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.bringIntoView
 
-private const val MEMO_RATIO = 320 / 152f
+private const val MEMO_RATIO = 280 / 92f
 private const val MEMO_INPUT_MAX_LENGTH = 50
 
 @Composable
@@ -72,7 +73,7 @@ fun EditMemoContent(
                 .padding(bottom = 10.dp),
         )
 
-        Box(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .background(
@@ -84,41 +85,55 @@ fun EditMemoContent(
                     color = borderColor,
                     shape = RoundedCornerShape(10.dp),
                 )
-                .aspectRatio(MEMO_RATIO),
-            contentAlignment = Alignment.TopStart,
+                .padding(
+                    horizontal = 20.dp,
+                    vertical = 16.dp,
+                )
         ) {
-            BongBaekInnerTextField(
-                text = text,
-                onTextChange = {
-                    if (it.length <= MEMO_INPUT_MAX_LENGTH) {
-                        onTextChange(it)
-                    }
-                },
-                textColor = BongBaekTheme.colors.white,
-                placeholder = stringResource(edit_memo_text_field_placeholder),
-                placeholderColor = BongBaekTheme.colors.gray500,
-                textStyle = BongBaekTheme.typography.body2Regular16,
-                keyboardOptions = KeyboardOptions(
-                    imeAction = ImeAction.Done,
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                    },
-                ),
-                isReadOnly = !isEditable,
-                isEnabled = isEditable,
-                isSingleLine = false,
+            Box(
                 modifier = Modifier
-                    .onFocusEvent { focusState ->
-                        isFocused = focusState.isFocused
-                        bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
-                    }
-                    .padding(
-                        vertical = 16.dp,
-                        horizontal = 20.dp,
-                    )
-                    .matchParentSize(),
+                    .fillMaxWidth()
+                    .aspectRatio(MEMO_RATIO),
+                contentAlignment = Alignment.TopStart,
+            ) {
+                BongBaekInnerTextField(
+                    text = text,
+                    onTextChange = {
+                        if (it.length <= MEMO_INPUT_MAX_LENGTH) {
+                            onTextChange(it)
+                        }
+                    },
+                    textColor = BongBaekTheme.colors.white,
+                    placeholder = stringResource(edit_memo_text_field_placeholder),
+                    placeholderColor = BongBaekTheme.colors.gray500,
+                    textStyle = BongBaekTheme.typography.body2Regular16,
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                        },
+                    ),
+                    isReadOnly = !isEditable,
+                    isEnabled = isEditable,
+                    isSingleLine = false,
+                    modifier = Modifier
+                        .onFocusEvent { focusState ->
+                            isFocused = focusState.isFocused
+                            bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
+                        }
+                        .matchParentSize(),
+                )
+            }
+
+            Text(
+                text = stringResource(id = edit_memo_text_length, text.length),
+                modifier = Modifier
+                    .padding(top = 10.dp)
+                    .align(Alignment.End),
+                style = BongBaekTheme.typography.captionRegular12,
+                color = bongBaekColors.white,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
