@@ -7,7 +7,3 @@ import androidx.core.net.toUri
 fun Context.openUrl(url: String) {
     startActivity(Intent(Intent.ACTION_VIEW, url.toUri()))
 }
-
-fun Context.getVersionName(): String? = runCatching {
-    packageManager.getPackageInfo(packageName, 0).versionName
-}.getOrNull()
