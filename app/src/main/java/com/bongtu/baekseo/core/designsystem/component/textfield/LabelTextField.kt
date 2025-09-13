@@ -3,16 +3,17 @@ package com.bongtu.baekseo.core.designsystem.component.textfield
 import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
@@ -22,9 +23,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -33,6 +36,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_caution
@@ -40,6 +44,7 @@ import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.string.label_text_field_required_text
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
+import com.bongtu.baekseo.core.util.bringIntoView
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
@@ -56,6 +61,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  @param onInputDone 입력 완료
  *  @param keyboardType KeyboardType
  *  @param isClearButtonEnabled 텍스트 clear 버튼 활성화 여부
+ *  @param bottomSpacer 필드 하단에 추가로 확보할 여백 높이(dp)
  */
 @Composable
 fun LabelTextField(
@@ -72,13 +78,16 @@ fun LabelTextField(
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     isClearButtonEnabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
+    bottomSpacer: Dp? = null,
 ) {
-    val interactionSource = remember { MutableInteractionSource() }
-    val isFocused by interactionSource.collectIsFocusedAsState()
+    var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     val isFilled = text.isNotEmpty()
     val isError = errorText.isNotEmpty()
+
+    val coroutineScope = rememberCoroutineScope()
+    val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
     val dividerColor = remember(isError, isFocused, isFilled) {
@@ -95,7 +104,8 @@ fun LabelTextField(
     }
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .bringIntoViewRequester(bringIntoViewRequester),
     ) {
         Row(
             modifier = Modifier.padding(bottom = 12.dp),
@@ -132,10 +142,14 @@ fun LabelTextField(
             textColor = textColor,
             placeholder = placeholder,
             placeholderColor = BongBaekTheme.colors.gray400,
+            modifier = Modifier
+                .onFocusEvent { focusState ->
+                    isFocused = focusState.isFocused
+                    bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
+                },
             isReadOnly = !isEditable,
             isEnabled = isEditable,
             textStyle = BongBaekTheme.typography.body2Regular16,
-            interactionSource = interactionSource,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Done,
@@ -191,6 +205,8 @@ fun LabelTextField(
                 )
             }
         }
+
+        bottomSpacer?.let { Spacer(Modifier.height(it)) }
     }
 }
 

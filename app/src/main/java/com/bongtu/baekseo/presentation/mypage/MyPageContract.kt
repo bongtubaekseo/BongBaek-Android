@@ -12,10 +12,10 @@ class MyPageContract {
         val nameError: String = "",
         val userBirth: String = "",
         val dialogBirth: String = "",
-        val userIncome: String = IncomeType.NONE.label,
+        val userIncome: IncomeType = IncomeType.NONE,
         val originalName: String = "",
         val originalBirth: String = "",
-        val originalIncome: String = IncomeType.NONE.label,
+        val originalIncome: IncomeType = IncomeType.NONE,
     ) {
         val isFormValid: Boolean
             get() = userName.isNotEmpty() && userBirth.isNotEmpty() && nameError.isEmpty()

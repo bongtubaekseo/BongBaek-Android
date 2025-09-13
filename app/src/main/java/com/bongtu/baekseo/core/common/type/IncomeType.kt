@@ -2,9 +2,10 @@ package com.bongtu.baekseo.core.common.type
 
 enum class IncomeType(
     val label: String,
+    val uiLabel: String = label,
 ) {
-    UNDER_200(label = "200만원 미만"),
-    OVER_200(label = "200만원 이상"),
+    UNDER_200(label = "200만원 미만", uiLabel = "월 200만원 미만"),
+    OVER_200(label = "200만원 이상", uiLabel = "월 200만원 이상"),
     NONE(label = "없음");
 
     companion object {

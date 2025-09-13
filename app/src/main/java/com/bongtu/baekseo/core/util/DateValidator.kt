@@ -4,9 +4,11 @@ import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import java.time.LocalDate
 import java.time.Period
 import java.time.format.DateTimeFormatter
+import java.time.format.ResolverStyle
 
 object DateValidator {
-    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd")
+    private val DATE_FORMATTER = DateTimeFormatter.ofPattern("uuuuMMdd")
+        .withResolverStyle(ResolverStyle.STRICT)
     fun validateDate(
         input: String,
         type: DatePickerDialogType,
