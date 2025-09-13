@@ -40,7 +40,7 @@ class MyPageViewModel @Inject constructor(
                     it.copy(
                         userName = response.memberName,
                         userBirth = response.memberBirthday,
-                        userIncome = IncomeType.getIncomeType(response.memberIncome).label,
+                        userIncome = IncomeType.getIncomeType(response.memberIncome),
                     )
                 }
                 updateMyPageLoadUiState(UiState.Success(Unit))
@@ -55,7 +55,7 @@ class MyPageViewModel @Inject constructor(
             profileInfo = ProfileInfo(
                 memberName = uiState.value.userName,
                 memberBirthday = uiState.value.userBirth,
-                memberIncome = uiState.value.userIncome,
+                memberIncome = uiState.value.userIncome.label,
             ),
         ).onSuccess {
             _sideEffect.emit(MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage)
@@ -77,7 +77,7 @@ class MyPageViewModel @Inject constructor(
                 }
         }
 
-    fun updateOriginProfileState(newName: String, newBirth: String, newIncome: String) =
+    fun updateOriginProfileState(newName: String, newBirth: String, newIncome: IncomeType) =
         _uiState.update {
             it.copy(
                 originalName = newName,
@@ -98,7 +98,7 @@ class MyPageViewModel @Inject constructor(
         it.copy(dialogBirth = newDialogBirth)
     }
 
-    fun updateUserIncome(newIncome: String) = _uiState.update {
+    fun updateUserIncome(newIncome: IncomeType) = _uiState.update {
         it.copy(userIncome = newIncome)
     }
 
