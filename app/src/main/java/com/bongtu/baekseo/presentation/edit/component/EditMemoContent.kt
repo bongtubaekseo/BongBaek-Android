@@ -44,7 +44,7 @@ fun EditMemoContent(
     text: String,
     onTextChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    isEditable: Boolean = false,
+    isEditable: Boolean = true,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
