@@ -197,6 +197,7 @@ class EditViewModel @Inject constructor(
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("patchEditEventInformation").d("Error: $it")
+            updateSubmitState(UiState.Failure(it.message ?: "Unknown Error"))
         }
     }
 
@@ -217,6 +218,7 @@ class EditViewModel @Inject constructor(
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("saveEditEventInformation").d("Error: $it")
+            updateSubmitState(UiState.Failure(it.message ?: "Unknown Error"))
         }
     }
 
@@ -253,7 +255,8 @@ class EditViewModel @Inject constructor(
         longitude = selectedPlace?.longitude ?: 0.0
     )
 
-    private fun updateSubmitState(newSubmitState: UiState<Unit>) = _uiState.update { it.copy(submitState = newSubmitState) }
+    private fun updateSubmitState(newSubmitState: UiState<Unit>) =
+        _uiState.update { it.copy(submitState = newSubmitState) }
 
     companion object {
         private const val DEBOUNCE_DELAY = 500L
