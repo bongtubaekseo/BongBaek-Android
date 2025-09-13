@@ -9,14 +9,17 @@ import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
+import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -29,6 +32,7 @@ class OnBoardingViewModel @Inject constructor(
     private val tokenDataStore: TokenDataStore,
     private val authRepository: AuthRepository,
     private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
+    private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
     private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
     val kakaoLoginState = _kakaoLoginState.asStateFlow()
@@ -38,6 +42,13 @@ class OnBoardingViewModel @Inject constructor(
 
     private val _sideEffect = MutableSharedFlow<OnBoardingSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
+
+    val isUpdateDialogVisible = getUpdateFlagUseCase()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            initialValue = false
+        )
 
     fun updateName(newName: String) = _uiState.update {
         it.copy(

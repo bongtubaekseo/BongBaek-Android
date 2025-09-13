@@ -1,5 +1,7 @@
 package com.bongtu.baekseo.presentation.home
 
+import android.app.Activity
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -26,6 +28,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -35,14 +38,18 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.home_schedule_more
 import com.bongtu.baekseo.R.string.home_schedule_title
+import com.bongtu.baekseo.R.string.market_url
 import com.bongtu.baekseo.core.common.state.UiState
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
@@ -67,6 +74,10 @@ fun HomeRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
+    val isUpdateDialogVisible by viewModel.isUpdateDialogVisible.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val packageName = context.packageName
+    val marketUrl = stringResource(market_url, packageName)
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
@@ -92,6 +103,14 @@ fun HomeRoute(
         navigateToMyPage = navigateToMyPage,
         modifier = modifier,
     )
+
+    if (isUpdateDialogVisible) {
+        BongBaekDialog(
+            dialogType = DialogType.ERROR_UPDATE,
+            onDismissRequest = { (context as? Activity)?.finish() },
+            onConfirmClick = { context.openUrl(marketUrl) },
+        )
+    }
 }
 
 @Composable
