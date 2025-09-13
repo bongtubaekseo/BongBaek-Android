@@ -5,33 +5,34 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_close
@@ -45,6 +46,7 @@ import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropd
 import com.bongtu.baekseo.core.designsystem.component.textfield.SearchTextField
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.data.model.map.Place
 import com.kakao.vectormap.LatLng
@@ -78,6 +80,7 @@ fun EditLocationRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditLocationScreen(
     searchValue: String,
@@ -88,15 +91,19 @@ fun EditLocationScreen(
     onPlaceSelect: (Place?) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var isExpanded by remember { mutableStateOf(false) }
-    var rowWidthPx by remember { mutableIntStateOf(0) }
+    var isFocused by remember { mutableStateOf(false) }
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
     var tempSelectedPlace by remember { mutableStateOf<Place?>(selectedPlace) }
     val defaultPosition = tempSelectedPlace?.let {
         LatLng.from(it.latitude, it.longitude)
     } ?: LatLng.from(DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
 
-    LaunchedEffect(searchResult) {
-        if (searchResult.isNotEmpty()) isExpanded = true
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
     }
 
     Column(
@@ -105,7 +112,8 @@ fun EditLocationScreen(
             .background(
                 color = BongBaekTheme.colors.gray900,
             )
-            .systemBarsPadding(),
+            .systemBarsPadding()
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(edit_location_top_bar_title),
@@ -129,33 +137,28 @@ fun EditLocationScreen(
             modifier = Modifier
                 .padding(
                     horizontal = 20.dp,
-                )
-                .onGloballyPositioned { coordinates ->
-                    rowWidthPx = coordinates.size.width
-                },
+                ),
         ) {
-            Column {
+            BongBaekDropdownMenu<Place>(
+                expanded = isFocused && searchValue.isNotEmpty(),
+                items = searchResult,
+                selectedItem = tempSelectedPlace,
+                onItemSelect = { place ->
+                    tempSelectedPlace = place
+                    focusManager.clearFocus()
+                },
+                label = { it.name },
+            ) {
                 SearchTextField(
                     text = searchValue,
                     onTextChange = onSearchValueChange,
                     modifier = Modifier
                         .padding(
                             top = 16.dp,
-                        ),
-                )
-
-                BongBaekDropdownMenu<Place>(
-                    expanded = isExpanded,
-                    items = searchResult,
-                    selectedItem = tempSelectedPlace,
-                    onDismissRequest = { isExpanded = false },
-                    onItemSelect = { place ->
-                        tempSelectedPlace = place
-                    },
-                    label = { it.name },
-                    modifier = Modifier
-                        .width(with(LocalDensity.current) { rowWidthPx.toDp() }),
-                    offset = DpOffset(0.dp, 12.dp),
+                        )
+                        .onFocusChanged {
+                            isFocused = it.isFocused
+                        },
                 )
             }
 
