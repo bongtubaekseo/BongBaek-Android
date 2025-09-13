@@ -1,23 +1,29 @@
 package com.bongtu.baekseo.domain.usecase.config
 
+import com.bongtu.baekseo.core.local.datastore.ConfigDataStore
 import com.bongtu.baekseo.data.repository.config.ConfigRepository
-import jakarta.inject.Inject
 import net.swiftzer.semver.SemVer.Companion.parse
+import javax.inject.Inject
 
 class CheckAppVersionUseCase @Inject constructor(
     private val configRepository: ConfigRepository,
+    private val configDataStore: ConfigDataStore,
 ) {
     suspend operator fun invoke(
         appVersion: String,
-    ): Boolean {
+    ) = runCatching {
         val remoteConfigVersion = configRepository.fetchRemoteConfigInfo()
         val latestVersion = parse(remoteConfigVersion)
         val currentVersion = parse(appVersion)
 
-        return when {
+        val updateFlag = when {
             currentVersion.major < latestVersion.major -> true
             currentVersion.major == latestVersion.major && currentVersion.minor < latestVersion.minor -> true
             else -> false
         }
+
+        configDataStore.setUpdateFlag(updateFlag)
+    }.onFailure {
+        configDataStore.setUpdateFlag(false)
     }
 }
