@@ -64,7 +64,6 @@ import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_is_attend_title
 import com.bongtu.baekseo.R.string.edit_location_add_text
 import com.bongtu.baekseo.R.string.edit_location_edit_text
-import com.bongtu.baekseo.R.string.edit_location_empty
 import com.bongtu.baekseo.R.string.edit_location_title
 import com.bongtu.baekseo.R.string.edit_name_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_name_title
@@ -75,6 +74,7 @@ import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
 import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
+import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
@@ -383,7 +383,7 @@ private fun EditMainScreen(
                     content = {
                         if (isFromResult) {
                             Text(
-                                text = stringResource(id = edit_location_empty),
+                                text = stringResource(id = location_empty_text),
                                 style = BongBaekTheme.typography.body1Medium14,
                                 color = BongBaekTheme.colors.gray400,
                             )
