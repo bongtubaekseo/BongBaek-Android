@@ -64,6 +64,7 @@ import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
 import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
@@ -89,6 +90,13 @@ fun OnBoardingRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
+                    is LogoutKakaoLogin -> {
+                        try {
+                            OnBoardingLoginKakaoLauncher(context).logoutKakaoLogin()
+                        } finally {
+                            viewModel.updateOnBoardingUiState(UiState.Empty)
+                        }
+                    }
                 }
             }
     }
@@ -141,7 +149,6 @@ fun OnBoardingRoute(
         OnBoardingType.SETTING -> {
             OnBoardingSettingScreen(
                 uiState = uiState,
-                navigateToHome = navigateToHome,
                 navigateToUp = { screenState = OnBoardingType.LOGIN },
                 modifier = modifier,
             )

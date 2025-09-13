@@ -19,6 +19,7 @@ class OnBoardingContract {
 
     sealed class OnBoardingSideEffect {
         data object NavigateToHome : OnBoardingSideEffect()
+        data object LogoutKakaoLogin: OnBoardingSideEffect()
     }
 
 }

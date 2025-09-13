@@ -11,6 +11,7 @@ import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -107,7 +108,18 @@ class OnBoardingViewModel @Inject constructor(
             }
         }
 
-    private fun updateOnBoardingUiState(value: UiState<Unit>) =
+    fun logoutKakaoLogin() = viewModelScope.launch {
+        updateOnBoardingUiState(UiState.Loading)
+        updateOriginOnBoardingState(
+            newName = "",
+            newBirth = "",
+            newIncome = IncomeType.NONE,
+            newNameError = "",
+        )
+        _sideEffect.emit(LogoutKakaoLogin)
+    }
+
+    fun updateOnBoardingUiState(value: UiState<Unit>) =
         _uiState.update { currentState ->
             currentState.copy(
                 loadState = value,

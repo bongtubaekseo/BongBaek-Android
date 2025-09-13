@@ -16,7 +16,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -34,8 +32,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
@@ -65,55 +61,29 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
 fun OnBoardingSettingScreen(
     uiState: OnBoardingUiState,
-    navigateToHome: () -> Unit,
     navigateToUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
-    val lifecycleOwner = LocalLifecycleOwner.current
     val focusManager = LocalFocusManager.current
-    val context = LocalContext.current
     val density = LocalDensity.current
 
     val isImeVisible = WindowInsets.ime.getBottom(density) > 0
 
     BackHandler {
         navigateToUp()
-    }
-
-    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { sideEffect ->
-                when (sideEffect) {
-                    is NavigateToHome -> navigateToHome()
-                }
-            }
+        viewModel.logoutKakaoLogin()
     }
 
     LaunchedEffect(isImeVisible) {
         if (!isImeVisible) {
             focusManager.clearFocus()
-        }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            viewModel.updateOriginOnBoardingState(
-                newName = "",
-                newBirth = "",
-                newIncome = IncomeType.NONE,
-                newNameError = "",
-            )
-            OnBoardingLoginKakaoLauncher(
-                context = context,
-            ).logoutKakaoLogin()
         }
     }
 
@@ -139,7 +109,11 @@ fun OnBoardingSettingScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable(onClick = navigateToUp),
+                        .noRippleClickable(
+                            onClick = {
+                                navigateToUp()
+                                viewModel.logoutKakaoLogin()
+                            }),
                     tint = BongBaekTheme.colors.white,
                 )
             }
@@ -290,7 +264,6 @@ private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen(
             uiState = OnBoardingUiState(),
-            navigateToHome = {},
             navigateToUp = {},
         )
     }
