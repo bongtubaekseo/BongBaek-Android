@@ -2,7 +2,6 @@ package com.bongtu.baekseo.presentation.withdraw
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -21,7 +20,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -43,6 +41,7 @@ import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.addFocusCleaner
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.withdraw.WithdrawContract.WithdrawUiState
 import com.bongtu.baekseo.presentation.withdraw.component.WithdrawReasonSelector
@@ -100,9 +99,7 @@ private fun WithdrawReasonScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
-            .pointerInput(Unit) {
-                detectTapGestures(onTap = { focusManager.clearFocus() })
-            },
+            .addFocusCleaner(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(withdraw_topbar),
