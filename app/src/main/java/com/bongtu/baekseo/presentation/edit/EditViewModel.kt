@@ -203,6 +203,8 @@ class EditViewModel @Inject constructor(
 
     private fun saveEventInformation() = viewModelScope.launch {
         val state = uiState.value
+        updateSubmitState(UiState.Loading)
+
         eventRepository.postEventInfo(
             host = state.toHost(),
             event = state.toEvent(),
@@ -213,6 +215,7 @@ class EditViewModel @Inject constructor(
             ),
         ).onSuccess { response ->
             navigateToComplete()
+            updateSubmitState(UiState.Success(Unit))
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("saveEditEventInformation").d("Error: $it")
