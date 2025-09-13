@@ -414,15 +414,16 @@ private fun EditMainScreen(
                 )
             }
 
-            EditMemoContent(
-                text = uiState.note,
-                onTextChange = onNoteChange,
-                modifier = Modifier
-                    .padding(
-                        top = 20.dp,
-                    ),
-                isEditable = !isFromResult,
-            )
+            if (!isFromResult) {
+                EditMemoContent(
+                    text = uiState.note,
+                    onTextChange = onNoteChange,
+                    modifier = Modifier
+                        .padding(
+                            top = 20.dp,
+                        ),
+                )
+            }
 
             BongBaekButton(
                 title = stringResource(id = edit_save_button),
