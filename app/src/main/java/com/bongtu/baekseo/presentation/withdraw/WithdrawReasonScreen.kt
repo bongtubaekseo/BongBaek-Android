@@ -54,15 +54,12 @@ fun WithdrawRoute(
     viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val buttonEnabled = remember(uiState.reasonType, uiState.etcReason) {
-        viewModel.updateButtonState()
-    }
     val pageIndex = remember { mutableStateOf(0) }
 
     when (pageIndex.value) {
         0 -> WithdrawReasonScreen(
             uiState = uiState,
-            buttonEnabled = buttonEnabled,
+            buttonEnabled = viewModel.updateButtonState(),
             navigateToUp = navigateToUp,
             onReasonSelect = viewModel::updateReasonType,
             modifier = modifier,
