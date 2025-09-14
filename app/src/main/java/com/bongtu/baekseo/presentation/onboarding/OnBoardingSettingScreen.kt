@@ -89,9 +89,6 @@ fun OnBoardingSettingScreen(
 
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
-    val buttonEnabled = remember(uiState.name, uiState.birth) {
-        viewModel.updateButtonState()
-    }
 
     Column(
         modifier = modifier
@@ -239,7 +236,7 @@ fun OnBoardingSettingScreen(
                     .padding(
                         bottom = 38.dp,
                     ),
-                enabled = buttonEnabled,
+                enabled = viewModel.updateButtonState(),
             )
         }
 
