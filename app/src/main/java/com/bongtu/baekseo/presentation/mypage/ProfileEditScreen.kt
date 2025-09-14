@@ -251,14 +251,14 @@ private fun ProfileEditScreen(
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = switchChecked && uiState.userIncome == IncomeType.UNDER_200,
+                            selected = uiState.userIncome == IncomeType.UNDER_200,
                             onClick = { onUserIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = switchChecked && uiState.userIncome == IncomeType.OVER_200,
+                            selected = uiState.userIncome == IncomeType.OVER_200,
                             onClick = { onUserIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
