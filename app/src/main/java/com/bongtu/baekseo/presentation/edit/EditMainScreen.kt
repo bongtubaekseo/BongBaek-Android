@@ -339,8 +339,10 @@ private fun EditMainScreen(
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
-                            if (!isFromResult) isDatePickerDialogVisible = true
+                            if (!isFromResult) {
+                                text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
+                                isDatePickerDialogVisible = true
+                            }
                         }
                         .padding(bottom = 32.dp),
                     isRequired = true,
