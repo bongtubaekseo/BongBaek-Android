@@ -43,12 +43,14 @@ fun EditDropdownMenu(
     selectedItem: String,
     onItemSelected: (String) -> Unit,
     isEditable: Boolean = true,
+    isDimmed: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
     val isSelected = selectedItem.isNotBlank()
     val bongBaekColors = BongBaekTheme.colors
     val text = if (isSelected) selectedItem else placeholder
     val textColor = when {
+        isDimmed -> bongBaekColors.gray400
         isSelected && expanded -> bongBaekColors.primaryNormal
         isSelected || expanded -> bongBaekColors.white
         else -> bongBaekColors.gray300

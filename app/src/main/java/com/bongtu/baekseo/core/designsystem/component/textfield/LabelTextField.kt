@@ -57,6 +57,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
  *  @param errorText error 문구
  *  @param isRequired 필수 값 * 표시 여부
  *  @param isEditable write / read
+ *  @param isDimmed Dimmed 라벨, 이름 Dimmed 색상 적용 여부
  *  @param onTextChange 입력값 변경
  *  @param onInputDone 입력 완료
  *  @param keyboardType KeyboardType
@@ -73,6 +74,7 @@ fun LabelTextField(
     errorText: String = "",
     isRequired: Boolean = false,
     isEditable: Boolean = true,
+    isDimmed: Boolean = false,
     onTextChange: (String) -> Unit = {},
     onInputDone: (() -> Unit)? = null,
     keyboardType: KeyboardType = KeyboardType.Unspecified,
@@ -90,18 +92,20 @@ fun LabelTextField(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
-    val dividerColor = remember(isError, isFocused, isFilled) {
-        when {
-            isError -> bongBaekColors.secondaryRed
-            isFocused -> bongBaekColors.primaryNormal
-            isFilled -> bongBaekColors.white
-            else -> bongBaekColors.gray500
-        }
+    val dividerColor = when {
+        isError -> bongBaekColors.secondaryRed
+        isFocused -> bongBaekColors.primaryNormal
+        isFilled -> bongBaekColors.white
+        else -> bongBaekColors.gray500
     }
 
-    val textColor = remember(isError) {
-        if (isError) bongBaekColors.secondaryRed else bongBaekColors.white
+    val textColor = when {
+        isError -> bongBaekColors.secondaryRed
+        isDimmed -> bongBaekColors.gray400
+        else -> bongBaekColors.white
     }
+    
+    val labelTextColor = if(isDimmed) bongBaekColors.gray400 else bongBaekColors.gray100
 
     Column(
         modifier = modifier
@@ -122,7 +126,7 @@ fun LabelTextField(
             Text(
                 text = labelName,
                 style = BongBaekTheme.typography.body1Medium14,
-                color = BongBaekTheme.colors.gray100,
+                color = labelTextColor,
             )
 
             if (isRequired) {

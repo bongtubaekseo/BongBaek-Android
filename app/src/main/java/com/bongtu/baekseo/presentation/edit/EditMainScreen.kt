@@ -63,6 +63,7 @@ import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
+import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
@@ -89,9 +90,9 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMain
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditDropdownMenu
+import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
-import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.filterIsInstance
@@ -169,8 +170,8 @@ private fun EditMainScreen(
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isResultEditable = remember(editEntryType) {
-        editEntryType != EditEntryType.FROM_RESULT
+    val isFromResult = remember(editEntryType) {
+        editEntryType == EditEntryType.FROM_RESULT
     }
 
     val focusManager = LocalFocusManager.current
@@ -231,7 +232,8 @@ private fun EditMainScreen(
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
-                    isEditable = isResultEditable,
+                    isEditable = !isFromResult,
+                    isDimmed = isFromResult,
                 )
 
                 LabelTextField(
@@ -243,19 +245,22 @@ private fun EditMainScreen(
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
-                    isEditable = isResultEditable,
+                    isEditable = !isFromResult,
+                    isDimmed = isFromResult,
                 )
 
                 EditFieldItem(
                     iconRes = ic_relation,
                     labelRes = edit_relation_title,
+                    isDimmed = isFromResult,
                     content = {
                         EditDropdownMenu(
                             placeholder = stringResource(id = edit_relation_dropdown_placeholder),
                             menuItems = relations,
                             selectedItem = uiState.relationship,
                             onItemSelected = onRelationSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -264,13 +269,15 @@ private fun EditMainScreen(
                 EditFieldItem(
                     iconRes = ic_event,
                     labelRes = edit_event_title,
+                    isDimmed = isFromResult,
                     content = {
                         EditDropdownMenu(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
                             selectedItem = uiState.eventCategory,
                             onItemSelected = onEventSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -311,13 +318,15 @@ private fun EditMainScreen(
                 EditFieldItem(
                     iconRes = ic_check_gray,
                     labelRes = edit_is_attend_title,
+                    isDimmed = isFromResult,
                     content = {
                         EditDropdownMenu(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
                             selectedItem = uiState.attendLabel,
                             onItemSelected = onAttendSelect,
-                            isEditable = isResultEditable,
+                            isEditable = !isFromResult,
+                            isDimmed = isFromResult,
                         )
                     },
                     modifier = Modifier.padding(bottom = 32.dp),
@@ -330,12 +339,15 @@ private fun EditMainScreen(
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
                     modifier = Modifier
                         .noRippleClickable {
-                            text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
-                            if (isResultEditable) isDatePickerDialogVisible = true
+                            if (!isFromResult) {
+                                text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
+                                isDatePickerDialogVisible = true
+                            }
                         }
                         .padding(bottom = 32.dp),
                     isRequired = true,
                     isEditable = false,
+                    isDimmed = isFromResult,
                     isClearButtonEnabled = false,
                     visualTransformation = DateTextFieldFormat(),
                 )
@@ -343,41 +355,51 @@ private fun EditMainScreen(
                 EditFieldItem(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
+                    isDimmed = isFromResult,
                     content = {
-                        uiState.selectedPlace?.let { place ->
-                            EditLocationContent(
-                                place = place,
+                        if (isFromResult) {
+                            Text(
+                                text = stringResource(id = location_empty_text),
+                                style = BongBaekTheme.typography.body1Medium14,
+                                color = BongBaekTheme.colors.gray400,
                             )
+                        } else {
+                            uiState.selectedPlace?.let { place ->
+                                EditLocationContent(
+                                    place = place,
+                                )
+                            }
                         }
                     },
                     isRequired = false,
                     trailing = {
-                        Text(
-                            text = stringResource(
-                                uiState.selectedPlace?.let {
-                                    edit_location_edit_text
-                                } ?: edit_location_add_text
-                            ),
-                            style = BongBaekTheme.typography.body2Regular14,
-                            color = BongBaekTheme.colors.gray300,
-                            modifier = Modifier
-                                .noRippleClickable {
-                                    if (isResultEditable) navigateToLocation()
-                                },
-                        )
+                        if (!isFromResult) {
+                            Text(
+                                text = stringResource(
+                                    uiState.selectedPlace?.let {
+                                        edit_location_edit_text
+                                    } ?: edit_location_add_text
+                                ),
+                                style = BongBaekTheme.typography.body2Regular14,
+                                color = BongBaekTheme.colors.gray300,
+                                modifier = Modifier
+                                    .noRippleClickable(navigateToLocation),
+                            )
+                        }
                     },
                 )
             }
 
-            EditMemoContent(
-                text = uiState.note,
-                onTextChange = onNoteChange,
-                modifier = Modifier
-                    .padding(
-                        top = 20.dp,
-                    ),
-                isEditable = isResultEditable,
-            )
+            if (!isFromResult) {
+                EditMemoContent(
+                    text = uiState.note,
+                    onTextChange = onNoteChange,
+                    modifier = Modifier
+                        .padding(
+                            top = 20.dp,
+                        ),
+                )
+            }
 
             BongBaekButton(
                 title = stringResource(id = edit_save_button),

@@ -31,7 +31,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check_gray
@@ -39,7 +38,6 @@ import com.bongtu.baekseo.R.string.input_text_field_placeholder
 import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
 import com.bongtu.baekseo.R.string.withdraw_reason_etc
-import com.bongtu.baekseo.R.string.withdraw_reason_etc_error
 import com.bongtu.baekseo.R.string.withdraw_reason_etc_length
 import com.bongtu.baekseo.R.string.withdraw_reason_privacy
 import com.bongtu.baekseo.R.string.withdraw_reason_uncomfortable
@@ -49,6 +47,8 @@ import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTex
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.checkLength
 import com.bongtu.baekseo.core.util.noRippleClickable
+
+private const val ETC_INPUT_MAX_LENGTH = 50
 
 @Composable
 fun WithdrawReasonSelector(
@@ -117,11 +117,10 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
-    val etcReasonLength = value.checkLength()
-    val (iconRes, titleColor) = remember(isSelected, etcReasonLength) {
-        when {
-            isSelected == true && etcReasonLength < 50 -> ic_check to bongBaekColors.white
-            isSelected == false || etcReasonLength >= 50 -> ic_withdraw_check_gray to bongBaekColors.gray400
+    val (iconRes, titleColor) = remember(isSelected) {
+        when (isSelected) {
+            true -> ic_check to bongBaekColors.white
+            false -> ic_withdraw_check_gray to bongBaekColors.gray400
             else -> ic_withdraw_check to bongBaekColors.gray100
         }
     }
@@ -134,10 +133,6 @@ private fun WithdrawSelectorItem(
             WithdrawType.NEW_ACCOUNT -> withdraw_reason_account
             WithdrawType.OTHER -> withdraw_reason_etc
         }
-    }
-    val (lengthColor, borderColor) = remember(etcReasonLength) {
-        if (etcReasonLength >= 50) bongBaekColors.secondaryRed to bongBaekColors.secondaryRed
-        else bongBaekColors.white to bongBaekColors.primaryNormal
     }
 
     val focusManager = LocalFocusManager.current
@@ -152,7 +147,7 @@ private fun WithdrawSelectorItem(
                     if (isSelected == true)
                         Modifier.border(
                             width = 1.dp,
-                            color = borderColor,
+                            color = bongBaekColors.primaryNormal,
                             shape = RoundedCornerShape(10.dp),
                         )
                     else Modifier
@@ -177,7 +172,10 @@ private fun WithdrawSelectorItem(
                 if (reason == WithdrawType.OTHER && isSelected == true) {
                     BongBaekInnerTextField(
                         text = value,
-                        onTextChange = onValueChange,
+                        onTextChange = {
+                            if (it.checkLength() <= ETC_INPUT_MAX_LENGTH)
+                                onValueChange(it)
+                        },
                         textColor = BongBaekTheme.colors.white,
                         textStyle = BongBaekTheme.typography.body1Medium16,
                         placeholder = stringResource(id = input_text_field_placeholder),
@@ -208,29 +206,7 @@ private fun WithdrawSelectorItem(
                     text = stringResource(id = withdraw_reason_etc_length, value.checkLength()),
                     modifier = Modifier.align(Alignment.End),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = lengthColor,
-                )
-            }
-        }
-        if (etcReasonLength >= 50) {
-            Spacer(modifier = Modifier.size(8.dp))
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(ic_caution),
-                    contentDescription = null,
-                    modifier = Modifier.size(14.dp),
-                    tint = bongBaekColors.secondaryRed,
-                )
-
-                Spacer(modifier = Modifier.size(4.dp))
-
-                Text(
-                    text = stringResource(id = withdraw_reason_etc_error),
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = bongBaekColors.secondaryRed,
+                    color = bongBaekColors.white,
                 )
             }
         }
