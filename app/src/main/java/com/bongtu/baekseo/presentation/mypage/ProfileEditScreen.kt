@@ -63,7 +63,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
-import com.bongtu.baekseo.core.util.addFocusCleaner
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
@@ -150,7 +150,7 @@ private fun ProfileEditScreen(
             .background(color = BongBaekTheme.colors.gray900)
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
-            .addFocusCleaner(focusManager),
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_edit),
