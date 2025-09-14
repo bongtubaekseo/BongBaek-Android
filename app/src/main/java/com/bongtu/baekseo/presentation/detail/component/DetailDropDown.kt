@@ -77,18 +77,10 @@ fun DetailDropDown(
     }
     val eventDate = remember(event.eventDate) { DateFormatter.formatToKorean(event.eventDate) }
 
-    val isEmptyLocationInfo = remember(event.locationInfo) {
-        with(event) {
-            locationInfo?.let {
-                it.location.isBlank() &&
-                        it.address.isBlank() &&
-                        it.latitude == 0.0 &&
-                        it.longitude == 0.0
-            }
-        }
+    val locationInfo = event.locationInfo?.takeUnless { info ->
+        info.location.isBlank() && info.address.isBlank() &&
+                info.latitude == 0.0 && info.longitude == 0.0
     }
-
-    val locationInfo = if (isEmptyLocationInfo == true) null else event.locationInfo
 
     val recordDetailItems = persistentListOf(
         Triple(
