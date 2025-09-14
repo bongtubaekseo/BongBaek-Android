@@ -35,6 +35,7 @@ import com.bongtu.baekseo.R.string.edit_memo_title
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.bringIntoView
+import com.bongtu.baekseo.core.util.checkLength
 
 private const val MEMO_RATIO = 280 / 92f
 private const val MEMO_INPUT_MAX_LENGTH = 50
@@ -99,7 +100,7 @@ fun EditMemoContent(
                 BongBaekInnerTextField(
                     text = text,
                     onTextChange = {
-                        if (it.length <= MEMO_INPUT_MAX_LENGTH) {
+                        if (it.checkLength() <= MEMO_INPUT_MAX_LENGTH) {
                             onTextChange(it)
                         }
                     },
@@ -128,7 +129,7 @@ fun EditMemoContent(
             }
 
             Text(
-                text = stringResource(id = edit_memo_text_length, text.length),
+                text = stringResource(id = edit_memo_text_length, text.checkLength()),
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .align(Alignment.End),
