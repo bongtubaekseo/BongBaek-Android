@@ -23,7 +23,5 @@ class CheckAppVersionUseCase @Inject constructor(
         }
 
         configDataStore.setUpdateFlag(updateFlag)
-    }.onFailure {
-        configDataStore.setUpdateFlag(false)
     }
 }
