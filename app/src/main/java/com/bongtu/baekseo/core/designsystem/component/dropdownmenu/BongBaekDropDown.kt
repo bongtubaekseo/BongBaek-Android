@@ -69,7 +69,7 @@ fun <T> BongBaekDropdownMenu(
     val bongBaekColors = BongBaekTheme.colors
     var itemHeightDp by remember { mutableStateOf(0.dp) }
     val maxHeight =
-        if (itemHeightDp > 0.dp) itemHeightDp * maxItemSize + 4.dp * (maxItemSize - 1) + 28.dp
+        if (itemHeightDp > 0.dp) (itemHeightDp + 4.dp) * maxItemSize + 24.dp
         else Dp.Unspecified
 
     LaunchedEffect(items) {
