@@ -191,12 +191,7 @@ private fun SliderThumb(
     Box(
         modifier = modifier
             .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        BongBaekTheme.colors.primaryNormal,
-                        BongBaekTheme.colors.gradientSlider,
-                    )
-                ),
+                color = BongBaekTheme.colors.primaryNormal,
                 shape = CircleShape,
             )
             .padding(8.dp),

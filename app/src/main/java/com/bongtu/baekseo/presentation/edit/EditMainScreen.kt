@@ -74,7 +74,6 @@ import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_required_text
 import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
-import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
@@ -91,7 +90,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.CostTextFieldFormat
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
-import com.bongtu.baekseo.core.util.addFocusCleaner
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
@@ -101,8 +100,10 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMain
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
+import com.bongtu.baekseo.presentation.edit.component.EditDropdownMenu
 import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
+import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
@@ -181,8 +182,6 @@ private fun EditMainScreen(
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
 
-    val isFormFilled = checkIsFormFilled()
-
     val isFromResult = remember(editEntryType) {
         editEntryType == EditEntryType.FROM_RESULT
     }
@@ -203,7 +202,7 @@ private fun EditMainScreen(
                 color = BongBaekTheme.colors.gray900,
             )
             .statusBarsPadding()
-            .addFocusCleaner(focusManager),
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = editEntryType.editType.title,
@@ -262,12 +261,12 @@ private fun EditMainScreen(
                     isDimmed = isFromResult,
                 )
 
-                FormFieldItem(
+                EditFieldItem(
                     iconRes = ic_relation,
                     labelRes = edit_relation_title,
                     isDimmed = isFromResult,
                     content = {
-                        FormFieldDropDown(
+                        EditDropdownMenu(
                             placeholder = stringResource(id = edit_relation_dropdown_placeholder),
                             menuItems = relations,
                             selectedItem = uiState.relationship,
@@ -279,12 +278,12 @@ private fun EditMainScreen(
                     modifier = Modifier.padding(bottom = 32.dp),
                 )
 
-                FormFieldItem(
+                EditFieldItem(
                     iconRes = ic_event,
                     labelRes = edit_event_title,
                     isDimmed = isFromResult,
                     content = {
-                        FormFieldDropDown(
+                        EditDropdownMenu(
                             placeholder = stringResource(id = edit_event_dropdown_placeholder),
                             menuItems = events,
                             selectedItem = uiState.eventCategory,
@@ -328,12 +327,12 @@ private fun EditMainScreen(
                     )
                 }
 
-                FormFieldItem(
+                EditFieldItem(
                     iconRes = ic_check_gray,
                     labelRes = edit_is_attend_title,
                     isDimmed = isFromResult,
                     content = {
-                        FormFieldDropDown(
+                        EditDropdownMenu(
                             placeholder = stringResource(id = edit_is_attend_dropdown_placeholder),
                             menuItems = attendOptions,
                             selectedItem = uiState.attendLabel,
@@ -363,7 +362,7 @@ private fun EditMainScreen(
                     visualTransformation = DateTextFieldFormat(),
                 )
 
-                FormFieldItem(
+                EditFieldItem(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
                     isDimmed = isFromResult,
@@ -401,16 +400,15 @@ private fun EditMainScreen(
                 )
             }
 
-            if (!isFromResult) {
-                EditMemoContent(
-                    text = uiState.note,
-                    onTextChange = onNoteChange,
-                    modifier = Modifier
-                        .padding(
-                            top = 20.dp,
-                        ),
-                )
-            }
+            EditMemoContent(
+                text = uiState.note,
+                onTextChange = onNoteChange,
+                modifier = Modifier
+                    .padding(
+                        top = 20.dp,
+                    ),
+                isEditable = isResultEditable,
+            )
 
             BongBaekButton(
                 title = stringResource(id = edit_save_button),
@@ -422,7 +420,7 @@ private fun EditMainScreen(
                         top = 40.dp,
                         bottom = 36.dp,
                     ),
-                enabled = isFormFilled,
+                enabled = checkIsFormFilled(),
             )
         }
         if (isDatePickerDialogVisible) {
@@ -440,6 +438,7 @@ private fun EditMainScreen(
     }
 }
 
+@Preview
 @Composable
 private fun FormFieldItem(
     @DrawableRes iconRes: Int,
@@ -552,6 +551,23 @@ private fun FormFieldDropDown(
             imageVector = ImageVector.vectorResource(id = if (expanded) ic_arrow_up else ic_arrow_down),
             contentDescription = null,
             tint = textColor,
+private fun EditMainScreenPreview() {
+    BongBaekTheme {
+        EditMainScreen(
+            editEntryType = EditEntryType.FROM_DETAIL,
+            uiState = EditUiState(),
+            navigateUp = {},
+            navigateToLocation = {},
+            onNameChange = {},
+            onNicknameChange = {},
+            onRelationSelect = {},
+            onEventSelect = {},
+            onCostChange = {},
+            onAttendSelect = {},
+            onDateChange = {},
+            onNoteChange = {},
+            checkIsFormFilled = { true },
+            onSubmitEventButtonClick = {},
         )
     }
 
