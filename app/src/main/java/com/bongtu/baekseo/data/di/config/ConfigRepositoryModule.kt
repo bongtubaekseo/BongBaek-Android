@@ -14,6 +14,6 @@ abstract class ConfigRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindConfigRepository(
-        repositoryImpl: ConfigRepositoryImpl
+        repositoryImpl: ConfigRepositoryImpl,
     ): ConfigRepository
 }

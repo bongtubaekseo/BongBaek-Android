@@ -2,12 +2,6 @@
     <string name="app_name">봉투백서</string>
     <string name="kr_won">원</string>
     <!--Splash    -->
-    <string name="update_mandatory_title">앱 실행에 문제가 발생했어요</string>
-    <string name="update_mandatory_desc">안정적인 서비스 이용을 위해\n최신 버전으로 업데이트해주세요!</string>
-    <string name="update_recommend_title">새로운 기능이 추가되었어요</string>
-    <string name="update_recommend_desc">더 편리하게 소중한 순간을 준비할 수 있도록\n최신 버전으로 업데이트해주세요!</string>
-    <string name="update_confirm">업데이트</string>
-    <string name="update_cancel">취소</string>
     <string name="market_url">market://details?id=%1$s</string>
     <!--Home    -->
     <string name="home">홈</string>
