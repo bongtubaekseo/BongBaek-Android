@@ -17,8 +17,7 @@ class ConfigRepositoryImpl @Inject constructor(
     override suspend fun fetchRemoteConfigInfo(): String {
         val remoteConfig = Firebase.remoteConfig
         val configSettings = remoteConfigSettings {
-            minimumFetchIntervalInSeconds = 0
-            // TODO: Fetch 시간 수정
+            minimumFetchIntervalInSeconds = 3600
         }
 
         remoteConfig.setConfigSettingsAsync(configSettings)
