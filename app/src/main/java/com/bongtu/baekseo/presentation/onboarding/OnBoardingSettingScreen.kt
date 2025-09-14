@@ -6,10 +6,12 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.systemBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -23,14 +25,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.LocalLifecycleOwner
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
@@ -44,10 +45,12 @@ import com.bongtu.baekseo.R.string.onboarding_button_income_up
 import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.topbar_profile_setting
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
@@ -56,45 +59,43 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
 fun OnBoardingSettingScreen(
-    navigateToHome: () -> Unit,
+    uiState: OnBoardingUiState,
     navigateToUp: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val lifecycleOwner = LocalLifecycleOwner.current
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
+
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
 
     BackHandler {
         navigateToUp()
+        viewModel.logoutKakaoLogin()
     }
 
-    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { sideEffect ->
-                when (sideEffect) {
-                    is NavigateToHome -> navigateToHome()
-                }
-            }
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
+        }
     }
 
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
-    val buttonEnabled = remember(uiState.name, uiState.birth) {
-        viewModel.updateButtonState()
-    }
-    var incomeSelected by remember { mutableStateOf(true) }
 
     Column(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.gray900)
-            .systemBarsPadding(),
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_setting),
@@ -105,7 +106,11 @@ fun OnBoardingSettingScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable(onClick = navigateToUp),
+                        .noRippleClickable(
+                            onClick = {
+                                navigateToUp()
+                                viewModel.logoutKakaoLogin()
+                            }),
                     tint = BongBaekTheme.colors.white,
                 )
             }
@@ -138,7 +143,12 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
-                            viewModel.updateDialogBirth(DateFormatter.formatLocalDateToNumeric(uiState.birth))
+                            focusManager.clearFocus()
+                            viewModel.updateDialogBirth(
+                                DateFormatter.formatLocalDateToNumeric(
+                                    uiState.birth,
+                                )
+                            )
                             isDatePickerDialogVisible = true
                         },
                     onTextChange = viewModel::updateBirth,
@@ -170,6 +180,8 @@ fun OnBoardingSettingScreen(
                         checked = switchChecked,
                         onCheckedChange = {
                             switchChecked = it
+                            viewModel.updateIncome(IncomeType.NONE)
+                            focusManager.clearFocus()
                         },
                     )
                 }
@@ -193,20 +205,18 @@ fun OnBoardingSettingScreen(
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = incomeSelected,
+                            selected = uiState.income == IncomeType.UNDER_200,
                             onClick = {
-                                if (!incomeSelected) incomeSelected = true
-                                viewModel.updateIncome(IncomeType.UNDER_200.label)
+                                viewModel.updateIncome(IncomeType.UNDER_200)
                             },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = !incomeSelected,
+                            selected = uiState.income == IncomeType.OVER_200,
                             onClick = {
-                                if (incomeSelected) incomeSelected = false
-                                viewModel.updateIncome(IncomeType.OVER_200.label)
+                                viewModel.updateIncome(IncomeType.OVER_200)
                             },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -216,14 +226,17 @@ fun OnBoardingSettingScreen(
 
             BongBaekButton(
                 title = stringResource(id = button_start_service),
-                onClick = viewModel::postSignUp,
+                onClick = {
+                    if (uiState.loadState !is UiState.Loading)
+                        viewModel.postSignUp()
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
                         bottom = 38.dp,
                     ),
-                enabled = buttonEnabled,
+                enabled = viewModel.updateButtonState(),
             )
         }
 
@@ -247,8 +260,7 @@ fun OnBoardingSettingScreen(
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingSettingScreen(
-            viewModel = hiltViewModel(),
-            navigateToHome = {},
+            uiState = OnBoardingUiState(),
             navigateToUp = {},
         )
     }
