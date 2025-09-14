@@ -122,6 +122,7 @@ fun BongBaekDatePickerDialog(
                 BongBaekDatePickerTextField(
                     value = value,
                     onValueChange = onValueChange,
+                    isError = value.isNotEmpty() && !isValid,
                 )
 
                 AnimatedVisibility(
@@ -189,8 +190,18 @@ fun BongBaekDatePickerDialog(
 private fun BongBaekDatePickerTextField(
     value: String,
     onValueChange: (String) -> Unit,
+    isError: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val bongBaekColors = BongBaekTheme.colors
+
+    val borderColor = remember(isError) {
+        when {
+            isError -> bongBaekColors.secondaryRed
+            else -> bongBaekColors.lineNormal
+        }
+    }
+
     BongBaekInnerTextField(
         text = value,
         onTextChange = {
@@ -202,13 +213,11 @@ private fun BongBaekDatePickerTextField(
         textStyle = BongBaekTheme.typography.body1Medium16,
         placeholder = stringResource(id = date_picker_placeholder),
         placeholderColor = BongBaekTheme.colors.gray500,
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-        visualTransformation = DatePickerFormat(),
         modifier = modifier
             .fillMaxWidth()
             .border(
                 width = 1.dp,
-                color = BongBaekTheme.colors.lineNormal,
+                color = borderColor,
                 shape = RoundedCornerShape(10.dp),
             )
             .background(
@@ -219,6 +228,8 @@ private fun BongBaekDatePickerTextField(
                 horizontal = 14.dp,
                 vertical = 10.dp,
             ),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        visualTransformation = DatePickerFormat(),
     )
 }
 
@@ -228,6 +239,7 @@ private fun BongBaekDatePickerTextFieldPreview() {
     BongBaekDatePickerTextField(
         value = "",
         onValueChange = {},
+        isError = false,
     )
 }
 
