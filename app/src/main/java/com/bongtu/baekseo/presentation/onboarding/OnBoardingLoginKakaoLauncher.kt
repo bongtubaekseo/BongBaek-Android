@@ -9,8 +9,8 @@ import timber.log.Timber
 
 class OnBoardingLoginKakaoLauncher(
     private val context: Context,
-    private val onTokenReceived: (String) -> Unit,
-    private val onError: (Throwable) -> Unit,
+    private val onTokenReceived: (String) -> Unit = {},
+    private val onError: (Throwable) -> Unit = {},
 ) {
     fun startKakaoLogin() {
         // 카카오 계정으로 로그인 공통 callback 구성
@@ -48,6 +48,15 @@ class OnBoardingLoginKakaoLauncher(
             }
         } else {
             UserApiClient.instance.loginWithKakaoAccount(context, callback = callback)
+        }
+    }
+
+    fun logoutKakaoLogin() {
+        UserApiClient.instance.logout { error ->
+            if (error != null)
+                Timber.e(error, "카카오 로그아웃 실패")
+            else
+                Timber.d("카카오 로그아웃 성공")
         }
     }
 }

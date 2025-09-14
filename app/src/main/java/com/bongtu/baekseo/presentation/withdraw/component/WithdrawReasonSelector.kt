@@ -47,6 +47,7 @@ import com.bongtu.baekseo.R.string.withdraw_reason_use
 import com.bongtu.baekseo.core.common.type.WithdrawType
 import com.bongtu.baekseo.core.designsystem.component.textfield.BongBaekInnerTextField
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.checkLength
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
@@ -116,10 +117,11 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
-    val (iconRes, titleColor) = remember(isSelected, value.length) {
+    val etcReasonLength = value.checkLength()
+    val (iconRes, titleColor) = remember(isSelected, etcReasonLength) {
         when {
-            isSelected == true && value.length < 50 -> ic_check to bongBaekColors.white
-            isSelected == false || value.length >= 50 -> ic_withdraw_check_gray to bongBaekColors.gray400
+            isSelected == true && etcReasonLength < 50 -> ic_check to bongBaekColors.white
+            isSelected == false || etcReasonLength >= 50 -> ic_withdraw_check_gray to bongBaekColors.gray400
             else -> ic_withdraw_check to bongBaekColors.gray100
         }
     }
@@ -133,8 +135,8 @@ private fun WithdrawSelectorItem(
             WithdrawType.OTHER -> withdraw_reason_etc
         }
     }
-    val (lengthColor, borderColor) = remember(value.length) {
-        if (value.length >= 50) bongBaekColors.secondaryRed to bongBaekColors.secondaryRed
+    val (lengthColor, borderColor) = remember(etcReasonLength) {
+        if (etcReasonLength >= 50) bongBaekColors.secondaryRed to bongBaekColors.secondaryRed
         else bongBaekColors.white to bongBaekColors.primaryNormal
     }
 
@@ -203,14 +205,14 @@ private fun WithdrawSelectorItem(
                 Spacer(modifier = Modifier.size(4.dp))
 
                 Text(
-                    text = stringResource(id = withdraw_reason_etc_length, value.length),
+                    text = stringResource(id = withdraw_reason_etc_length, value.checkLength()),
                     modifier = Modifier.align(Alignment.End),
                     style = BongBaekTheme.typography.captionRegular12,
                     color = lengthColor,
                 )
             }
         }
-        if (value.length >= 50) {
+        if (etcReasonLength >= 50) {
             Spacer(modifier = Modifier.size(8.dp))
 
             Row(

@@ -7,18 +7,19 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 class OnBoardingContract {
     @Immutable
     data class OnBoardingUiState(
-        val loadState: UiState<Nothing> = UiState.Empty,
+        val loadState: UiState<Unit> = UiState.Empty,
         val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
         val kakaoId: String = "",
         val name: String = "",
         val birth: String = "",
         var dialogBirth: String = "",
-        val income: String = IncomeType.NONE.label,
+        val income: IncomeType = IncomeType.NONE,
         val nameError: String = "",
     )
 
     sealed class OnBoardingSideEffect {
         data object NavigateToHome : OnBoardingSideEffect()
+        data object LogoutKakaoLogin: OnBoardingSideEffect()
     }
 
 }
