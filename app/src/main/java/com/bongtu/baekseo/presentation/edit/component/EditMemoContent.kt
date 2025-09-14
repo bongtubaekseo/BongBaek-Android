@@ -88,7 +88,7 @@ fun EditMemoContent(
                 .padding(
                     horizontal = 20.dp,
                     vertical = 16.dp,
-                )
+                ),
         ) {
             Box(
                 modifier = Modifier
