@@ -31,8 +31,11 @@ fun EditFieldItem(
     content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isRequired: Boolean = true,
+    isDimmed: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
 ) {
+    val textColor = if (isDimmed) BongBaekTheme.colors.gray400 else BongBaekTheme.colors.white
+
     Column(
         modifier = modifier,
     ) {
@@ -54,7 +57,7 @@ fun EditFieldItem(
             Text(
                 text = stringResource(id = labelRes),
                 style = BongBaekTheme.typography.body1Medium14,
-                color = BongBaekTheme.colors.white,
+                color = textColor,
             )
 
             if (isRequired) {

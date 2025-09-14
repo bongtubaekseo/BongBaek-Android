@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">봉투백서</string>
     <string name="kr_won">원</string>
+    <string name="location_empty_text">-</string>
     <!--Splash    -->
     <string name="market_url">market://details?id=%1$s</string>
     <!--Home    -->
@@ -170,6 +171,7 @@
     <string name="edit_location_add_text">추가하기</string>
     <string name="edit_location_edit_text">수정하기</string>
     <string name="edit_memo_text_field_placeholder">메모를 작성해주세요</string>
+    <string name="edit_memo_text_length">%d/50</string>
     <string name="edit_save_button">기록 저장하기</string>
     <string name="edit_location_top_bar_title">행사장 검색</string>
     <string name="edit_location_button">위치 저장하기</string>

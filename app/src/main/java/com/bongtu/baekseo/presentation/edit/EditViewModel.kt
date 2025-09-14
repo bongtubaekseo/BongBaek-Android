@@ -4,6 +4,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.navigation.toRoute
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateCost
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.model.event.EditEvent
@@ -161,6 +162,7 @@ class EditViewModel @Inject constructor(
                 eventCategory.isNotBlank() && relationship.isNotBlank() &&
                 cost.isNotBlank() && costError.isBlank() &&
                 attendLabel.isNotBlank() && eventDate.isNotBlank()
+                && submitState !is UiState.Loading
     }
 
     fun submitEventInformation(entryType: EditEntryType) {
@@ -183,6 +185,8 @@ class EditViewModel @Inject constructor(
 
     private fun patchEventInformation() = viewModelScope.launch {
         val state = uiState.value
+        updateSubmitState(UiState.Loading)
+
         eventRepository.putEventInfo(
             eventId = state.eventId,
             host = state.toHost(),
@@ -193,11 +197,14 @@ class EditViewModel @Inject constructor(
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("patchEditEventInformation").d("Error: $it")
+            updateSubmitState(UiState.Failure(it.message ?: "Unknown Error"))
         }
     }
 
     private fun saveEventInformation() = viewModelScope.launch {
         val state = uiState.value
+        updateSubmitState(UiState.Loading)
+
         eventRepository.postEventInfo(
             host = state.toHost(),
             event = state.toEvent(),
@@ -211,6 +218,7 @@ class EditViewModel @Inject constructor(
         }.onFailure {
             // TODO: 실패 처리
             Timber.tag("saveEditEventInformation").d("Error: $it")
+            updateSubmitState(UiState.Failure(it.message ?: "Unknown Error"))
         }
     }
 
@@ -246,6 +254,9 @@ class EditViewModel @Inject constructor(
         latitude = selectedPlace?.latitude ?: 0.0,
         longitude = selectedPlace?.longitude ?: 0.0
     )
+
+    private fun updateSubmitState(newSubmitState: UiState<Unit>) =
+        _uiState.update { it.copy(submitState = newSubmitState) }
 
     companion object {
         private const val DEBOUNCE_DELAY = 500L

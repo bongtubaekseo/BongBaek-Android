@@ -3,6 +3,7 @@ package com.bongtu.baekseo.presentation.detail
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.event.DetailEvent
 import com.bongtu.baekseo.data.model.event.EditEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
@@ -87,15 +88,25 @@ class DetailViewModel @Inject constructor(
     }
 
     fun removeDetailEvent(eventId: String) = viewModelScope.launch {
+        updateLoadUiState(UiState.Loading)
+
         eventRepository.deleteEventInfo(eventId)
             .onSuccess { response ->
                 Timber.tag("DetailViewModel").d("deleteEventInfo: $response")
                 _sideEffect.emit(NavigateToRecord)
             }.onFailure {
-                Timber.tag("DetailViewModel").e(it)
                 // TODO: 실패처리
+                Timber.tag("DetailViewModel").e(it)
+                updateLoadUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
     }
+
+    private fun updateLoadUiState(newUiState: UiState<Unit>) =
+        _uiState.update {
+            it.copy(
+                loadState = newUiState,
+            )
+        }
 
     companion object {
         private const val EVENT_ID_KEY = "eventId"

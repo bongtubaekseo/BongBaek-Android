@@ -42,6 +42,7 @@ import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.drawable.ic_person
 import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.R.string.record_card_cost
 import com.bongtu.baekseo.R.string.record_detail_calendar_title
 import com.bongtu.baekseo.R.string.record_detail_cost_title
@@ -76,18 +77,10 @@ fun DetailDropDown(
     }
     val eventDate = remember(event.eventDate) { DateFormatter.formatToKorean(event.eventDate) }
 
-    val isEmptyLocationInfo = remember(event.locationInfo) {
-        with(event) {
-            locationInfo?.let {
-                it.location.isBlank() &&
-                        it.address.isBlank() &&
-                        it.latitude == 0.0 &&
-                        it.longitude == 0.0
-            }
-        }
+    val locationInfo = event.locationInfo?.takeUnless { info ->
+        info.location.isBlank() && info.address.isBlank() &&
+                info.latitude == 0.0 && info.longitude == 0.0
     }
-
-    val locationInfo = if (isEmptyLocationInfo == true) null else event.locationInfo
 
     val recordDetailItems = persistentListOf(
         Triple(
@@ -128,7 +121,8 @@ fun DetailDropDown(
         Triple(
             ic_location,
             record_detail_location_title,
-            null
+            if (locationInfo == null)
+                TrailingText(stringResource(location_empty_text)) else null
         )
     )
 
@@ -183,7 +177,11 @@ fun DetailDropDown(
                     )
                     Spacer(
                         modifier = Modifier.height(
-                            if (index == recordDetailItems.lastIndex) 12.dp else 24.dp
+                            when {
+                                index != recordDetailItems.lastIndex -> 24.dp
+                                locationInfo == null -> 0.dp
+                                else -> 12.dp
+                            }
                         ),
                     )
                 }

@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -21,12 +22,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -61,6 +63,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
+import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
@@ -130,13 +133,15 @@ private fun ProfileEditScreen(
     modifier: Modifier = Modifier,
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
-    val switchChecked = uiState.userIncome != IncomeType.NONE
-    val incomeSelected = uiState.userIncome != IncomeType.OVER_200
+    var switchChecked by remember { mutableStateOf(uiState.userIncome != IncomeType.NONE) }
+    val focusManager = LocalFocusManager.current
+    val density = LocalDensity.current
 
-    var lastOnIncome by rememberSaveable { mutableStateOf(IncomeType.UNDER_200) }
-    LaunchedEffect(uiState.userIncome) {
-        if (uiState.userIncome != IncomeType.NONE) {
-            lastOnIncome = uiState.userIncome
+    val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+
+    LaunchedEffect(isImeVisible) {
+        if (!isImeVisible) {
+            focusManager.clearFocus()
         }
     }
 
@@ -144,7 +149,8 @@ private fun ProfileEditScreen(
         modifier = modifier
             .background(color = BongBaekTheme.colors.gray900)
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar),
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
+            .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(id = topbar_profile_edit),
@@ -189,6 +195,7 @@ private fun ProfileEditScreen(
                         .noRippleClickable {
                             onDialogBirthChange(DateFormatter.formatLocalDateToNumeric(uiState.userBirth))
                             isDatePickerDialogVisible = true
+                            focusManager.clearFocus()
                         },
                     onTextChange = onUserBirthChange,
                     isEditable = false,
@@ -218,9 +225,9 @@ private fun ProfileEditScreen(
                     BongBaekSwitch(
                         checked = switchChecked,
                         onCheckedChange = { isChecked ->
-                            onUserIncomeChange(
-                                if (isChecked) lastOnIncome else IncomeType.NONE,
-                            )
+                            switchChecked = isChecked
+                            onUserIncomeChange(IncomeType.NONE)
+                            focusManager.clearFocus()
                         },
                     )
                 }
@@ -244,14 +251,14 @@ private fun ProfileEditScreen(
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = incomeSelected,
+                            selected = uiState.userIncome == IncomeType.UNDER_200,
                             onClick = { onUserIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         ProfileEditButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = !incomeSelected,
+                            selected = uiState.userIncome == IncomeType.OVER_200,
                             onClick = { onUserIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
