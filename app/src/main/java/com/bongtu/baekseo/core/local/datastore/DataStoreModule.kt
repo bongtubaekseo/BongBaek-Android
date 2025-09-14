@@ -15,10 +15,12 @@ object DataStoreModule {
     private const val TOKEN_PREFERENCE_NAME = "token_preference"
     private const val USER_NAME_PREFERENCE_NAME = "user_name_preference"
     private const val API_KEY_PREFERENCE_NAME = "api_key_preference"
+    private const val CONFIG_PREFERENCE_NAME = "config_preference"
 
     private val Context.provideDataStore by preferencesDataStore(TOKEN_PREFERENCE_NAME)
     private val Context.provideUsernameDataStore by preferencesDataStore(USER_NAME_PREFERENCE_NAME)
     private val Context.provideApiKeyDataStore by preferencesDataStore(API_KEY_PREFERENCE_NAME)
+    private val Context.provideConfigDataStore by preferencesDataStore(CONFIG_PREFERENCE_NAME)
 
     @Provides
     @Singleton
@@ -37,4 +39,10 @@ object DataStoreModule {
     fun provideApikeyDataStore(
         @ApplicationContext context: Context,
     ) = ApiKeyDataStore(context.provideApiKeyDataStore)
+
+    @Provides
+    @Singleton
+    fun provideConfigDataStore(
+        @ApplicationContext context: Context,
+    ) = ConfigDataStore(context.provideConfigDataStore)
 }

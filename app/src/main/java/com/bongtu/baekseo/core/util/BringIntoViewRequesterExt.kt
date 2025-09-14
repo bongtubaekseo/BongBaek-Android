@@ -2,7 +2,6 @@ package com.bongtu.baekseo.core.util
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.ui.focus.FocusState
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch

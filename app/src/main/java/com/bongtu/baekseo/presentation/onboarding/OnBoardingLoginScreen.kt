@@ -1,5 +1,6 @@
 package com.bongtu.baekseo.presentation.onboarding
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -46,6 +47,7 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.R.drawable.img_onboarding
 import com.bongtu.baekseo.R.string.button_kakao
+import com.bongtu.baekseo.R.string.market_url
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
 import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_service
@@ -58,7 +60,9 @@ import com.bongtu.baekseo.R.string.onboarding_title_primary
 import com.bongtu.baekseo.R.string.onboarding_title_suffix
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
+import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
 import com.bongtu.baekseo.core.util.UrlConstant
@@ -84,6 +88,9 @@ fun OnBoardingRoute(
     val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
+    val isUpdateDialogVisible by viewModel.isUpdateDialogVisible.collectAsStateWithLifecycle()
+    val packageName = context.packageName
+    val marketUrl = stringResource(market_url, packageName)
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -153,6 +160,14 @@ fun OnBoardingRoute(
                 modifier = modifier,
             )
         }
+    }
+
+    if (isUpdateDialogVisible) {
+        BongBaekDialog(
+            dialogType = DialogType.ERROR_UPDATE,
+            onDismissRequest = { (context as? Activity)?.finish() },
+            onConfirmClick = { context.openUrl(marketUrl) },
+        )
     }
 }
 

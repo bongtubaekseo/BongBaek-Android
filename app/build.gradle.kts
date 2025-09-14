@@ -9,6 +9,7 @@ plugins {
     alias(libs.plugins.hilt)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kotlin.parcelize)
+    alias(libs.plugins.google.services)
 }
 
 val properties = Properties().apply {
@@ -127,6 +128,12 @@ dependencies {
 
     // Process Phoenix
     implementation(libs.process.phoenix)
+
+    // Firebase
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.bundles.firebase)
+
+    implementation(libs.semver)
 }
 
 /*

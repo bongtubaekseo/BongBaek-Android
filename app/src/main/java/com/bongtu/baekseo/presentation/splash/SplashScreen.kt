@@ -37,13 +37,13 @@ fun SplashRoute(
     navigateToOnBoarding: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: SplashViewModel = hiltViewModel()
+    viewModel: SplashViewModel = hiltViewModel(),
 ) {
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(Unit) {
         delay(1500)
-        viewModel.postTokenReissue()
+        viewModel.initialize()
     }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {

@@ -4,7 +4,6 @@ import android.os.Build.MANUFACTURER
 import android.os.Build.MODEL
 import android.os.Build.VERSION.SDK_INT
 import com.bongtu.baekseo.BuildConfig.APPLICATION_ID
-import com.bongtu.baekseo.BuildConfig.KAKAO_API_KEY
 import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import kotlinx.coroutines.runBlocking
 import okhttp3.Interceptor
