@@ -151,7 +151,7 @@ private fun DetailScreen(
                 note = uiState.note,
                 locationInfo = uiState.locationInfo,
             ),
-            isButtonEnabled = uiState.loadState !is UiState.Loading,
+            isDeleteButtonEnabled = uiState.loadState !is UiState.Loading,
             onDeleteButtonClick = { onRemoveButtonClick(uiState.eventId) },
             modifier = Modifier
                 .weight(1f),
@@ -162,7 +162,7 @@ private fun DetailScreen(
 @Composable
 private fun DetailContent(
     event: DetailEvent,
-    isButtonEnabled: Boolean,
+    isDeleteButtonEnabled: Boolean,
     onDeleteButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -249,14 +249,13 @@ private fun DetailContent(
                     color = BongBaekTheme.colors.secondaryRed,
                     shape = RoundedCornerShape(10.dp),
                 ),
-            enabled = isButtonEnabled,
         )
 
         if (isDeleteAlertDialogVisible) {
             BongBaekDialog(
                 dialogType = DialogType.DELETE,
                 onDismissRequest = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
-                onConfirmClick = onDeleteButtonClick,
+                onConfirmClick = if (isDeleteButtonEnabled) onDeleteButtonClick else ({}),
             )
         }
     }
