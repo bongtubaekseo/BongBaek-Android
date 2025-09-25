@@ -8,7 +8,7 @@ import com.bongtu.baekseo.data.model.event.Location
 class DetailContract {
     @Immutable
     data class DetailUiState(
-        val loadState: UiState<Unit> = UiState.Loading,
+        val loadState: UiState<Unit> = UiState.Empty,
         val eventId: String = "",
         val hostName: String = "",
         val hostNickname: String = "",
