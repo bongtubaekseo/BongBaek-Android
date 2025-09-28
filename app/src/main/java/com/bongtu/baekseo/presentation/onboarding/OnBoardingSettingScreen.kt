@@ -89,6 +89,7 @@ fun OnBoardingSettingScreen(
 
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
+    val isIncomeSelectionInvalid = uiState.income == IncomeType.NONE && switchChecked
 
     Column(
         modifier = modifier
@@ -236,7 +237,7 @@ fun OnBoardingSettingScreen(
                     .padding(
                         bottom = 38.dp,
                     ),
-                enabled = viewModel.updateButtonState(),
+                enabled = viewModel.updateButtonState() && !isIncomeSelectionInvalid,
             )
         }
 
