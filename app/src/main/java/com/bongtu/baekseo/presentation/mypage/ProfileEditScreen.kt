@@ -89,14 +89,6 @@ fun ProfileEditRoute(
             }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.updateOriginProfileState(
-            newName = uiState.userName,
-            newBirth = uiState.userBirth,
-            newIncome = uiState.userIncome,
-        )
-    }
-
     DisposableEffect(Unit) {
         onDispose {
             viewModel.updateOriginProfileState(

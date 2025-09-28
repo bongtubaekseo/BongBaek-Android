@@ -45,6 +45,11 @@ class MyPageViewModel @Inject constructor(
                         userIncome = IncomeType.getIncomeType(response.memberIncome),
                     )
                 }
+                updateOriginProfileState(
+                    newName = _uiState.value.userName,
+                    newBirth = uiState.value.userBirth,
+                    newIncome = uiState.value.userIncome,
+                )
                 updateMyPageLoadUiState(UiState.Success(Unit))
             }
             .onFailure {
