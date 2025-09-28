@@ -126,6 +126,7 @@ private fun ProfileEditScreen(
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(uiState.userIncome != IncomeType.NONE) }
+    val isIncomeSelectionInvalid = uiState.userIncome == IncomeType.NONE && switchChecked
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
 
@@ -267,7 +268,7 @@ private fun ProfileEditScreen(
                     .padding(
                         bottom = 36.dp,
                     ),
-                enabled = isEditButtonEnabled,
+                enabled = isEditButtonEnabled && !isIncomeSelectionInvalid,
             )
         }
 
