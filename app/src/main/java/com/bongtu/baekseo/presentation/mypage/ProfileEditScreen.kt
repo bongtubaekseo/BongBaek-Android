@@ -89,14 +89,6 @@ fun ProfileEditRoute(
             }
     }
 
-    LaunchedEffect(Unit) {
-        viewModel.updateOriginProfileState(
-            newName = uiState.userName,
-            newBirth = uiState.userBirth,
-            newIncome = uiState.userIncome,
-        )
-    }
-
     DisposableEffect(Unit) {
         onDispose {
             viewModel.updateOriginProfileState(
@@ -134,6 +126,7 @@ private fun ProfileEditScreen(
 ) {
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(uiState.userIncome != IncomeType.NONE) }
+    val isIncomeSelectionInvalid = uiState.userIncome == IncomeType.NONE && switchChecked
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
 
@@ -275,7 +268,7 @@ private fun ProfileEditScreen(
                     .padding(
                         bottom = 36.dp,
                     ),
-                enabled = isEditButtonEnabled,
+                enabled = isEditButtonEnabled && !isIncomeSelectionInvalid,
             )
         }
 
@@ -304,7 +297,7 @@ private fun ProfileEditButton(
     val backgroundColor =
         if (selected) BongBaekTheme.colors.primaryBackground else BongBaekTheme.colors.gray750
     val borderColor =
-        if (selected) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.gray100
+        if (selected) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.lineNormal
 
     Row(
         modifier = modifier
