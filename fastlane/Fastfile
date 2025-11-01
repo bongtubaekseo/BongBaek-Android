@@ -8,10 +8,15 @@ platform :android do
 
     github_token = UI.password("GitHub Access Token을 입력하세요: ")
 
+    ENV['GIT_ASKPASS'] = 'echo'
+    ENV['GIT_USERNAME'] = github_token
+    ENV['GIT_PASSWORD'] = github_token
+
     UI.message("1. 보안 파일(keystore, properties)을 다운로드합니다...")
     secrets_dir = "../temp-secrets"
+
     begin
-        sh "git clone https://#{github_token}@github.com/bongtubaekseo/BongBaek-Android-Secrets.git #{secrets_dir}"
+        sh "git clone https://github.com/bongtubaekseo/BongBaek-Android-Secrets.git #{secrets_dir}"
     rescue => ex
         UI.user_error!("보안 레포지토리(#{secrets_dir})를 clone하는 데 실패했습니다. Access Token이나 레포지토리 주소를 확인하세요.")
         raise ex
@@ -38,10 +43,7 @@ platform :android do
 
     UI.message("파일 복사 완료.")
 
-    UI.message("3. 임시 파일을 삭제합니다...")
-    sh "rm -rf #{secrets_dir}"
-
-    UI.message("4. Gradle 의존성을 동기화하고 초기 빌드를 수행합니다...")
+    UI.message("3. Gradle 의존성을 동기화하고 초기 빌드를 수행합니다...")
     begin
         gradle(task: "assembleDebug")
     rescue => ex
