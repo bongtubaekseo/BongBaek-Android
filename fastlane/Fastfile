@@ -3,6 +3,63 @@ require 'json'
 default_platform(:android)
 
 platform :android do
+  desc "프로젝트 초기 개발 환경을 세팅하고 빌드합니다."
+  lane :setup_project do
+
+    github_token = UI.password("GitHub Access Token을 입력하세요: ")
+
+    ENV['GIT_ASKPASS'] = 'echo'
+    ENV['GIT_USERNAME'] = github_token
+    ENV['GIT_PASSWORD'] = github_token
+
+    UI.message("1. 보안 파일(keystore, properties)을 다운로드합니다...")
+    secrets_dir = "../temp-secrets"
+
+    begin
+        sh "git clone https://github.com/bongtubaekseo/BongBaek-Android-Secrets.git #{secrets_dir}"
+    rescue => ex
+        UI.user_error!("보안 레포지토리(#{secrets_dir})를 clone하는 데 실패했습니다. Access Token이나 레포지토리 주소를 확인하세요.")
+        raise ex
+    end
+
+    UI.message("2. 설정 파일들을 프로젝트 위치로 복사합니다...")
+
+    sh "mkdir -p ../keystore"
+    sh "mkdir -p ../app/src/debug"
+    sh "mkdir -p ../app/src/release"
+    sh "mkdir -p ./keys"
+
+    sh "cp #{secrets_dir}/local.properties ../local.properties"
+
+    sh "cp #{secrets_dir}/keystores/bongbaek-debug-key.jks ../keystore/bongbaek-debug-key.jks"
+    sh "cp #{secrets_dir}/keystores/bongbaek-release-key.jks ../keystore/bongbaek-release-key.jks"
+
+    sh "cp #{secrets_dir}/build-types/debug/google-services.json ../app/src/debug/google-services.json"
+    sh "cp #{secrets_dir}/build-types/release/google-services.json ../app/src/release/google-services.json"
+
+    sh "cp #{secrets_dir}/fastlane-keys/.env ./.env"
+    sh "cp #{secrets_dir}/fastlane-keys/firebase-credentials.json ./keys/firebase-credentials.json"
+    sh "cp #{secrets_dir}/fastlane-keys/google-credentials.json ./keys/google-credentials.json"
+
+    UI.message("파일 복사 완료.")
+
+    UI.message("3. Gradle 의존성을 동기화하고 초기 빌드를 수행합니다...")
+    begin
+        gradle(task: "assembleDebug")
+    rescue => ex
+        UI.user_error!("Gradle 빌드에 실패했습니다. 복사된 파일들이 올바른지 확인하세요.")
+        raise ex
+    end
+
+    UI.success("🎉 모든 개발 환경 세팅이 완료되었습니다!")
+
+    ensure
+      if File.directory?(secrets_dir)
+        UI.message("임시 파일(#{secrets_dir})을 정리합니다...")
+        sh "rm -rf #{secrets_dir}"
+      end
+  end
+
   private_lane :get_version_info do
     UI.message("버전 정보 가져오는 중...")
 
@@ -59,7 +116,7 @@ platform :android do
           aab: lane_context[SharedValues::GRADLE_AAB_OUTPUT_PATH],
           metadata_path: "fastlane/metadata/android",
           # 하기 release_status는 충분한 검증 이후 completed으로 수정
-          release_status: "drad",
+          release_status: "draft",
           # rollout: 0.3
       )
 

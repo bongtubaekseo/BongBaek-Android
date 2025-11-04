@@ -15,6 +15,14 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## Android
 
+### android setup_project
+
+```sh
+[bundle exec] fastlane android setup_project
+```
+
+프로젝트 초기 개발 환경을 세팅하고 빌드합니다.
+
 ### android qa
 
 ```sh
