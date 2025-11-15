@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 
 // Global
 val white = Color(0xFFFFFFFF)
-val blacks = Color(0xFF000000)
+val black = Color(0xFF000000)
 val charcoal = Color(0xFF3A3F4A)
 
 // Brand
@@ -118,17 +118,17 @@ data class BongBaekColors(
     val recordStart: Color,
     val recordEnd: Color,
     val kakaoYellow: Color,
-    val blacks: Color,
+    val black: Color,
     val transparent: Color,
     val isLight: Boolean,
 )
 
 val lightBongBaekColors = BongBaekColors(
-    txtDisplayPrimary = blacks,
+    txtDisplayPrimary = black,
     txtDisplaySecondary = light900,
     txtDisplayTertiary = light600,
     txtDisplaySubtle = primaryNormal,
-    txtFieldValue = blacks,
+    txtFieldValue = black,
     txtFieldPlaceholder = light600,
     txtInteractiveInverse = white,
     txtInteractivePrimary = light800,
@@ -176,7 +176,7 @@ val lightBongBaekColors = BongBaekColors(
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
-    blacks = blacks,
+    black = black,
     transparent = transparent,
     isLight = true,
 )
@@ -218,7 +218,7 @@ val darkBongBaekColors = BongBaekColors(
     iconDisabledPrimary = dark500,
     iconDisabledSecondary = dark400,
     iconStatusError = secondaryNormal,
-    borderDisplayTitle = blacks,
+    borderDisplayTitle = black,
     borderDividerPrimary = charcoal,
     borderFieldDefault = charcoal,
     borderFieldFilled = white,
@@ -234,7 +234,7 @@ val darkBongBaekColors = BongBaekColors(
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
-    blacks = blacks,
+    black = black,
     transparent = transparent,
     isLight = false,
 )
@@ -248,7 +248,7 @@ private fun BongBaekColorsPreview() {
         Column {
             listOf(
                 white,
-                blacks,
+                black,
                 charcoal,
                 primaryNormal,
                 primaryStrong,

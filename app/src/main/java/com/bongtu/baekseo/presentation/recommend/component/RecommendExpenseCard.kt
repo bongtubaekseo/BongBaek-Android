@@ -66,7 +66,7 @@ fun RecommendExpenseCard(
             ),
         )
     }
-    val descriptionColor = remember { bongBaekColors.blacks.copy(alpha = 0.4f) }
+    val descriptionColor = remember { bongBaekColors.black.copy(alpha = 0.4f) }
 
     Column(
         modifier = modifier,
