@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.onboarding.component
+package com.bongtu.baekseo.presentation.login.component
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogWindowProvider
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.string.button_next
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_all
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_service
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_description
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_age
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_all
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_privacy
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_service
+import com.bongtu.baekseo.R.string.login_bottom_sheet_description
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.CheckBoxType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
@@ -54,7 +54,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardingBottomSheet(
+fun LoginBottomSheet(
     items: List<OnBoardingAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
@@ -77,7 +77,7 @@ fun OnBoardingBottomSheet(
         scrimColor = BongBaekTheme.colors.black.copy(alpha = .6f),
         contentWindowInsets = { WindowInsets(0) },
     ) {
-        OnBoardingBottomSheetAgreeContent(
+        LoginBottomSheetAgreeContent(
             items = items,
             checkedStates = checkedStates,
             onAllCheckedChange = onAllCheckedChange,
@@ -90,7 +90,7 @@ fun OnBoardingBottomSheet(
 }
 
 @Composable
-private fun OnBoardingBottomSheetAgreeContent(
+private fun LoginBottomSheetAgreeContent(
     items: List<OnBoardingAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
@@ -110,7 +110,7 @@ private fun OnBoardingBottomSheetAgreeContent(
             .padding(horizontal = 20.dp),
     ) {
         Text(
-            text = stringResource(id = onboarding_bottom_sheet_description),
+            text = stringResource(id = login_bottom_sheet_description),
             modifier = Modifier.padding(top = 40.dp),
             style = BongBaekTheme.typography.titleSemiBold18,
             color = BongBaekTheme.colors.white,
@@ -118,9 +118,9 @@ private fun OnBoardingBottomSheetAgreeContent(
 
         Spacer(modifier = Modifier.size(30.dp))
 
-        OnBoardingAgreeItem(
+        LoginAgreeItem(
             item = OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_all,
+                titleRes = login_bottom_sheet_check_all,
                 isDescription = true,
                 isArrowVisible = false,
             ),
@@ -137,7 +137,7 @@ private fun OnBoardingBottomSheetAgreeContent(
         )
 
         items.forEachIndexed { index, item ->
-            OnBoardingAgreeItem(
+            LoginAgreeItem(
                 item = item,
                 isChecked = checkedStates[index],
                 onCheckedChange = { checked ->
@@ -164,8 +164,9 @@ private fun OnBoardingBottomSheetAgreeContent(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun OnBoardingAgreeItem(
+private fun LoginAgreeItem(
     item: OnBoardingAgree,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
@@ -214,23 +215,23 @@ private fun OnBoardingAgreeItem(
 
 @Preview
 @Composable
-private fun OnBoardingBottomSheetAgreeContentPreview() {
+private fun LoginBottomSheetAgreeContentPreview() {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
 
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_age,
+                titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_service,
+                titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_privacy,
+                titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
             ),
@@ -238,7 +239,7 @@ private fun OnBoardingBottomSheetAgreeContentPreview() {
     }
 
     BongBaekTheme {
-        OnBoardingBottomSheetAgreeContent(
+        LoginBottomSheetAgreeContent(
             items = items,
             checkedStates = checkedStates,
             onAllCheckedChange = { checked ->
@@ -257,22 +258,22 @@ private fun OnBoardingBottomSheetAgreeContentPreview() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview
 @Composable
-private fun OnBoardingBottomSheetPreview() {
+private fun LoginBottomSheetPreview() {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_age,
+                titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_service,
+                titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_privacy,
+                titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
             ),
@@ -285,7 +286,7 @@ private fun OnBoardingBottomSheetPreview() {
 
     BongBaekTheme {
         if (showBottomSheet) {
-            OnBoardingBottomSheet(
+            LoginBottomSheet(
                 items = items,
                 checkedStates = checkedStates,
                 onAllCheckedChange = { checked ->
