@@ -136,7 +136,7 @@ fun HomeScreen(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .background(color = BongBaekTheme.colors.gray900),
+                    .background(color = BongBaekTheme.colors.bgDisplayPrimary),
             )
         }
 
@@ -188,7 +188,7 @@ fun HomeSuccessScreen(
 
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop())
             .verticalScroll(rememberScrollState()),
     ) {
@@ -247,8 +247,8 @@ fun HomeSuccessScreen(
                     ) {
                         repeat(pagerState.pageCount) { iteration ->
                             val color =
-                                if (pagerState.currentPage == iteration) BongBaekTheme.colors.white
-                                else BongBaekTheme.colors.pageIndicator
+                                if (pagerState.currentPage == iteration) BongBaekTheme.colors.txtDisplayTertiary
+                                else BongBaekTheme.colors.txtDisplayTertiary
 
                             Box(
                                 modifier = Modifier
@@ -286,14 +286,14 @@ fun HomeSuccessScreen(
                 Text(
                     text = stringResource(id = home_schedule_title, name),
                     style = BongBaekTheme.typography.titleSemiBold18,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
                 )
 
                 if (items.isNotEmpty()) {
                     Text(
                         text = stringResource(id = home_schedule_more),
                         modifier = Modifier.noRippleClickable(navigateToSchedule),
-                        color = BongBaekTheme.colors.gray200,
+                        color = BongBaekTheme.colors.txtDisplaySecondary,
                         style = BongBaekTheme.typography.body2Regular14,
                     )
                 }

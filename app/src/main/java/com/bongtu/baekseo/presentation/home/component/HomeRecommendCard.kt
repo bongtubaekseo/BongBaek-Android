@@ -36,24 +36,9 @@ fun HomeRecommendCard(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val brush = Brush.verticalGradient(
-        colorStops = arrayOf(
-            0f to BongBaekTheme.colors.gray750,
-            1f to BongBaekTheme.colors.gray850,
-        ),
-    )
-
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .drawWithCache {
-                onDrawBehind {
-                    drawRoundRect(
-                        brush = brush,
-                        cornerRadius = CornerRadius(10.dp.toPx()),
-                    )
-                }
-            }
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
     ) {
@@ -71,7 +56,7 @@ fun HomeRecommendCard(
                 Text(
                     text = stringResource(id = home_recommend_card_description),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.gray300,
+                    color = BongBaekTheme.colors.txtStatusFocused,
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))
@@ -79,7 +64,7 @@ fun HomeRecommendCard(
                 Text(
                     text = stringResource(id = home_recommend_card_title),
                     style = BongBaekTheme.typography.titleSemiBold18,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
             }
 
