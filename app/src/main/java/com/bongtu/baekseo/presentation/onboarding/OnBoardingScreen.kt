@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -32,6 +33,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
@@ -61,25 +65,73 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.presentation.login.KakaoLauncher
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
-fun OnBoardingSettingScreen(
-    uiState: OnBoardingUiState,
+fun OnBoardingRoute(
     navigateToUp: () -> Unit,
+    navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: OnBoardingViewModel = hiltViewModel(),
+) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    BackHandler {
+        viewModel.logoutKakaoLogin()
+    }
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToHome -> navigateToHome()
+                    is LogoutKakaoLogin -> {
+                        try {
+                            KakaoLauncher(context).logoutKakaoLogin()
+                        } finally {
+                            navigateToUp()
+                            viewModel.updateOnBoardingUiState(UiState.Empty)
+                        }
+                    }
+                }
+            }
+    }
+
+    OnBoardingScreen(
+        uiState = uiState,
+        logoutKakaoLogin = viewModel::logoutKakaoLogin,
+        onNameChange = viewModel::updateName,
+        onBirthChange = viewModel::updateBirth,
+        onDialogBirthChange = viewModel::updateDialogBirth,
+        onIncomeChange = viewModel::updateIncome,
+        onStartClick = viewModel::postSignUp,
+        checkButtonEnabled = viewModel::updateButtonState,
+        modifier = modifier,
+    )
+}
+
+@Composable
+fun OnBoardingScreen(
+    uiState: OnBoardingUiState,
+    logoutKakaoLogin: () -> Unit,
+    onNameChange: (String) -> Unit,
+    onBirthChange: (String) -> Unit,
+    onDialogBirthChange: (String) -> Unit,
+    onIncomeChange: (IncomeType) -> Unit,
+    onStartClick: () -> Unit,
+    checkButtonEnabled: () -> Boolean,
+    modifier: Modifier = Modifier,
 ) {
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
 
     val isImeVisible = WindowInsets.ime.getBottom(density) > 0
-
-    BackHandler {
-        navigateToUp()
-        viewModel.logoutKakaoLogin()
-    }
 
     LaunchedEffect(isImeVisible) {
         if (!isImeVisible) {
@@ -107,11 +159,7 @@ fun OnBoardingSettingScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable(
-                            onClick = {
-                                navigateToUp()
-                                viewModel.logoutKakaoLogin()
-                            }),
+                        .noRippleClickable(logoutKakaoLogin),
                     tint = BongBaekTheme.colors.white,
                 )
             }
@@ -132,7 +180,7 @@ fun OnBoardingSettingScreen(
                     modifier = Modifier,
                     errorText = uiState.nameError,
                     isRequired = true,
-                    onTextChange = viewModel::updateName,
+                    onTextChange = onNameChange,
                     isClearButtonEnabled = false,
                 )
 
@@ -145,14 +193,14 @@ fun OnBoardingSettingScreen(
                         .padding(top = 30.dp)
                         .noRippleClickable {
                             focusManager.clearFocus()
-                            viewModel.updateDialogBirth(
+                            onDialogBirthChange(
                                 DateFormatter.formatLocalDateToNumeric(
                                     uiState.birth,
                                 )
                             )
                             isDatePickerDialogVisible = true
                         },
-                    onTextChange = viewModel::updateBirth,
+                    onTextChange = onBirthChange,
                     isRequired = true,
                     isEditable = false,
                     isClearButtonEnabled = false,
@@ -181,7 +229,7 @@ fun OnBoardingSettingScreen(
                         checked = switchChecked,
                         onCheckedChange = {
                             switchChecked = it
-                            viewModel.updateIncome(IncomeType.NONE)
+                            onIncomeChange(IncomeType.NONE)
                             focusManager.clearFocus()
                         },
                     )
@@ -207,18 +255,14 @@ fun OnBoardingSettingScreen(
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_down),
                             selected = uiState.income == IncomeType.UNDER_200,
-                            onClick = {
-                                viewModel.updateIncome(IncomeType.UNDER_200)
-                            },
+                            onClick = { onIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_up),
                             selected = uiState.income == IncomeType.OVER_200,
-                            onClick = {
-                                viewModel.updateIncome(IncomeType.OVER_200)
-                            },
+                            onClick = { onIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
                     }
@@ -229,7 +273,7 @@ fun OnBoardingSettingScreen(
                 title = stringResource(id = button_start_service),
                 onClick = {
                     if (uiState.loadState !is UiState.Loading)
-                        viewModel.postSignUp()
+                        onStartClick()
                 },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
@@ -237,7 +281,7 @@ fun OnBoardingSettingScreen(
                     .padding(
                         bottom = 38.dp,
                     ),
-                enabled = viewModel.updateButtonState() && !isIncomeSelectionInvalid,
+                enabled = checkButtonEnabled() && !isIncomeSelectionInvalid,
             )
         }
 
@@ -245,12 +289,12 @@ fun OnBoardingSettingScreen(
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.BIRTH,
                 value = uiState.dialogBirth,
-                onValueChange = viewModel::updateDialogBirth,
+                onValueChange = onDialogBirthChange,
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
-                    viewModel.updateDialogBirth("")
+                    onDialogBirthChange("")
                 },
-                onConfirmClick = viewModel::updateBirth,
+                onConfirmClick = onBirthChange,
             )
         }
     }
@@ -260,9 +304,15 @@ fun OnBoardingSettingScreen(
 @Composable
 private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
-        OnBoardingSettingScreen(
+        OnBoardingScreen(
             uiState = OnBoardingUiState(),
-            navigateToUp = {},
+            logoutKakaoLogin = {},
+            onNameChange = {},
+            onBirthChange = {},
+            onDialogBirthChange = {},
+            onIncomeChange = {},
+            onStartClick = {},
+            checkButtonEnabled = { true },
         )
     }
 }

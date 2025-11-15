@@ -8,7 +8,6 @@ class OnBoardingContract {
     @Immutable
     data class OnBoardingUiState(
         val loadState: UiState<Unit> = UiState.Empty,
-        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
         val kakaoId: String = "",
         val name: String = "",
         val birth: String = "",
@@ -19,13 +18,7 @@ class OnBoardingContract {
 
     sealed class OnBoardingSideEffect {
         data object NavigateToHome : OnBoardingSideEffect()
-        data object LogoutKakaoLogin: OnBoardingSideEffect()
+        data object LogoutKakaoLogin : OnBoardingSideEffect()
     }
 
-}
-
-sealed interface SocialLoginState {
-    data object Success : SocialLoginState
-    data object Fail : SocialLoginState
-    data object Idle : SocialLoginState
 }
