@@ -67,13 +67,13 @@ fun SearchTextField(
 
     val bongBaekColors = BongBaekTheme.colors
     val textColor = remember(isFocused) {
-        if (isFocused) bongBaekColors.primaryNormal else bongBaekColors.white
+        if (isFocused) bongBaekColors.txtFieldValue else bongBaekColors.txtFieldPlaceholder
     }
 
     Row(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgFieldSecondary,
                 shape = roundedCornerShape,
             )
             .padding(horizontal = 16.dp, vertical = 12.dp),
@@ -81,7 +81,7 @@ fun SearchTextField(
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_search),
             contentDescription = null,
-            tint = BongBaekTheme.colors.white,
+            tint = Color.Unspecified,
             modifier = Modifier.padding(end = 12.dp),
         )
 
@@ -90,7 +90,7 @@ fun SearchTextField(
             onTextChange = onTextChange,
             textColor = textColor,
             placeholder = stringResource(id = search_text_field_placeholder),
-            placeholderColor = BongBaekTheme.colors.gray500,
+            placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
             textStyle = BongBaekTheme.typography.body2Regular16,
             interactionSource = interactionSource,
             cursorColor = BongBaekTheme.colors.transparent,

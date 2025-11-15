@@ -52,7 +52,7 @@ fun BongBaekScheduleCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.btnInteractiveSecondary,
                 shape = RoundedCornerShape(10.dp),
             )
             .then(
@@ -67,7 +67,7 @@ fun BongBaekScheduleCard(
         Text(
             text = hostNickname,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.primaryNormal,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
         )
 
         Row(
@@ -78,7 +78,7 @@ fun BongBaekScheduleCard(
             Text(
                 text = hostName,
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
             if (isHomeCard) {
@@ -88,19 +88,19 @@ fun BongBaekScheduleCard(
                     Text(
                         text = stringResource(home_schedule_card_cost, cost),
                         style = BongBaekTheme.typography.titleSemiBold18,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.gray100,
+                        color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
                 }
             } else {
                 Text(
                     text = stringResource(record_card_cost, cost),
                     style = BongBaekTheme.typography.titleSemiBold18,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
             }
 
@@ -127,7 +127,7 @@ fun BongBaekScheduleCard(
 
                 Text(
                     text = eventDate,
-                    color = BongBaekTheme.colors.gray400,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.captionRegular12,
                 )
             }
@@ -163,7 +163,7 @@ private fun HomeScheduleCardInfo(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray800,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(horizontal = 8.dp, vertical = 6.dp),
@@ -174,13 +174,13 @@ private fun HomeScheduleCardInfo(
             imageVector = ImageVector.vectorResource(id = iconImage),
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            tint = BongBaekTheme.colors.primaryNormal,
+            tint = BongBaekTheme.colors.txtDisplayTertiary,
         )
 
         Text(
             text = content,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.gray200,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }
 }

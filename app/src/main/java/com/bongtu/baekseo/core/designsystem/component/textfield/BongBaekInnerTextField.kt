@@ -52,7 +52,7 @@ fun BongBaekInnerTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     isSingleLine: Boolean = true,
     maxLines: Int = if (isSingleLine) 1 else Int.MAX_VALUE,
-    cursorColor: Color = BongBaekTheme.colors.white,
+    cursorColor: Color = BongBaekTheme.colors.txtDisplayTertiary,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     suffix: (@Composable (() -> Unit))? = null,
 ) {
@@ -104,10 +104,10 @@ private fun BongBaekInnerTextFieldPreview() {
         BongBaekInnerTextField(
             text = "",
             onTextChange = {},
-            textColor = BongBaekTheme.colors.white,
+            textColor = BongBaekTheme.colors.txtDisplayTertiary,
             textStyle = BongBaekTheme.typography.body1Medium16,
             placeholder = "placeholder",
-            placeholderColor = BongBaekTheme.colors.gray400,
+            placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }
 }

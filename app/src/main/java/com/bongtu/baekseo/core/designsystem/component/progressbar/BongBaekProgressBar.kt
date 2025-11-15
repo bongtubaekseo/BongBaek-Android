@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
-
 /**
  * Bong baek progress bar
  *
@@ -31,8 +30,8 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 fun BongBaekProgressBar(
     progress: Float,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = BongBaekTheme.colors.gray700,
-    progressColor: Brush = SolidColor(BongBaekTheme.colors.primaryNormal),
+    backgroundColor: Color = BongBaekTheme.colors.bgDisplayRange,
+    progressColor: Brush = SolidColor(BongBaekTheme.colors.statusFocused),
     height: Dp = 4.dp,
     cornerRadius: Dp = 1000.dp,
 ) {

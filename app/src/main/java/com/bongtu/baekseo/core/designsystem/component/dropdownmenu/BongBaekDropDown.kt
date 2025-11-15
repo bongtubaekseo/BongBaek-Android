@@ -97,7 +97,7 @@ fun <T> BongBaekDropdownMenu(
                 focusable = focusable,
             ),
             shape = RoundedCornerShape(10.dp),
-            containerColor = bongBaekColors.gray750,
+            containerColor = bongBaekColors.txtDisplayTertiary,
         ) {
             if (items.isEmpty()) {
                 EmptyDropDown()
@@ -145,9 +145,9 @@ private fun <T> DropDownMenuItem(
 
     val (backgroundColor, textColor) = remember(isSelected, isPressed) {
         when {
-            isPressed -> bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
-            isSelected == true -> bongBaekColors.primaryBackground to bongBaekColors.primaryNormal
-            else -> bongBaekColors.transparent to bongBaekColors.white
+            isPressed -> bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
+            isSelected == true -> bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
+            else -> bongBaekColors.transparent to bongBaekColors.txtDisplayTertiary
         }
     }
     val textStyle = remember(isSelected, isPressed) {

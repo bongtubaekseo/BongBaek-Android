@@ -49,7 +49,7 @@ fun BongBaekSwitch(
         ),
     )
     val backgroundColor =
-        if (checked) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.gray400
+        if (checked) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.btnInteractiveSwitch
 
     Box(
         modifier = modifier
@@ -77,7 +77,7 @@ fun BongBaekSwitch(
                 modifier = Modifier
                     .size(switchSize)
                     .clip(shape = CircleShape)
-                    .background(color = BongBaekTheme.colors.white),
+                    .background(color = BongBaekTheme.colors.iconInteractiveKnob),
             )
         }
     }
