@@ -13,9 +13,11 @@ class SetKakaoLoginUseCase @Inject constructor(
     private val apiKeyDataStore: ApiKeyDataStore,
     private val usernameDataStore: UsernameDataStore,
 ) {
-    suspend operator fun invoke(kakaoToken: String): Result<KakaoLogin> {
-        return authRepository.postKakaoLogin(kakaoToken)
-            .onSuccess { response ->
+    suspend operator fun invoke(oauthProvider: String, idToken: String): Result<KakaoLogin> {
+        return authRepository.postKakaoLogin(
+            oauthProvider = oauthProvider,
+            idToken = idToken,
+        ).onSuccess { response ->
                 tokenDataStore.setTokens(
                     accessToken = response.accessToken,
                     refreshToken = response.refreshToken,
