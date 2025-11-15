@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.onboarding
+package com.bongtu.baekseo.presentation.login
 
 import android.app.Activity
 import androidx.compose.foundation.Image
@@ -47,17 +47,17 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.R.drawable.img_onboarding
 import com.bongtu.baekseo.R.string.button_kakao
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_age
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_privacy
+import com.bongtu.baekseo.R.string.login_bottom_sheet_check_service
+import com.bongtu.baekseo.R.string.login_description
+import com.bongtu.baekseo.R.string.login_login_information
+import com.bongtu.baekseo.R.string.login_personal_privacy
+import com.bongtu.baekseo.R.string.login_term_of_use
+import com.bongtu.baekseo.R.string.login_title_prefix
+import com.bongtu.baekseo.R.string.login_title_primary
+import com.bongtu.baekseo.R.string.login_title_suffix
 import com.bongtu.baekseo.R.string.market_url
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_age
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_privacy
-import com.bongtu.baekseo.R.string.onboarding_bottom_sheet_check_service
-import com.bongtu.baekseo.R.string.onboarding_description
-import com.bongtu.baekseo.R.string.onboarding_login_information
-import com.bongtu.baekseo.R.string.onboarding_personal_privacy
-import com.bongtu.baekseo.R.string.onboarding_term_of_use
-import com.bongtu.baekseo.R.string.onboarding_title_prefix
-import com.bongtu.baekseo.R.string.onboarding_title_primary
-import com.bongtu.baekseo.R.string.onboarding_title_suffix
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DialogType
@@ -68,23 +68,21 @@ import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
 import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
-import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingBottomSheet
+import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.login.LoginContract.LoginUiState
+import com.bongtu.baekseo.presentation.login.component.LoginBottomSheet
 import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
-import com.bongtu.baekseo.presentation.onboarding.type.OnBoardingType
 import kotlinx.coroutines.launch
 
 @Composable
-fun OnBoardingRoute(
+fun LoginRoute(
+    navigateToOnBoarding: (String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: OnBoardingViewModel = hiltViewModel(),
+    viewModel: LoginViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    var screenState by remember { mutableStateOf(OnBoardingType.LOGIN) }
     val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -97,13 +95,6 @@ fun OnBoardingRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
-                    is LogoutKakaoLogin -> {
-                        try {
-                            OnBoardingLoginKakaoLauncher(context).logoutKakaoLogin()
-                        } finally {
-                            viewModel.updateOnBoardingUiState(UiState.Empty)
-                        }
-                    }
                 }
             }
     }
@@ -125,42 +116,28 @@ fun OnBoardingRoute(
         }
     }
 
-    when (screenState) {
-        OnBoardingType.LOGIN -> {
-            OnBoardingLoginScreen(
-                uiState = uiState,
-                onKakaoLoginClick = {
-                    OnBoardingLoginKakaoLauncher(
-                        context = context,
-                        onTokenReceived = { token ->
-                            viewModel.loginWithKakao(token)
-                        },
-                        onError = {
-                            // TODO 추후 구현
-                        }
-                    ).startKakaoLogin()
+    LoginScreen(
+        uiState = uiState,
+        onKakaoLoginClick = {
+            KakaoLauncher(
+                context = context,
+                onTokenReceived = { token ->
+                    viewModel.loginWithKakao(token)
                 },
-                isBottomSheetVisible = isBottomSheetVisible,
-                onBottomSheetVisibleChange = {
-                    isBottomSheetVisible = it
-                },
-                onPrivacyClick = { context.openUrl(UrlConstant.PRIVACY_URL) },
-                onTermsClick = { context.openUrl(UrlConstant.TERMS_URL) },
-                onNext = {
-                    screenState = OnBoardingType.SETTING
-                },
-                modifier = modifier,
-            )
-        }
-
-        OnBoardingType.SETTING -> {
-            OnBoardingSettingScreen(
-                uiState = uiState,
-                navigateToUp = { screenState = OnBoardingType.LOGIN },
-                modifier = modifier,
-            )
-        }
-    }
+                onError = {
+                    // TODO 추후 구현
+                }
+            ).startKakaoLogin()
+        },
+        isBottomSheetVisible = isBottomSheetVisible,
+        onBottomSheetVisibleChange = {
+            isBottomSheetVisible = it
+        },
+        onPrivacyClick = { context.openUrl(UrlConstant.PRIVACY_URL) },
+        onTermsClick = { context.openUrl(UrlConstant.TERMS_URL) },
+        onNextClick = navigateToOnBoarding,
+        modifier = modifier,
+    )
 
     if (isUpdateDialogVisible) {
         BongBaekDialog(
@@ -173,32 +150,32 @@ fun OnBoardingRoute(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OnBoardingLoginScreen(
-    uiState: OnBoardingUiState,
+fun LoginScreen(
+    uiState: LoginUiState,
     onKakaoLoginClick: () -> Unit,
     isBottomSheetVisible: Boolean,
     onBottomSheetVisibleChange: (Boolean) -> Unit,
     onPrivacyClick: () -> Unit,
     onTermsClick: () -> Unit,
-    onNext: () -> Unit,
+    onNextClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_age,
+                titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_service,
+                titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
                 url = UrlConstant.TERMS_URL,
             ),
             OnBoardingAgree(
-                titleRes = onboarding_bottom_sheet_check_privacy,
+                titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
                 url = UrlConstant.PRIVACY_URL,
@@ -230,7 +207,7 @@ fun OnBoardingLoginScreen(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        append(stringResource(id = onboarding_title_prefix))
+                        append(stringResource(id = login_title_prefix))
                         withStyle(
                             style = SpanStyle(
                                 color = BongBaekTheme.colors.white,
@@ -239,16 +216,16 @@ fun OnBoardingLoginScreen(
                                 letterSpacing = (-0.03).em,
                             ),
                         ) {
-                            append(stringResource(id = onboarding_title_primary))
+                            append(stringResource(id = login_title_primary))
                         }
-                        append(stringResource(id = onboarding_title_suffix))
+                        append(stringResource(id = login_title_suffix))
                     },
                     style = BongBaekTheme.typography.headBold26,
                     color = BongBaekTheme.colors.onboardingTitle,
                 )
 
                 Text(
-                    text = stringResource(id = onboarding_description),
+                    text = stringResource(id = login_description),
                     modifier = Modifier.padding(top = 30.dp),
                     style = BongBaekTheme.typography.body2Regular16,
                     color = BongBaekTheme.colors.gray100,
@@ -276,7 +253,7 @@ fun OnBoardingLoginScreen(
                 )
 
                 Text(
-                    text = stringResource(id = onboarding_login_information),
+                    text = stringResource(id = login_login_information),
                     modifier = Modifier.padding(top = 20.dp),
                     style = BongBaekTheme.typography.captionRegular12,
                     color = BongBaekTheme.colors.white,
@@ -289,7 +266,7 @@ fun OnBoardingLoginScreen(
                     ),
                 ) {
                     Text(
-                        text = stringResource(id = onboarding_personal_privacy),
+                        text = stringResource(id = login_personal_privacy),
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray300,
@@ -300,7 +277,7 @@ fun OnBoardingLoginScreen(
                     Spacer(modifier = Modifier.width(30.dp))
 
                     Text(
-                        text = stringResource(id = onboarding_term_of_use),
+                        text = stringResource(id = login_term_of_use),
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.gray300,
@@ -313,7 +290,7 @@ fun OnBoardingLoginScreen(
     }
 
     if (isBottomSheetVisible) {
-        OnBoardingBottomSheet(
+        LoginBottomSheet(
             items = items,
             checkedStates = checkedStates,
             onAllCheckedChange = { checked ->
@@ -328,7 +305,7 @@ fun OnBoardingLoginScreen(
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
                         onBottomSheetVisibleChange(false)
-                        onNext()
+                        onNextClick(uiState.kakaoId)
                     }
                 }
             },
@@ -344,12 +321,12 @@ fun OnBoardingLoginScreen(
 @Composable
 private fun OnBoardingScreenLoginPreview() {
     BongBaekTheme {
-        OnBoardingLoginScreen(
-            uiState = OnBoardingUiState(),
+        LoginScreen(
+            uiState = LoginUiState(),
             onKakaoLoginClick = {},
             isBottomSheetVisible = false,
             onBottomSheetVisibleChange = {},
-            onNext = {},
+            onNextClick = {},
             onPrivacyClick = {},
             onTermsClick = {},
         )
