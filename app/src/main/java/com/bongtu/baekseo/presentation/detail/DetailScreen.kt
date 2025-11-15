@@ -108,7 +108,7 @@ private fun DetailScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(
@@ -122,7 +122,7 @@ private fun DetailScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(onClick = onBackButtonClick),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
             trailingIcon = {
@@ -133,7 +133,7 @@ private fun DetailScreen(
                         .padding(14.dp)
                         .size(20.dp)
                         .noRippleClickable(onClick = onEditButtonClick),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )
@@ -171,14 +171,14 @@ private fun DetailContent(
     val (noteText, noteTextColor, noteBackgroundColor) = if (event.note.isNullOrBlank()) {
         Triple(
             stringResource(record_detail_memo_placeholder),
-            BongBaekTheme.colors.gray500,
-            BongBaekTheme.colors.gray800
+            BongBaekTheme.colors.txtFieldPlaceholder,
+            BongBaekTheme.colors.bgFieldPrimary
         )
     } else {
         Triple(
             event.note,
-            BongBaekTheme.colors.white,
-            BongBaekTheme.colors.gray750
+            BongBaekTheme.colors.txtFieldValue,
+            BongBaekTheme.colors.bgFieldSecondary
         )
     }
 
@@ -208,7 +208,7 @@ private fun DetailContent(
 
         Text(
             text = stringResource(record_detail_memo_title),
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.titleSemiBold18,
             modifier = Modifier
                 .padding(
@@ -247,7 +247,7 @@ private fun DetailContent(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = BongBaekTheme.colors.secondaryRed,
+                    color = BongBaekTheme.colors.borderStatusError,
                     shape = RoundedCornerShape(10.dp),
                 ),
         )
@@ -272,12 +272,12 @@ private fun RecordDetailTitleCard(
         modifier = modifier
             .fillMaxWidth()
             .clip(shape = RoundedCornerShape(size = 10.dp))
-            .background(color = BongBaekTheme.colors.gray750)
+            .background(color = BongBaekTheme.colors.bgDisplayCard)
             .padding(20.dp),
     ) {
         Text(
             text = title,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.titleSemiBold18,
         )
         Row(
@@ -285,7 +285,7 @@ private fun RecordDetailTitleCard(
         ) {
             Text(
                 text = eventDate,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 style = BongBaekTheme.typography.body2Regular14,
             )
         }
@@ -305,23 +305,11 @@ private fun RecordDetailCostCard(
                 brush = remember {
                     Brush.verticalGradient(
                         colorStops = arrayOf(
-                            0.16f to bongBaekColors.primaryNormal,
-                            1f to bongBaekColors.gradientCostCardBackGround,
+                            0.16f to bongBaekColors.recordStart,
+                            1f to bongBaekColors.recordEnd,
                         ),
                     )
                 },
-                shape = RoundedCornerShape(10.dp),
-            )
-            .border(
-                brush = remember {
-                    Brush.verticalGradient(
-                        colors = listOf(
-                            bongBaekColors.gradientCostCardBorder,
-                            bongBaekColors.primaryNormal,
-                        ),
-                    )
-                },
-                width = 1.dp,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(horizontal = 20.dp, vertical = 16.dp),
@@ -333,12 +321,12 @@ private fun RecordDetailCostCard(
         ) {
             Text(
                 text = stringResource(record_detail_cost_title),
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold16,
             )
             Text(
                 text = stringResource(record_card_cost, cost),
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
         }

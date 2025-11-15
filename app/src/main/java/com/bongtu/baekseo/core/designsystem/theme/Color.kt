@@ -57,7 +57,6 @@ val splashEnd = Color(0xFF171922)
 val envelopeStart = Color(0xFFA6BEF3)
 val envelopeEnd = Color(0xFFD3D9FF)
 val recommendResultStart = Color(0xFF4E62FF)
-val recommendResultEnd = Color(0xFF6648FF)
 val recordEnd = Color(0xFF6F53FF)
 
 // Others
@@ -174,7 +173,7 @@ val lightBongBaekColors = BongBaekColors(
     envelopeStart = envelopeStart,
     envelopeEnd = envelopeEnd,
     recommendResultStart = recommendResultStart,
-    recommendResultEnd = recommendResultEnd,
+    recommendResultEnd = primaryStrong,
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
@@ -233,7 +232,7 @@ val darkBongBaekColors = BongBaekColors(
     envelopeStart = envelopeStart,
     envelopeEnd = envelopeEnd,
     recommendResultStart = recommendResultStart,
-    recommendResultEnd = recommendResultEnd,
+    recommendResultEnd = primaryStrong,
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
@@ -285,7 +284,6 @@ private fun BongBaekColorsPreview() {
                 envelopeStart,
                 envelopeEnd,
                 recommendResultStart,
-                recommendResultEnd,
                 recordEnd,
                 recordEnd,
                 kakaoYellow,
