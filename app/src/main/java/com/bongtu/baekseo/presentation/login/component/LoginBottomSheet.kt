@@ -49,13 +49,13 @@ import com.bongtu.baekseo.core.designsystem.component.checkbox.BongBaekCheckBox
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
+import com.bongtu.baekseo.presentation.login.model.LoginAgree
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginBottomSheet(
-    items: List<OnBoardingAgree>,
+    items: List<LoginAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
@@ -91,7 +91,7 @@ fun LoginBottomSheet(
 
 @Composable
 private fun LoginBottomSheetAgreeContent(
-    items: List<OnBoardingAgree>,
+    items: List<LoginAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
@@ -119,7 +119,7 @@ private fun LoginBottomSheetAgreeContent(
         Spacer(modifier = Modifier.size(30.dp))
 
         LoginAgreeItem(
-            item = OnBoardingAgree(
+            item = LoginAgree(
                 titleRes = login_bottom_sheet_check_all,
                 isDescription = true,
                 isArrowVisible = false,
@@ -167,7 +167,7 @@ private fun LoginBottomSheetAgreeContent(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun LoginAgreeItem(
-    item: OnBoardingAgree,
+    item: LoginAgree,
     isChecked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -220,17 +220,17 @@ private fun LoginBottomSheetAgreeContentPreview() {
 
     val items = remember {
         mutableStateListOf(
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
@@ -262,17 +262,17 @@ private fun LoginBottomSheetPreview() {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,

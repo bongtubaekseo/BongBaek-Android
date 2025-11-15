@@ -71,7 +71,7 @@ import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginUiState
 import com.bongtu.baekseo.presentation.login.component.LoginBottomSheet
-import com.bongtu.baekseo.presentation.onboarding.model.OnBoardingAgree
+import com.bongtu.baekseo.presentation.login.model.LoginAgree
 import kotlinx.coroutines.launch
 
 @Composable
@@ -163,18 +163,18 @@ fun LoginScreen(
     val checkedStates = remember { mutableStateListOf(false, false, false) }
     val items = remember {
         mutableStateListOf(
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_age,
                 isDescription = false,
                 isArrowVisible = false,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_service,
                 isDescription = false,
                 isArrowVisible = true,
                 url = UrlConstant.TERMS_URL,
             ),
-            OnBoardingAgree(
+            LoginAgree(
                 titleRes = login_bottom_sheet_check_privacy,
                 isDescription = false,
                 isArrowVisible = true,
