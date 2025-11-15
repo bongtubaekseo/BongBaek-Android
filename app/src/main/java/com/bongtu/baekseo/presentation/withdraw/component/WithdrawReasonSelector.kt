@@ -68,7 +68,7 @@ fun WithdrawReasonSelector(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray800,
+                color = BongBaekTheme.colors.bgDisplaySecondary,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
@@ -119,9 +119,9 @@ private fun WithdrawSelectorItem(
     val bongBaekColors = BongBaekTheme.colors
     val (iconRes, titleColor) = remember(isSelected) {
         when (isSelected) {
-            true -> ic_check to bongBaekColors.white
-            false -> ic_withdraw_check_gray to bongBaekColors.gray400
-            else -> ic_withdraw_check to bongBaekColors.gray100
+            true -> ic_check to bongBaekColors.txtInteractivePrimary
+            false -> ic_withdraw_check_gray to bongBaekColors.txtInteractivePrimary
+            else -> ic_withdraw_check to bongBaekColors.txtDisplayTertiary
         }
     }
     val titleRes = remember(reason) {
@@ -147,13 +147,13 @@ private fun WithdrawSelectorItem(
                     if (isSelected == true)
                         Modifier.border(
                             width = 1.dp,
-                            color = bongBaekColors.primaryNormal,
+                            color = bongBaekColors.borderStatusFocused,
                             shape = RoundedCornerShape(10.dp),
                         )
                     else Modifier
                 )
                 .background(
-                    color = bongBaekColors.gray750,
+                    color = bongBaekColors.btnInteractiveInput,
                     shape = RoundedCornerShape(10.dp),
                 )
                 .padding(12.dp),
@@ -176,10 +176,10 @@ private fun WithdrawSelectorItem(
                             if (it.checkLength() <= ETC_INPUT_MAX_LENGTH)
                                 onValueChange(it)
                         },
-                        textColor = BongBaekTheme.colors.white,
+                        textColor = BongBaekTheme.colors.txtInteractivePrimary,
                         textStyle = BongBaekTheme.typography.body1Medium16,
                         placeholder = stringResource(id = input_text_field_placeholder),
-                        placeholderColor = bongBaekColors.gray400,
+                        placeholderColor = bongBaekColors.txtStatusDisabled,
                         modifier = Modifier
                             .weight(1f)
                             .onFocusChanged { onFocusChange(it.isFocused) },
@@ -206,7 +206,7 @@ private fun WithdrawSelectorItem(
                     text = stringResource(id = withdraw_reason_etc_length, value.checkLength()),
                     modifier = Modifier.align(Alignment.End),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = bongBaekColors.white,
+                    color = bongBaekColors.txtDisplaySecondary,
                 )
             }
         }
