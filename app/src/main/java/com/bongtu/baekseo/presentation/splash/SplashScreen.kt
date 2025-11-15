@@ -27,14 +27,14 @@ import com.bongtu.baekseo.R.drawable.ic_splash_logo
 import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
-import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
+import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.RestartApp
 import kotlinx.coroutines.delay
 
 @Composable
 fun SplashRoute(
     onRestartApp: (Boolean) -> Unit,
-    navigateToOnBoarding: () -> Unit,
+    navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: SplashViewModel = hiltViewModel(),
@@ -51,7 +51,7 @@ fun SplashRoute(
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
-                    is NavigateToOnBoarding -> navigateToOnBoarding()
+                    is NavigateToLogin -> navigateToLogin()
                     is RestartApp -> onRestartApp(true)
                 }
             }

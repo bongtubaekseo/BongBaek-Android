@@ -14,14 +14,14 @@ fun NavController.navigateToSplash(navOptions: NavOptions? = null) =
 
 fun NavGraphBuilder.splashGraph(
     onRestartApp: (Boolean) -> Unit,
-    navigateToOnBoarding: () -> Unit,
+    navigateToLogin: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Splash> {
         SplashRoute(
             onRestartApp = onRestartApp,
-            navigateToOnBoarding = navigateToOnBoarding,
+            navigateToLogin = navigateToLogin,
             navigateToHome = navigateToHome,
             modifier = modifier,
         )
