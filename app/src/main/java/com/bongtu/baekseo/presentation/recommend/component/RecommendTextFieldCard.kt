@@ -53,7 +53,7 @@ fun RecommendTextFieldCard(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
@@ -66,13 +66,13 @@ fun RecommendTextFieldCard(
                 imageVector = ImageVector.vectorResource(ic_person),
                 contentDescription = null,
                 modifier = Modifier.size(22.dp),
-                tint = BongBaekTheme.colors.primaryNormal,
+                tint = BongBaekTheme.colors.iconFocusedPrimary,
             )
 
             Text(
                 text = stringResource(recommendation_name_title),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 

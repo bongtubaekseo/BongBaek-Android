@@ -63,7 +63,7 @@ private fun RecommendLoadingScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding(),
         contentAlignment = Alignment.Center,
     ) {
@@ -94,7 +94,7 @@ private fun RecommendLoadingScreen(
             Text(
                 text = stringResource(recommendation_loading_title, name),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplayPrimary,
                 textAlign = TextAlign.Center,
             )
 
@@ -103,7 +103,7 @@ private fun RecommendLoadingScreen(
             Text(
                 text = stringResource(recommendation_loading_description),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
     }

@@ -42,7 +42,7 @@ fun RecommendParticipationCard(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
@@ -61,7 +61,7 @@ fun RecommendParticipationCard(
             Text(
                 text = stringResource(recommendation_participation_title),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 
@@ -96,14 +96,14 @@ private fun SelectorItem(
 ) {
     val (backgroundColor, borderColor, textColor) =
         if (isSelected == true) Triple(
-            BongBaekTheme.colors.primaryNormal,
-            BongBaekTheme.colors.primaryNormal,
-            BongBaekTheme.colors.white,
+            BongBaekTheme.colors.bgStatusFocused,
+            BongBaekTheme.colors.bgStatusFocused,
+            BongBaekTheme.colors.txtInteractiveInverse,
         )
         else Triple(
-            BongBaekTheme.colors.gray800,
-            BongBaekTheme.colors.lineNormal,
-            BongBaekTheme.colors.gray500,
+            BongBaekTheme.colors.btnInteractivePrimary,
+            BongBaekTheme.colors.borderFieldDefault,
+            BongBaekTheme.colors.txtInteractivePrimary,
         )
 
     val textStyle =

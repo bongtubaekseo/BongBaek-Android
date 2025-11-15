@@ -17,6 +17,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -60,8 +61,8 @@ private fun EventSelectorItem(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val backgroundColor = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.primaryNormal
-        else bongBaekColors.gray750
+        if (isSelected == true) bongBaekColors.bgStatusFocused
+        else bongBaekColors.btnInteractiveTertiary
     }
     val iconRes = remember(event) {
         when (event) {
@@ -90,10 +91,10 @@ private fun EventSelectorItem(
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = null,
-            tint = BongBaekTheme.colors.primaryNormal,
+            tint = Color.Unspecified,
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.gray900,
+                    color = BongBaekTheme.colors.bgDisplayPrimary,
                     shape = CircleShape,
                 )
                 .padding(10.dp),
@@ -102,7 +103,7 @@ private fun EventSelectorItem(
         Text(
             text = event.label,
             style = BongBaekTheme.typography.body1Medium14,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtInteractivePrimary,
         )
     }
 }

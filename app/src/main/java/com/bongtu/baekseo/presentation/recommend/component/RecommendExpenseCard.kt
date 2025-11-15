@@ -24,7 +24,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -54,22 +53,20 @@ fun RecommendExpenseCard(
     val gradientBackground = remember {
         Brush.linearGradient(
             colors = listOf(
-                bongBaekColors.gradientEnvelopeStart,
-                bongBaekColors.gradientEnvelopeEnd,
+                bongBaekColors.envelopeStart,
+                bongBaekColors.envelopeEnd,
             ),
-            start = Offset(0f, 0f),
-            end = Offset.Infinite,
         )
     }
     val gradientText = remember {
         Brush.linearGradient(
             colors = listOf(
-                bongBaekColors.gradientExpense,
-                bongBaekColors.primaryStrong,
+                bongBaekColors.recommendResultStart,
+                bongBaekColors.recommendResultEnd,
             ),
         )
     }
-    val descriptionColor = remember { bongBaekColors.gray750.copy(alpha = 0.6f) }
+    val descriptionColor = remember { bongBaekColors.blacks.copy(alpha = 0.4f) }
 
     Column(
         modifier = modifier,
@@ -110,7 +107,7 @@ fun RecommendExpenseCard(
                     text = stringResource(recommendation_result_topbar),
                     modifier = Modifier
                         .background(
-                            color = bongBaekColors.primaryNormal,
+                            color = bongBaekColors.bgStatusFocused,
                             shape = RoundedCornerShape(4.dp),
                         )
                         .padding(
@@ -118,7 +115,7 @@ fun RecommendExpenseCard(
                             vertical = 2.dp,
                         ),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtInteractiveInverse,
                 )
 
                 Spacer(modifier = Modifier.height(6.dp))
@@ -140,7 +137,7 @@ fun RecommendExpenseCard(
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.titleSemiBold20,
-                        color = BongBaekTheme.colors.gray600,
+                        color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
                 }
 
@@ -160,13 +157,13 @@ fun RecommendExpenseCard(
                     Text(
                         text = stringResource(recommendation_envelope_title),
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtInteractiveInverse,
                     )
 
                     Text(
                         text = stringResource(recommendation_envelope_description),
                         style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.gray200,
+                        color = BongBaekTheme.colors.txtInteractiveInverse,
                     )
                 }
             }

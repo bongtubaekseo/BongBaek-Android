@@ -35,14 +35,14 @@ fun RecommendOptionCard(
 ) {
     val (cardBackground, badgeBackground, textColor) =
         if (isChecked) Triple(
-            BongBaekTheme.colors.primaryNormal,
-            BongBaekTheme.colors.gray750,
-            BongBaekTheme.colors.gray100,
+            BongBaekTheme.colors.bgStatusFocused,
+            BongBaekTheme.colors.bgDisplayCard,
+            BongBaekTheme.colors.txtDisplaySecondary,
         )
         else Triple(
-            BongBaekTheme.colors.gray750,
-            BongBaekTheme.colors.primaryBackground,
-            BongBaekTheme.colors.gray400,
+            BongBaekTheme.colors.bgDisplayCard,
+            BongBaekTheme.colors.btnInteractiveDisabled,
+            BongBaekTheme.colors.txtDisplayTertiary,
         )
 
     Row(
@@ -73,7 +73,7 @@ fun RecommendOptionCard(
                 Text(
                     text = stringResource(recommendation_select_title),
                     style = BongBaekTheme.typography.titleSemiBold16,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
                 )
             }
 
