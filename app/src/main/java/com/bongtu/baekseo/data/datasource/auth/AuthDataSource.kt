@@ -9,6 +9,7 @@ import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
 
 interface AuthDataSource {
     suspend fun postKakaoLogin(
+        oauthProvider: String,
         request: PostKakaoLoginRequest,
     ): BaseResponse<PostKakaoLoginResponse>
 

@@ -14,11 +14,13 @@ class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
 ) : AuthRepository {
     override suspend fun postKakaoLogin(
-        accessToken: String,
+        oauthProvider: String,
+        idToken: String,
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postKakaoLogin(
+            oauthProvider = oauthProvider,
             request = PostKakaoLoginRequest(
-                accessToken = accessToken,
+                idToken = idToken,
             )
         )
     }.mapCatching { response ->
@@ -50,7 +52,7 @@ class AuthRepositoryImpl @Inject constructor(
                     refreshToken = refreshToken,
                 )
             )
-            if (response.success || response.status == 200)
+            if (response.status == 200)
                 response.data.toModel()
             else
                 throw IllegalStateException("토큰 재발급 실패: ${response.status} ${response.message}")
