@@ -152,7 +152,7 @@ private fun RecordDeleteToggleButton(
 private fun RecordContentPreview() {
     BongBaekTheme {
         RecordListContent(
-            modifier = Modifier.background(color = BongBaekTheme.colors.gray900),
+            modifier = Modifier.background(color = BongBaekTheme.colors.bgDisplayPrimary),
             scheduleEventList = persistentListOf(
                 ScheduleEvent(
                     eventId = "1",

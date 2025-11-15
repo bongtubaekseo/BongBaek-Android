@@ -9,6 +9,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -89,7 +90,7 @@ private fun TopBarDefaultTrailingIcon(
                 .padding(14.dp)
                 .size(20.dp)
                 .noRippleClickable(onClick = onAddButtonClick),
-            tint = BongBaekTheme.colors.gray400,
+            tint = Color.Unspecified,
         )
         if (isEnterDeleteButtonVisible) {
             Icon(
@@ -99,7 +100,7 @@ private fun TopBarDefaultTrailingIcon(
                     .padding(14.dp)
                     .size(20.dp)
                     .noRippleClickable(onClick = onEnterDeleteModeClick),
-                tint = BongBaekTheme.colors.gray400,
+                tint = Color.Unspecified,
             )
         }
     }
@@ -116,7 +117,7 @@ private fun TopBarDeleteLeadingIcon(
         modifier = modifier
             .padding(12.dp)
             .noRippleClickable(onClick = onExitDeleteModeClick),
-        tint = BongBaekTheme.colors.white,
+        tint = BongBaekTheme.colors.iconInteractiveDefault,
     )
 }
 
@@ -127,11 +128,8 @@ private fun TopBarDeleteTrailingIcon(
     modifier: Modifier = Modifier,
 ) {
     val colors = BongBaekTheme.colors
-    val textColor = if (isDeleteButtonEnabled) {
-        colors.secondaryRed
-    } else {
-        colors.gray500
-    }
+    val textColor =
+        if (isDeleteButtonEnabled) colors.txtStatusError else colors.txtInteractiveSecondary
 
     Text(
         text = stringResource(record_top_bar_delete_button),
@@ -140,10 +138,10 @@ private fun TopBarDeleteTrailingIcon(
         modifier = modifier
             .padding(vertical = 12.dp, horizontal = 10.dp)
             .padding(end = 8.dp)
-            .noRippleClickable(onClick = {
+            .noRippleClickable {
                 if (isDeleteButtonEnabled) {
                     onDeleteClick()
                 }
-            }),
+            },
     )
 }
