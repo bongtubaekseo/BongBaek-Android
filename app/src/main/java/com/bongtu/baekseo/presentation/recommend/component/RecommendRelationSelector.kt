@@ -71,7 +71,7 @@ private fun RelationSelectorItem(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val (backgroundColor, borderColor) = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.bgStatusFocused to bongBaekColors.bgStatusFocused
+        if (isSelected == true) bongBaekColors.statusFocused to bongBaekColors.statusFocused
         else bongBaekColors.btnInteractiveTertiary to bongBaekColors.borderFieldDefault
     }
     val (contentColor, iconColor) = remember(isSelected) {

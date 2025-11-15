@@ -66,7 +66,7 @@ fun RecommendTextFieldCard(
                 imageVector = ImageVector.vectorResource(ic_person),
                 contentDescription = null,
                 modifier = Modifier.size(22.dp),
-                tint = BongBaekTheme.colors.iconFocusedPrimary,
+                tint = BongBaekTheme.colors.statusFocused,
             )
 
             Text(

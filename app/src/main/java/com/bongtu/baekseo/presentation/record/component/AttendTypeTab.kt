@@ -60,7 +60,7 @@ fun AttendTypeTab(
                             textColor = color.txtInteractivePrimary,
                             textStyle = typography.titleSemiBold16,
                             backgroundColor = color.btnInteractiveDisabled,
-                            lineColor = color.borderStatusFocused,
+                            lineColor = color.statusFocused,
                         )
                     } else {
                         TabStyle(

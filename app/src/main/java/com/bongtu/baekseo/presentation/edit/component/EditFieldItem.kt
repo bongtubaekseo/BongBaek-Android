@@ -66,7 +66,7 @@ fun EditFieldItem(
                 Text(
                     text = stringResource(id = edit_required_text),
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.txtStatusFocused,
+                    color = BongBaekTheme.colors.statusFocused,
                 )
             }
 

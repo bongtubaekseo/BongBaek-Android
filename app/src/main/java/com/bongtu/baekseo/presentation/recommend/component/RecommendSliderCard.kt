@@ -191,7 +191,7 @@ private fun SliderThumb(
     Box(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.bgStatusFocused,
+                color = BongBaekTheme.colors.statusFocused,
                 shape = CircleShape,
             )
             .padding(8.dp),
@@ -199,7 +199,7 @@ private fun SliderThumb(
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = null,
-            tint = BongBaekTheme.colors.bgStatusFocused,
+            tint = BongBaekTheme.colors.statusFocused,
         )
     }
 }
@@ -219,7 +219,7 @@ private fun SliderTrack(
             modifier = Modifier
                 .height(4.dp)
                 .fillMaxWidth(progress)
-                .background(BongBaekTheme.colors.bgStatusFocused),
+                .background(BongBaekTheme.colors.statusFocused),
         )
     }
 }

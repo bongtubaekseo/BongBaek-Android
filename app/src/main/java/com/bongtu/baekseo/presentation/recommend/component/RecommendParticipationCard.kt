@@ -96,8 +96,8 @@ private fun SelectorItem(
 ) {
     val (backgroundColor, borderColor, textColor) =
         if (isSelected == true) Triple(
-            BongBaekTheme.colors.bgStatusFocused,
-            BongBaekTheme.colors.bgStatusFocused,
+            BongBaekTheme.colors.statusFocused,
+            BongBaekTheme.colors.statusFocused,
             BongBaekTheme.colors.txtInteractiveInverse,
         )
         else Triple(

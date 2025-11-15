@@ -107,7 +107,7 @@ fun RecommendExpenseCard(
                     text = stringResource(recommendation_result_topbar),
                     modifier = Modifier
                         .background(
-                            color = bongBaekColors.bgStatusFocused,
+                            color = bongBaekColors.statusFocused,
                             shape = RoundedCornerShape(4.dp),
                         )
                         .padding(

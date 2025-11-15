@@ -260,7 +260,7 @@ private fun ProfileSection(
             text = stringResource(mypage_profile_edit_button),
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.bgStatusFocused,
+                    color = BongBaekTheme.colors.statusFocused,
                     shape = RoundedCornerShape(20.dp),
                 )
                 .noRippleClickable(onProfileEditButtonClick)

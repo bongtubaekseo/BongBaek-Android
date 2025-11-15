@@ -61,7 +61,7 @@ private fun EventSelectorItem(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val backgroundColor = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.bgStatusFocused
+        if (isSelected == true) bongBaekColors.statusFocused
         else bongBaekColors.btnInteractiveTertiary
     }
     val iconRes = remember(event) {

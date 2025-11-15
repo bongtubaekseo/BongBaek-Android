@@ -250,7 +250,7 @@ private fun DetailDropDownItem(
                         Text(
                             text = trailingType.text,
                             style = BongBaekTheme.typography.body2Regular14,
-                            color = BongBaekTheme.colors.txtStatusFocused,
+                            color = BongBaekTheme.colors.statusFocused,
                         )
                     }
 

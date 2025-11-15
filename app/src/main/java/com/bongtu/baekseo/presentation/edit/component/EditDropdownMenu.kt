@@ -55,7 +55,7 @@ fun EditDropdownMenu(
         isSelected || expanded -> bongBaekColors.txtFieldValue
         else -> bongBaekColors.txtFieldValue
     }
-    val borderColor = if (expanded) bongBaekColors.borderStatusFocused else bongBaekColors.transparent
+    val borderColor = if (expanded) bongBaekColors.statusFocused else bongBaekColors.transparent
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
         animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing),

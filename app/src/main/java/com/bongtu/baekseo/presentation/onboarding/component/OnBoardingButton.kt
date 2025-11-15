@@ -37,7 +37,7 @@ fun OnBoardingButton(
     val backgroundColor =
         if (selected) BongBaekTheme.colors.btnInteractiveDisabled else BongBaekTheme.colors.btnInteractiveTertiary
     val borderColor =
-        if (selected) BongBaekTheme.colors.borderStatusFocused else BongBaekTheme.colors.borderFieldDefault
+        if (selected) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.borderFieldDefault
 
     Row(
         modifier = modifier
@@ -69,7 +69,7 @@ fun OnBoardingButton(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_select),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.txtStatusFocused,
+                tint = BongBaekTheme.colors.statusFocused,
             )
         }
     }

@@ -56,7 +56,7 @@ fun EditMemoContent(
     val bongBaekColors = BongBaekTheme.colors
     val (borderColor, backgroundColor) = remember(isFocused) {
         if (isFocused) {
-            bongBaekColors.borderStatusFocused to bongBaekColors.bgFieldSecondary
+            bongBaekColors.statusFocused to bongBaekColors.bgFieldSecondary
         } else {
             bongBaekColors.transparent to bongBaekColors.bgFieldSecondary
         }

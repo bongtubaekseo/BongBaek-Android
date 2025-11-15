@@ -56,7 +56,7 @@ fun HomeRecommendCard(
                 Text(
                     text = stringResource(id = home_recommend_card_description),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.txtStatusFocused,
+                    color = BongBaekTheme.colors.statusFocused,
                 )
 
                 Spacer(modifier = Modifier.height(4.dp))

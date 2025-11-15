@@ -129,7 +129,7 @@ private fun TopBarDeleteTrailingIcon(
 ) {
     val colors = BongBaekTheme.colors
     val textColor =
-        if (isDeleteButtonEnabled) colors.txtStatusError else colors.txtInteractiveSecondary
+        if (isDeleteButtonEnabled) colors.statusError else colors.txtInteractiveSecondary
 
     Text(
         text = stringResource(record_top_bar_delete_button),

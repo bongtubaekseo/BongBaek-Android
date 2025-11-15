@@ -247,7 +247,7 @@ private fun DetailContent(
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
-                    color = BongBaekTheme.colors.borderStatusError,
+                    color = BongBaekTheme.colors.statusError,
                     shape = RoundedCornerShape(10.dp),
                 ),
         )

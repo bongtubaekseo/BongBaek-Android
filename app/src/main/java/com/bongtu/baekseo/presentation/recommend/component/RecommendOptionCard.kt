@@ -35,7 +35,7 @@ fun RecommendOptionCard(
 ) {
     val (cardBackground, badgeBackground, textColor) =
         if (isChecked) Triple(
-            BongBaekTheme.colors.bgStatusFocused,
+            BongBaekTheme.colors.statusFocused,
             BongBaekTheme.colors.bgDisplayCard,
             BongBaekTheme.colors.txtDisplaySecondary,
         )

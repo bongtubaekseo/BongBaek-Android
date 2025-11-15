@@ -147,7 +147,7 @@ private fun WithdrawSelectorItem(
                     if (isSelected == true)
                         Modifier.border(
                             width = 1.dp,
-                            color = bongBaekColors.borderStatusFocused,
+                            color = bongBaekColors.statusFocused,
                             shape = RoundedCornerShape(10.dp),
                         )
                     else Modifier
