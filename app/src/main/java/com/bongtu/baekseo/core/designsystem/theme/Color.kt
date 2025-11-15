@@ -53,12 +53,11 @@ val dark800 = Color(0xFF1B1C1D)
 val dark900 = Color(0xFF141516)
 
 // Gradients
-val splashStart = Color(0xFF6E7FFF)
-val splashEnd = Color(0xFF6E7FFF)
+val splashEnd = Color(0xFF171922)
 val envelopeStart = Color(0xFFA6BEF3)
 val envelopeEnd = Color(0xFFD3D9FF)
 val recommendResultStart = Color(0xFF4E62FF)
-val recordStart = Color(0xFF6648FF)
+val recommendResultEnd = Color(0xFF6648FF)
 val recordEnd = Color(0xFF6F53FF)
 
 // Others
@@ -115,8 +114,9 @@ data class BongBaekColors(
     val envelopeStart: Color,
     val envelopeEnd: Color,
     val recommendResultStart: Color,
-    val recordEnd: Color,
+    val recommendResultEnd: Color,
     val recordStart: Color,
+    val recordEnd: Color,
     val kakaoYellow: Color,
     val blacks: Color,
     val transparent: Color,
@@ -167,12 +167,13 @@ val lightBongBaekColors = BongBaekColors(
     borderInteractiveSwitch = light200,
     borderStatusFocused = primaryNormal,
     borderStatusError = secondaryStrong,
-    splashStart = splashStart,
+    splashStart = dark750,
     splashEnd = splashEnd,
     envelopeStart = envelopeStart,
     envelopeEnd = envelopeEnd,
     recommendResultStart = recommendResultStart,
-    recordStart = recordStart,
+    recommendResultEnd = recommendResultEnd,
+    recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
     blacks = blacks,
@@ -224,12 +225,13 @@ val darkBongBaekColors = BongBaekColors(
     borderInteractiveSwitch = dark100,
     borderStatusFocused = primaryNormal,
     borderStatusError = secondaryNormal,
-    splashStart = splashStart,
+    splashStart = dark750,
     splashEnd = splashEnd,
     envelopeStart = envelopeStart,
     envelopeEnd = envelopeEnd,
     recommendResultStart = recommendResultStart,
-    recordStart = recordStart,
+    recommendResultEnd = recommendResultEnd,
+    recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
     blacks = blacks,
@@ -275,12 +277,12 @@ private fun BongBaekColorsPreview() {
                 dark750,
                 dark800,
                 dark900,
-                splashStart,
                 splashEnd,
                 envelopeStart,
                 envelopeEnd,
                 recommendResultStart,
-                recordStart,
+                recommendResultEnd,
+                recordEnd,
                 recordEnd,
                 kakaoYellow,
                 transparent,
