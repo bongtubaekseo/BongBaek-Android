@@ -77,7 +77,7 @@ fun BongBaekSwitch(
                 modifier = Modifier
                     .size(switchSize)
                     .clip(shape = CircleShape)
-                    .background(color = BongBaekTheme.colors.iconInteractiveKnob),
+                    .background(color = BongBaekTheme.colors.iconInteractiveInverse),
             )
         }
     }
