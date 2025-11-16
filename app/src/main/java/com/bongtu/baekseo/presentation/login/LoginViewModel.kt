@@ -47,7 +47,7 @@ class LoginViewModel @Inject constructor(
                 oauthProvider = LoginType.KAKAO.label,
                 idToken = token,
             ).onSuccess { response ->
-                updateKakaoId(response.kakaoId)
+                updateOAuthId(response.oauthId)
                 if (response.isCompletedSignUp) {
                     _sideEffect.emit(NavigateToHome)
                     updateLoginUiState(UiState.Empty)
@@ -67,8 +67,8 @@ class LoginViewModel @Inject constructor(
             )
         }
 
-    private fun updateKakaoId(newKakaoId: String) =
+    private fun updateOAuthId(newOAuthId: String) =
         _uiState.update {
-            it.copy(kakaoId = newKakaoId)
+            it.copy(oauthId = newOAuthId)
         }
 }

@@ -7,7 +7,7 @@ class LoginContract {
     @Immutable
     data class LoginUiState(
         val loadState: UiState<Unit> = UiState.Empty,
-        val kakaoId: String = "",
+        val oauthId: String = "",
     )
 
     sealed class LoginSideEffect {

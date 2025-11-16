@@ -28,14 +28,16 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postSignUp(
-        kakaoId: String,
+        oauthId: String,
+        oauthProvider: String,
         memberName: String,
         memberBirthday: String,
         memberIncome: String,
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postSignUp(
             request = PostSignUpRequest(
-                kakaoId = kakaoId,
+                oauthId = oauthId,
+                oauthProvider = oauthProvider,
                 memberName = memberName,
                 memberBirthday = memberBirthday,
                 memberIncome = memberIncome,

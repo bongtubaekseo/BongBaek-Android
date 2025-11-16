@@ -22,8 +22,8 @@ class KakaoLauncher(
                 onError(error)
             } else if (token != null) {
                 // Login Success
-                Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.accessToken}")
-                onTokenReceived(token.accessToken)
+                Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.idToken}")
+                onTokenReceived(token.idToken.orEmpty())
             }
         }
 
@@ -42,8 +42,8 @@ class KakaoLauncher(
                     }
                 } else if (token != null) {
                     // 카카오톡으로 로그인 성공
-                    Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.accessToken}")
-                    onTokenReceived(token.accessToken)
+                    Timber.tag("KakaoLogin").d("카카오계정으로 로그인 성공: ${token.idToken}")
+                    onTokenReceived(token.idToken.orEmpty())
                 }
             }
         } else {

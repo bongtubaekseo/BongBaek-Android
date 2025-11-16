@@ -10,7 +10,8 @@ fun PostKakaoLoginResponse.toModel() = KakaoLogin(
     accessToken = token?.accessToken?.token.orEmpty(),
     refreshToken = token?.refreshToken?.token.orEmpty(),
     isCompletedSignUp = isCompletedSignUp,
-    kakaoId = kakaoId,
+    oauthId = oauthId,
+    oauthProvider = oauthProvider,
     apiKey = apiKey.orEmpty(),
 )
 

@@ -298,7 +298,7 @@ fun LoginScreen(
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
                         onBottomSheetVisibleChange(false)
-                        onNextClick(uiState.kakaoId)
+                        onNextClick(uiState.oauthId)
                     }
                 }
             },

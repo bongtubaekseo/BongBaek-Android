@@ -9,8 +9,8 @@ import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToOnBoarding(kakaoId: String, navOptions: NavOptions? = null) =
-    navigate(OnBoarding(kakaoId), navOptions)
+fun NavController.navigateToOnBoarding(oauthId: String, navOptions: NavOptions? = null) =
+    navigate(OnBoarding(oauthId), navOptions)
 
 fun NavGraphBuilder.onBoardingGraph(
     navigateToUp: () -> Unit,
@@ -28,5 +28,5 @@ fun NavGraphBuilder.onBoardingGraph(
 
 @Serializable
 data class OnBoarding(
-    val kakaoId: String,
+    val oauthId: String,
 ) : Route

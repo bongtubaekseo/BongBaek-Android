@@ -8,7 +8,7 @@ class OnBoardingContract {
     @Immutable
     data class OnBoardingUiState(
         val loadState: UiState<Unit> = UiState.Empty,
-        val kakaoId: String = "",
+        val oauthId: String = "",
         val name: String = "",
         val birth: String = "",
         var dialogBirth: String = "",
