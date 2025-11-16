@@ -56,12 +56,12 @@ fun BongBaekButton(
     val (backgroundColor, contentColor) = remember(buttonType, enabled) {
         when (buttonType) {
             ButtonType.PRIMARY -> {
-                if (enabled) bongBaekColors.primaryNormal to bongBaekColors.white
-                else bongBaekColors.primaryBackground to bongBaekColors.gray500
+                if (enabled) bongBaekColors.statusFocused to bongBaekColors.txtInteractiveInverse
+                else bongBaekColors.btnInteractiveDisabled to bongBaekColors.txtStatusDisabled
             }
 
-            ButtonType.SECONDARY -> bongBaekColors.gray700 to bongBaekColors.gray200
-            ButtonType.DELETE -> bongBaekColors.transparent to bongBaekColors.secondaryRed
+            ButtonType.SECONDARY -> bongBaekColors.btnInteractiveSecondary to bongBaekColors.txtInteractiveSecondary
+            ButtonType.DELETE -> bongBaekColors.transparent to bongBaekColors.statusError
             ButtonType.KAKAO -> bongBaekColors.kakaoYellow to bongBaekColors.black
         }
     }
@@ -100,7 +100,7 @@ private fun BongBaekButtonPreview() {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .background(BongBaekTheme.colors.gray900),
+                .background(BongBaekTheme.colors.bgDisplayPrimary),
             verticalArrangement = Arrangement.spacedBy(8.dp),
         ) {
             BongBaekButton(
@@ -136,7 +136,7 @@ private fun BongBaekButtonPreview() {
                     .fillMaxWidth()
                     .border(
                         width = 1.dp,
-                        color = BongBaekTheme.colors.secondaryRed,
+                        color = BongBaekTheme.colors.statusError,
                         shape = RoundedCornerShape(10.dp),
                     ),
             )

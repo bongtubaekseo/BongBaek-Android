@@ -34,7 +34,8 @@ fun EditFieldItem(
     isDimmed: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
 ) {
-    val textColor = if (isDimmed) BongBaekTheme.colors.gray400 else BongBaekTheme.colors.white
+    val textColor =
+        if (isDimmed) BongBaekTheme.colors.txtDisplayTertiary else BongBaekTheme.colors.txtDisplayTertiary
 
     Column(
         modifier = modifier,
@@ -65,7 +66,7 @@ fun EditFieldItem(
                 Text(
                     text = stringResource(id = edit_required_text),
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.primaryNormal,
+                    color = BongBaekTheme.colors.statusFocused,
                 )
             }
 
@@ -88,7 +89,7 @@ private fun EditFieldItemPreview() {
                 Text(
                     text = "홍길동",
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtFieldValue,
                 )
             },
         )

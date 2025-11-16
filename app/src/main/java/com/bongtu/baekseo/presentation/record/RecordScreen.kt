@@ -121,7 +121,7 @@ private fun RecordScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary),
     ) {
         RecordTopBar(
             isDeleteMode = uiState.isDeleteMode,

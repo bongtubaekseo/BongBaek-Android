@@ -95,19 +95,19 @@ private fun BongBaekDialogContent(
         }
     val (confirmColor, confirmStyle, confirmPadding) = when (dialogType) {
             DialogType.DELETE, DialogType.WITHDRAW -> Triple(
-                bongBaekColors.secondaryRed,
+                bongBaekColors.txtDisplayTertiary,
                 bongBeakTypo.body2Regular16,
                 16.dp,
             )
 
             DialogType.LOGOUT -> Triple(
-                bongBaekColors.secondaryRed,
+                bongBaekColors.txtDisplayTertiary,
                 bongBeakTypo.body1Medium16,
                 3.dp,
             )
 
             DialogType.ERROR_UPDATE, DialogType.FEATURE_UPDATE -> Triple(
-                bongBaekColors.white,
+                bongBaekColors.txtDisplayTertiary,
                 bongBeakTypo.body1Medium16,
                 3.dp,
             )
@@ -117,7 +117,7 @@ private fun BongBaekDialogContent(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(color = bongBaekColors.gray750)
+            .background(color = bongBaekColors.txtDisplayTertiary)
             .padding(
                 start = 20.dp,
                 top = 20.dp,
@@ -128,7 +128,7 @@ private fun BongBaekDialogContent(
         Text(
             text = stringResource(id = titleRes),
             style = bongBeakTypo.titleSemiBold20,
-            color = bongBaekColors.white,
+            color = bongBaekColors.txtDisplayTertiary,
         )
 
         Spacer(modifier = Modifier.size(6.dp))
@@ -136,7 +136,7 @@ private fun BongBaekDialogContent(
         Text(
             text = stringResource(id = descriptionRes),
             style = bongBeakTypo.captionRegular12,
-            color = bongBaekColors.gray300,
+            color = bongBaekColors.txtDisplayTertiary,
         )
 
         Row(
@@ -155,7 +155,7 @@ private fun BongBaekDialogContent(
                         )
                         .noRippleClickable(onDismissRequest),
                     style = bongBeakTypo.body2Regular16,
-                    color = bongBaekColors.gray300,
+                    color = bongBaekColors.txtDisplayTertiary,
                 )
             }
 

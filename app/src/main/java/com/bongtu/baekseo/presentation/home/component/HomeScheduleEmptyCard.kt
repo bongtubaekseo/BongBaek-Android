@@ -33,7 +33,7 @@ fun HomeScheduleEmptyCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray800,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(vertical = 34.dp),
@@ -50,7 +50,7 @@ fun HomeScheduleEmptyCard(
         Text(
             text = stringResource(id = home_schedule_empty),
             style = BongBaekTheme.typography.titleSemiBold18,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplaySecondary,
         )
 
         Spacer(modifier = Modifier.height(8.dp))

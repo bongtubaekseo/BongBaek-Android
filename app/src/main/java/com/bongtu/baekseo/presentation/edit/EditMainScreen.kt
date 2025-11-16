@@ -187,7 +187,7 @@ private fun EditMainScreen(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray900,
+                color = BongBaekTheme.colors.bgDisplayPrimary,
             )
             .statusBarsPadding()
             .clearFocus(focusManager),
@@ -202,7 +202,7 @@ private fun EditMainScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(onClick = navigateUp),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )
@@ -218,7 +218,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .background(
-                        color = BongBaekTheme.colors.gray800,
+                        color = BongBaekTheme.colors.bgDisplaySecondary,
                         shape = RoundedCornerShape(10.dp),
                     )
                     .padding(vertical = 24.dp, horizontal = 20.dp),
@@ -306,7 +306,7 @@ private fun EditMainScreen(
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body2Regular16,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                         modifier = Modifier
                             .padding(
                                 start = 16.dp,
@@ -361,7 +361,7 @@ private fun EditMainScreen(
                             Text(
                                 text = stringResource(id = location_empty_text),
                                 style = BongBaekTheme.typography.body1Medium14,
-                                color = BongBaekTheme.colors.gray400,
+                                color = BongBaekTheme.colors.txtDisplayTertiary,
                             )
                         } else {
                             uiState.selectedPlace?.let { place ->
@@ -381,7 +381,7 @@ private fun EditMainScreen(
                                     } ?: edit_location_add_text
                                 ),
                                 style = BongBaekTheme.typography.body2Regular14,
-                                color = BongBaekTheme.colors.gray300,
+                                color = BongBaekTheme.colors.txtDisplayTertiary,
                                 modifier = Modifier
                                     .noRippleClickable(navigateToLocation),
                             )

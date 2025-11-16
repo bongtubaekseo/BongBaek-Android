@@ -51,7 +51,7 @@ fun RecommendIntroScreen(
         modifier = modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary),
     ) {
         BongBaekTopBar(
             title = stringResource(recommendation_intro_topbar),
@@ -60,7 +60,7 @@ fun RecommendIntroScreen(
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_back),
                     contentDescription = null,
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(navigateToUp),
@@ -82,7 +82,7 @@ fun RecommendIntroScreen(
             Text(
                 text = stringResource(recommendation_intro_title),
                 style = BongBaekTheme.typography.headBold24,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
 
             Spacer(modifier = Modifier.height(20.dp))
@@ -90,7 +90,7 @@ fun RecommendIntroScreen(
             Text(
                 text = stringResource(recommendation_intro_description),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray300,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
             Spacer(modifier = Modifier.height(19.dp))
@@ -119,7 +119,7 @@ fun RecommendIntroScreen(
                 Text(
                     text = stringResource(recommendation_intro_privacy),
                     style = BongBaekTheme.typography.body2Regular14,
-                    color = BongBaekTheme.colors.gray300,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
             }
 

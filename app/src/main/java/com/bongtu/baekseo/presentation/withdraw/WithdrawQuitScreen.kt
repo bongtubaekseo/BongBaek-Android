@@ -43,7 +43,7 @@ fun WithdrawQuitScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding()
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .padding(horizontal = 20.dp),
@@ -55,7 +55,7 @@ fun WithdrawQuitScreen(
             Text(
                 text = stringResource(id = withdraw_quit_title),
                 style = BongBaekTheme.typography.headBold24,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -63,7 +63,7 @@ fun WithdrawQuitScreen(
             Text(
                 text = stringResource(id = withdraw_quit_information),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
 

@@ -44,7 +44,7 @@ fun AttendTypeTab(
     ) {
         HorizontalDivider(
             thickness = 1.dp,
-            color = BongBaekTheme.colors.gray500,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
         Row(
@@ -57,14 +57,14 @@ fun AttendTypeTab(
                 val style = remember(isSelected) {
                     if (isSelected) {
                         TabStyle(
-                            textColor = color.white,
+                            textColor = color.txtInteractivePrimary,
                             textStyle = typography.titleSemiBold16,
-                            backgroundColor = color.primaryBackground,
-                            lineColor = color.primaryNormal,
+                            backgroundColor = color.btnInteractiveDisabled,
+                            lineColor = color.statusFocused,
                         )
                     } else {
                         TabStyle(
-                            textColor = color.gray500,
+                            textColor = color.txtStatusDisabled,
                             textStyle = typography.body2Regular16,
                             backgroundColor = color.transparent,
                             lineColor = color.transparent,

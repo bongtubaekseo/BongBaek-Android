@@ -50,12 +50,12 @@ fun EditDropdownMenu(
     val bongBaekColors = BongBaekTheme.colors
     val text = if (isSelected) selectedItem else placeholder
     val textColor = when {
-        isDimmed -> bongBaekColors.gray400
-        isSelected && expanded -> bongBaekColors.primaryNormal
-        isSelected || expanded -> bongBaekColors.white
-        else -> bongBaekColors.gray300
+        isDimmed -> bongBaekColors.txtFieldValue
+        isSelected && expanded -> bongBaekColors.txtFieldValue
+        isSelected || expanded -> bongBaekColors.txtFieldValue
+        else -> bongBaekColors.txtFieldValue
     }
-    val borderColor = if (expanded) bongBaekColors.primaryNormal else bongBaekColors.transparent
+    val borderColor = if (expanded) bongBaekColors.statusFocused else bongBaekColors.transparent
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 0f,
         animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing),
@@ -79,7 +79,7 @@ fun EditDropdownMenu(
                 .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                 .fillMaxWidth()
                 .background(
-                    color = BongBaekTheme.colors.gray750,
+                    color = BongBaekTheme.colors.bgFieldSecondary,
                     shape = RoundedCornerShape(10.dp),
                 )
                 .border(

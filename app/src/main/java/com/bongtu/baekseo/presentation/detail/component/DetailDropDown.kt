@@ -138,7 +138,7 @@ fun DetailDropDown(
             Text(
                 text = stringResource(record_detail_dropdown_title),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplayPrimary,
                 modifier = Modifier.padding(vertical = 20.dp),
             )
             Icon(
@@ -148,7 +148,7 @@ fun DetailDropDown(
                 contentDescription = null,
                 modifier = Modifier
                     .noRippleClickable { isDetailVisible = !isDetailVisible },
-                tint = BongBaekTheme.colors.white,
+                tint = BongBaekTheme.colors.iconInteractiveDefault,
             )
         }
 
@@ -161,7 +161,7 @@ fun DetailDropDown(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(
-                        color = BongBaekTheme.colors.gray800,
+                        color = BongBaekTheme.colors.bgDisplaySecondary,
                         shape = RoundedCornerShape(10.dp),
                     )
                     .padding(
@@ -227,7 +227,7 @@ private fun DetailDropDownItem(
             Text(
                 text = stringResource(id = labelRes),
                 style = BongBaekTheme.typography.body1Medium14,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
 
@@ -239,7 +239,7 @@ private fun DetailDropDownItem(
                     Row(
                         modifier = modifier
                             .background(
-                                color = BongBaekTheme.colors.primaryBackground,
+                                color = BongBaekTheme.colors.bgDisplayChips,
                                 shape = RoundedCornerShape(4.dp),
                             )
                             .padding(
@@ -250,7 +250,7 @@ private fun DetailDropDownItem(
                         Text(
                             text = trailingType.text,
                             style = BongBaekTheme.typography.body2Regular14,
-                            color = BongBaekTheme.colors.primaryNormal,
+                            color = BongBaekTheme.colors.statusFocused,
                         )
                     }
 
@@ -258,7 +258,7 @@ private fun DetailDropDownItem(
                     Text(
                         text = trailingType.text,
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                         modifier = Modifier
                             .padding(vertical = 6.dp),
                     )

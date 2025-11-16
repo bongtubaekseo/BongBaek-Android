@@ -65,7 +65,7 @@ fun MainScreen(
                 )
             }
         },
-        containerColor = BongBaekTheme.colors.gray900,
+        containerColor = BongBaekTheme.colors.bgDisplayPrimary,
         modifier = Modifier
             .fillMaxSize(),
     ) { innerPadding ->

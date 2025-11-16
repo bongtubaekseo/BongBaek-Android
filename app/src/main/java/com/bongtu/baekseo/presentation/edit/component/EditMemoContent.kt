@@ -56,9 +56,9 @@ fun EditMemoContent(
     val bongBaekColors = BongBaekTheme.colors
     val (borderColor, backgroundColor) = remember(isFocused) {
         if (isFocused) {
-            bongBaekColors.primaryNormal to bongBaekColors.gray750
+            bongBaekColors.statusFocused to bongBaekColors.bgFieldSecondary
         } else {
-            bongBaekColors.transparent to bongBaekColors.gray800
+            bongBaekColors.transparent to bongBaekColors.bgFieldSecondary
         }
     }
 
@@ -68,7 +68,7 @@ fun EditMemoContent(
     ) {
         Text(
             text = stringResource(edit_memo_title),
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.titleSemiBold18,
             modifier = Modifier
                 .padding(bottom = 10.dp),
@@ -104,9 +104,9 @@ fun EditMemoContent(
                             onTextChange(it)
                         }
                     },
-                    textColor = BongBaekTheme.colors.white,
+                    textColor = BongBaekTheme.colors.txtFieldValue,
                     placeholder = stringResource(edit_memo_text_field_placeholder),
-                    placeholderColor = BongBaekTheme.colors.gray500,
+                    placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
                     textStyle = BongBaekTheme.typography.body2Regular16,
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done,
@@ -134,7 +134,7 @@ fun EditMemoContent(
                     .padding(top = 10.dp)
                     .align(Alignment.End),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = bongBaekColors.white,
+                color = bongBaekColors.txtDisplayTertiary,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))

@@ -74,14 +74,14 @@ fun RoundedBoxTextField(
     val bongBaekColors = BongBaekTheme.colors
     val borderColor = remember(isError, isFocused) {
         when {
-            isError -> bongBaekColors.secondaryRed
-            isFocused -> bongBaekColors.primaryNormal
-            else -> bongBaekColors.lineNormal
+            isError -> bongBaekColors.statusError
+            isFocused -> bongBaekColors.statusFocused
+            else -> bongBaekColors.transparent
         }
     }
 
     val textColor = remember(isError) {
-        if (isError) bongBaekColors.secondaryRed else bongBaekColors.white
+        if (isError) bongBaekColors.statusError else bongBaekColors.txtDisplayPrimary
     }
 
     LaunchedEffect(isFocused) {
@@ -95,7 +95,7 @@ fun RoundedBoxTextField(
         Box(
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.gray800,
+                    color = BongBaekTheme.colors.bgFieldSecondary,
                     shape = roundedCornerShape,
                 )
                 .border(
@@ -111,7 +111,7 @@ fun RoundedBoxTextField(
                 textColor = textColor,
                 textStyle = BongBaekTheme.typography.body1Medium16,
                 placeholder = placeholder,
-                placeholderColor = BongBaekTheme.colors.gray500,
+                placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
                 isReadOnly = !isEditable,
                 isEnabled = isEditable,
                 interactionSource = interactionSource,
@@ -130,7 +130,7 @@ fun RoundedBoxTextField(
                         Icon(
                             imageVector = ImageVector.vectorResource(id = ic_cancel),
                             contentDescription = null,
-                            tint = BongBaekTheme.colors.gray500,
+                            tint = BongBaekTheme.colors.iconDisabledPrimary,
                             modifier = Modifier.noRippleClickable { onTextChange("") },
                         )
                     }
@@ -150,7 +150,7 @@ fun RoundedBoxTextField(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = ic_caution),
                     contentDescription = null,
-                    tint = BongBaekTheme.colors.secondaryRed,
+                    tint = BongBaekTheme.colors.statusError,
                     modifier = Modifier
                         .size(14.dp),
                 )
@@ -159,7 +159,7 @@ fun RoundedBoxTextField(
                     modifier = Modifier
                         .padding(start = 4.dp),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.secondaryRed,
+                    color = BongBaekTheme.colors.statusError,
                 )
             }
         }

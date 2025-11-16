@@ -77,7 +77,7 @@ fun RecommendRelationTypeContent(
             Text(
                 text = stringResource(recommendation_relation_selector_title),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 
