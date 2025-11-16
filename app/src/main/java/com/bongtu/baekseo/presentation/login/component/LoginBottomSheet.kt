@@ -50,12 +50,14 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.login.model.LoginAgree
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LoginBottomSheet(
-    items: List<LoginAgree>,
+    items: ImmutableList<LoginAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
@@ -91,7 +93,7 @@ fun LoginBottomSheet(
 
 @Composable
 private fun LoginBottomSheetAgreeContent(
-    items: List<LoginAgree>,
+    items: ImmutableList<LoginAgree>,
     checkedStates: List<Boolean>,
     onAllCheckedChange: (Boolean) -> Unit,
     onItemCheckedChange: (index: Int, checked: Boolean) -> Unit,
@@ -218,25 +220,23 @@ private fun LoginAgreeItem(
 private fun LoginBottomSheetAgreeContentPreview() {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
 
-    val items = remember {
-        mutableStateListOf(
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_age,
-                isDescription = false,
-                isArrowVisible = false,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_service,
-                isDescription = false,
-                isArrowVisible = true,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_privacy,
-                isDescription = false,
-                isArrowVisible = true,
-            ),
-        )
-    }
+    val items = persistentListOf(
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_age,
+            isDescription = false,
+            isArrowVisible = false,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_service,
+            isDescription = false,
+            isArrowVisible = true,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_privacy,
+            isDescription = false,
+            isArrowVisible = true,
+        ),
+    )
 
     BongBaekTheme {
         LoginBottomSheetAgreeContent(
@@ -260,25 +260,23 @@ private fun LoginBottomSheetAgreeContentPreview() {
 @Composable
 private fun LoginBottomSheetPreview() {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
-    val items = remember {
-        mutableStateListOf(
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_age,
-                isDescription = false,
-                isArrowVisible = false,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_service,
-                isDescription = false,
-                isArrowVisible = true,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_privacy,
-                isDescription = false,
-                isArrowVisible = true,
-            ),
-        )
-    }
+    val items = persistentListOf(
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_age,
+            isDescription = false,
+            isArrowVisible = false,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_service,
+            isDescription = false,
+            isArrowVisible = true,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_privacy,
+            isDescription = false,
+            isArrowVisible = true,
+        ),
+    )
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
