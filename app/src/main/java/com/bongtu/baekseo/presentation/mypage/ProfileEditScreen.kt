@@ -140,7 +140,7 @@ private fun ProfileEditScreen(
 
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .fillMaxSize()
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .clearFocus(focusManager),
@@ -155,7 +155,7 @@ private fun ProfileEditScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(onClick = navigateUp),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )
@@ -202,7 +202,7 @@ private fun ProfileEditScreen(
                         .fillMaxWidth()
                         .padding(top = 30.dp)
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .background(color = BongBaekTheme.colors.gray750)
+                        .background(color = BongBaekTheme.colors.bgDisplayCard)
                         .padding(
                             horizontal = 20.dp,
                             vertical = 16.dp,
@@ -213,7 +213,7 @@ private fun ProfileEditScreen(
                     Text(
                         text = stringResource(id = onboarding_income),
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplaySecondary,
                     )
                     BongBaekSwitch(
                         checked = switchChecked,
@@ -233,13 +233,13 @@ private fun ProfileEditScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(shape = RoundedCornerShape(10.dp))
-                            .background(color = BongBaekTheme.colors.gray750)
+                            .background(color = BongBaekTheme.colors.bgDisplayCard)
                             .padding(20.dp),
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
                             style = BongBaekTheme.typography.body1Medium16,
-                            color = BongBaekTheme.colors.gray100,
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
                         ProfileEditButton(
@@ -295,9 +295,9 @@ private fun ProfileEditButton(
     modifier: Modifier = Modifier,
 ) {
     val backgroundColor =
-        if (selected) BongBaekTheme.colors.primaryBackground else BongBaekTheme.colors.gray750
+        if (selected) BongBaekTheme.colors.btnInteractiveDisabled else BongBaekTheme.colors.btnInteractiveTertiary
     val borderColor =
-        if (selected) BongBaekTheme.colors.primaryNormal else BongBaekTheme.colors.lineNormal
+        if (selected) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.borderFieldDefault
 
     Row(
         modifier = modifier
@@ -320,7 +320,7 @@ private fun ProfileEditButton(
         Text(
             text = title,
             style = BongBaekTheme.typography.body2Regular14,
-            color = BongBaekTheme.colors.gray100,
+            color = BongBaekTheme.colors.statusFocused,
         )
 
         Spacer(modifier = Modifier.weight(1f))
@@ -329,7 +329,7 @@ private fun ProfileEditButton(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_select),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.primaryNormal,
+                tint = BongBaekTheme.colors.statusFocused,
             )
         }
     }

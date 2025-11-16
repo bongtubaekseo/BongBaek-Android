@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -30,7 +29,7 @@ fun EmptyDropDown(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(vertical = 49.dp),
@@ -45,7 +44,7 @@ fun EmptyDropDown(
 
         Text(
             text = stringResource(search_result_empty),
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
             style = BongBaekTheme.typography.body1Medium16,
         )
     }

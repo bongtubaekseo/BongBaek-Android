@@ -90,7 +90,7 @@ private fun ScheduleScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(
@@ -104,7 +104,7 @@ private fun ScheduleScreen(
                         .padding(12.dp)
                         .size(24.dp)
                         .noRippleClickable(onBackClick),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )

@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
@@ -40,12 +39,7 @@ fun MainBottomBar(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        BongBaekTheme.colors.gray750,
-                        BongBaekTheme.colors.gray850,
-                    ),
-                ),
+                color = BongBaekTheme.colors.gnbDisplayBase,
                 shape = RoundedCornerShape(
                     topStart = 10.dp,
                     topEnd = 10.dp,
@@ -59,8 +53,8 @@ fun MainBottomBar(
     ) {
         tabs.forEach { tab ->
             val selectedColor =
-                if (tab == currentTab) BongBaekTheme.colors.white
-                else BongBaekTheme.colors.gray400
+                if (tab == currentTab) BongBaekTheme.colors.menuSelectedPrimary
+                else BongBaekTheme.colors.txtDisplayPrimary
 
             MainNavigationBarItem(
                 tab = tab,

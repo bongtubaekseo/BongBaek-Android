@@ -35,7 +35,7 @@ fun RecommendProgressBar(
         Text(
             text = "${currentIndex}/$MAX_PAGE",
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.gray400,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
 
         BongBaekProgressBar(

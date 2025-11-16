@@ -33,7 +33,7 @@ fun DetailLocationContent(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray700,
+                color = BongBaekTheme.colors.btnInteractiveSecondary,
                 shape = RoundedCornerShape(10.dp),
             ),
     ) {
@@ -57,13 +57,13 @@ fun DetailLocationContent(
             Text(
                 text = location,
                 style = BongBaekTheme.typography.body1Medium16,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplayPrimary,
             )
 
             Text(
                 text = address,
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
     }

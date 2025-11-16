@@ -71,12 +71,12 @@ private fun RelationSelectorItem(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val (backgroundColor, borderColor) = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.primaryNormal to bongBaekColors.primaryNormal
-        else bongBaekColors.gray750 to bongBaekColors.lineNormal
+        if (isSelected == true) bongBaekColors.statusFocused to bongBaekColors.statusFocused
+        else bongBaekColors.btnInteractiveTertiary to bongBaekColors.borderFieldDefault
     }
     val (contentColor, iconColor) = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.white to bongBaekColors.white
-        else bongBaekColors.gray200 to Color.Unspecified
+        if (isSelected == true) bongBaekColors.txtInteractiveInverse to bongBaekColors.txtInteractiveInverse
+        else bongBaekColors.txtInteractivePrimary to Color.Unspecified
     }
     val iconRes = remember(relation) {
         when (relation) {
@@ -131,7 +131,7 @@ private fun RecommendRelationSelectorPreview() {
             selectedRelation = selectedRelation,
             onRelationSelect = { selectedRelation = it },
             modifier = Modifier
-                .background(BongBaekTheme.colors.gray900)
+                .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .fillMaxWidth(),
         )
     }

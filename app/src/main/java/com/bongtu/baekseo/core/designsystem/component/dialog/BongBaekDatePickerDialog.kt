@@ -74,7 +74,7 @@ fun BongBaekDatePickerDialog(
     val isValid = dateError.isEmpty()
     val bongBaekColors = BongBaekTheme.colors
     val confirmTextColor = remember(isValid) {
-        if (isValid) bongBaekColors.white else bongBaekColors.gray300
+        if (isValid) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplayTertiary
     }
 
     Dialog(
@@ -95,7 +95,7 @@ fun BongBaekDatePickerDialog(
                 modifier = modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
-                    .background(color = BongBaekTheme.colors.gray750)
+                    .background(color = BongBaekTheme.colors.txtDisplayTertiary)
                     .padding(
                         start = 20.dp,
                         top = 20.dp,
@@ -106,7 +106,7 @@ fun BongBaekDatePickerDialog(
                 Text(
                     text = stringResource(id = datePickerDialogType.descriptionId),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.gray300,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
 
                 Spacer(modifier = Modifier.height(2.dp))
@@ -114,7 +114,7 @@ fun BongBaekDatePickerDialog(
                 Text(
                     text = stringResource(id = date_picker_title),
                     style = BongBaekTheme.typography.titleSemiBold20,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -136,7 +136,7 @@ fun BongBaekDatePickerDialog(
                             imageVector = ImageVector.vectorResource(id = ic_caution),
                             contentDescription = null,
                             modifier = Modifier.size(14.dp),
-                            tint = BongBaekTheme.colors.secondaryRed,
+                            tint = BongBaekTheme.colors.txtDisplayTertiary,
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
@@ -144,7 +144,7 @@ fun BongBaekDatePickerDialog(
                         Text(
                             text = dateError,
                             style = BongBaekTheme.typography.captionRegular12,
-                            color = BongBaekTheme.colors.secondaryRed,
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
                         )
                     }
                 }
@@ -161,7 +161,7 @@ fun BongBaekDatePickerDialog(
                             .padding(8.dp)
                             .noRippleClickable(onDismissRequest),
                         style = BongBaekTheme.typography.body2Regular16,
-                        color = BongBaekTheme.colors.gray300,
+                        color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
 
                     Text(
@@ -197,8 +197,8 @@ private fun BongBaekDatePickerTextField(
 
     val borderColor = remember(isError) {
         when {
-            isError -> bongBaekColors.secondaryRed
-            else -> bongBaekColors.lineNormal
+            isError -> bongBaekColors.txtDisplayTertiary
+            else -> bongBaekColors.txtDisplayTertiary
         }
     }
 
@@ -209,10 +209,10 @@ private fun BongBaekDatePickerTextField(
                 onValueChange(it)
             }
         },
-        textColor = BongBaekTheme.colors.white,
+        textColor = BongBaekTheme.colors.txtDisplayTertiary,
         textStyle = BongBaekTheme.typography.body1Medium16,
         placeholder = stringResource(id = date_picker_placeholder),
-        placeholderColor = BongBaekTheme.colors.gray500,
+        placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
         modifier = modifier
             .fillMaxWidth()
             .border(
@@ -221,7 +221,7 @@ private fun BongBaekDatePickerTextField(
                 shape = RoundedCornerShape(10.dp),
             )
             .background(
-                color = BongBaekTheme.colors.gray800,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(

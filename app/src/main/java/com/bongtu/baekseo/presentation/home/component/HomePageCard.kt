@@ -64,33 +64,11 @@ fun HomePageCard(
         daysLeft,
     )
     val colors = BongBaekTheme.colors
-    val colorStops = remember {
-        arrayOf(
-            0f to colors.gradientCardStop1,
-            0.37f to colors.gradientCardStop2,
-            0.61f to colors.gradientCardStop3,
-            0.82f to colors.gradientCardStop4,
-            1f to colors.gradientCardStop5,
-        )
-    }
 
     Box(
         modifier = modifier
             .fillMaxWidth()
-            .height(250.dp)
-            .drawWithCache {
-                val brush = Brush.linearGradient(
-                    colorStops = colorStops,
-                    start = Offset(size.width * 0.33f, 0f),
-                    end = Offset(size.width * 0.66f, size.height),
-                )
-                onDrawBehind {
-                    drawRoundRect(
-                        brush = brush,
-                        cornerRadius = CornerRadius(10.dp.toPx()),
-                    )
-                }
-            },
+            .height(250.dp),
     ) {
         Column(
             modifier = Modifier
@@ -101,7 +79,7 @@ fun HomePageCard(
             Text(
                 text = pageTitle,
                 style = BongBaekTheme.typography.headBold24,
-                color = colors.white,
+                color = colors.txtDisplayPrimary,
             )
 
             Spacer(modifier = Modifier.height(10.dp))
@@ -109,7 +87,7 @@ fun HomePageCard(
             Text(
                 text = stringResource(home_page_card_description),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = colors.gray100,
+                color = colors.txtDisplayPrimary,
             )
 
             Spacer(modifier = Modifier.weight(1f))
@@ -146,7 +124,7 @@ fun HomePageEmptyCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray800,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(horizontal = 20.dp, vertical = 30.dp),
@@ -154,7 +132,7 @@ fun HomePageEmptyCard(
         Text(
             text = stringResource(home_page_card_empty),
             style = BongBaekTheme.typography.headBold24,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
 
         Row(
@@ -187,7 +165,7 @@ private fun HomePageCardDate(
     Row(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(vertical = 6.dp)
@@ -198,7 +176,7 @@ private fun HomePageCardDate(
             imageVector = ImageVector.vectorResource(id = ic_calendar),
             contentDescription = null,
             modifier = Modifier.size(16.dp),
-            tint = BongBaekTheme.colors.primaryNormal,
+            tint = BongBaekTheme.colors.txtDisplayTertiary,
         )
 
         Spacer(modifier = Modifier.width(6.dp))
@@ -206,7 +184,7 @@ private fun HomePageCardDate(
         Text(
             text = date,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.gray100,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }
 }

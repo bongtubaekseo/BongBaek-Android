@@ -233,7 +233,7 @@ fun OnBoardingLoginScreen(
                         append(stringResource(id = onboarding_title_prefix))
                         withStyle(
                             style = SpanStyle(
-                                color = BongBaekTheme.colors.white,
+                                color = BongBaekTheme.colors.txtInteractiveInverse,
                                 fontFamily = PretendardBlack,
                                 fontSize = 26.sp,
                                 letterSpacing = (-0.03).em,
@@ -244,14 +244,14 @@ fun OnBoardingLoginScreen(
                         append(stringResource(id = onboarding_title_suffix))
                     },
                     style = BongBaekTheme.typography.headBold26,
-                    color = BongBaekTheme.colors.onboardingTitle,
+                    color = BongBaekTheme.colors.splashTitle,
                 )
 
                 Text(
                     text = stringResource(id = onboarding_description),
                     modifier = Modifier.padding(top = 30.dp),
                     style = BongBaekTheme.typography.body2Regular16,
-                    color = BongBaekTheme.colors.gray100,
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
                 )
             }
 
@@ -279,7 +279,7 @@ fun OnBoardingLoginScreen(
                     text = stringResource(id = onboarding_login_information),
                     modifier = Modifier.padding(top = 20.dp),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                 )
 
                 Row(
@@ -292,7 +292,7 @@ fun OnBoardingLoginScreen(
                         text = stringResource(id = onboarding_personal_privacy),
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
+                        color = BongBaekTheme.colors.txtInteractiveInverse,
                         modifier = Modifier
                             .noRippleClickable(onClick = onPrivacyClick),
                     )
@@ -303,7 +303,7 @@ fun OnBoardingLoginScreen(
                         text = stringResource(id = onboarding_term_of_use),
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.gray300,
+                        color = BongBaekTheme.colors.txtInteractiveInverse,
                         modifier = Modifier
                             .noRippleClickable(onClick = onTermsClick),
                     )

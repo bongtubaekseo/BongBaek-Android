@@ -74,7 +74,7 @@ fun RecommendResultContent(
 
     Column(
         modifier = modifier
-            .background(BongBaekTheme.colors.gray900),
+            .background(BongBaekTheme.colors.bgDisplayPrimary),
     ) {
         RecommendAmountCard(
             expense = expense,
@@ -173,8 +173,8 @@ private fun RecommendAmountCard(
     val progressGradient = remember {
         Brush.horizontalGradient(
             listOf(
-                bongBaekColors.primaryStrong,
-                bongBaekColors.primaryNormal,
+                bongBaekColors.recommendResultStart,
+                bongBaekColors.recommendResultEnd,
             )
         )
     }
@@ -194,7 +194,7 @@ private fun RecommendAmountCard(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.black,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(
@@ -205,7 +205,7 @@ private fun RecommendAmountCard(
         Text(
             text = stringResource(recommendation_result_amount_card_title),
             style = BongBaekTheme.typography.titleSemiBold18,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplaySecondary,
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -213,7 +213,7 @@ private fun RecommendAmountCard(
         BongBaekProgressBar(
             progress = animatedProgress,
             modifier = Modifier,
-            backgroundColor = BongBaekTheme.colors.gray700,
+            backgroundColor = BongBaekTheme.colors.bgDisplayRange,
             progressColor = progressGradient,
             height = 12.dp,
         )
@@ -230,7 +230,7 @@ private fun RecommendAmountCard(
                     decimalFormatter.format(minExpense)
                 ),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
             Text(
@@ -239,7 +239,7 @@ private fun RecommendAmountCard(
                     decimalFormatter.format(maxExpense)
                 ),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
     }
@@ -256,7 +256,7 @@ private fun RecommendEventInfoCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(8.dp),
             )
             .padding(
@@ -271,25 +271,25 @@ private fun RecommendEventInfoCard(
             contentDescription = null,
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.gray900,
+                    color = BongBaekTheme.colors.bgDisplayPrimary,
                     shape = CircleShape,
                 )
                 .padding(10.dp)
                 .size(22.dp),
-            tint = BongBaekTheme.colors.primaryNormal,
+            tint = Color.Unspecified,
         )
 
         Column {
             Text(
                 text = stringResource(titleRes),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
             Text(
                 text = value,
                 style = BongBaekTheme.typography.body1Medium16,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
                 overflow = TextOverflow.Ellipsis,
                 maxLines = 1,
             )
@@ -308,7 +308,7 @@ private fun ResultDescriptionCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(
@@ -330,14 +330,14 @@ private fun ResultDescriptionCard(
             Text(
                 text = stringResource(titleRes),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 
         Text(
             text = stringResource(descriptionRes),
             style = BongBaekTheme.typography.body2Regular16,
-            color = BongBaekTheme.colors.gray400,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }
 }

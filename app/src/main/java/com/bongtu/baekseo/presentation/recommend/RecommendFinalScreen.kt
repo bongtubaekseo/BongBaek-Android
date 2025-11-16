@@ -58,7 +58,7 @@ private fun RecommendFinalScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .systemBarsPadding(),
     ) {
         BongBaekTopBar(
@@ -84,7 +84,7 @@ private fun RecommendFinalScreen(
             Text(
                 text = stringResource(recommendation_record_title),
                 style = BongBaekTheme.typography.headBold24,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
                 textAlign = TextAlign.Center,
             )
 
@@ -93,7 +93,7 @@ private fun RecommendFinalScreen(
             Text(
                 text = stringResource(recommendation_record_description),
                 style = BongBaekTheme.typography.body2Regular14,
-                color = BongBaekTheme.colors.gray300,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
                 textAlign = TextAlign.Center,
             )
 

@@ -105,7 +105,7 @@ private fun OnBoardingBottomSheetAgreeContent(
 
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray750)
+            .background(color = BongBaekTheme.colors.bgDisplayCard)
             .navigationBarsPadding()
             .padding(horizontal = 20.dp),
     ) {
@@ -113,7 +113,7 @@ private fun OnBoardingBottomSheetAgreeContent(
             text = stringResource(id = onboarding_bottom_sheet_description),
             modifier = Modifier.padding(top = 40.dp),
             style = BongBaekTheme.typography.titleSemiBold18,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
         )
 
         Spacer(modifier = Modifier.size(30.dp))
@@ -133,7 +133,7 @@ private fun OnBoardingBottomSheetAgreeContent(
                 .fillMaxWidth()
                 .width(1.dp)
                 .padding(vertical = 18.dp),
-            color = BongBaekTheme.colors.lineNormal,
+            color = BongBaekTheme.colors.borderFieldDefault,
         )
 
         items.forEachIndexed { index, item ->
@@ -173,9 +173,9 @@ private fun OnBoardingAgreeItem(
     onIconClick: () -> Unit = {},
 ) {
     val (textStyle, textColor) = if (item.isDescription) {
-        BongBaekTheme.typography.titleSemiBold16 to BongBaekTheme.colors.gray200
+        BongBaekTheme.typography.titleSemiBold16 to BongBaekTheme.colors.txtDisplaySecondary
     } else {
-        BongBaekTheme.typography.body2Regular16 to BongBaekTheme.colors.gray300
+        BongBaekTheme.typography.body2Regular16 to BongBaekTheme.colors.txtDisplayTertiary
     }
 
     Row(
@@ -206,7 +206,7 @@ private fun OnBoardingAgreeItem(
                 imageVector = ImageVector.vectorResource(id = ic_arrow_right),
                 contentDescription = null,
                 modifier = Modifier.noRippleClickable(onClick = onIconClick),
-                tint = BongBaekTheme.colors.gray400,
+                tint = BongBaekTheme.colors.iconInteractiveDefault,
             )
         }
     }
