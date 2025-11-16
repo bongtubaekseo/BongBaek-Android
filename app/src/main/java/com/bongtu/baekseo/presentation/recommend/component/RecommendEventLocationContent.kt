@@ -125,7 +125,7 @@ private fun LocationCard(
             )
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(
@@ -137,13 +137,13 @@ private fun LocationCard(
         Text(
             text = name,
             style = BongBaekTheme.typography.titleSemiBold18,
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
         )
 
         Text(
             text = address,
             style = BongBaekTheme.typography.body2Regular14,
-            color = BongBaekTheme.colors.gray400,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }
 }

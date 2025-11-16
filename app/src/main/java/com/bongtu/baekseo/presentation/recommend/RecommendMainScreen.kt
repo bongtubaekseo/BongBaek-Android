@@ -205,7 +205,7 @@ private fun RecommendMainScreen(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray900,
+                color = BongBaekTheme.colors.bgDisplayPrimary,
             )
             .clearFocus(focusManager)
             .statusBarsPadding(),
@@ -220,7 +220,7 @@ private fun RecommendMainScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(onBackClick),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )
@@ -258,14 +258,14 @@ private fun RecommendMainScreen(
                         Text(
                             text = stringResource(titleRes),
                             style = BongBaekTheme.typography.headBold24,
-                            color = BongBaekTheme.colors.gray100,
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
                         if (uiState.pageIndex == 4) {
                             Text(
                                 text = stringResource(recommendation_event_location_skip),
                                 style = BongBaekTheme.typography.body2Regular14,
-                                color = BongBaekTheme.colors.gray500,
+                                color = BongBaekTheme.colors.txtStatusDisabled,
                                 modifier = Modifier
                                     .noRippleClickable {
                                         onLocationSelect(null)
@@ -280,7 +280,7 @@ private fun RecommendMainScreen(
                     Text(
                         text = stringResource(descRes),
                         style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.gray400,
+                        color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
                     Spacer(modifier = Modifier.height(32.dp))
                 }

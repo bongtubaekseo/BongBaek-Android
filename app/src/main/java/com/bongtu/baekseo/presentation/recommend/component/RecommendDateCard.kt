@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -47,7 +48,7 @@ fun RecommendDateCard(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
@@ -60,13 +61,13 @@ fun RecommendDateCard(
                 imageVector = ImageVector.vectorResource(ic_calendar),
                 contentDescription = null,
                 modifier = Modifier.size(22.dp),
-                tint = BongBaekTheme.colors.primaryNormal,
+                tint = Color.Unspecified,
             )
 
             Text(
                 text = stringResource(recommendation_date_title),
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.gray100,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 

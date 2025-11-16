@@ -28,7 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onGloballyPositioned
@@ -59,7 +59,7 @@ fun RecommendSliderCard(
     Column(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray750,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
@@ -103,13 +103,13 @@ fun SliderCardItem(
                 imageVector = ImageVector.vectorResource(iconRes),
                 contentDescription = null,
                 modifier = Modifier.size(20.dp),
-                tint = BongBaekTheme.colors.primaryNormal,
+                tint = Color.Unspecified,
             )
 
             Text(
                 text = stringResource(title),
                 style = BongBaekTheme.typography.body1Medium16,
-                color = BongBaekTheme.colors.white,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
             )
         }
 
@@ -128,13 +128,13 @@ fun SliderCardItem(
             Text(
                 text = stringResource(recommendation_slider_rarely),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
             Text(
                 text = stringResource(recommendation_slider_frequently),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = BongBaekTheme.colors.gray400,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
             )
         }
     }
@@ -191,7 +191,7 @@ private fun SliderThumb(
     Box(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.primaryNormal,
+                color = BongBaekTheme.colors.statusFocused,
                 shape = CircleShape,
             )
             .padding(8.dp),
@@ -199,7 +199,7 @@ private fun SliderThumb(
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = null,
-            tint = BongBaekTheme.colors.white,
+            tint = BongBaekTheme.colors.statusFocused,
         )
     }
 }
@@ -213,13 +213,13 @@ private fun SliderTrack(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(100.dp))
-            .background(BongBaekTheme.colors.gray500),
+            .background(BongBaekTheme.colors.bgDisplayRange),
     ) {
         Box(
             modifier = Modifier
                 .height(4.dp)
                 .fillMaxWidth(progress)
-                .background(BongBaekTheme.colors.primaryNormal),
+                .background(BongBaekTheme.colors.statusFocused),
         )
     }
 }

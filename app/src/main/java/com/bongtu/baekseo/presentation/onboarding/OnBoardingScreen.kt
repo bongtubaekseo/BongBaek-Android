@@ -146,7 +146,7 @@ fun OnBoardingScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .clearFocus(focusManager),
     ) {
@@ -160,7 +160,7 @@ fun OnBoardingScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(logoutKakaoLogin),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
         )
@@ -212,7 +212,7 @@ fun OnBoardingScreen(
                         .fillMaxWidth()
                         .padding(top = 30.dp)
                         .clip(shape = RoundedCornerShape(10.dp))
-                        .background(color = BongBaekTheme.colors.gray750)
+                        .background(color = BongBaekTheme.colors.bgDisplayCard)
                         .padding(
                             horizontal = 20.dp,
                             vertical = 16.dp,
@@ -223,7 +223,7 @@ fun OnBoardingScreen(
                     Text(
                         text = stringResource(id = onboarding_income),
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplaySecondary,
                     )
                     BongBaekSwitch(
                         checked = switchChecked,
@@ -243,13 +243,13 @@ fun OnBoardingScreen(
                         modifier = Modifier
                             .fillMaxWidth()
                             .clip(shape = RoundedCornerShape(10.dp))
-                            .background(color = BongBaekTheme.colors.gray750)
+                            .background(color = BongBaekTheme.colors.bgDisplayCard)
                             .padding(20.dp),
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
                             style = BongBaekTheme.typography.body1Medium16,
-                            color = BongBaekTheme.colors.gray100,
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
                         OnBoardingButton(

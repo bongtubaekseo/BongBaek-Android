@@ -30,7 +30,7 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun BongBaekSmallBadge(
     title: String,
     modifier: Modifier = Modifier,
-    backgroundColor: Color = BongBaekTheme.colors.primaryBackground,
+    backgroundColor: Color = BongBaekTheme.colors.bgDisplayChips,
 ) {
     Row(
         modifier = modifier
@@ -46,7 +46,7 @@ fun BongBaekSmallBadge(
         Text(
             text = title,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.primaryNormal,
+            color = BongBaekTheme.colors.statusFocused,
         )
     }
 }
@@ -68,7 +68,7 @@ fun BongBaekMediumBadge(
     Row(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.gray900,
+                color = BongBaekTheme.colors.bgDisplayPrimary,
                 shape = RoundedCornerShape(4.dp),
             )
             .padding(
@@ -84,12 +84,12 @@ fun BongBaekMediumBadge(
         Text(
             text = title,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.gray300,
+            color = BongBaekTheme.colors.txtDisplayTertiary,
         )
         Icon(
             imageVector = ImageVector.vectorResource(ic_arrow_right),
             contentDescription = null,
-            tint = BongBaekTheme.colors.gray400,
+            tint = BongBaekTheme.colors.iconDisabledSecondary,
             modifier = Modifier.size(14.dp),
         )
     }

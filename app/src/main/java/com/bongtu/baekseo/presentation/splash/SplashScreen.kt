@@ -69,8 +69,8 @@ fun SplashScreen(
     val bongbaekColors = BongBaekTheme.colors
     val backgroundColors = remember {
         listOf(
-            bongbaekColors.gray750,
-            bongbaekColors.gray900,
+            bongbaekColors.splashStart,
+            bongbaekColors.splashEnd,
         )
     }
 
@@ -98,7 +98,7 @@ fun SplashScreen(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_splash_name),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.white,
+                tint = BongBaekTheme.colors.txtInteractiveInverse,
             )
         }
     }

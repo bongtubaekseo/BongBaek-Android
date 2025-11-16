@@ -41,7 +41,7 @@ fun BongBaekTopBar(
     topBarType: TopBarType,
     modifier: Modifier = Modifier,
     textStyle: TextStyle = BongBaekTheme.typography.titleSemiBold18,
-    textColor: Color = BongBaekTheme.colors.white,
+    textColor: Color = BongBaekTheme.colors.txtDisplayPrimary,
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
 ) {
@@ -99,7 +99,7 @@ private fun BongBaekTopBarPreview() {
                         imageVector = ImageVector.vectorResource(ic_arrow_back),
                         contentDescription = null,
                         modifier = modifier,
-                        tint = BongBaekTheme.colors.white,
+                        tint = BongBaekTheme.colors.iconInteractiveDefault,
                     )
                 }
             )
@@ -112,7 +112,7 @@ private fun BongBaekTopBarPreview() {
                         imageVector = ImageVector.vectorResource(ic_arrow_back),
                         contentDescription = null,
                         modifier = modifier,
-                        tint = BongBaekTheme.colors.white,
+                        tint = BongBaekTheme.colors.iconInteractiveDefault,
                     )
                 },
                 trailingIcon = {
@@ -120,7 +120,7 @@ private fun BongBaekTopBarPreview() {
                         imageVector = ImageVector.vectorResource(ic_edit),
                         contentDescription = null,
                         modifier = modifier,
-                        tint = BongBaekTheme.colors.white,
+                        tint = BongBaekTheme.colors.iconInteractiveDefault,
                     )
                 }
             )
@@ -137,13 +137,13 @@ private fun BongBaekTopBarPreview() {
                             imageVector = ImageVector.vectorResource(ic_plus),
                             contentDescription = null,
                             modifier = modifier,
-                            tint = BongBaekTheme.colors.gray400,
+                            tint = BongBaekTheme.colors.iconInteractiveDefault,
                         )
                         Icon(
                             imageVector = ImageVector.vectorResource(ic_delete),
                             contentDescription = null,
                             modifier = modifier,
-                            tint = BongBaekTheme.colors.gray400,
+                            tint = BongBaekTheme.colors.iconInteractiveDefault,
                         )
                     }
                 }

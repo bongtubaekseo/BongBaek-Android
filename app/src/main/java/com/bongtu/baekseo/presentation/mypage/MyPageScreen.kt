@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -130,11 +131,11 @@ private fun MyPageScreen(
 
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.gray900),
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary),
     ) {
         Column(
             modifier = Modifier
-                .background(BongBaekTheme.colors.gray800)
+                .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween,
@@ -144,7 +145,7 @@ private fun MyPageScreen(
                     title = stringResource(mypage_topbar_title),
                     topBarType = TopBarType.LEADING_ICON,
                     modifier = Modifier
-                        .background(BongBaekTheme.colors.gray900)
+                        .background(BongBaekTheme.colors.bgDisplayPrimary)
                         .statusBarsPadding(),
                     leadingIcon = {
                         Icon(
@@ -153,7 +154,7 @@ private fun MyPageScreen(
                             modifier = Modifier
                                 .padding(12.dp)
                                 .noRippleClickable(onClick = navigateUp),
-                            tint = BongBaekTheme.colors.white,
+                            tint = BongBaekTheme.colors.iconInteractiveDefault,
                         )
                     },
                 )
@@ -188,7 +189,7 @@ private fun MyPageScreen(
                         .noRippleClickable {
                             isLogoutDialogVisible = true
                         },
-                    color = BongBaekTheme.colors.gray400,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
 
@@ -196,7 +197,7 @@ private fun MyPageScreen(
                     text = stringResource(mypage_withdrawal),
                     modifier = Modifier
                         .noRippleClickable(onClick = navigateToWithdraw),
-                    color = BongBaekTheme.colors.gray400,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body2Regular14,
                 )
             }
@@ -228,7 +229,7 @@ private fun ProfileSection(
         modifier = Modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.gray900,
+                color = BongBaekTheme.colors.bgDisplayPrimary,
                 shape = RoundedCornerShape(
                     bottomStart = 20.dp,
                     bottomEnd = 20.dp,
@@ -250,7 +251,7 @@ private fun ProfileSection(
         Text(
             text = userName,
             modifier = Modifier.padding(vertical = 16.dp),
-            color = BongBaekTheme.colors.gray100,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
             maxLines = 1,
             style = BongBaekTheme.typography.headBold24,
         )
@@ -259,7 +260,7 @@ private fun ProfileSection(
             text = stringResource(mypage_profile_edit_button),
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.primaryNormal,
+                    color = BongBaekTheme.colors.statusFocused,
                     shape = RoundedCornerShape(20.dp),
                 )
                 .noRippleClickable(onProfileEditButtonClick)
@@ -267,7 +268,7 @@ private fun ProfileSection(
                     horizontal = 12.dp,
                     vertical = 4.dp,
                 ),
-            color = BongBaekTheme.colors.white,
+            color = BongBaekTheme.colors.txtInteractiveInverse,
             textAlign = TextAlign.Center,
             style = BongBaekTheme.typography.captionRegular12,
         )
@@ -281,7 +282,7 @@ private fun ProfileSection(
                     bottom = 26.dp,
                 )
                 .background(
-                    color = BongBaekTheme.colors.gray750,
+                    color = BongBaekTheme.colors.bgDisplayCard,
                     shape = RoundedCornerShape(20.dp),
                 )
                 .padding(
@@ -299,13 +300,13 @@ private fun ProfileSection(
             ) {
                 Text(
                     text = stringResource(mypage_user_birth),
-                    color = BongBaekTheme.colors.gray200,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
 
                 Text(
                     text = userBirth,
-                    color = BongBaekTheme.colors.gray100,
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
             }
@@ -317,13 +318,13 @@ private fun ProfileSection(
             ) {
                 Text(
                     text = stringResource(mypage_user_income),
-                    color = BongBaekTheme.colors.gray200,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
 
                 Text(
                     text = userIncome,
-                    color = BongBaekTheme.colors.gray100,
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
             }
@@ -345,7 +346,7 @@ private fun ServiceSection(
                 top = 26.dp,
                 end = 20.dp,
             ),
-        color = BongBaekTheme.colors.white,
+        color = BongBaekTheme.colors.txtInteractiveSecondary,
         style = BongBaekTheme.typography.titleSemiBold18,
     )
 
@@ -363,7 +364,7 @@ private fun ServiceSection(
             trailingIcon = {
                 Text(
                     text = stringResource(mypage_version_format, BuildConfig.VERSION_NAME),
-                    color = BongBaekTheme.colors.gray400,
+                    color = BongBaekTheme.colors.iconInteractiveDefault,
                     style = BongBaekTheme.typography.body1Medium16,
                 )
             }
@@ -378,7 +379,7 @@ private fun ServiceSection(
                     contentDescription = null,
                     modifier = Modifier
                         .noRippleClickable(onClick = onInquiryClick),
-                    tint = BongBaekTheme.colors.gray400,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
         )
@@ -392,7 +393,7 @@ private fun ServiceSection(
                     contentDescription = null,
                     modifier = Modifier
                         .noRippleClickable(onClick = onTermsClick),
-                    tint = BongBaekTheme.colors.gray400,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
         )
@@ -406,7 +407,7 @@ private fun ServiceSection(
                     contentDescription = null,
                     modifier = Modifier
                         .noRippleClickable(onClick = onPrivacyClick),
-                    tint = BongBaekTheme.colors.gray400,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
         )
@@ -429,7 +430,7 @@ private fun ServiceItem(
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = null,
-            tint = BongBaekTheme.colors.gray300,
+            tint = Color.Unspecified,
         )
 
         Text(
@@ -439,7 +440,7 @@ private fun ServiceItem(
                     start = 12.dp,
                 )
                 .weight(1f),
-            color = BongBaekTheme.colors.gray200,
+            color = BongBaekTheme.colors.txtInteractiveSecondary,
             style = BongBaekTheme.typography.body1Medium16,
         )
 

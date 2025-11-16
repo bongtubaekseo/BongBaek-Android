@@ -101,7 +101,7 @@ private fun RecommendResultScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding(),
     ) {
         BongBaekTopBar(

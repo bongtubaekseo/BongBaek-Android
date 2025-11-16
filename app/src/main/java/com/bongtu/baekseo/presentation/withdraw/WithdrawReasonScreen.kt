@@ -106,7 +106,7 @@ private fun WithdrawReasonScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.gray900)
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .clearFocus(focusManager),
     ) {
@@ -120,7 +120,7 @@ private fun WithdrawReasonScreen(
                     modifier = Modifier
                         .padding(12.dp)
                         .noRippleClickable(navigateToUp),
-                    tint = BongBaekTheme.colors.white,
+                    tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
         )
@@ -141,7 +141,7 @@ private fun WithdrawReasonScreen(
                         Text(
                             text = stringResource(id = withdraw_title),
                             style = BongBaekTheme.typography.headBold24,
-                            color = BongBaekTheme.colors.gray100,
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
                         Spacer(modifier = Modifier.height(12.dp))
@@ -149,7 +149,7 @@ private fun WithdrawReasonScreen(
                         Text(
                             text = stringResource(id = withdraw_information),
                             style = BongBaekTheme.typography.body2Regular14,
-                            color = BongBaekTheme.colors.gray400,
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
                         )
 
                         Spacer(modifier = Modifier.height(20.dp))

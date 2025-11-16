@@ -63,7 +63,7 @@ fun <T> BongBaekScheduleList(
             if (isNewYear) {
                 Text(
                     text = stringResource(record_card_list_year, curYear),
-                    color = BongBaekTheme.colors.white,
+                    color = BongBaekTheme.colors.txtDisplayPrimary,
                     style = BongBaekTheme.typography.titleSemiBold18,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -81,13 +81,13 @@ fun <T> BongBaekScheduleList(
                 ) {
                     Text(
                         text = stringResource(record_card_list_month, curMonth),
-                        color = BongBaekTheme.colors.white,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                         style = BongBaekTheme.typography.titleSemiBold16,
                         modifier = Modifier.padding(end = 12.dp),
                     )
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = BongBaekTheme.colors.gray750,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                     )
                 }
             }
