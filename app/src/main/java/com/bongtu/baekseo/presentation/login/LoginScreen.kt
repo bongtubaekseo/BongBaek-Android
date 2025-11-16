@@ -72,6 +72,7 @@ import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect.Navig
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginUiState
 import com.bongtu.baekseo.presentation.login.component.LoginBottomSheet
 import com.bongtu.baekseo.presentation.login.model.LoginAgree
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
@@ -83,7 +84,6 @@ fun LoginRoute(
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val context = LocalContext.current
-    val socialLoginState by viewModel.kakaoLoginState.collectAsStateWithLifecycle()
     var isBottomSheetVisible by remember { mutableStateOf(false) }
     val lifecycleOwner = LocalLifecycleOwner.current
     val isUpdateDialogVisible by viewModel.isUpdateDialogVisible.collectAsStateWithLifecycle()
@@ -99,19 +99,14 @@ fun LoginRoute(
             }
     }
 
-    LaunchedEffect(socialLoginState) {
-        when (socialLoginState) {
-            SocialLoginState.Fail -> {
-                // TODO: 카카오 로그인 실패
-            }
-
-            SocialLoginState.Idle -> {
-                // TODO: 추후 구현
-            }
-
-            SocialLoginState.Success -> {
+    LaunchedEffect(uiState.loadState) {
+        when (uiState.loadState) {
+            is UiState.Empty -> {}
+            is UiState.Failure -> {}
+            is UiState.Loading -> {}
+            is UiState.Success -> {
                 isBottomSheetVisible = true
-                viewModel.setUiStateIdle()
+                viewModel.updateLoginUiState(UiState.Empty)
             }
         }
     }
@@ -161,27 +156,25 @@ fun LoginScreen(
     modifier: Modifier = Modifier,
 ) {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
-    val items = remember {
-        mutableStateListOf(
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_age,
-                isDescription = false,
-                isArrowVisible = false,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_service,
-                isDescription = false,
-                isArrowVisible = true,
-                url = UrlConstant.TERMS_URL,
-            ),
-            LoginAgree(
-                titleRes = login_bottom_sheet_check_privacy,
-                isDescription = false,
-                isArrowVisible = true,
-                url = UrlConstant.PRIVACY_URL,
-            ),
-        )
-    }
+    val items = persistentListOf(
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_age,
+            isDescription = false,
+            isArrowVisible = false,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_service,
+            isDescription = false,
+            isArrowVisible = true,
+            url = UrlConstant.TERMS_URL,
+        ),
+        LoginAgree(
+            titleRes = login_bottom_sheet_check_privacy,
+            isDescription = false,
+            isArrowVisible = true,
+            url = UrlConstant.PRIVACY_URL,
+        ),
+    )
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()

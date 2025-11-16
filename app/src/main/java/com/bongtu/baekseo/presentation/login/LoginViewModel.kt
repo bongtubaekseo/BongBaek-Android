@@ -26,9 +26,6 @@ class LoginViewModel @Inject constructor(
     private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
     private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
-    private val _kakaoLoginState = MutableStateFlow<SocialLoginState>(SocialLoginState.Idle)
-    val kakaoLoginState = _kakaoLoginState.asStateFlow()
-
     private val _uiState = MutableStateFlow(LoginUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -42,9 +39,6 @@ class LoginViewModel @Inject constructor(
             initialValue = false,
         )
 
-    fun setUiStateIdle() =
-        _kakaoLoginState.tryEmit(SocialLoginState.Idle)
-
     fun loginWithKakao(token: String) =
         viewModelScope.launch {
             updateLoginUiState(UiState.Loading)
@@ -53,17 +47,16 @@ class LoginViewModel @Inject constructor(
                 oauthProvider = LoginType.KAKAO.label,
                 idToken = token,
             ).onSuccess { response ->
-                updateLoginUiState(UiState.Success(Unit))
-
                 updateKakaoId(response.kakaoId)
                 if (response.isCompletedSignUp) {
                     _sideEffect.emit(NavigateToHome)
+                    updateLoginUiState(UiState.Empty)
                 } else {
-                    _kakaoLoginState.tryEmit(SocialLoginState.Success)
+                    updateLoginUiState(UiState.Success(Unit))
                 }
             }.onFailure {
                 Timber.d("kakaoLogin: $it")
-                _kakaoLoginState.tryEmit(SocialLoginState.Fail)
+                updateLoginUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
         }
 

@@ -7,7 +7,6 @@ class LoginContract {
     @Immutable
     data class LoginUiState(
         val loadState: UiState<Unit> = UiState.Empty,
-        val kakaoLoginState: SocialLoginState = SocialLoginState.Idle,
         val kakaoId: String = "",
     )
 
@@ -15,10 +14,4 @@ class LoginContract {
         data object NavigateToHome : LoginSideEffect()
     }
 
-}
-
-sealed interface SocialLoginState {
-    data object Success : SocialLoginState
-    data object Fail : SocialLoginState
-    data object Idle : SocialLoginState
 }
