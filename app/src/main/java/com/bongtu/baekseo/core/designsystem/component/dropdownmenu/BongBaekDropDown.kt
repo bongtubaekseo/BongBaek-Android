@@ -97,7 +97,7 @@ fun <T> BongBaekDropdownMenu(
                 focusable = focusable,
             ),
             shape = RoundedCornerShape(10.dp),
-            containerColor = bongBaekColors.txtDisplayTertiary,
+            containerColor = bongBaekColors.bgDisplayCard,
         ) {
             if (items.isEmpty()) {
                 EmptyDropDown()

@@ -59,7 +59,7 @@ fun BongBaekScheduleEmptyContent(
     ) {
         Text(
             text = titleText,
-            color = BongBaekTheme.colors.bgDisplaySecondary,
+            color = BongBaekTheme.colors.txtDisplaySecondary,
             style = BongBaekTheme.typography.headBold24,
             textAlign = TextAlign.Center,
             modifier = Modifier
