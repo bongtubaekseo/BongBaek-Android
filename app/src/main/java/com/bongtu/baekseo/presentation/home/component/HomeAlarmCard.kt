@@ -15,13 +15,14 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_calendar
+import com.bongtu.baekseo.R.drawable.ic_record_calendar_off
 import com.bongtu.baekseo.R.drawable.img_home_alarm
 import com.bongtu.baekseo.R.string.home_contents_card_empty_date
 import com.bongtu.baekseo.R.string.home_contents_card_empty_description
@@ -79,6 +80,7 @@ fun HomeAlarmCard(
             date = eventDate,
             modifier = Modifier.weight(1f),
         )
+
         Spacer(modifier = Modifier.size(4.dp))
 
         Image(
@@ -155,10 +157,10 @@ fun HomeAlarmCardContent(
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(id = ic_calendar),
+                imageVector = ImageVector.vectorResource(id = ic_record_calendar_off),
                 contentDescription = null,
                 modifier = Modifier.size(14.dp),
-                tint = BongBaekTheme.colors.iconDisabledPrimary,
+                tint = Color.Unspecified,
             )
 
             Spacer(modifier = Modifier.size(4.dp))
