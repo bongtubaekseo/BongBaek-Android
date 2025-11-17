@@ -17,6 +17,7 @@
     <string name="home_schedule_title">%s님의 일정</string>
     <string name="home_schedule_card_cost">%1$,d</string>
     <string name="home_schedule_more">더보기</string>
+    <string name="home_schedule_card_title">%s ·&#160;</string>
     <!--Schedule   -->
     <string name="schedule_title">%s님의 다가올 일정</string>
     <string name="schedule_empty_title">다가올 경조사가 없어요!</string>
