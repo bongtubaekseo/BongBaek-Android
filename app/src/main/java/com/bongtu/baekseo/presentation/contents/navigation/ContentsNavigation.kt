@@ -12,10 +12,12 @@ fun NavController.navigateToContents(navOptions: NavOptions? = null) =
     navigate(Contents, navOptions)
 
 fun NavGraphBuilder.contentsGraph(
-    navigateUp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<Contents> {
+        ContentsRoute(
+            modifier = modifier,
+        )
     }
 }
 
