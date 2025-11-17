@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.core.util.sharedViewModel
 import com.bongtu.baekseo.presentation.mypage.MyPageRoute
@@ -54,6 +55,9 @@ fun NavGraphBuilder.myPageGraph(
         }
     }
 }
+
+@Serializable
+data object Setting : MainTabRoute
 
 @Serializable
 data object MyPage : Route

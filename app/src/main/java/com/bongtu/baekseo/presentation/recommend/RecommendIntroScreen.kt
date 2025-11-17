@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,7 +29,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_recommend_protect
-import com.bongtu.baekseo.R.drawable.img_recommend_bong
+import com.bongtu.baekseo.R.drawable.img_recommend_intro
 import com.bongtu.baekseo.R.string.recommendation_intro_description
 import com.bongtu.baekseo.R.string.recommendation_intro_privacy
 import com.bongtu.baekseo.R.string.recommendation_intro_start
@@ -93,14 +94,17 @@ fun RecommendIntroScreen(
                 color = BongBaekTheme.colors.txtDisplayTertiary,
             )
 
-            Spacer(modifier = Modifier.height(19.dp))
+            Spacer(modifier = Modifier.height(20.dp))
 
             Image(
-                painter = painterResource(img_recommend_bong),
+                painter = painterResource(img_recommend_intro),
                 contentDescription = null,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
             )
 
-            Spacer(modifier = Modifier.height(36.dp))
+            Spacer(modifier = Modifier.height(28.dp))
 
             Row(
                 modifier = Modifier

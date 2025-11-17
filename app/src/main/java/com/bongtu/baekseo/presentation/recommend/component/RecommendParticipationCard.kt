@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,7 +25,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_check
+import com.bongtu.baekseo.R.drawable.ic_check_primary
 import com.bongtu.baekseo.R.string.recommendation_participation_no
 import com.bongtu.baekseo.R.string.recommendation_participation_title
 import com.bongtu.baekseo.R.string.recommendation_participation_yes
@@ -43,18 +42,17 @@ fun RecommendParticipationCard(
         modifier = modifier
             .background(
                 color = BongBaekTheme.colors.bgDisplayCard,
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(12.dp),
             )
             .padding(20.dp),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
-                imageVector = ImageVector.vectorResource(ic_check),
+                imageVector = ImageVector.vectorResource(ic_check_primary),
                 contentDescription = null,
-                modifier = Modifier.size(22.dp),
                 tint = Color.Unspecified,
             )
 

@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -41,27 +40,22 @@ fun MainBottomBar(
             .background(
                 color = BongBaekTheme.colors.gnbDisplayBase,
                 shape = RoundedCornerShape(
-                    topStart = 10.dp,
-                    topEnd = 10.dp,
+                    topStart = 12.dp,
+                    topEnd = 12.dp,
                 ),
             )
             .padding(
                 top = 12.dp,
+                bottom = 5.dp,
             )
             .navigationBarsPadding(),
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
         tabs.forEach { tab ->
-            val selectedColor =
-                if (tab == currentTab) BongBaekTheme.colors.menuSelectedPrimary
-                else BongBaekTheme.colors.txtDisplayPrimary
-
             MainNavigationBarItem(
                 tab = tab,
-                onClick = {
-                    onTabSelected(tab)
-                },
-                selectedColor = selectedColor,
+                onClick = { onTabSelected(tab) },
+                isSelected = tab == currentTab,
                 modifier = Modifier.weight(1f),
             )
         }
@@ -72,9 +66,13 @@ fun MainBottomBar(
 private fun MainNavigationBarItem(
     tab: MainTab,
     onClick: () -> Unit,
-    selectedColor: Color,
+    isSelected: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val (contentColor, iconRes) =
+        if (isSelected) BongBaekTheme.colors.txtDisplayPrimary to tab.selectedIconRes
+        else BongBaekTheme.colors.txtStatusDisabled to tab.unselectedIconRes
+
     Column(
         modifier = modifier
             .semantics(mergeDescendants = true) { role = Role.Tab }
@@ -83,15 +81,15 @@ private fun MainNavigationBarItem(
         verticalArrangement = Arrangement.spacedBy(4.dp),
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(tab.iconRes),
+            imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = stringResource(tab.title),
-            tint = selectedColor,
+            tint = contentColor,
         )
 
         Text(
             text = stringResource(tab.title),
             style = BongBaekTheme.typography.body2Regular14,
-            color = selectedColor,
+            color = contentColor,
         )
     }
 }
