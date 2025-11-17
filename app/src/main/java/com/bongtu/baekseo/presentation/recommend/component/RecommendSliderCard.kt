@@ -38,10 +38,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_recommend_handshake
-import com.bongtu.baekseo.R.drawable.ic_recommend_handshake_reversed
-import com.bongtu.baekseo.R.drawable.ic_recommend_message
-import com.bongtu.baekseo.R.drawable.ic_recommend_message_reversed
+import com.bongtu.baekseo.R.drawable.ic_recommend_contact
+import com.bongtu.baekseo.R.drawable.ic_recommend_meet
 import com.bongtu.baekseo.R.string.recommendation_slider_frequently
 import com.bongtu.baekseo.R.string.recommendation_slider_rarely
 import com.bongtu.baekseo.R.string.recommendation_slider_title_contact
@@ -63,20 +61,18 @@ fun RecommendSliderCard(
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(20.dp),
-        verticalArrangement = Arrangement.spacedBy(38.dp),
+        verticalArrangement = Arrangement.spacedBy(32.dp),
     ) {
         SliderCardItem(
             title = recommendation_slider_title_contact,
-            iconRes = ic_recommend_message,
-            thumbIconRes = ic_recommend_message_reversed,
+            iconRes = ic_recommend_contact,
             progress = contactFrequency,
             onProgressChange = onContactFrequencyChange,
         )
 
         SliderCardItem(
             title = recommendation_slider_title_meet,
-            iconRes = ic_recommend_handshake,
-            thumbIconRes = ic_recommend_handshake_reversed,
+            iconRes = ic_recommend_meet,
             progress = meetFrequency,
             onProgressChange = onMeetFrequencyChange,
         )
@@ -87,7 +83,6 @@ fun RecommendSliderCard(
 fun SliderCardItem(
     @StringRes title: Int,
     @DrawableRes iconRes: Int,
-    @DrawableRes thumbIconRes: Int,
     progress: Float,
     onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
@@ -96,13 +91,12 @@ fun SliderCardItem(
         modifier = modifier,
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(iconRes),
                 contentDescription = null,
-                modifier = Modifier.size(20.dp),
                 tint = Color.Unspecified,
             )
 
@@ -116,7 +110,6 @@ fun SliderCardItem(
         Spacer(modifier = Modifier.height(10.dp))
 
         BongBaekSlider(
-            iconRes = thumbIconRes,
             progress = progress,
             onProgressChange = onProgressChange,
         )
@@ -143,7 +136,6 @@ fun SliderCardItem(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun BongBaekSlider(
-    @DrawableRes iconRes: Int,
     progress: Float,
     onProgressChange: (Float) -> Unit,
     modifier: Modifier = Modifier,
@@ -161,7 +153,10 @@ private fun BongBaekSlider(
                     val newProgress = (currentX / trackWidth).coerceIn(0f, 1f)
                     onProgressChange(newProgress)
                 }
-            },
+            }
+            .padding(
+                vertical = 12.dp,
+            ),
     ) {
         val trackWidth = this.constraints.maxWidth.toFloat() - thumbSize.width
         val thumbOffset = trackWidth * progress
@@ -174,18 +169,16 @@ private fun BongBaekSlider(
         )
 
         SliderThumb(
-            iconRes = iconRes,
             modifier = Modifier
                 .offset { IntOffset(thumbOffset.toInt(), 0) }
                 .onGloballyPositioned { thumbSize = it.size }
-                .align(Alignment.CenterStart),
+                .align(Alignment.CenterStart)
         )
     }
 }
 
 @Composable
 private fun SliderThumb(
-    @DrawableRes iconRes: Int,
     modifier: Modifier = Modifier,
 ) {
     Box(
@@ -194,14 +187,8 @@ private fun SliderThumb(
                 color = BongBaekTheme.colors.statusFocused,
                 shape = CircleShape,
             )
-            .padding(8.dp),
-    ) {
-        Icon(
-            imageVector = ImageVector.vectorResource(iconRes),
-            contentDescription = null,
-            tint = BongBaekTheme.colors.statusFocused,
-        )
-    }
+            .size(20.dp),
+    )
 }
 
 @Composable

@@ -119,10 +119,7 @@ private fun LocationCard(
 ) {
     Column(
         modifier = modifier
-            .padding(
-                horizontal = 10.dp,
-                vertical = 14.dp,
-            )
+            .padding(10.dp)
             .fillMaxWidth()
             .background(
                 color = BongBaekTheme.colors.bgDisplayCard,

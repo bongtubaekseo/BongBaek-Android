@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -54,18 +53,17 @@ fun RecommendTextFieldCard(
         modifier = modifier
             .background(
                 color = BongBaekTheme.colors.bgDisplayCard,
-                shape = RoundedCornerShape(10.dp),
+                shape = RoundedCornerShape(12.dp),
             )
             .padding(20.dp),
     ) {
         Row(
-            horizontalArrangement = Arrangement.spacedBy(6.dp),
+            horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(ic_person),
                 contentDescription = null,
-                modifier = Modifier.size(22.dp),
                 tint = BongBaekTheme.colors.statusFocused,
             )
 
@@ -97,7 +95,6 @@ fun RecommendTextFieldCard(
         )
     }
 }
-
 
 @Preview
 @Composable
