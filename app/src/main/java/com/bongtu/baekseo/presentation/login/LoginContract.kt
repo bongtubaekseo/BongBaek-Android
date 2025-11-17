@@ -13,5 +13,4 @@ class LoginContract {
     sealed class LoginSideEffect {
         data object NavigateToHome : LoginSideEffect()
     }
-
 }
