@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.presentation.onboarding
 
-import androidx.activity.compose.BackHandler
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -25,7 +24,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -65,9 +63,8 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.login.KakaoLauncher
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
@@ -79,37 +76,25 @@ fun OnBoardingRoute(
     viewModel: OnBoardingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
-    val context = LocalContext.current
     val lifecycleOwner = LocalLifecycleOwner.current
-
-    BackHandler {
-        viewModel.logoutKakaoLogin()
-    }
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToHome -> navigateToHome()
-                    is LogoutKakaoLogin -> {
-                        try {
-                            KakaoLauncher(context).logoutKakaoLogin()
-                        } finally {
-                            navigateToUp()
-                            viewModel.updateOnBoardingUiState(UiState.Empty)
-                        }
-                    }
+                    is NavigateToLogin -> navigateToUp()
                 }
             }
     }
 
     OnBoardingScreen(
         uiState = uiState,
-        logoutKakaoLogin = viewModel::logoutKakaoLogin,
         onNameChange = viewModel::updateName,
         onBirthChange = viewModel::updateBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
         onIncomeChange = viewModel::updateIncome,
+        onBackClick = viewModel::navigateToLogin,
         onStartClick = viewModel::postSignUp,
         checkButtonEnabled = viewModel::updateButtonState,
         modifier = modifier,
@@ -119,11 +104,11 @@ fun OnBoardingRoute(
 @Composable
 fun OnBoardingScreen(
     uiState: OnBoardingUiState,
-    logoutKakaoLogin: () -> Unit,
     onNameChange: (String) -> Unit,
     onBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
     onIncomeChange: (IncomeType) -> Unit,
+    onBackClick: () -> Unit,
     onStartClick: () -> Unit,
     checkButtonEnabled: () -> Boolean,
     modifier: Modifier = Modifier,
@@ -159,7 +144,7 @@ fun OnBoardingScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable(logoutKakaoLogin),
+                        .noRippleClickable(onBackClick),
                     tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
@@ -306,11 +291,11 @@ private fun OnBoardingSettingScreenPreview() {
     BongBaekTheme {
         OnBoardingScreen(
             uiState = OnBoardingUiState(),
-            logoutKakaoLogin = {},
             onNameChange = {},
             onBirthChange = {},
             onDialogBirthChange = {},
             onIncomeChange = {},
+            onBackClick = {},
             onStartClick = {},
             checkButtonEnabled = { true },
         )

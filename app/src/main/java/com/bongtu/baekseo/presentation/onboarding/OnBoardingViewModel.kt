@@ -12,8 +12,8 @@ import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect
-import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.LogoutKakaoLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
+import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -83,15 +83,15 @@ class OnBoardingViewModel @Inject constructor(
             }
         }
 
-    fun logoutKakaoLogin() = viewModelScope.launch {
+    fun navigateToLogin() = viewModelScope.launch {
         updateOnBoardingUiState(UiState.Loading)
-        updateOriginOnBoardingState(
+        updateOnBoardingState(
             newName = "",
             newBirth = "",
             newIncome = IncomeType.NONE,
             newNameError = "",
         )
-        _sideEffect.emit(LogoutKakaoLogin)
+        _sideEffect.emit(NavigateToLogin)
     }
 
     fun updateOnBoardingUiState(value: UiState<Unit>) =
@@ -101,7 +101,7 @@ class OnBoardingViewModel @Inject constructor(
             )
         }
 
-    fun updateOriginOnBoardingState(
+    fun updateOnBoardingState(
         newName: String,
         newBirth: String,
         newIncome: IncomeType,
