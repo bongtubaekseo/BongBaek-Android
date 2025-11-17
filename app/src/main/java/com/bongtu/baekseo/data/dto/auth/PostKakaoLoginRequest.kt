@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostKakaoLoginRequest (
-    @SerialName("accessToken")
-    val accessToken: String,
+data class PostKakaoLoginRequest(
+    @SerialName("idToken")
+    val idToken: String,
 )

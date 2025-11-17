@@ -24,10 +24,12 @@ import com.bongtu.baekseo.presentation.edit.navigation.editGraph
 import com.bongtu.baekseo.presentation.edit.navigation.navigateToEdit
 import com.bongtu.baekseo.presentation.home.navigation.homeGraph
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
+import com.bongtu.baekseo.presentation.login.navigation.Login
+import com.bongtu.baekseo.presentation.login.navigation.loginGraph
+import com.bongtu.baekseo.presentation.login.navigation.navigateToLogin
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.mypage.navigation.myPageGraph
 import com.bongtu.baekseo.presentation.mypage.navigation.navigateToMyPage
-import com.bongtu.baekseo.presentation.onboarding.navigation.OnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
@@ -47,7 +49,7 @@ import kotlinx.collections.immutable.toImmutableList
 
 @Composable
 fun MainScreen(
-    isStartOnBoarding: Boolean,
+    isStartLogin: Boolean,
     onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator = rememberMainNavigator(),
 ) {
@@ -71,7 +73,7 @@ fun MainScreen(
     ) { innerPadding ->
         CompositionLocalProvider(LocalBottomNavigationBarsPadding provides innerPadding) {
             MainNavHost(
-                isStartOnBoarding = isStartOnBoarding,
+                isStartLogin = isStartLogin,
                 onRestartApp = onRestartApp,
                 navigator = navigator,
                 modifier = Modifier,
@@ -82,12 +84,12 @@ fun MainScreen(
 
 @Composable
 private fun MainNavHost(
-    isStartOnBoarding: Boolean,
+    isStartLogin: Boolean,
     onRestartApp: (Boolean) -> Unit,
     navigator: MainNavigator,
     modifier: Modifier = Modifier,
 ) {
-    val startDestination = if (isStartOnBoarding) OnBoarding else Splash
+    val startDestination = if (isStartLogin) Login else Splash
 
     NavHost(
         enterTransition = { EnterTransition.None },
@@ -99,8 +101,8 @@ private fun MainNavHost(
     ) {
         splashGraph(
             onRestartApp = onRestartApp,
-            navigateToOnBoarding = {
-                navigator.navController.navigateToOnBoarding(
+            navigateToLogin = {
+                navigator.navController.navigateToLogin(
                     navOptions = navOptions {
                         popUpTo<Splash> {
                             inclusive = true
@@ -120,11 +122,26 @@ private fun MainNavHost(
             modifier = modifier,
         )
 
-        onBoardingGraph(
+        loginGraph(
+            navigateToOnBoarding = navigator.navController::navigateToOnBoarding,
             navigateToHome = {
                 navigator.navController.navigateToHome(
                     navOptions = navOptions {
-                        popUpTo<OnBoarding> {
+                        popUpTo<Login> {
+                            inclusive = true
+                        }
+                    }
+                )
+            },
+            modifier = modifier,
+        )
+
+        onBoardingGraph(
+            navigateToUp = navigator::navigateUp,
+            navigateToHome = {
+                navigator.navController.navigateToHome(
+                    navOptions = navOptions {
+                        popUpTo<Login> {
                             inclusive = true
                         }
                     }

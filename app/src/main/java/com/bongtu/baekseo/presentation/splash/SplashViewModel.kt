@@ -7,7 +7,7 @@ import com.bongtu.baekseo.domain.usecase.auth.CheckAutoLoginUseCase
 import com.bongtu.baekseo.domain.usecase.config.CheckAppVersionUseCase
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
-import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToOnBoarding
+import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.RestartApp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -34,7 +34,7 @@ class SplashViewModel @Inject constructor(
                     if (error is IllegalStateException) {
                         _sideEffect.emit(RestartApp)
                     } else {
-                        _sideEffect.emit(NavigateToOnBoarding)
+                        _sideEffect.emit(NavigateToLogin)
                     }
                 }
         }
