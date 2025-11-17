@@ -61,6 +61,7 @@ import com.bongtu.baekseo.R.string.market_url
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DialogType
+import com.bongtu.baekseo.core.common.type.LoginType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -89,6 +90,7 @@ fun LoginRoute(
     val isUpdateDialogVisible by viewModel.isUpdateDialogVisible.collectAsStateWithLifecycle()
     val packageName = context.packageName
     val marketUrl = stringResource(market_url, packageName)
+    val coroutineScope = rememberCoroutineScope()
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
@@ -124,6 +126,21 @@ fun LoginRoute(
                 }
             ).startKakaoLogin()
         },
+        onGoogleLoginClick = {
+            coroutineScope.launch {
+                val idToken = GoogleLauncher.startGoogleLogin(
+                    activity = (context as Activity)
+                )
+                if (idToken != null) {
+                    viewModel.socialLogin(
+                        oauthProvider = LoginType.GOOGLE.label,
+                        idToken = idToken,
+                    )
+                } else {
+                    // TODO 실패 처리 구현
+                }
+            }
+        },
         isBottomSheetVisible = isBottomSheetVisible,
         onBottomSheetVisibleChange = {
             isBottomSheetVisible = it
@@ -148,6 +165,7 @@ fun LoginRoute(
 fun LoginScreen(
     uiState: LoginUiState,
     onKakaoLoginClick: () -> Unit,
+    onGoogleLoginClick: () -> Unit,
     isBottomSheetVisible: Boolean,
     onBottomSheetVisibleChange: (Boolean) -> Unit,
     onPrivacyClick: () -> Unit,
@@ -228,6 +246,23 @@ fun LoginScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
+                BongBaekButton(     // TODO: 구글에 맞게 수정 예정
+                    title = "구글 로그인",
+                    onClick = onGoogleLoginClick,
+                    buttonType = ButtonType.KAKAO,
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    enabled = uiState.loadState !is UiState.Loading,
+                    textStyle = BongBaekTheme.typography.titleSemiBold18,
+                    leadingIcon = {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(ic_kakao),
+                            contentDescription = null,
+                            tint = BongBaekTheme.colors.black,
+                        )
+                    },
+                )
+
                 BongBaekButton(
                     title = stringResource(id = button_kakao),
                     onClick = onKakaoLoginClick,
@@ -322,6 +357,7 @@ private fun OnBoardingScreenLoginPreview() {
             onNextClick = {},
             onPrivacyClick = {},
             onTermsClick = {},
+            onGoogleLoginClick = {},
         )
     }
 }
