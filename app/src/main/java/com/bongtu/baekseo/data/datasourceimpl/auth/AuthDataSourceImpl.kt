@@ -14,8 +14,10 @@ class AuthDataSourceImpl @Inject constructor(
     override suspend fun postSocialLogin(request: PostSocialLoginRequest) =
         authService.postSocialLogin(request)
 
-    override suspend fun postKakaoLogin(request: PostKakaoLoginRequest) =
-        authService.postKakaoLogin(request)
+    override suspend fun postKakaoLogin(
+        oauthProvider: String,
+        request: PostKakaoLoginRequest,
+    ) = authService.postKakaoLogin(oauthProvider, request)
 
     override suspend fun postSignUp(request: PostSignUpRequest) =
         authService.postSignUp(request)

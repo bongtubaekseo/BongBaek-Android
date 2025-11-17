@@ -15,6 +15,7 @@ interface AuthDataSource {
     ): BaseResponse<PostSocialLoginResponse>
 
     suspend fun postKakaoLogin(
+        oauthProvider: String,
         request: PostKakaoLoginRequest,
     ): BaseResponse<PostKakaoLoginResponse>
 

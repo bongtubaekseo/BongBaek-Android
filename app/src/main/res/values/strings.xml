@@ -67,9 +67,8 @@
     <string name="recommendation_result_amount_card_unit">%s원</string>
     <string name="recommendation_result_event_type">경조사 종류</string>
     <string name="recommendation_result_location">장소</string>
-    <string name="recommendation_result_location_blank">미선택</string>
     <string name="recommendation_result_logic_title">이렇게 계산했어요</string>
-    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 경조사 대상과의 관계\n• 식사 참석 여부</string>
+    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 식사 참석 여부</string>
     <string name="recommendation_result_inform_title">참고해주세요!</string>
     <string name="recommendation_result_inform_desc">• 홀수 금액으로 준비해주세요\n• 새 지폐로 준비하는 게 좋아요\n• 봉투에 정성스럽게 마음을 표현해보세요</string>
     <string name="recommendation_result_confirm">이 금액으로 결정하기</string>
@@ -133,19 +132,20 @@
     <!--TopBar    -->
     <string name="topbar_profile_setting">프로필 설정</string>
     <string name="topbar_profile_edit">프로필 수정</string>
+    <!--Login    -->
+    <string name="login_bottom_sheet_description">앱 사용을 위해 약관에 동의해주세요.\n서비스 이용에 필수적인 약관들이에요.</string>
+    <string name="login_bottom_sheet_check_all">서비스 이용 약관 전체 동의</string>
+    <string name="login_bottom_sheet_check_age">[필수] 만 14세 이상입니다</string>
+    <string name="login_bottom_sheet_check_service">[필수] 서비스 이용 약관 동의</string>
+    <string name="login_bottom_sheet_check_privacy">[필수] 개인정보 처리 방침 동의</string>
+    <string name="login_title_primary">봉투백서</string>
+    <string name="login_title_prefix">경조사비 고민 끝,\n</string>
+    <string name="login_title_suffix">에 오신 것을\n환영합니다!</string>
+    <string name="login_description">3초 가입으로 바로 시작해보세요</string>
+    <string name="login_login_information">로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.</string>
+    <string name="login_personal_privacy">개인정보 처리방침</string>
+    <string name="login_term_of_use">이용약관</string>
     <!--OnBoarding    -->
-    <string name="onboarding_bottom_sheet_description">앱 사용을 위해 약관에 동의해주세요.\n서비스 이용에 필수적인 약관들이에요.</string>
-    <string name="onboarding_bottom_sheet_check_all">서비스 이용 약관 전체 동의</string>
-    <string name="onboarding_bottom_sheet_check_age">[필수] 만 14세 이상입니다</string>
-    <string name="onboarding_bottom_sheet_check_service">[필수] 서비스 이용 약관 동의</string>
-    <string name="onboarding_bottom_sheet_check_privacy">[필수] 개인정보 처리 방침 동의</string>
-    <string name="onboarding_title_primary">봉투백서</string>
-    <string name="onboarding_title_prefix">경조사비 고민 끝,\n</string>
-    <string name="onboarding_title_suffix">에 오신 것을\n환영합니다!</string>
-    <string name="onboarding_description">3초 가입으로 바로 시작해보세요</string>
-    <string name="onboarding_login_information">로그인하시면 아래 내용에 동의하는 것으로 간주됩니다.</string>
-    <string name="onboarding_personal_privacy">개인정보 처리방침</string>
-    <string name="onboarding_term_of_use">이용약관</string>
     <string name="onboarding_income">현재 수입 있음</string>
     <string name="onboarding_income_question">현재 수입은 어느 정도인가요?</string>
     <string name="onboarding_button_income_down">월 200만원 미만</string>
@@ -175,7 +175,11 @@
     <string name="edit_save_button">기록 저장하기</string>
     <string name="edit_location_top_bar_title">행사장 검색</string>
     <string name="edit_location_button">위치 저장하기</string>
+    <!--Contents    -->
+    <string name="contents">콘텐츠</string>
+
     <!--MyPage    -->
+    <string name="setting">설정</string>
     <string name="mypage_topbar_title">마이페이지</string>
     <string name="mypage_profile_edit_button">내 정보 수정</string>
     <string name="mypage_user_birth">생년월일</string>

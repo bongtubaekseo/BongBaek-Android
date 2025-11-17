@@ -29,11 +29,13 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postKakaoLogin(
-        accessToken: String,
+        oauthProvider: String,
+        idToken: String,
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postKakaoLogin(
+            oauthProvider = oauthProvider,
             request = PostKakaoLoginRequest(
-                accessToken = accessToken,
+                idToken = idToken,
             )
         )
     }.mapCatching { response ->
@@ -41,14 +43,16 @@ class AuthRepositoryImpl @Inject constructor(
     }
 
     override suspend fun postSignUp(
-        kakaoId: String,
+        oauthId: String,
+        oauthProvider: String,
         memberName: String,
         memberBirthday: String,
         memberIncome: String,
     ): Result<KakaoLogin> = runCatching {
         authDataSource.postSignUp(
             request = PostSignUpRequest(
-                kakaoId = kakaoId,
+                oauthId = oauthId,
+                oauthProvider = oauthProvider,
                 memberName = memberName,
                 memberBirthday = memberBirthday,
                 memberIncome = memberIncome,
@@ -65,7 +69,7 @@ class AuthRepositoryImpl @Inject constructor(
                     refreshToken = refreshToken,
                 )
             )
-            if (response.success || response.status == 200)
+            if (response.status == 200)
                 response.data.toModel()
             else
                 throw IllegalStateException("토큰 재발급 실패: ${response.status} ${response.message}")

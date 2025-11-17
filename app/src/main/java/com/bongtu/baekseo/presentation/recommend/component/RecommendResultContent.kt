@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -39,7 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_event
-import com.bongtu.baekseo.R.drawable.ic_info_primary
+import com.bongtu.baekseo.R.drawable.ic_info
 import com.bongtu.baekseo.R.drawable.ic_location
 import com.bongtu.baekseo.R.string.recommendation_result_amount_card_title
 import com.bongtu.baekseo.R.string.recommendation_result_amount_card_unit
@@ -114,7 +113,7 @@ fun RecommendResultContent(
         ) {
             Column {
                 ResultDescriptionCard(
-                    iconRes = ic_info_primary,
+                    iconRes = ic_info,
                     titleRes = recommendation_result_logic_title,
                     descriptionRes = recommendation_result_logic_desc,
                     modifier = paddedModifier,
@@ -147,9 +146,7 @@ fun RecommendResultContent(
                     buttonType = ButtonType.SECONDARY,
                     modifier = paddedModifier
                         .fillMaxWidth()
-                        .padding(
-                            bottom = 46.dp,
-                        ),
+                        .padding(bottom = 36.dp),
                 )
 
                 Spacer(modifier = Modifier.height(36.dp))
@@ -171,11 +168,11 @@ private fun RecommendAmountCard(
     val decimalFormatter = remember { DecimalFormat("#,###") }
     val bongBaekColors = BongBaekTheme.colors
     val progressGradient = remember {
-        Brush.horizontalGradient(
-            listOf(
-                bongBaekColors.recommendResultStart,
-                bongBaekColors.recommendResultEnd,
-            )
+        Brush.linearGradient(
+            colors = listOf(
+                bongBaekColors.recordStart,
+                bongBaekColors.recordEnd,
+            ),
         )
     }
 
@@ -218,7 +215,7 @@ private fun RecommendAmountCard(
             height = 12.dp,
         )
 
-        Spacer(modifier = Modifier.height(10.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -259,10 +256,7 @@ private fun RecommendEventInfoCard(
                 color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(8.dp),
             )
-            .padding(
-                horizontal = 14.dp,
-                vertical = 12.dp,
-            ),
+            .padding(14.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -274,8 +268,7 @@ private fun RecommendEventInfoCard(
                     color = BongBaekTheme.colors.bgDisplayPrimary,
                     shape = CircleShape,
                 )
-                .padding(10.dp)
-                .size(22.dp),
+                .padding(8.dp),
             tint = Color.Unspecified,
         )
 
@@ -324,7 +317,7 @@ private fun ResultDescriptionCard(
             Icon(
                 imageVector = ImageVector.vectorResource(iconRes),
                 contentDescription = null,
-                tint = Color.Unspecified,
+                tint = BongBaekTheme.colors.statusFocused,
             )
 
             Text(

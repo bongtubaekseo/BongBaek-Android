@@ -231,8 +231,8 @@ private fun RecommendMainScreen(
             currentIndex = uiState.pageIndex,
             modifier = Modifier
                 .padding(
-                    start = 10.dp,
-                    end = 10.dp,
+                    start = 20.dp,
+                    end = 20.dp,
                     bottom = 32.dp,
                 ),
         )
@@ -282,6 +282,7 @@ private fun RecommendMainScreen(
                         style = BongBaekTheme.typography.body2Regular14,
                         color = BongBaekTheme.colors.txtDisplayTertiary,
                     )
+
                     Spacer(modifier = Modifier.height(32.dp))
                 }
             }

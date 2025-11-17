@@ -9,15 +9,17 @@ import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingRoute
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToOnBoarding(navOptions: NavOptions? = null) =
-    navigate(OnBoarding, navOptions)
+fun NavController.navigateToOnBoarding(oauthId: String, navOptions: NavOptions? = null) =
+    navigate(OnBoarding(oauthId), navOptions)
 
 fun NavGraphBuilder.onBoardingGraph(
+    navigateToUp: () -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     composable<OnBoarding> {
         OnBoardingRoute(
+            navigateToUp = navigateToUp,
             navigateToHome = navigateToHome,
             modifier = modifier,
         )
@@ -25,4 +27,6 @@ fun NavGraphBuilder.onBoardingGraph(
 }
 
 @Serializable
-data object OnBoarding : Route
+data class OnBoarding(
+    val oauthId: String,
+) : Route

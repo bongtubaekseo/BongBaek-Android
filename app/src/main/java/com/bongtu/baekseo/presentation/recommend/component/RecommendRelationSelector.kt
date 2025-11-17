@@ -25,9 +25,9 @@ import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_recommend_colleague
 import com.bongtu.baekseo.R.drawable.ic_recommend_family
 import com.bongtu.baekseo.R.drawable.ic_recommend_friends
-import com.bongtu.baekseo.R.drawable.ic_recommend_handshakes
 import com.bongtu.baekseo.R.drawable.ic_recommend_neighbor
 import com.bongtu.baekseo.R.drawable.ic_recommend_others
+import com.bongtu.baekseo.R.drawable.ic_recommend_work
 import com.bongtu.baekseo.core.common.type.RelationType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -70,23 +70,19 @@ private fun RelationSelectorItem(
     modifier: Modifier = Modifier,
 ) {
     val bongBaekColors = BongBaekTheme.colors
-    val (backgroundColor, borderColor) = remember(isSelected) {
+    val (backgroundColor, borderColor) =
         if (isSelected == true) bongBaekColors.statusFocused to bongBaekColors.statusFocused
         else bongBaekColors.btnInteractiveTertiary to bongBaekColors.borderFieldDefault
-    }
-    val (contentColor, iconColor) = remember(isSelected) {
-        if (isSelected == true) bongBaekColors.txtInteractiveInverse to bongBaekColors.txtInteractiveInverse
-        else bongBaekColors.txtInteractivePrimary to Color.Unspecified
-    }
-    val iconRes = remember(relation) {
-        when (relation) {
-            RelationType.FAMILY -> ic_recommend_family
-            RelationType.FRIEND -> ic_recommend_friends
-            RelationType.COWORKER -> ic_recommend_handshakes
-            RelationType.ALUMNI -> ic_recommend_colleague
-            RelationType.NEIGHBOR -> ic_recommend_neighbor
-            RelationType.ETC -> ic_recommend_others
-        }
+    val (contentColor, iconColor) =
+        if (isSelected == true) bongBaekColors.iconInteractiveInverse to bongBaekColors.txtInteractiveInverse
+        else bongBaekColors.txtInteractiveSecondary to Color.Unspecified
+    val iconRes = when (relation) {
+        RelationType.FAMILY -> ic_recommend_family
+        RelationType.FRIEND -> ic_recommend_friends
+        RelationType.COWORKER -> ic_recommend_work
+        RelationType.ALUMNI -> ic_recommend_colleague
+        RelationType.NEIGHBOR -> ic_recommend_neighbor
+        RelationType.ETC -> ic_recommend_others
     }
 
     Column(
@@ -106,17 +102,17 @@ private fun RelationSelectorItem(
         Icon(
             imageVector = ImageVector.vectorResource(iconRes),
             contentDescription = null,
-            tint = iconColor,
             modifier = Modifier
                 .padding(top = 8.dp),
+            tint = iconColor,
         )
 
         Text(
             text = relation.label,
-            style = BongBaekTheme.typography.body1Medium14,
-            color = contentColor,
             modifier = Modifier
                 .padding(bottom = 10.dp),
+            style = BongBaekTheme.typography.body1Medium14,
+            color = contentColor,
         )
     }
 }
