@@ -172,7 +172,7 @@ private fun BongBaekSlider(
             modifier = Modifier
                 .offset { IntOffset(thumbOffset.toInt(), 0) }
                 .onGloballyPositioned { thumbSize = it.size }
-                .align(Alignment.CenterStart)
+                .align(Alignment.CenterStart),
         )
     }
 }
