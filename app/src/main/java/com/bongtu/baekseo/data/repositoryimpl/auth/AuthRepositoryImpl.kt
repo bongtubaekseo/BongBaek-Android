@@ -20,9 +20,10 @@ class AuthRepositoryImpl @Inject constructor(
         idToken: String
     ): Result<SocialLogin> = runCatching {
         authDataSource.postSocialLogin(
+            oauthProvider = oauthProvider,
             request = PostSocialLoginRequest(
                 idToken = idToken,
-            )
+            ),
         )
     }.mapCatching { response ->
         response.data.toModel()

@@ -11,6 +11,7 @@ import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
 
 interface AuthDataSource {
     suspend fun postSocialLogin(
+        oauthProvider: String,
         request: PostSocialLoginRequest,
     ): BaseResponse<PostSocialLoginResponse>
 

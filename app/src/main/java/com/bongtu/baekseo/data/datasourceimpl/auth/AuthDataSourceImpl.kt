@@ -11,8 +11,10 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthDataSource {
-    override suspend fun postSocialLogin(request: PostSocialLoginRequest) =
-        authService.postSocialLogin(request)
+    override suspend fun postSocialLogin(
+        oauthProvider: String,
+        request: PostSocialLoginRequest
+    ) = authService.postSocialLogin(oauthProvider, request)
 
     override suspend fun postKakaoLogin(
         oauthProvider: String,
