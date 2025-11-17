@@ -5,6 +5,7 @@ data class KakaoLogin(
     val accessToken: String,
     val refreshToken: String,
     val isCompletedSignUp: Boolean,
-    val kakaoId: String,
+    val oauthId: String,
+    val oauthProvider: String,
     val apiKey: String,
 )

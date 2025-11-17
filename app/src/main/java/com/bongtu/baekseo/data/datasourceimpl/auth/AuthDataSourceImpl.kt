@@ -10,8 +10,10 @@ import javax.inject.Inject
 class AuthDataSourceImpl @Inject constructor(
     private val authService: AuthService,
 ) : AuthDataSource {
-    override suspend fun postKakaoLogin(request: PostKakaoLoginRequest) =
-        authService.postKakaoLogin(request)
+    override suspend fun postKakaoLogin(
+        oauthProvider: String,
+        request: PostKakaoLoginRequest,
+    ) = authService.postKakaoLogin(oauthProvider, request)
 
     override suspend fun postSignUp(request: PostSignUpRequest) =
         authService.postSignUp(request)

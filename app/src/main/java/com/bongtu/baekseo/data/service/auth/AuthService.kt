@@ -8,10 +8,12 @@ import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueResponse
 import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface AuthService {
-    @POST("/api/v1/oauth/kakao")
+    @POST("/api/v1/oauth/{oauthProvider}")
     suspend fun postKakaoLogin(
+        @Path("oauthProvider") oauthProvider: String,
         @Body request: PostKakaoLoginRequest,
     ): BaseResponse<PostKakaoLoginResponse>
 

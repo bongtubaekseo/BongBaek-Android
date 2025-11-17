@@ -11,8 +11,10 @@ data class PostKakaoLoginResponse (
     val token: TokenType? = null,
     @SerialName("isCompletedSignUp")
     val isCompletedSignUp: Boolean,
-    @SerialName("kakaoId")
-    val kakaoId: String,
+    @SerialName("oauthId")
+    val oauthId: String,
+    @SerialName("oauthProvider")
+    val oauthProvider: String,
     @SerialName("apiKey")
     val apiKey: String? = null,
 ) {

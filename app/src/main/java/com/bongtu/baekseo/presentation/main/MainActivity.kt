@@ -12,14 +12,14 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.jakewharton.processphoenix.ProcessPhoenix
 import dagger.hilt.android.AndroidEntryPoint
 
-private const val IS_START_ONBOARDING = "is_start_onBoarding"
+private const val IS_START_LOGIN = "is_start_login"
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val isStartOnBoarding = intent.getBooleanExtra(IS_START_ONBOARDING, false)
+        val isStartLogin = intent.getBooleanExtra(IS_START_LOGIN, false)
 
         enableEdgeToEdge(
             statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             BongBaekTheme {
                 MainScreen(
-                    isStartOnBoarding = isStartOnBoarding,
+                    isStartLogin = isStartLogin,
                     onRestartApp = {
                         restartApp(this, it)
                     },
@@ -37,9 +37,9 @@ class MainActivity : ComponentActivity() {
         }
     }
 
-    private fun restartApp(context: Context, isStartOnBoarding: Boolean) {
+    private fun restartApp(context: Context, isStartLogin: Boolean) {
         val intent = Intent(context, this::class.java).apply {
-            putExtra(IS_START_ONBOARDING, isStartOnBoarding)
+            putExtra(IS_START_LOGIN, isStartLogin)
             flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
         }
         ProcessPhoenix.triggerRebirth(context, intent)
