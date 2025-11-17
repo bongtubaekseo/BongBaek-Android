@@ -34,7 +34,7 @@ private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
 
 @Composable
-fun HomeContentsCard(
+fun HomeAlarmCard(
     hostname: String,
     eventType: String,
     eventDate: String,
@@ -74,7 +74,7 @@ fun HomeContentsCard(
             ),
         verticalAlignment = Alignment.Top,
     ) {
-        HomeContentsCardContent(
+        HomeAlarmCardContent(
             description = cardDescription,
             date = eventDate,
             modifier = Modifier.weight(1f),
@@ -91,10 +91,10 @@ fun HomeContentsCard(
 }
 
 @Composable
-fun HomeContentsEmptyCard(
+fun HomeAlarmEmptyCard(
     modifier: Modifier = Modifier,
 ) {
-    HomeContentsCardContent(
+    HomeAlarmCardContent(
         description = stringResource(home_contents_card_empty_description),
         date = stringResource(home_contents_card_empty_date),
         modifier = modifier
@@ -118,7 +118,7 @@ fun HomeContentsEmptyCard(
 }
 
 @Composable
-fun HomeContentsCardContent(
+fun HomeAlarmCardContent(
     description: String,
     date: String,
     modifier: Modifier = Modifier,
@@ -176,7 +176,7 @@ fun HomeContentsCardContent(
 @Composable
 private fun HomeContentsCardPreview() {
     BongBaekTheme {
-        HomeContentsCard(
+        HomeAlarmCard(
             hostname = "일이삼사오육칠팔구",
             eventType = "생일",
             daysLeft = 10,
@@ -187,17 +187,17 @@ private fun HomeContentsCardPreview() {
 
 @Preview
 @Composable
-private fun HomeContentsEmptyCardPreview() {
+private fun HomeAlarmEmptyCardPreview() {
     BongBaekTheme {
-        HomeContentsEmptyCard()
+        HomeAlarmEmptyCard()
     }
 }
 
 @Preview
 @Composable
-private fun HomeContentsCardContentPreview() {
+private fun HomeAlarmCardContentPreview() {
     BongBaekTheme {
-        HomeContentsCardContent(
+        HomeAlarmCardContent(
             description = "",
             date = "",
         )
