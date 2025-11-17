@@ -11,7 +11,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navOptions
+import com.bongtu.baekseo.presentation.contents.navigation.navigateToContents
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
+import com.bongtu.baekseo.presentation.mypage.navigation.navigateToMyPage
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 
@@ -46,6 +48,8 @@ class MainNavigator(
             MainTab.HOME -> navController.navigateToHome(navOptions = navOptions)
             MainTab.RECOMMEND -> navController.navigateToRecommend()
             MainTab.RECORD -> navController.navigateToRecord(navOptions = navOptions)
+            MainTab.CONTENTS -> navController.navigateToContents(navOptions = navOptions)
+            MainTab.SETTING -> navController.navigateToMyPage(navOptions = navOptions)
         }
     }
 
