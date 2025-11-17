@@ -2,12 +2,15 @@ package com.bongtu.baekseo.core.util
 
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+import java.time.format.TextStyle
+import java.util.Locale
 
 object DateFormatter {
 
     private val LOCAL_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     private val KOREAN_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
     private val NUMERIC_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd")
+    private val DAY_ONLY_FORMATTER = DateTimeFormatter.ofPattern("dd")
 
     fun formatToKorean(dateString: String): String = try {
         val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
@@ -35,5 +38,19 @@ object DateFormatter {
         date.format(NUMERIC_DATE_FORMATTER)
     } catch (_: Exception) {
         ""
+    }
+
+    fun getDayOfMonth(dateString: String): String = try {
+        val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
+        date.format(DAY_ONLY_FORMATTER)
+    } catch (_: Exception) {
+        ""
+    }
+
+    fun getDayOfWeekKorean(dateString: String): String = try {
+        val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
+        date.dayOfWeek.getDisplayName(TextStyle.SHORT, Locale.KOREAN)
+    } catch (_: Exception) {
+        "-"
     }
 }
