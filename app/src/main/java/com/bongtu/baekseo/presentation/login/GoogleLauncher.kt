@@ -27,7 +27,7 @@ object GoogleLauncher {
         // 구글 Credential 계정 있는 경우 사용
         val googleIdResult = getGoogleId(
             credentialManager = credentialManager,
-            context = activity
+            context = activity,
         )
 
         googleIdResult
@@ -55,7 +55,7 @@ object GoogleLauncher {
         // 계정이 없는 경우 구글 로그인
         val signInWithGoogleResult = getSignInWithGoogle(
             credentialManager = credentialManager,
-            context = activity
+            context = activity,
         )
 
         signInWithGoogleResult
@@ -72,7 +72,7 @@ object GoogleLauncher {
 
     private suspend fun getGoogleId(
         credentialManager: CredentialManager,
-        context: Context
+        context: Context,
     ): Result<String> {
         val option = GetGoogleIdOption.Builder()
             .setFilterByAuthorizedAccounts(false)
@@ -83,13 +83,13 @@ object GoogleLauncher {
         return fetchIdToken(
             credentialManager = credentialManager,
             context = context,
-            option = option
+            option = option,
         )
     }
 
     private suspend fun getSignInWithGoogle(
         credentialManager: CredentialManager,
-        context: Context
+        context: Context,
     ): Result<String> {
         val option = GetSignInWithGoogleOption.Builder(
             BuildConfig.GOOGLE_WEB_CLIENT_ID
@@ -100,14 +100,14 @@ object GoogleLauncher {
         return fetchIdToken(
             credentialManager = credentialManager,
             context = context,
-            option = option
+            option = option,
         )
     }
 
     private suspend fun fetchIdToken(
         credentialManager: CredentialManager,
         context: Context,
-        option: CredentialOption
+        option: CredentialOption,
     ): Result<String> = runCatching {
         //using delay() here helps prevent NoCredentialException when the BottomSheet Flow is triggered
         delay(250)

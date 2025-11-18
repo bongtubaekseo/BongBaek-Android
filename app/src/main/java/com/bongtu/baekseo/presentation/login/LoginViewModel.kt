@@ -64,7 +64,7 @@ class LoginViewModel @Inject constructor(
 
     fun socialLogin(
         oauthProvider: String,
-        idToken: String
+        idToken: String,
     ) = viewModelScope.launch {
         updateLoginUiState(UiState.Loading)
 

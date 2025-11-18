@@ -17,7 +17,7 @@ class AuthRepositoryImpl @Inject constructor(
 ) : AuthRepository {
     override suspend fun postSocialLogin(
         oauthProvider: String,
-        idToken: String
+        idToken: String,
     ): Result<SocialLogin> = runCatching {
         authDataSource.postSocialLogin(
             oauthProvider = oauthProvider,
