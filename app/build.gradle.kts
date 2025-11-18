@@ -39,7 +39,7 @@ android {
         buildConfigField("String", "KAKAO_NATIVE_KEY", "\"$kakaoNativeKey\"")
         buildConfigField("String", "KAKAO_API_KEY", "\"${properties.getProperty("kakao.api.key")}\"")
         buildConfigField("String", "KAKAO_BASE_URL", properties.getProperty("kakao.base.url"))
-        buildConfigField("String","GOOGLE_WEB_CLIENT_ID",properties.getProperty("google.client.id"))
+        buildConfigField("String", "GOOGLE_WEB_CLIENT_ID", properties.getProperty("google.client.id"))
 
         manifestPlaceholders["KAKAO_KEY"] = kakaoNativeKey
     }
