@@ -6,5 +6,6 @@ data class SocialLogin(
     val refreshToken: String,
     val isCompletedSignUp: Boolean,
     val oauthId: String,
+    val oauthProvider: String,
     val apiKey: String,
 )

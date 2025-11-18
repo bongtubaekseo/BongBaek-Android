@@ -1,7 +1,6 @@
 package com.bongtu.baekseo.data.datasourceimpl.auth
 
 import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
-import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostSocialLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
@@ -15,11 +14,6 @@ class AuthDataSourceImpl @Inject constructor(
         oauthProvider: String,
         request: PostSocialLoginRequest,
     ) = authService.postSocialLogin(oauthProvider, request)
-
-    override suspend fun postKakaoLogin(
-        oauthProvider: String,
-        request: PostKakaoLoginRequest,
-    ) = authService.postKakaoLogin(oauthProvider, request)
 
     override suspend fun postSignUp(request: PostSignUpRequest) =
         authService.postSignUp(request)

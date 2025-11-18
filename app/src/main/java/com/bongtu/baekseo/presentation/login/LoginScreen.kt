@@ -119,7 +119,10 @@ fun LoginRoute(
             KakaoLauncher(
                 context = context,
                 onTokenReceived = { token ->
-                    viewModel.loginWithKakao(token)
+                    viewModel.socialLogin(
+                        oauthProvider = LoginType.KAKAO.label,
+                        idToken = token,
+                    )
                 },
                 onError = {
                     // TODO 추후 구현
@@ -246,12 +249,12 @@ fun LoginScreen(
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
-                BongBaekButton(     // TODO: 구글에 맞게 수정 예정
+                BongBaekButton(
+                    // TODO: 구글에 맞게 수정 예정
                     title = "구글 로그인",
                     onClick = onGoogleLoginClick,
                     buttonType = ButtonType.KAKAO,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     enabled = uiState.loadState !is UiState.Loading,
                     textStyle = BongBaekTheme.typography.titleSemiBold18,
                     leadingIcon = {
@@ -267,8 +270,7 @@ fun LoginScreen(
                     title = stringResource(id = button_kakao),
                     onClick = onKakaoLoginClick,
                     buttonType = ButtonType.KAKAO,
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     enabled = uiState.loadState !is UiState.Loading,
                     textStyle = BongBaekTheme.typography.titleSemiBold18,
                     leadingIcon = {
@@ -298,8 +300,7 @@ fun LoginScreen(
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.txtInteractiveInverse,
-                        modifier = Modifier
-                            .noRippleClickable(onClick = onPrivacyClick),
+                        modifier = Modifier.noRippleClickable(onClick = onPrivacyClick),
                     )
 
                     Spacer(modifier = Modifier.width(30.dp))
@@ -309,8 +310,7 @@ fun LoginScreen(
                         textDecoration = TextDecoration.Underline,
                         style = BongBaekTheme.typography.captionRegular12,
                         color = BongBaekTheme.colors.txtInteractiveInverse,
-                        modifier = Modifier
-                            .noRippleClickable(onClick = onTermsClick),
+                        modifier = Modifier.noRippleClickable(onClick = onTermsClick),
                     )
                 }
             }

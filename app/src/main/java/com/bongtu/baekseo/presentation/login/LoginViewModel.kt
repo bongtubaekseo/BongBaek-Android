@@ -3,8 +3,6 @@ package com.bongtu.baekseo.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.LoginType
-import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
 import com.bongtu.baekseo.domain.usecase.auth.SetSocialLoginUseCase
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect
@@ -24,7 +22,6 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
     private val setSocialLoginUseCase: SetSocialLoginUseCase,
     private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
@@ -40,27 +37,6 @@ class LoginViewModel @Inject constructor(
             started = SharingStarted.WhileSubscribed(),
             initialValue = false,
         )
-
-    fun loginWithKakao(token: String) =
-        viewModelScope.launch {
-            updateLoginUiState(UiState.Loading)
-
-            setKakaoLoginUseCase(
-                oauthProvider = LoginType.KAKAO.label,
-                idToken = token,
-            ).onSuccess { response ->
-                updateOAuthId(response.oauthId)
-                if (response.isCompletedSignUp) {
-                    _sideEffect.emit(NavigateToHome)
-                    updateLoginUiState(UiState.Empty)
-                } else {
-                    updateLoginUiState(UiState.Success(Unit))
-                }
-            }.onFailure {
-                Timber.d("kakaoLogin: $it")
-                updateLoginUiState(UiState.Failure(it.message ?: "Unknown Error"))
-            }
-        }
 
     fun socialLogin(
         oauthProvider: String,

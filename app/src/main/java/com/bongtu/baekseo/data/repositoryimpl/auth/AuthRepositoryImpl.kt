@@ -1,12 +1,10 @@
 package com.bongtu.baekseo.data.repositoryimpl.auth
 
 import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
-import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
 import com.bongtu.baekseo.data.dto.auth.PostSocialLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.mapper.toModel
-import com.bongtu.baekseo.data.model.auth.KakaoLogin
 import com.bongtu.baekseo.data.model.auth.SocialLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
@@ -29,27 +27,13 @@ class AuthRepositoryImpl @Inject constructor(
         response.data.toModel()
     }
 
-    override suspend fun postKakaoLogin(
-        oauthProvider: String,
-        idToken: String,
-    ): Result<KakaoLogin> = runCatching {
-        authDataSource.postKakaoLogin(
-            oauthProvider = oauthProvider,
-            request = PostKakaoLoginRequest(
-                idToken = idToken,
-            )
-        )
-    }.mapCatching { response ->
-        response.data.toModel()
-    }
-
     override suspend fun postSignUp(
         oauthId: String,
         oauthProvider: String,
         memberName: String,
         memberBirthday: String,
         memberIncome: String,
-    ): Result<KakaoLogin> = runCatching {
+    ): Result<SocialLogin> = runCatching {
         authDataSource.postSignUp(
             request = PostSignUpRequest(
                 oauthId = oauthId,
