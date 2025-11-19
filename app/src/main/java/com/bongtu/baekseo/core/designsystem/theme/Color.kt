@@ -61,6 +61,8 @@ val recordEnd = Color(0xFF6F53FF)
 
 // Others
 val kakaoYellow = Color(0xFFFEE500)
+val googleBlack = Color(0xFF1F1F1F)
+val googleGray = Color(0xFF747775)
 val transparent = Color(0x00000000)
 val splashTitle = Color(0xFFCDC9FF)
 
@@ -112,6 +114,9 @@ data class BongBaekColors(
     val recordStart: Color,
     val recordEnd: Color,
     val kakaoYellow: Color,
+    val googleWhite: Color,
+    val googleBlack: Color,
+    val googleGray: Color,
     val black: Color,
     val transparent: Color,
     val splashTitle: Color,
@@ -165,6 +170,9 @@ val lightBongBaekColors = BongBaekColors(
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
+    googleWhite = white,
+    googleBlack = googleBlack,
+    googleGray = googleGray,
     black = black,
     transparent = transparent,
     splashTitle = splashTitle,
@@ -218,6 +226,9 @@ val darkBongBaekColors = BongBaekColors(
     recordStart = primaryNormal,
     recordEnd = recordEnd,
     kakaoYellow = kakaoYellow,
+    googleWhite = white,
+    googleBlack = googleBlack,
+    googleGray = googleGray,
     black = black,
     transparent = transparent,
     splashTitle = splashTitle,
