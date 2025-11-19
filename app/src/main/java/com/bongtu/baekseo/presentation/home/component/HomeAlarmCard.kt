@@ -30,6 +30,7 @@ import com.bongtu.baekseo.R.string.home_contents_card_title
 import com.bongtu.baekseo.R.string.home_page_card_title
 import com.bongtu.baekseo.R.string.home_page_card_today_title
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 
 private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
@@ -73,11 +74,11 @@ fun HomeAlarmCard(
                 start = 16.dp,
                 end = 14.dp,
             ),
-        verticalAlignment = Alignment.Top,
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         HomeAlarmCardContent(
             description = cardDescription,
-            date = eventDate,
+            date = DateFormatter.formatToKorean(eventDate),
             modifier = Modifier.weight(1f),
         )
 
@@ -182,7 +183,7 @@ private fun HomeContentsCardPreview() {
             hostname = "일이삼사오육칠팔구",
             eventType = "생일",
             daysLeft = 10,
-            eventDate = "2025년 02월 11일",
+            eventDate = "2025-02-11",
         )
     }
 }
