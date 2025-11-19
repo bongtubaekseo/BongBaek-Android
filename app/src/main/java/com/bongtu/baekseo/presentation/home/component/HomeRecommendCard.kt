@@ -1,34 +1,28 @@
 package com.bongtu.baekseo.presentation.home.component
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.drawWithCache
-import androidx.compose.ui.geometry.CornerRadius
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.img_home_recommend
 import com.bongtu.baekseo.R.string.button_recommend
 import com.bongtu.baekseo.R.string.home_recommend_card_description
 import com.bongtu.baekseo.R.string.home_recommend_card_title
-import com.bongtu.baekseo.core.common.type.ButtonType
-import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
@@ -39,53 +33,62 @@ fun HomeRecommendCard(
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .background(
+                color = BongBaekTheme.colors.bgDisplaySecondary,
+                shape = RoundedCornerShape(8.dp),
+            )
+            .border(
+                width = 1.dp,
+                color = BongBaekTheme.colors.borderDividerPrimary,
+                shape = RoundedCornerShape(8.dp),
+            )
             .padding(20.dp),
         verticalArrangement = Arrangement.Center,
     ) {
+        Text(
+            text = stringResource(id = home_recommend_card_description),
+            style = BongBaekTheme.typography.captionRegular12,
+            color = BongBaekTheme.colors.statusFocused,
+        )
+
+        Text(
+            text = stringResource(id = home_recommend_card_title),
+            style = BongBaekTheme.typography.titleSemiBold18,
+            color = BongBaekTheme.colors.txtDisplayPrimary,
+        )
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        HomeRecommendButton(
+            onClick = onClick,
+        )
+    }
+}
+
+@Composable
+fun HomeRecommendButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+) {
+    Button(
+        modifier = modifier.fillMaxWidth(),
+        onClick = onClick,
+        shape = RoundedCornerShape(8.dp),
+        colors = ButtonDefaults.buttonColors(
+            containerColor = BongBaekTheme.colors.btnInteractiveAccent,
+        ),
+        contentPadding = PaddingValues(12.dp),
+    ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 2.dp)
-                .height(IntrinsicSize.Min),
-            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
-            Column(
-                modifier = Modifier.wrapContentSize(),
-            ) {
-                Text(
-                    text = stringResource(id = home_recommend_card_description),
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.statusFocused,
-                )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = stringResource(id = home_recommend_card_title),
-                    style = BongBaekTheme.typography.titleSemiBold18,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
-                )
-            }
-
-            Image(
-                painter = painterResource(id = img_home_recommend),
-                contentDescription = null,
-                modifier = Modifier
-                    .fillMaxHeight(),
+            Text(
+                text = stringResource(id = button_recommend),
+                style = BongBaekTheme.typography.body1Medium16,
+                color = BongBaekTheme.colors.txtInteractiveInverse,
             )
         }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        BongBaekButton(
-            title = stringResource(id = button_recommend),
-            onClick = onClick,
-            buttonType = ButtonType.PRIMARY,
-            modifier = Modifier.fillMaxWidth(),
-            textStyle = BongBaekTheme.typography.titleSemiBold16,
-            paddingValues = PaddingValues(12.dp),
-        )
     }
 }
 
