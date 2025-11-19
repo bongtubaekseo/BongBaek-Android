@@ -134,13 +134,11 @@ fun LoginRoute(
                 val idToken = GoogleLauncher.startGoogleLogin(
                     activity = (context as Activity)
                 )
-                if (idToken != null) {
+                idToken?.let {
                     viewModel.socialLogin(
                         oauthProvider = LoginType.GOOGLE.label,
                         idToken = idToken,
                     )
-                } else {
-                    // TODO 실패 처리 구현
                 }
             }
         },
