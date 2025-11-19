@@ -4,7 +4,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PostKakaoLoginResponse (
+data class PostSocialLoginResponse(
     @SerialName("name")
     val name: String? = null,
     @SerialName("token")

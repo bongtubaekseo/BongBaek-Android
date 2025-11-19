@@ -1,13 +1,13 @@
 package com.bongtu.baekseo.data.repository.auth
 
-import com.bongtu.baekseo.data.model.auth.KakaoLogin
+import com.bongtu.baekseo.data.model.auth.SocialLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
 
 interface AuthRepository {
-    suspend fun postKakaoLogin(
+    suspend fun postSocialLogin(
         oauthProvider: String,
         idToken: String,
-    ): Result<KakaoLogin>
+    ): Result<SocialLogin>
 
     suspend fun postSignUp(
         oauthId: String,
@@ -15,7 +15,7 @@ interface AuthRepository {
         memberName: String,
         memberBirthday: String,
         memberIncome: String,
-    ): Result<KakaoLogin>
+    ): Result<SocialLogin>
 
     suspend fun postTokenReissue(
         refreshToken: String?,

@@ -3,8 +3,7 @@ package com.bongtu.baekseo.presentation.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.common.type.LoginType
-import com.bongtu.baekseo.domain.usecase.auth.SetKakaoLoginUseCase
+import com.bongtu.baekseo.domain.usecase.auth.SetSocialLoginUseCase
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect
 import com.bongtu.baekseo.presentation.login.LoginContract.LoginSideEffect.NavigateToHome
@@ -23,7 +22,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val setKakaoLoginUseCase: SetKakaoLoginUseCase,
+    private val setSocialLoginUseCase: SetSocialLoginUseCase,
     private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(LoginUiState())
@@ -39,26 +38,28 @@ class LoginViewModel @Inject constructor(
             initialValue = false,
         )
 
-    fun loginWithKakao(token: String) =
-        viewModelScope.launch {
-            updateLoginUiState(UiState.Loading)
+    fun socialLogin(
+        oauthProvider: String,
+        idToken: String,
+    ) = viewModelScope.launch {
+        updateLoginUiState(UiState.Loading)
 
-            setKakaoLoginUseCase(
-                oauthProvider = LoginType.KAKAO.label,
-                idToken = token,
-            ).onSuccess { response ->
-                updateOAuthId(response.oauthId)
-                if (response.isCompletedSignUp) {
-                    _sideEffect.emit(NavigateToHome)
-                    updateLoginUiState(UiState.Empty)
-                } else {
-                    updateLoginUiState(UiState.Success(Unit))
-                }
-            }.onFailure {
-                Timber.d("kakaoLogin: $it")
-                updateLoginUiState(UiState.Failure(it.message ?: "Unknown Error"))
+        setSocialLoginUseCase(
+            oauthProvider = oauthProvider,
+            idToken = idToken,
+        ).onSuccess { response ->
+            updateOAuthId(response.oauthId)
+            if (response.isCompletedSignUp) {
+                _sideEffect.emit(NavigateToHome)
+                updateLoginUiState(UiState.Empty)
+            } else {
+                updateLoginUiState(UiState.Success(Unit))
             }
+        }.onFailure {
+            Timber.d("socialLogin: $it")
+            updateLoginUiState(UiState.Failure(it.message ?: "Unknown Error"))
         }
+    }
 
     fun updateLoginUiState(value: UiState<Unit>) =
         _uiState.update { currentState ->
