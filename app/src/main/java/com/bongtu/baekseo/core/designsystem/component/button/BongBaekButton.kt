@@ -174,6 +174,7 @@ private fun BongBaekButtonPreview() {
                         shape = RoundedCornerShape(10.dp),
                     ),
                 textStyle = BongBaekTheme.typography.robotoMedium14,
+                paddingValues = PaddingValues(vertical = 15.dp),
                 leadingIcon = {
                     Icon(
                         imageVector = ImageVector.vectorResource(ic_google),

@@ -2,9 +2,11 @@ package com.bongtu.baekseo.presentation.login
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -26,6 +29,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -44,8 +48,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.bongtu.baekseo.R.drawable.ic_google
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.R.drawable.img_onboarding
+import com.bongtu.baekseo.R.string.button_google
 import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.login_bottom_sheet_check_age
 import com.bongtu.baekseo.R.string.login_bottom_sheet_check_privacy
@@ -248,18 +254,29 @@ fun LoginScreen(
                 horizontalAlignment = Alignment.CenterHorizontally,
             ) {
                 BongBaekButton(
-                    // TODO: 구글에 맞게 수정 예정
-                    title = "구글 로그인",
+                    title = stringResource(id = button_google),
                     onClick = onGoogleLoginClick,
-                    buttonType = ButtonType.KAKAO,
-                    modifier = Modifier.fillMaxWidth(),
+                    buttonType = ButtonType.GOOGLE,
+                    modifier = Modifier
+                        .padding(
+                            bottom = 12.dp,
+                        )
+                        .fillMaxWidth()
+                        .border(
+                            width = 1.dp,
+                            color = BongBaekTheme.colors.googleGray,
+                            shape = RoundedCornerShape(10.dp),
+                        ),
                     enabled = uiState.loadState !is UiState.Loading,
-                    textStyle = BongBaekTheme.typography.titleSemiBold18,
+                    textStyle = BongBaekTheme.typography.robotoMedium14,
+                    paddingValues = PaddingValues(vertical = 15.dp),
                     leadingIcon = {
                         Icon(
-                            imageVector = ImageVector.vectorResource(ic_kakao),
+                            imageVector = ImageVector.vectorResource(ic_google),
                             contentDescription = null,
-                            tint = BongBaekTheme.colors.black,
+                            tint = Color.Unspecified,
+                            modifier = Modifier
+                                .padding(end = 15.dp),
                         )
                     },
                 )
@@ -276,6 +293,8 @@ fun LoginScreen(
                             imageVector = ImageVector.vectorResource(ic_kakao),
                             contentDescription = null,
                             tint = BongBaekTheme.colors.black,
+                            modifier = Modifier
+                                .padding(end = 10.dp),
                         )
                     },
                 )
