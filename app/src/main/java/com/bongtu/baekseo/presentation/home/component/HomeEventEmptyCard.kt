@@ -25,7 +25,7 @@ import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun HomeScheduleEmptyCard(
+fun HomeEventEmptyCard(
     onBadgeClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -66,7 +66,7 @@ fun HomeScheduleEmptyCard(
 @Composable
 private fun HomeScheduleEmptyCardPreview() {
     BongBaekTheme {
-        HomeScheduleEmptyCard(
+        HomeEventEmptyCard(
             onBadgeClick = { },
         )
     }

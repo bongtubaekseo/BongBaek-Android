@@ -36,7 +36,7 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.presentation.home.type.HomeScheduleInfoType
 
 @Composable
-fun HomeScheduleCard(
+fun HomeEventCard(
     hostName: String,
     hostNickname: String,
     eventCategory: String,
@@ -121,7 +121,7 @@ fun HomeScheduleCard(
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min),
             ) {
-                HomeScheduleCardInfo(
+                HomeEventCardInfo(
                     infoType = HomeScheduleInfoType.DATE,
                     content = DateFormatter.formatToKorean(eventDate),
                 )
@@ -134,7 +134,7 @@ fun HomeScheduleCard(
                     color = BongBaekTheme.colors.borderDividerPrimary,
                 )
 
-                HomeScheduleCardInfo(
+                HomeEventCardInfo(
                     infoType = HomeScheduleInfoType.LOCATION,
                     content = location,
                 )
@@ -147,7 +147,7 @@ fun HomeScheduleCard(
                     .fillMaxWidth()
                     .height(IntrinsicSize.Min),
             ) {
-                HomeScheduleCardInfo(
+                HomeEventCardInfo(
                     infoType = HomeScheduleInfoType.RELATIONSHIP,
                     content = relationship,
                 )
@@ -160,7 +160,7 @@ fun HomeScheduleCard(
                     color = BongBaekTheme.colors.borderDividerPrimary,
                 )
 
-                HomeScheduleCardInfo(
+                HomeEventCardInfo(
                     infoType = HomeScheduleInfoType.NICKNAME,
                     content = hostNickname,
                 )
@@ -170,7 +170,7 @@ fun HomeScheduleCard(
 }
 
 @Composable
-fun HomeScheduleCardInfo(
+fun HomeEventCardInfo(
     infoType: HomeScheduleInfoType,
     content: String,
     modifier: Modifier = Modifier,
@@ -207,7 +207,7 @@ fun HomeScheduleCardInfo(
 @Composable
 private fun HomeScheduleCardPreview() {
     BongBaekTheme {
-        HomeScheduleCard(
+        HomeEventCard(
             hostName = "일이삼사오육칠팔구",
             hostNickname = "히히",
             eventCategory = "생일",
