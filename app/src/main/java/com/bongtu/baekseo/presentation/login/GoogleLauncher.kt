@@ -36,8 +36,6 @@ object GoogleLauncher {
                 return token
             }
             .onFailure { e ->
-                Timber.tag("GoogleLogin").d(e, "Credentials 로그인 실패")
-
                 when (e) {
                     // 사용자가 취소 한 경우
                     is GetCredentialCancellationException -> {
