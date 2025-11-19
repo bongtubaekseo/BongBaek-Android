@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -18,12 +19,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_google
 import com.bongtu.baekseo.R.drawable.ic_kakao
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -63,6 +66,7 @@ fun BongBaekButton(
             ButtonType.SECONDARY -> bongBaekColors.btnInteractiveSecondary to bongBaekColors.txtInteractiveSecondary
             ButtonType.DELETE -> bongBaekColors.transparent to bongBaekColors.statusError
             ButtonType.KAKAO -> bongBaekColors.kakaoYellow to bongBaekColors.black
+            ButtonType.GOOGLE -> bongBaekColors.googleWhite to bongBaekColors.googleBlack
         }
     }
 
@@ -81,7 +85,6 @@ fun BongBaekButton(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
         ) {
             leadingIcon?.invoke()
 
@@ -152,6 +155,32 @@ private fun BongBaekButtonPreview() {
                     Icon(
                         imageVector = ImageVector.vectorResource(ic_kakao),
                         contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .padding(end = 10.dp),
+                    )
+                },
+            )
+
+            BongBaekButton(
+                title = "Sign in with Google",
+                onClick = { },
+                buttonType = ButtonType.GOOGLE,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = BongBaekTheme.colors.googleGray,
+                        shape = RoundedCornerShape(10.dp),
+                    ),
+                textStyle = BongBaekTheme.typography.robotoMedium14,
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_google),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .padding(end = 15.dp),
                     )
                 },
             )

@@ -5,4 +5,5 @@ enum class ButtonType {
     SECONDARY,
     DELETE,
     KAKAO,
+    GOOGLE,
 }
