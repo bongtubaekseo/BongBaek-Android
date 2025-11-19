@@ -116,7 +116,7 @@ object GoogleLauncher {
 
         val result = credentialManager.getCredential(
             request = request,
-            context = context
+            context = context,
         )
 
         val credential = result.credential

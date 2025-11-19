@@ -132,7 +132,7 @@ fun LoginRoute(
         onGoogleLoginClick = {
             coroutineScope.launch {
                 val idToken = GoogleLauncher.startGoogleLogin(
-                    activity = (context as Activity)
+                    activity = (context as Activity),
                 )
                 idToken?.let {
                     viewModel.socialLogin(
