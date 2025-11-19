@@ -18,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_home_plus
+import com.bongtu.baekseo.R.drawable.ic_plus
 import com.bongtu.baekseo.R.string.badge_schedule_empty
 import com.bongtu.baekseo.R.string.home_schedule_empty
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekMediumBadge
@@ -33,27 +33,27 @@ fun HomeScheduleEmptyCard(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.bgDisplayCard,
-                shape = RoundedCornerShape(10.dp),
+                color = BongBaekTheme.colors.bgDisplaySecondary,
+                shape = RoundedCornerShape(8.dp),
             )
-            .padding(vertical = 34.dp),
+            .padding(vertical = 28.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = ic_home_plus),
+            imageVector = ImageVector.vectorResource(id = ic_plus),
             contentDescription = null,
             tint = Color.Unspecified,
         )
 
-        Spacer(modifier = Modifier.height(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
         Text(
             text = stringResource(id = home_schedule_empty),
-            style = BongBaekTheme.typography.titleSemiBold18,
+            style = BongBaekTheme.typography.body1Medium14,
             color = BongBaekTheme.colors.txtDisplaySecondary,
         )
 
-        Spacer(modifier = Modifier.height(8.dp))
+        Spacer(modifier = Modifier.height(4.dp))
 
         BongBaekMediumBadge(
             title = stringResource(id = badge_schedule_empty),
