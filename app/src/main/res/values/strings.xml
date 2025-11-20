@@ -130,6 +130,7 @@
     <string name="date_picker_ok">ok</string>
     <!--Button    -->
     <string name="button_kakao">카카오 로그인</string>
+    <string name="button_google">Sign in with Google</string>
     <string name="button_next">다음</string>
     <string name="button_start_service">봉투백서 시작하기</string>
     <string name="button_recommend">경조사비 추천 받기</string>
