@@ -8,14 +8,11 @@ import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.repository.content.ContentRepository
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -30,9 +27,6 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState = _uiState.asStateFlow()
-
-    private val _sideEffect = MutableSharedFlow<HomeSideEffect>()
-    val sideEffect = _sideEffect.asSharedFlow()
 
     val isUpdateDialogVisible = getUpdateFlagUseCase()
         .stateIn(
@@ -66,21 +60,17 @@ class HomeViewModel @Inject constructor(
     }
 
     private fun updateHomeEvent(value: ImmutableList<HomeEvent>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    homeEventList = value,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                homeEventList = value,
+            )
         }
 
     private fun updateHomeContents(value: ImmutableList<HomeContent>) =
-        viewModelScope.launch {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    homeContentList = value,
-                )
-            }
+        _uiState.update { currentState ->
+            currentState.copy(
+                homeContentList = value,
+            )
         }
 
     private fun updateHomeUiState(value: UiState<Unit>) =

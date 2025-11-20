@@ -16,10 +16,4 @@ class HomeContract {
         val homeContentList: ImmutableList<HomeContent> = persistentListOf(),
         val name: String = "",
     )
-
-    sealed class HomeSideEffect {
-        data object NavigateToSchedule : HomeSideEffect()
-        data object NavigateToEdit : HomeSideEffect()
-        data object NavigateToRecommend : HomeSideEffect()
-    }
 }
