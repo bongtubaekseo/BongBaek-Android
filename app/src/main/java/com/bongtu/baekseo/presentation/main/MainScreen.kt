@@ -18,6 +18,7 @@ import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.contents.navigation.contentsGraph
+import com.bongtu.baekseo.presentation.contents.navigation.navigateToContents
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
@@ -152,9 +153,7 @@ private fun MainNavHost(
         homeGraph(
             navigateToRecord = navigator.navController::navigateToRecord,
             navigateToRecommend = navigator.navController::navigateToRecommend,
-            navigateToContents = {
-                // TODO: 콘텐츠 이동
-            },
+            navigateToContents = navigator.navController::navigateToContents,
             modifier = modifier,
         )
 
