@@ -18,6 +18,7 @@ import com.bongtu.baekseo.R.font.pretendard_bold
 import com.bongtu.baekseo.R.font.pretendard_medium
 import com.bongtu.baekseo.R.font.pretendard_regular
 import com.bongtu.baekseo.R.font.pretendard_semibold
+import com.bongtu.baekseo.R.font.roboto_medium
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme.typography
 
 
@@ -31,6 +32,8 @@ val PretendardRegular =
     FontFamily(Font(pretendard_regular))
 val PretendardBlack =
     FontFamily(Font(pretendard_black))
+val RobotoMedium =
+    FontFamily(Font(roboto_medium))
 
 @Immutable
 data class BongBaekTypography(
@@ -44,6 +47,7 @@ data class BongBaekTypography(
     val body2Regular16: TextStyle,
     val body2Regular14: TextStyle,
     val captionRegular12: TextStyle,
+    val robotoMedium14: TextStyle,
 )
 
 private fun BongBaekTextStyle(
@@ -123,6 +127,12 @@ val defaultBongBaekTypography = BongBaekTypography(
         lineHeight = 1.3.em,
         letterSpacing = (-0.02).em,
     ),
+    robotoMedium14 = BongBaekTextStyle(
+        fontFamily = RobotoMedium,
+        fontSize = 14.sp,
+        lineHeight = 20.sp,
+        letterSpacing = TextUnit.Unspecified,
+    ),
 )
 
 val LocalBongBaekTypography = staticCompositionLocalOf { defaultBongBaekTypography }
@@ -171,6 +181,10 @@ fun BongBaekTypographyPreview() {
             Text(
                 "BongBaekTypographyPreview",
                 style = typography.captionRegular12,
+            )
+            Text(
+                "BongBaekTypographyPreview",
+                style = typography.robotoMedium14,
             )
         }
     }
