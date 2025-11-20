@@ -321,7 +321,7 @@ fun HomeScreen(
 
 @Preview
 @Composable
-private fun HomeSuccessScreenPreview() {
+private fun HomeScreenPreview() {
     val eventList = persistentListOf(
         HomeEvent(
             eventId = "eventId1",
