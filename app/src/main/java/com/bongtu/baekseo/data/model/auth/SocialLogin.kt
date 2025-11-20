@@ -1,6 +1,6 @@
 package com.bongtu.baekseo.data.model.auth
 
-data class KakaoLogin(
+data class SocialLogin(
     val name: String,
     val accessToken: String,
     val refreshToken: String,

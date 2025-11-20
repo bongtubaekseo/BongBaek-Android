@@ -30,7 +30,7 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.raw.lottie_envelope
-import com.bongtu.baekseo.R.string.recommendation_result_location_blank
+import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.R.string.recommendation_result_topbar
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -96,7 +96,7 @@ private fun RecommendResultScreen(
     var isLottieEnded by remember { mutableStateOf(false) }
     val scrollState = rememberScrollState()
     val displayLocation = uiState.selectedPlace?.name
-        ?: stringResource(recommendation_result_location_blank)
+        ?: stringResource(location_empty_text)
 
     Column(
         modifier = modifier

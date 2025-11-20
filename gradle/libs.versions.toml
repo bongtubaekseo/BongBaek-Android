@@ -59,6 +59,10 @@ process-phoenix = "3.0.0"
 google-services = "4.4.3"
 firebase = "34.2.0"
 
+# Google Auth
+credentials = "1.5.0"
+googleid = "1.1.1"
+
 [libraries]
 # Test
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -125,6 +129,11 @@ firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.r
 firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics" }
 firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging" }
 firebase-config = { group = "com.google.firebase", name = "firebase-config" }
+
+# Google Auth
+androidx-credentials = { module = "androidx.credentials:credentials", version.ref = "credentials" }
+androidx-credentials-play-services-auth = { module = "androidx.credentials:credentials-play-services-auth", version.ref = "credentials" }
+googleid = { module = "com.google.android.libraries.identity.googleid:googleid", version.ref = "googleid" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

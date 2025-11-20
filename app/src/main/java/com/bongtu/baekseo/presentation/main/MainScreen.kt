@@ -17,6 +17,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.navOptions
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.contents.navigation.contentsGraph
 import com.bongtu.baekseo.presentation.detail.navigation.detailGraph
 import com.bongtu.baekseo.presentation.detail.navigation.navigateToDetail
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
@@ -189,6 +190,10 @@ private fun MainNavHost(
             setBottomBarVisible = navigator::updateBottomBarVisible,
             navigateToDetail = navigator.navController::navigateToDetail,
             navigateToAdd = navigator.navController::navigateToEdit,
+            modifier = modifier,
+        )
+
+        contentsGraph(
             modifier = modifier,
         )
 

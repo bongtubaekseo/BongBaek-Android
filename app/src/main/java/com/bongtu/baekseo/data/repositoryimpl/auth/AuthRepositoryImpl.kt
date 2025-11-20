@@ -1,11 +1,11 @@
 package com.bongtu.baekseo.data.repositoryimpl.auth
 
 import com.bongtu.baekseo.data.datasource.auth.AuthDataSource
-import com.bongtu.baekseo.data.dto.auth.PostKakaoLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostSignUpRequest
+import com.bongtu.baekseo.data.dto.auth.PostSocialLoginRequest
 import com.bongtu.baekseo.data.dto.auth.PostTokenReissueRequest
 import com.bongtu.baekseo.data.mapper.toModel
-import com.bongtu.baekseo.data.model.auth.KakaoLogin
+import com.bongtu.baekseo.data.model.auth.SocialLogin
 import com.bongtu.baekseo.data.model.auth.TokenReissue
 import com.bongtu.baekseo.data.repository.auth.AuthRepository
 import javax.inject.Inject
@@ -13,15 +13,15 @@ import javax.inject.Inject
 class AuthRepositoryImpl @Inject constructor(
     private val authDataSource: AuthDataSource,
 ) : AuthRepository {
-    override suspend fun postKakaoLogin(
+    override suspend fun postSocialLogin(
         oauthProvider: String,
         idToken: String,
-    ): Result<KakaoLogin> = runCatching {
-        authDataSource.postKakaoLogin(
+    ): Result<SocialLogin> = runCatching {
+        authDataSource.postSocialLogin(
             oauthProvider = oauthProvider,
-            request = PostKakaoLoginRequest(
+            request = PostSocialLoginRequest(
                 idToken = idToken,
-            )
+            ),
         )
     }.mapCatching { response ->
         response.data.toModel()
@@ -33,7 +33,7 @@ class AuthRepositoryImpl @Inject constructor(
         memberName: String,
         memberBirthday: String,
         memberIncome: String,
-    ): Result<KakaoLogin> = runCatching {
+    ): Result<SocialLogin> = runCatching {
         authDataSource.postSignUp(
             request = PostSignUpRequest(
                 oauthId = oauthId,

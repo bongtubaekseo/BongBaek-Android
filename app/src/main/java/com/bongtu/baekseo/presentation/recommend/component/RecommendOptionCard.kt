@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.presentation.recommend.component
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -33,22 +34,22 @@ fun RecommendOptionCard(
     onCheckBoxClick: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (cardBackground, badgeBackground, textColor) =
-        if (isChecked) Triple(
-            BongBaekTheme.colors.statusFocused,
-            BongBaekTheme.colors.bgDisplayCard,
-            BongBaekTheme.colors.txtDisplaySecondary,
-        )
-        else Triple(
-            BongBaekTheme.colors.bgDisplayCard,
-            BongBaekTheme.colors.btnInteractiveDisabled,
-            BongBaekTheme.colors.txtDisplayTertiary,
-        )
+    val (cardBackground, cardBorder) =
+        if (isChecked) BongBaekTheme.colors.statusFocused to BongBaekTheme.colors.statusFocused
+        else BongBaekTheme.colors.bgDisplayCard to BongBaekTheme.colors.borderFieldDefault
+    val (badgeBackground, textColor) =
+        if (isChecked) BongBaekTheme.colors.bgDisplayCard to BongBaekTheme.colors.txtDisplaySecondary
+        else BongBaekTheme.colors.btnInteractiveDisabled to BongBaekTheme.colors.txtDisplayTertiary
 
     Row(
         modifier = modifier
             .background(
                 color = cardBackground,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .border(
+                width = 1.dp,
+                color = cardBorder,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(

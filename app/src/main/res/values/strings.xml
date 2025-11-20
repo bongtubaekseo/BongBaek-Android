@@ -71,9 +71,8 @@
     <string name="recommendation_result_amount_card_unit">%s원</string>
     <string name="recommendation_result_event_type">경조사 종류</string>
     <string name="recommendation_result_location">장소</string>
-    <string name="recommendation_result_location_blank">미선택</string>
     <string name="recommendation_result_logic_title">이렇게 계산했어요</string>
-    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 경조사 대상과의 관계\n• 식사 참석 여부</string>
+    <string name="recommendation_result_logic_desc">• 월 수입 고려\n• 식사 참석 여부</string>
     <string name="recommendation_result_inform_title">참고해주세요!</string>
     <string name="recommendation_result_inform_desc">• 홀수 금액으로 준비해주세요\n• 새 지폐로 준비하는 게 좋아요\n• 봉투에 정성스럽게 마음을 표현해보세요</string>
     <string name="recommendation_result_confirm">이 금액으로 결정하기</string>
@@ -180,7 +179,11 @@
     <string name="edit_save_button">기록 저장하기</string>
     <string name="edit_location_top_bar_title">행사장 검색</string>
     <string name="edit_location_button">위치 저장하기</string>
+    <!--Contents    -->
+    <string name="contents">콘텐츠</string>
+
     <!--MyPage    -->
+    <string name="setting">설정</string>
     <string name="mypage_topbar_title">마이페이지</string>
     <string name="mypage_profile_edit_button">내 정보 수정</string>
     <string name="mypage_user_birth">생년월일</string>
