@@ -29,7 +29,6 @@ import com.bongtu.baekseo.presentation.login.navigation.loginGraph
 import com.bongtu.baekseo.presentation.login.navigation.navigateToLogin
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.mypage.navigation.myPageGraph
-import com.bongtu.baekseo.presentation.mypage.navigation.navigateToMyPage
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
@@ -39,7 +38,6 @@ import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendF
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
-import com.bongtu.baekseo.presentation.schedule.navigation.navigateToSchedule
 import com.bongtu.baekseo.presentation.schedule.navigation.scheduleGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
@@ -151,10 +149,11 @@ private fun MainNavHost(
         )
 
         homeGraph(
+            navigateToRecord = navigator.navController::navigateToRecord,
             navigateToRecommend = navigator.navController::navigateToRecommend,
-            navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToSchedule = navigator.navController::navigateToSchedule,
-            navigateToMyPage = navigator.navController::navigateToMyPage,
+            navigateToContents = {
+                // TODO: 콘텐츠 이동
+            },
             modifier = modifier,
         )
 

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
+import com.bongtu.baekseo.data.model.contents.HomeContents
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
@@ -24,7 +25,6 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val usernameDataStore: UsernameDataStore,
     private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
@@ -37,39 +37,43 @@ class HomeViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(),
-            initialValue = false
+            initialValue = false,
         )
 
-    fun fetchHomeEvent() {
-        viewModelScope.launch {
+    fun fetchHomeEvent() = viewModelScope.launch {
             eventRepository.getHomeEvents()
                 .onSuccess { response ->
-                    updateHomeUiState(
-                        value = UiState.Success(response)
+                    updateHomeEvent(
+                        value = response,
                     )
                 }
                 .onFailure {
                     updateHomeUiState(UiState.Failure(it.message ?: "Unknown Error"))
                 }
         }
-    }
 
-    private fun updateHomeUiState(value: UiState<ImmutableList<HomeEvent>>) =
+    private fun updateHomeEvent(value: ImmutableList<HomeEvent>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    homeLoadState = value,
+                    homeEventList = value,
                 )
             }
         }
 
-    fun getUsername() {
+    private fun updateHomeContents(value: ImmutableList<HomeContents>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    name = usernameDataStore.getUsername()
+                    homeContentsList = value,
                 )
             }
         }
-    }
+
+    private fun updateHomeUiState(value: UiState<Unit>) =
+        _uiState.update { currentState ->
+            currentState.copy(
+                homeLoadState = value,
+            )
+        }
 }

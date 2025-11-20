@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyRow
@@ -35,7 +36,6 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.drawable.ic_home_logo
 import com.bongtu.baekseo.R.drawable.ic_home_name
@@ -54,9 +54,6 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.data.model.contents.HomeContents
 import com.bongtu.baekseo.data.model.event.HomeEvent
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToEdit
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToRecommend
-import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmCard
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeContentsCard
@@ -68,10 +65,9 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun HomeRoute(
+    navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
-    navigateToEdit: () -> Unit,
-    navigateToSchedule: () -> Unit,
-    navigateToMyPage: () -> Unit,
+    navigateToContents: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -84,29 +80,28 @@ fun HomeRoute(
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
-        viewModel.fetchHomeContents()
     }
 
-    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
-        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .collect { sideEffect ->
-                when (sideEffect) {
-                    NavigateToSchedule -> navigateToSchedule()
-                    NavigateToEdit -> navigateToEdit()
-                    NavigateToRecommend -> navigateToRecommend()
-                }
-            }
-    }
+//    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+//        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+//            .collect { sideEffect ->
+//                when (sideEffect) {
+//                    NavigateToSchedule -> navigateToSchedule()
+//                    NavigateToEdit -> navigateToEdit()
+//                    NavigateToRecommend -> navigateToRecommend()
+//                }
+//            }
+//    }
 
-//    HomeScreen(
-//        uiState = uiState,
-//        navigateToEdit = navigateToEdit,
-//        navigateToRecommend = navigateToRecommend,
-//        navigateToSchedule = navigateToSchedule,
-//        navigateToMyPage = navigateToMyPage,
-//        modifier = modifier,
-//    )
-//
+    HomeScreen(
+        eventList = uiState.homeEventList,
+        contentsList = uiState.homeContentsList,
+        navigateToRecommend = navigateToRecommend,
+        navigateToRecord = navigateToRecord,
+        navigateToContents = navigateToContents,
+        modifier = modifier,
+    )
+
     if (isUpdateDialogVisible) {
         BongBaekDialog(
             dialogType = DialogType.ERROR_UPDATE,
@@ -170,6 +165,7 @@ fun HomeScreen(
     Column(
         modifier = modifier
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
+            .statusBarsPadding()
             .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop())
             .verticalScroll(rememberScrollState()),
     ) {
