@@ -31,7 +31,7 @@ import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
 @Composable
-fun HomeContentsCard(
+fun HomeContentCard(
     contentTitle: String,
     contentCategory: String,
     thumbnailUrl: String,
@@ -109,7 +109,7 @@ fun HomeContentsCard(
 @Composable
 private fun HomeContentsCardPreview() {
     BongBaekTheme {
-        HomeContentsCard(
+        HomeContentCard(
             contentTitle = "MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁",
             contentCategory = "결혼식",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",

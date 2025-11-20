@@ -52,11 +52,11 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.data.model.contents.HomeContents
+import com.bongtu.baekseo.data.model.content.HomeContent
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmCard
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmEmptyCard
-import com.bongtu.baekseo.presentation.home.component.HomeContentsCard
+import com.bongtu.baekseo.presentation.home.component.HomeContentCard
 import com.bongtu.baekseo.presentation.home.component.HomeEventCard
 import com.bongtu.baekseo.presentation.home.component.HomeEventEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeRecommendCard
@@ -95,7 +95,7 @@ fun HomeRoute(
 
     HomeScreen(
         eventList = uiState.homeEventList,
-        contentsList = uiState.homeContentsList,
+        contentsList = uiState.homeContentList,
         navigateToRecommend = navigateToRecommend,
         navigateToRecord = navigateToRecord,
         navigateToContents = navigateToContents,
@@ -156,7 +156,7 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     eventList: ImmutableList<HomeEvent>,
-    contentsList: ImmutableList<HomeContents>,
+    contentsList: ImmutableList<HomeContent>,
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToContents: () -> Unit,
@@ -362,7 +362,7 @@ fun HomeScreen(
                 items = contentsList,
                 key = { content -> content.contentId },
             ) { item ->
-                HomeContentsCard(
+                HomeContentCard(
                     contentTitle = item.contentTitle,
                     contentCategory = item.contentCategory,
                     thumbnailUrl = item.thumbnailUrl,
@@ -582,19 +582,19 @@ private fun HomeSuccessScreenPreview() {
     )
 
     val contentsList = persistentListOf(
-        HomeContents(
+        HomeContent(
             contentId = "contentId1",
             contentTitle = "contentTitle1",
             contentCategory = "contentCategory1",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContents(
+        HomeContent(
             contentId = "contentId2",
             contentTitle = "contentTitle2",
             contentCategory = "contentCategory2",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContents(
+        HomeContent(
             contentId = "contentId3",
             contentTitle = "contentTitle3",
             contentCategory = "contentCategory3",

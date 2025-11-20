@@ -3,8 +3,7 @@ package com.bongtu.baekseo.presentation.home
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
-import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
-import com.bongtu.baekseo.data.model.contents.HomeContents
+import com.bongtu.baekseo.data.model.content.HomeContent
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
@@ -61,11 +60,11 @@ class HomeViewModel @Inject constructor(
             }
         }
 
-    private fun updateHomeContents(value: ImmutableList<HomeContents>) =
+    private fun updateHomeContents(value: ImmutableList<HomeContent>) =
         viewModelScope.launch {
             _uiState.update { currentState ->
                 currentState.copy(
-                    homeContentsList = value,
+                    homeContentList = value,
                 )
             }
         }
