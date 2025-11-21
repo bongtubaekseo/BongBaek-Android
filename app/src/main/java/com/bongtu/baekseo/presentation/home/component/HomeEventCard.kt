@@ -74,8 +74,7 @@ fun HomeEventCard(
 
         VerticalDivider(
             modifier = Modifier
-                .padding(horizontal = 12.dp)
-                .fillMaxHeight(),
+                .padding(horizontal = 12.dp),
             thickness = 1.dp,
             color = BongBaekTheme.colors.borderDividerPrimary,
         )
