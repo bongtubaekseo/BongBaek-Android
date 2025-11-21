@@ -91,6 +91,7 @@ fun HomeEventCard(
                     style = BongBaekTheme.typography.body1Medium16,
                     color = BongBaekTheme.colors.txtDisplayPrimary,
                 )
+
                 Text(
                     text = eventCategory,
                     style = BongBaekTheme.typography.body1Medium16,
