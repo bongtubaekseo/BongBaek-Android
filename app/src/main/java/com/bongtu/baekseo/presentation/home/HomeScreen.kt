@@ -188,22 +188,24 @@ fun HomeScreen(
 
                 Spacer(modifier = Modifier.weight(1f))
 
-                Row(
-                    modifier = Modifier.noRippleClickable(navigateToRecord),
-                    verticalAlignment = Alignment.CenterVertically,
-                ) {
-                    Text(
-                        text = stringResource(id = home_schedule_more),
-                        style = BongBaekTheme.typography.body2Regular14,
-                        color = BongBaekTheme.colors.txtDisplaySecondary,
-                    )
+                if (eventList.isNotEmpty()) {
+                    Row(
+                        modifier = Modifier.noRippleClickable(navigateToRecord),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Text(
+                            text = stringResource(id = home_schedule_more),
+                            style = BongBaekTheme.typography.body2Regular14,
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
+                        )
 
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = ic_arrow_right),
-                        contentDescription = null,
-                        modifier = Modifier.size(14.dp),
-                        tint = BongBaekTheme.colors.iconInteractiveDefault,
-                    )
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = ic_arrow_right),
+                            contentDescription = null,
+                            modifier = Modifier.size(14.dp),
+                            tint = BongBaekTheme.colors.iconInteractiveDefault,
+                        )
+                    }
                 }
             }
 
@@ -325,7 +327,7 @@ private fun HomeScreenPreview() {
     val eventList = persistentListOf(
         HomeEvent(
             eventId = "eventId1",
-            hostName = "민경",
+            hostName = "일이삼사오육칠팔구십",
             hostNickname = "하하",
             eventCategory = "생일",
             relationship = "친구",
