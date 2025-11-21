@@ -101,7 +101,7 @@ fun HomeEventCard(
 
                 Text(
                     text = stringResource(home_schedule_card_cost, cost),
-                    style = BongBaekTheme.typography.titleSemiBold18,
+                    style = BongBaekTheme.typography.titleSemiBold16,
                     color = BongBaekTheme.colors.txtDisplayPrimary,
                 )
 
@@ -109,7 +109,7 @@ fun HomeEventCard(
 
                 Text(
                     text = stringResource(kr_won),
-                    style = BongBaekTheme.typography.titleSemiBold18,
+                    style = BongBaekTheme.typography.body1Medium16,
                     color = BongBaekTheme.colors.txtDisplayPrimary,
                 )
             }
@@ -128,8 +128,7 @@ fun HomeEventCard(
 
                 VerticalDivider(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .fillMaxHeight(),
+                        .padding(horizontal = 4.dp),
                     thickness = 1.dp,
                     color = BongBaekTheme.colors.borderDividerPrimary,
                 )
@@ -154,8 +153,7 @@ fun HomeEventCard(
 
                 VerticalDivider(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp)
-                        .fillMaxHeight(),
+                        .padding(horizontal = 4.dp),
                     thickness = 1.dp,
                     color = BongBaekTheme.colors.borderDividerPrimary,
                 )

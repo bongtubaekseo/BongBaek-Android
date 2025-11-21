@@ -5,7 +5,6 @@ import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,7 +14,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,7 +40,7 @@ fun HomeRecommendCard(
                 color = BongBaekTheme.colors.borderDividerPrimary,
                 shape = RoundedCornerShape(8.dp),
             )
-            .padding(20.dp),
+            .padding(16.dp),
         verticalArrangement = Arrangement.Center,
     ) {
         Text(
@@ -77,18 +75,13 @@ fun HomeRecommendButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = BongBaekTheme.colors.btnInteractiveAccent,
         ),
-        contentPadding = PaddingValues(12.dp),
+        contentPadding = PaddingValues(10.dp),
     ) {
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(10.dp),
-        ) {
-            Text(
-                text = stringResource(id = button_recommend),
-                style = BongBaekTheme.typography.body1Medium16,
-                color = BongBaekTheme.colors.txtInteractiveInverse,
-            )
-        }
+        Text(
+            text = stringResource(id = button_recommend),
+            style = BongBaekTheme.typography.body1Medium16,
+            color = BongBaekTheme.colors.txtInteractiveInverse,
+        )
     }
 }
 
