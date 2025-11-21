@@ -74,7 +74,6 @@ fun HomeAlarmCard(
                 start = 16.dp,
                 end = 14.dp,
             ),
-        verticalAlignment = Alignment.CenterVertically,
     ) {
         HomeAlarmCardContent(
             description = cardDescription,
