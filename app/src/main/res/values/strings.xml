@@ -12,7 +12,7 @@
     <string name="home_contents_card_title">경조사 알림</string>
     <string name="home_contents_card_empty_description">다가오는 경조사가 없어요</string>
     <string name="home_contents_card_empty_date">아직 예정된 일정이 없습니다</string>
-    <string name="home_page_card_title">%1$s님의 %2$s%3$s %4$d일 남았어요!</string>
+    <string name="home_page_card_title">%1$s님의\n%2$s%3$s %4$d일 남았어요!</string>
     <string name="home_page_card_today_title">오늘은 %1$s님의 %2$s입니다!</string>
     <string name="home_schedule_title">내 일정</string>
     <string name="home_schedule_description">나의 경조사 일정을 관리해보세요!</string>
