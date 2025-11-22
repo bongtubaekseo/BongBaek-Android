@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -128,7 +127,7 @@ fun HomeEventCard(
 
                 VerticalDivider(
                     modifier = Modifier
-                        .padding(horizontal = 4.dp),
+                        .padding(horizontal = 6.dp),
                     thickness = 1.dp,
                     color = BongBaekTheme.colors.borderDividerPrimary,
                 )
@@ -139,7 +138,7 @@ fun HomeEventCard(
                 )
             }
 
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(2.dp))
 
             Row(
                 modifier = Modifier
