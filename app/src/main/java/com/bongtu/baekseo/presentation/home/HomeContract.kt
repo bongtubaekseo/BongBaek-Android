@@ -8,7 +8,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
 class HomeContract {
-
     @Immutable
     data class HomeState(
         val homeLoadState: UiState<Unit> = UiState.Loading,
