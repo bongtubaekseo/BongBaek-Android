@@ -178,6 +178,11 @@
     <string name="edit_location_button">위치 저장하기</string>
     <!--Contents    -->
     <string name="contents">콘텐츠</string>
+    <string name="contents_article">아티클 수</string>
+    <string name="contents_article_count">%d개</string>
+    <string name="contents_empty_title">아직 올라온 아티클이 없어요!</string>
+    <string name="contents_empty_desc">빠른 시일 내로 아티클을 제공해드릴게요</string>
+    <string name="contents_footer">더 이상 아티클이 없어요!</string>
 
     <!--MyPage    -->
     <string name="setting">설정</string>
