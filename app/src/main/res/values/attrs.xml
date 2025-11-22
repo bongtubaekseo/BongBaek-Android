@@ -2,4 +2,5 @@
 <resources>
     <attr name="iconDisabledPrimary" format="color" />
     <attr name="iconDisabledSecondary" format="color" />
+    <attr name="iconInteractiveDefault" format="color" />
 </resources>

@@ -2,4 +2,5 @@
 <resources>
     <color name="icon_disabled_primary">#FF4E5051</color>
     <color name="icon_disabled_secondary">#FF717374</color>
+    <color name="icon_interactive_default">#FFFFFFFF</color>
 </resources>
