@@ -1,6 +1,5 @@
 package com.bongtu.baekseo.presentation.splash
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -11,19 +10,17 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.flowWithLifecycle
-import com.bongtu.baekseo.R.drawable.ic_splash_logo
+import com.bongtu.baekseo.R.drawable.ic_home_logo
 import com.bongtu.baekseo.R.drawable.ic_splash_name
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.splash.SplashContract.SplashSideEffect.NavigateToHome
@@ -66,22 +63,10 @@ fun SplashRoute(
 fun SplashScreen(
     modifier: Modifier = Modifier,
 ) {
-    val bongbaekColors = BongBaekTheme.colors
-    val backgroundColors = remember {
-        listOf(
-            bongbaekColors.splashStart,
-            bongbaekColors.splashEnd,
-        )
-    }
-
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = backgroundColors,
-                )
-            ),
+            .background(color = BongBaekTheme.colors.txtInteractivePrimary),
         contentAlignment = Alignment.Center,
     ) {
         Row(
@@ -89,16 +74,17 @@ fun SplashScreen(
             horizontalArrangement = Arrangement.spacedBy(10.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Image(
-                painter = painterResource(id = ic_splash_logo),
+            Icon(
+                imageVector = ImageVector.vectorResource(ic_home_logo),
                 contentDescription = null,
-                modifier = Modifier.size(34.dp),
+                modifier = Modifier.size(28.dp),
+                tint = Color.Unspecified,
             )
 
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_splash_name),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.txtInteractiveInverse,
+                tint = BongBaekTheme.colors.splashStart,
             )
         }
     }
