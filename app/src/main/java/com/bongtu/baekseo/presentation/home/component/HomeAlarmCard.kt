@@ -87,7 +87,10 @@ fun HomeAlarmCard(
             painter = painterResource(img_home_alarm),
             contentDescription = null,
             modifier = Modifier
-                .size(86.dp, 74.dp),
+                .size(
+                    width = 86.dp,
+                    height = 74.dp,
+                ),
         )
     }
 }
