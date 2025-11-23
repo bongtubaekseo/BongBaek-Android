@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.core.designsystem.component
+package com.bongtu.baekseo.presentation.record.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
@@ -20,11 +20,8 @@ import com.bongtu.baekseo.R.string.record_empty_button
 import com.bongtu.baekseo.R.string.record_empty_description
 import com.bongtu.baekseo.R.string.record_empty_item_title
 import com.bongtu.baekseo.R.string.record_empty_title
-import com.bongtu.baekseo.R.string.schedule_empty_item_title
-import com.bongtu.baekseo.R.string.schedule_empty_title
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
-import com.bongtu.baekseo.core.common.type.ScheduleType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -34,7 +31,6 @@ private const val POSTPOSITION_E = "이"
 @Composable
 fun BongBaekScheduleEmptyContent(
     eventType: String,
-    scheduleType: ScheduleType,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -43,12 +39,12 @@ fun BongBaekScheduleEmptyContent(
     }
 
     val titleText = if (eventType == EventCategoryType.ALL.label) {
-        stringResource(if (scheduleType == ScheduleType.SCHEDULE) schedule_empty_title else record_empty_title)
+        stringResource(record_empty_title)
     } else {
         stringResource(
-            if (scheduleType == ScheduleType.SCHEDULE) schedule_empty_item_title else record_empty_item_title,
+            record_empty_item_title,
             eventType,
-            postposition
+            postposition,
         )
     }
 
@@ -106,7 +102,6 @@ private fun ScheduleEmptyContentPreview() {
     BongBaekTheme {
         BongBaekScheduleEmptyContent(
             eventType = EventCategoryType.ALL.label,
-            scheduleType = ScheduleType.SCHEDULE,
             onButtonClick = {},
             modifier = Modifier,
         )

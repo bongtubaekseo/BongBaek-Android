@@ -25,10 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
-import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
-import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
-import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -60,7 +57,7 @@ fun RecordListContent(
         bottom = 60.dp + animBottom,
     )
 
-    BongBaekScheduleList(
+    RecordScheduleList(
         items = scheduleEventList,
         getKey = { event -> event.eventId },
         getDate = { event -> event.eventDate },
@@ -111,7 +108,6 @@ private fun RecordCard(
         Spacer(modifier = Modifier.width(deletePadding))
 
         BongBaekScheduleCard(
-            scheduleCardType = ScheduleCardType.SCHEDULE,
             hostName = event.hostName,
             hostNickname = event.hostNickname,
             eventCategory = event.eventCategory,
