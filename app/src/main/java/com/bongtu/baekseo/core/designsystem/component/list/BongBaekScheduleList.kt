@@ -64,10 +64,13 @@ fun <T> BongBaekScheduleList(
                 Text(
                     text = stringResource(record_card_list_year, curYear),
                     color = BongBaekTheme.colors.txtDisplayPrimary,
-                    style = BongBaekTheme.typography.titleSemiBold18,
+                    style = BongBaekTheme.typography.headBold24,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = if (prev == null) 0.dp else 32.dp),
+                        .padding(
+                            top = if (prev == null) 0.dp else 32.dp,
+                            start = 4.dp,
+                        ),
                 )
             }
 
@@ -81,13 +84,14 @@ fun <T> BongBaekScheduleList(
                 ) {
                     Text(
                         text = stringResource(record_card_list_month, curMonth),
-                        color = BongBaekTheme.colors.txtDisplayPrimary,
-                        style = BongBaekTheme.typography.titleSemiBold16,
+                        color = BongBaekTheme.colors.txtDisplaySecondary,
+                        style = BongBaekTheme.typography.titleSemiBold18,
                         modifier = Modifier.padding(end = 12.dp),
                     )
+
                     HorizontalDivider(
                         thickness = 1.dp,
-                        color = BongBaekTheme.colors.txtDisplayPrimary,
+                        color = BongBaekTheme.colors.borderDividerPrimary,
                     )
                 }
             }

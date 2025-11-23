@@ -67,7 +67,7 @@ fun BongBaekScheduleCard(
         Text(
             text = hostNickname,
             style = BongBaekTheme.typography.captionRegular12,
-            color = BongBaekTheme.colors.txtDisplayPrimary,
+            color = BongBaekTheme.colors.statusFocused,
         )
 
         Row(
@@ -78,7 +78,7 @@ fun BongBaekScheduleCard(
             Text(
                 text = hostName,
                 style = BongBaekTheme.typography.titleSemiBold18,
-                color = BongBaekTheme.colors.txtDisplayTertiary,
+                color = BongBaekTheme.colors.txtDisplayPrimary,
             )
 
             if (isHomeCard) {
@@ -88,19 +88,19 @@ fun BongBaekScheduleCard(
                     Text(
                         text = stringResource(home_schedule_card_cost, cost),
                         style = BongBaekTheme.typography.titleSemiBold18,
-                        color = BongBaekTheme.colors.txtDisplayTertiary,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                     )
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body1Medium16,
-                        color = BongBaekTheme.colors.txtDisplayTertiary,
+                        color = BongBaekTheme.colors.txtDisplayPrimary,
                     )
                 }
             } else {
                 Text(
                     text = stringResource(record_card_cost, cost),
                     style = BongBaekTheme.typography.titleSemiBold18,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    color = BongBaekTheme.colors.txtDisplayPrimary,
                 )
             }
 
