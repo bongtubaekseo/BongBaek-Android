@@ -142,7 +142,7 @@ private fun RecordScreen(
         BongBaekCategoryBar(
             selectedCategory = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
-            isEnabled = true,
+            isEnabled = !uiState.isDeleteMode,
             modifier = Modifier.padding(vertical = 20.dp),
         )
 
