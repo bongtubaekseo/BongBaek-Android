@@ -87,7 +87,7 @@
     <string name="record_top_bar_title">경조사 전체 기록</string>
     <string name="record_card_list_year">%1$d년</string>
     <string name="record_card_list_month">%1$d월</string>
-    <string name="record_card_cost">%1$,d원</string>
+    <string name="record_card_cost">%1$,d</string>
     <string name="record_card_weekday">(%1$s)</string>
     <string name="record_empty_title">기록한 경조사가 없어요!</string>
     <string name="record_empty_item_title">기록한 %1$s%2$s 없어요!</string>
