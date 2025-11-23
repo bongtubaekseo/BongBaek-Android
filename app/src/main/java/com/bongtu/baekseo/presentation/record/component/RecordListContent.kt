@@ -4,12 +4,14 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
@@ -47,7 +49,8 @@ fun RecordListContent(
     modifier: Modifier = Modifier,
 ) {
     val animBottom by animateDpAsState(
-        targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
         else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
     )
 
@@ -103,9 +106,10 @@ private fun RecordCard(
             RecordDeleteToggleButton(
                 isDeleteToggleCheck = isDeleteToggleCheck,
                 onDeleteToggleClick = onDeleteToggleClick,
-                modifier = Modifier.padding(end = deletePadding),
             )
         }
+
+        Spacer(modifier = Modifier.width(deletePadding))
 
         BongBaekScheduleCard(
             scheduleCardType = ScheduleCardType.SCHEDULE,
