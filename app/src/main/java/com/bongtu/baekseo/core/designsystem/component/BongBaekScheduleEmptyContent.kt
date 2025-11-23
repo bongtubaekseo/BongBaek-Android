@@ -89,7 +89,7 @@ fun BongBaekScheduleEmptyContent(
             modifier = Modifier
                 .padding(
                     top = 32.dp,
-                    bottom = 78.dp,
+                    bottom = 55.dp,
                 ),
             textStyle = BongBaekTheme.typography.titleSemiBold16,
             paddingValues = PaddingValues(
