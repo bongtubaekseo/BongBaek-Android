@@ -108,10 +108,10 @@ fun DetailDropDown(
         DetailDropDownItemType(
             iconRes = ic_record_money_off,
             labelRes = record_detail_cost_title,
-            trailingType = DetailDropDownTrailingType.TrailingCost(
+            trailingType = TrailingCost(
                 stringResource(
                     record_card_cost,
-                    event.cost
+                    event.cost,
                 ),
             ),
         ),
