@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -133,7 +134,7 @@ private fun DetailScreen(
                         .padding(14.dp)
                         .size(20.dp)
                         .noRippleClickable(onClick = onEditButtonClick),
-                    tint = BongBaekTheme.colors.iconInteractiveDefault,
+                    tint = Color.Unspecified,
                 )
             },
         )
@@ -172,13 +173,13 @@ private fun DetailContent(
         Triple(
             stringResource(record_detail_memo_placeholder),
             BongBaekTheme.colors.txtFieldPlaceholder,
-            BongBaekTheme.colors.bgFieldPrimary
+            BongBaekTheme.colors.bgFieldPrimary,
         )
     } else {
         Triple(
             event.note,
             BongBaekTheme.colors.txtFieldValue,
-            BongBaekTheme.colors.bgFieldSecondary
+            BongBaekTheme.colors.bgFieldSecondary,
         )
     }
 
@@ -243,7 +244,7 @@ private fun DetailContent(
             onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
             buttonType = ButtonType.DELETE,
             modifier = Modifier
-                .padding(top = 80.dp, bottom = 40.dp)
+                .padding(top = 85.dp, bottom = 36.dp)
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
@@ -280,6 +281,7 @@ private fun RecordDetailTitleCard(
             color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.titleSemiBold18,
         )
+
         Row(
             modifier = Modifier.padding(top = 2.dp),
         ) {
@@ -303,16 +305,16 @@ private fun RecordDetailCostCard(
             .fillMaxWidth()
             .background(
                 brush = remember {
-                    Brush.verticalGradient(
+                    Brush.linearGradient(
                         colorStops = arrayOf(
-                            0.16f to bongBaekColors.recordStart,
+                            0f to bongBaekColors.recordStart,
                             1f to bongBaekColors.recordEnd,
                         ),
                     )
                 },
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(horizontal = 20.dp, vertical = 15.5.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -324,6 +326,7 @@ private fun RecordDetailCostCard(
                 color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold16,
             )
+
             Text(
                 text = stringResource(record_card_cost, cost),
                 color = BongBaekTheme.colors.txtInteractiveInverse,
