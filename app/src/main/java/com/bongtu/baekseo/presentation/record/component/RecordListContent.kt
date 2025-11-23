@@ -19,12 +19,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_check_secondary_red
+import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
 import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
@@ -132,21 +131,21 @@ private fun RecordDeleteToggleButton(
 ) {
     if (isDeleteToggleCheck) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = ic_check_secondary_red),
+            imageVector = ImageVector.vectorResource(id = ic_check),
             contentDescription = null,
             modifier = modifier
-                .size(18.dp)
+                .size(20.dp)
                 .noRippleClickable(onClick = onDeleteToggleClick),
-            tint = Color.Unspecified,
+            tint = BongBaekTheme.colors.statusError,
         )
     } else {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_record_radio_circle),
             contentDescription = null,
             modifier = modifier
-                .size(18.dp)
+                .size(20.dp)
                 .noRippleClickable(onClick = onDeleteToggleClick),
-            tint = Color.Unspecified,
+            tint = BongBaekTheme.colors.borderFieldDefault,
         )
     }
 }
