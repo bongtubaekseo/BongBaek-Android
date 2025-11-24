@@ -166,7 +166,7 @@ fun OnBoardingScreen(
                     errorText = uiState.nameError,
                     isRequired = true,
                     onTextChange = onNameChange,
-                    isClearButtonEnabled = false,
+                    isClearButtonEnabled = true,
                 )
 
                 LabelTextField(
@@ -200,7 +200,7 @@ fun OnBoardingScreen(
                         .background(color = BongBaekTheme.colors.bgDisplayCard)
                         .padding(
                             horizontal = 20.dp,
-                            vertical = 16.dp,
+                            vertical = 18.dp,
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
@@ -210,6 +210,7 @@ fun OnBoardingScreen(
                         style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.txtDisplaySecondary,
                     )
+
                     BongBaekSwitch(
                         checked = switchChecked,
                         onCheckedChange = {
@@ -233,7 +234,7 @@ fun OnBoardingScreen(
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
-                            style = BongBaekTheme.typography.body1Medium16,
+                            style = BongBaekTheme.typography.titleSemiBold18,
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
@@ -264,7 +265,7 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        bottom = 38.dp,
+                        bottom = 36.dp,
                     ),
                 enabled = checkButtonEnabled() && !isIncomeSelectionInvalid,
             )
