@@ -22,6 +22,8 @@ import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ContentsDetailScreen(
@@ -29,7 +31,7 @@ fun ContentsDetailScreen(
     eventType: EventType = EventType.WEDDING,
     title: String = "이제는 알아야 하는 결혼식 식사 예절",
     date: String = "2025.01.01",
-    imageUrls: List<String> = listOf("", "2", "3", "4", "5", "6", "7", "8"),
+    imageUrls: ImmutableList<String> = persistentListOf("", "2", "3", "4", "5", "6", "7", "8"),
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -44,7 +46,7 @@ fun ContentsDetailScreen(
                 modifier = Modifier
                     .padding(
                         horizontal = 12.dp,
-                        vertical = 20.dp
+                        vertical = 20.dp,
                     )
                     .noRippleClickable(onBackClick),
                 tint = BongBaekTheme.colors.iconInteractiveDefault,
@@ -72,7 +74,7 @@ fun ContentsDetailScreen(
                 Text(
                     text = title,
                     color = BongBaekTheme.colors.txtDisplayPrimary,
-                    style = BongBaekTheme.typography.titleSemiBold20
+                    style = BongBaekTheme.typography.titleSemiBold20,
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))

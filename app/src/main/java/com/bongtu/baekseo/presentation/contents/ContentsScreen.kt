@@ -44,6 +44,8 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.presentation.contents.components.ContentsArticleCard
 import com.bongtu.baekseo.presentation.contents.components.ContentsEmptyView
 import com.bongtu.baekseo.presentation.contents.components.ContentsFooter
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
@@ -51,7 +53,7 @@ fun ContentsRoute(
     modifier: Modifier = Modifier,
 ) {
     ContentsScreen(
-        articles = listOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
+        articles = persistentListOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
         selectedEvent = EventCategoryType.ALL,
         modifier = modifier,
     )
@@ -60,7 +62,7 @@ fun ContentsRoute(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ContentsScreen(
-    articles: List<String>,
+    articles: ImmutableList<String>,
     selectedEvent: EventCategoryType,
     modifier: Modifier = Modifier,
 ) {
@@ -113,7 +115,6 @@ private fun ContentsScreen(
             }
 
             if (articles.isEmpty()) ContentsEmptyView()
-
             else {
                 LazyColumn(
                     state = listState,
@@ -167,7 +168,7 @@ private fun ContentsScreen(
 private fun ContentsScreenPreview() {
     BongBaekTheme {
         ContentsScreen(
-            articles = emptyList(),
+            articles = persistentListOf(),
             selectedEvent = EventCategoryType.ALL,
         )
     }
