@@ -30,18 +30,17 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 @Composable
 fun OnBoardingButton(
     title: String,
-    isSelected: Boolean,
-    isDimmed: Boolean,
+    isSelected: Boolean?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val (backgroundColor, borderColor) =
-        if (isSelected) BongBaekTheme.colors.btnInteractiveDisabled to BongBaekTheme.colors.statusFocused
+        if (isSelected == true) BongBaekTheme.colors.btnInteractiveDisabled to BongBaekTheme.colors.statusFocused
         else BongBaekTheme.colors.btnInteractiveTertiary to BongBaekTheme.colors.borderFieldDefault
 
-    val textColor = when {
-        isDimmed -> BongBaekTheme.colors.txtStatusDisabled
-        isSelected -> BongBaekTheme.colors.statusFocused
+    val textColor = when (isSelected) {
+        true -> BongBaekTheme.colors.statusFocused
+        false -> BongBaekTheme.colors.txtStatusDisabled
         else -> BongBaekTheme.colors.txtInteractivePrimary
     }
 
@@ -71,7 +70,7 @@ fun OnBoardingButton(
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (isSelected) {
+        if (isSelected == true) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_select),
                 contentDescription = null,
@@ -94,7 +93,6 @@ private fun OnBoardingButtonPreview() {
             OnBoardingButton(
                 title = "월 200만원 미만",
                 isSelected = isSelected,
-                isDimmed = isDimmed,
                 onClick = {
                     if (!isSelected) isSelected = true
                 },
@@ -103,7 +101,6 @@ private fun OnBoardingButtonPreview() {
             OnBoardingButton(
                 title = "월 200만원 이상",
                 isSelected = !isSelected,
-                isDimmed = isDimmed,
                 onClick = {
                     if (isSelected) isSelected = false
                 },

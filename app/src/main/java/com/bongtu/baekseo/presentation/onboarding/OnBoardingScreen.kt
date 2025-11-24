@@ -94,6 +94,7 @@ fun OnBoardingRoute(
         onBirthChange = viewModel::updateBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
         onIncomeChange = viewModel::updateIncome,
+        onIncomeButtonChange = viewModel::updateIncomeButtonState,
         onBackClick = viewModel::navigateToLogin,
         onStartClick = viewModel::postSignUp,
         checkButtonEnabled = viewModel::updateButtonState,
@@ -108,6 +109,7 @@ fun OnBoardingScreen(
     onBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
     onIncomeChange: (IncomeType) -> Unit,
+    onIncomeButtonChange: (IncomeType) -> Boolean?,
     onBackClick: () -> Unit,
     onStartClick: () -> Unit,
     checkButtonEnabled: () -> Boolean,
@@ -128,10 +130,6 @@ fun OnBoardingScreen(
     var switchChecked by remember { mutableStateOf(false) }
 
     val isIncomeSelectionInvalid = uiState.income == IncomeType.NONE && switchChecked
-    val isIncomeUnderDimmed =
-        uiState.income != IncomeType.NONE && uiState.income != IncomeType.UNDER_200
-    val isIncomeOverDimmed =
-        uiState.income != IncomeType.NONE && uiState.income != IncomeType.OVER_200
 
     Column(
         modifier = modifier
@@ -245,16 +243,14 @@ fun OnBoardingScreen(
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            isSelected = uiState.income == IncomeType.UNDER_200,
-                            isDimmed = isIncomeUnderDimmed,
+                            isSelected = onIncomeButtonChange(IncomeType.UNDER_200),
                             onClick = { onIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            isSelected = uiState.income == IncomeType.OVER_200,
-                            isDimmed = isIncomeOverDimmed,
+                            isSelected = onIncomeButtonChange(IncomeType.OVER_200),
                             onClick = { onIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -303,6 +299,7 @@ private fun OnBoardingSettingScreenPreview() {
             onBirthChange = {},
             onDialogBirthChange = {},
             onIncomeChange = {},
+            onIncomeButtonChange = { true },
             onBackClick = {},
             onStartClick = {},
             checkButtonEnabled = { true },
