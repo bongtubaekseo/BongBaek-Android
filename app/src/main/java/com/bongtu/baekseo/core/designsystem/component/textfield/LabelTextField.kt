@@ -92,6 +92,7 @@ fun LabelTextField(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
+
     val dividerColor = when {
         isError -> bongBaekColors.statusError
         isFocused -> bongBaekColors.statusFocused
@@ -104,6 +105,10 @@ fun LabelTextField(
         isDimmed -> bongBaekColors.txtDisplayTertiary
         else -> bongBaekColors.txtFieldValue
     }
+
+    val textStyle =
+        if (isFocused) BongBaekTheme.typography.body2Regular16
+        else BongBaekTheme.typography.body1Medium16
 
     val labelTextColor =
         if (isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplaySecondary
@@ -155,7 +160,7 @@ fun LabelTextField(
                 },
             isReadOnly = !isEditable,
             isEnabled = isEditable,
-            textStyle = BongBaekTheme.typography.body2Regular16,
+            textStyle = textStyle,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Done,
