@@ -23,7 +23,6 @@ fun NavController.navigateToProfileEdit(navOptions: NavOptions? = null) =
 
 fun NavGraphBuilder.myPageGraph(
     navController: NavHostController,
-    navigateUp: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
@@ -31,11 +30,10 @@ fun NavGraphBuilder.myPageGraph(
     navigation<MyPage>(
         startDestination = MyPageMain,
     ) {
-        composable<MyPageMain> {  backStackEntry ->
+        composable<MyPageMain> { backStackEntry ->
             val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
 
             MyPageRoute(
-                navigateUp = navigateUp,
                 navigateToEditProfile = navController::navigateToProfileEdit,
                 navigateToWithdraw = navigateToWithdraw,
                 onRestartApp = onRestartApp,

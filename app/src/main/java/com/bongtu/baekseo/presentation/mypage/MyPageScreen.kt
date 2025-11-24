@@ -6,8 +6,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -41,12 +43,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
-import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
-import com.bongtu.baekseo.R.drawable.ic_mypage_book
-import com.bongtu.baekseo.R.drawable.ic_mypage_information
-import com.bongtu.baekseo.R.drawable.ic_mypage_intersect
-import com.bongtu.baekseo.R.drawable.ic_mypage_key
+import com.bongtu.baekseo.R.drawable.ic_mypage_ask
+import com.bongtu.baekseo.R.drawable.ic_mypage_lock
+import com.bongtu.baekseo.R.drawable.ic_mypage_terms
+import com.bongtu.baekseo.R.drawable.ic_mypage_version
 import com.bongtu.baekseo.R.drawable.img_mypage_profile
 import com.bongtu.baekseo.R.string.mypage_app_version
 import com.bongtu.baekseo.R.string.mypage_inquiry
@@ -55,11 +56,11 @@ import com.bongtu.baekseo.R.string.mypage_personal_privacy
 import com.bongtu.baekseo.R.string.mypage_profile_edit_button
 import com.bongtu.baekseo.R.string.mypage_service_terms
 import com.bongtu.baekseo.R.string.mypage_service_title
-import com.bongtu.baekseo.R.string.mypage_topbar_title
 import com.bongtu.baekseo.R.string.mypage_user_birth
 import com.bongtu.baekseo.R.string.mypage_user_income
 import com.bongtu.baekseo.R.string.mypage_version_format
 import com.bongtu.baekseo.R.string.mypage_withdrawal
+import com.bongtu.baekseo.R.string.setting
 import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -77,7 +78,6 @@ import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun MyPageRoute(
-    navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onRestartApp: (Boolean) -> Unit,
@@ -104,7 +104,6 @@ fun MyPageRoute(
 
     MyPageScreen(
         uiState = uiState,
-        navigateUp = navigateUp,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
         onLogoutClick = viewModel::logout,
@@ -118,7 +117,6 @@ fun MyPageRoute(
 @Composable
 private fun MyPageScreen(
     uiState: MyPageUiState,
-    navigateUp: () -> Unit,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onLogoutClick: () -> Unit,
@@ -135,28 +133,16 @@ private fun MyPageScreen(
     ) {
         Column(
             modifier = Modifier
-                .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
             Column {
                 BongBaekTopBar(
-                    title = stringResource(mypage_topbar_title),
-                    topBarType = TopBarType.LEADING_ICON,
+                    title = stringResource(setting),
+                    topBarType = TopBarType.TEXT_ONLY_START,
                     modifier = Modifier
-                        .background(BongBaekTheme.colors.bgDisplayPrimary)
                         .statusBarsPadding(),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_arrow_back),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .padding(12.dp)
-                                .noRippleClickable(onClick = navigateUp),
-                            tint = BongBaekTheme.colors.iconInteractiveDefault,
-                        )
-                    },
                 )
 
                 ProfileSection(
@@ -164,12 +150,14 @@ private fun MyPageScreen(
                     userBirth = DateFormatter.formatToKorean(uiState.userBirth),
                     userIncome = uiState.userIncome.uiLabel,
                     onProfileEditButtonClick = navigateToEditProfile,
+                    modifier = Modifier,
                 )
 
                 ServiceSection(
                     onInquiryClick = onInquiryClick,
                     onTermsClick = onTermsClick,
                     onPrivacyClick = onPrivacyClick,
+                    modifier = Modifier,
                 )
             }
 
@@ -177,28 +165,31 @@ private fun MyPageScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = 60.dp,
-                        vertical = 14.dp,
+                        vertical = 16.dp,
                     )
                     .navigationBarsPadding(),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
                     text = stringResource(mypage_logout),
                     modifier = Modifier
+                        .weight(1f)
                         .noRippleClickable {
                             isLogoutDialogVisible = true
                         },
                     color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body2Regular14,
+                    textAlign = TextAlign.Center,
                 )
 
                 Text(
                     text = stringResource(mypage_withdrawal),
                     modifier = Modifier
+                        .weight(1f)
                         .noRippleClickable(onClick = navigateToWithdraw),
                     color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body2Regular14,
+                    textAlign = TextAlign.Center,
                 )
             }
         }
@@ -223,26 +214,19 @@ private fun ProfileSection(
     userBirth: String,
     userIncome: String,
     onProfileEditButtonClick: () -> Unit,
+    modifier: Modifier = Modifier,
     imageUrl: String? = null,
 ) {
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .background(
-                color = BongBaekTheme.colors.bgDisplayPrimary,
-                shape = RoundedCornerShape(
-                    bottomStart = 20.dp,
-                    bottomEnd = 20.dp,
-                ),
-            ),
+        modifier = modifier
+            .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         AsyncImage(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
-                .padding(top = 16.dp)
-                .size(110.dp)
+                .size(80.dp)
                 .clip(RoundedCornerShape(20.dp)),
             error = painterResource(img_mypage_profile),
             contentScale = ContentScale.Crop,
@@ -250,10 +234,10 @@ private fun ProfileSection(
 
         Text(
             text = userName,
-            modifier = Modifier.padding(vertical = 16.dp),
+            modifier = Modifier.padding(vertical = 12.dp),
             color = BongBaekTheme.colors.txtDisplayPrimary,
-            maxLines = 1,
             style = BongBaekTheme.typography.headBold24,
+            maxLines = 1,
         )
 
         Text(
@@ -269,17 +253,18 @@ private fun ProfileSection(
                     vertical = 4.dp,
                 ),
             color = BongBaekTheme.colors.txtInteractiveInverse,
-            textAlign = TextAlign.Center,
             style = BongBaekTheme.typography.captionRegular12,
+            textAlign = TextAlign.Center,
         )
+
+        Spacer(modifier = Modifier.height(12.dp))
 
         Column(
             modifier = Modifier
                 .padding(
                     start = 20.dp,
-                    top = 16.dp,
                     end = 20.dp,
-                    bottom = 26.dp,
+                    bottom = 20.dp,
                 )
                 .background(
                     color = BongBaekTheme.colors.bgDisplayCard,
@@ -292,9 +277,6 @@ private fun ProfileSection(
         ) {
             Row(
                 modifier = Modifier
-                    .padding(
-                        bottom = 8.dp,
-                    )
                     .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -310,6 +292,8 @@ private fun ProfileSection(
                     style = BongBaekTheme.typography.body1Medium14,
                 )
             }
+
+            Spacer(modifier = Modifier.height(8.dp))
 
             Row(
                 modifier = Modifier
@@ -337,41 +321,36 @@ private fun ServiceSection(
     onInquiryClick: () -> Unit,
     onTermsClick: () -> Unit,
     onPrivacyClick: () -> Unit,
+    modifier: Modifier = Modifier,
 ) {
-    Text(
-        text = stringResource(mypage_service_title),
-        modifier = Modifier
-            .padding(
-                start = 20.dp,
-                top = 26.dp,
-                end = 20.dp,
-            ),
-        color = BongBaekTheme.colors.txtInteractiveSecondary,
-        style = BongBaekTheme.typography.titleSemiBold18,
-    )
-
     Column(
-        modifier = Modifier
-            .padding(
-                horizontal = 20.dp,
-                vertical = 30.dp,
-            ),
-        verticalArrangement = Arrangement.spacedBy(22.dp),
+        modifier = modifier
+            .padding(horizontal = 20.dp),
     ) {
+        Text(
+            text = stringResource(mypage_service_title),
+            modifier = Modifier
+                .padding(
+                    vertical = 12.dp,
+                ),
+            color = BongBaekTheme.colors.txtDisplaySecondary,
+            style = BongBaekTheme.typography.titleSemiBold18,
+        )
+
         ServiceItem(
-            iconRes = ic_mypage_intersect,
+            iconRes = ic_mypage_version,
             titleRes = mypage_app_version,
             trailingIcon = {
                 Text(
                     text = stringResource(mypage_version_format, BuildConfig.VERSION_NAME),
-                    color = BongBaekTheme.colors.iconInteractiveDefault,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium16,
                 )
             }
         )
 
         ServiceItem(
-            iconRes = ic_mypage_information,
+            iconRes = ic_mypage_ask,
             titleRes = mypage_inquiry,
             trailingIcon = {
                 Icon(
@@ -385,7 +364,7 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_book,
+            iconRes = ic_mypage_terms,
             titleRes = mypage_service_terms,
             trailingIcon = {
                 Icon(
@@ -399,7 +378,7 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_key,
+            iconRes = ic_mypage_lock,
             titleRes = mypage_personal_privacy,
             trailingIcon = {
                 Icon(
@@ -423,7 +402,8 @@ private fun ServiceItem(
 ) {
     Row(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(vertical = 12.dp),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically,
     ) {
@@ -455,10 +435,9 @@ private fun MyPageScreenPreview() {
         MyPageScreen(
             uiState = MyPageUiState(
                 userName = "봉투백서의겸손한야수",
-                userBirth = "2000-01-05",
-                userIncome = IncomeType.NONE,
+                userBirth = "1999-10-14",
+                userIncome = IncomeType.OVER_200,
             ),
-            navigateUp = {},
             navigateToEditProfile = {},
             navigateToWithdraw = {},
             onLogoutClick = {},
