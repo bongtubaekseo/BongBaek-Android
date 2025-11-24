@@ -51,15 +51,17 @@ fun ContentsRoute(
     modifier: Modifier = Modifier,
 ) {
     ContentsScreen(
-
+        articles = listOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
+        selectedEvent = EventCategoryType.ALL,
+        modifier = modifier,
     )
 }
 
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ContentsScreen(
-    articles: List<String> = listOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
-    selectedEvent: EventCategoryType = EventCategoryType.ALL,
+    articles: List<String>,
+    selectedEvent: EventCategoryType,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
@@ -112,29 +114,31 @@ private fun ContentsScreen(
 
             if (articles.isEmpty()) ContentsEmptyView()
 
-            LazyColumn(
-                state = listState,
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-                contentPadding = PaddingValues(
-                    top = 20.dp,
-                    bottom = 28.dp,
-                ),
-            ) {
-                items(articles.size) { index ->
-                    ContentsArticleCard(
-                        imageUrl = "",
-                        onCardClick = { },
-                        eventType = if (index % 2 == 0) EventType.WEDDING else EventType.FUNERAL,
-                        title = "경조사 정보 제목 테스트 ${index + 1} 번째 글입니다.",
-                        date = "2025.11.${index + 1}",
-                    )
-
-                    if (index == articles.lastIndex)
-                        ContentsFooter(
-                            modifier = Modifier.padding(top = 12.dp),
+            else {
+                LazyColumn(
+                    state = listState,
+                    modifier = Modifier
+                        .padding(horizontal = 20.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    contentPadding = PaddingValues(
+                        top = 20.dp,
+                        bottom = 28.dp,
+                    ),
+                ) {
+                    items(articles.size) { index ->
+                        ContentsArticleCard(
+                            imageUrl = "",
+                            onCardClick = { },
+                            eventType = if (index % 2 == 0) EventType.WEDDING else EventType.FUNERAL,
+                            title = "경조사 정보 제목 테스트 ${index + 1} 번째 글입니다.",
+                            date = "2025.11.${index + 1}",
                         )
+
+                        if (index == articles.lastIndex)
+                            ContentsFooter(
+                                modifier = Modifier.padding(top = 12.dp),
+                            )
+                    }
                 }
             }
         }
@@ -162,6 +166,9 @@ private fun ContentsScreen(
 @Composable
 private fun ContentsScreenPreview() {
     BongBaekTheme {
-        ContentsScreen()
+        ContentsScreen(
+            articles = emptyList(),
+            selectedEvent = EventCategoryType.ALL,
+        )
     }
 }
