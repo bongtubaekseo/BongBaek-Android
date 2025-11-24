@@ -89,9 +89,10 @@ fun SearchTextField(
             text = text,
             onTextChange = onTextChange,
             textColor = textColor,
+            textStyle = BongBaekTheme.typography.body2Regular16,
             placeholder = stringResource(id = search_text_field_placeholder),
             placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
-            textStyle = BongBaekTheme.typography.body2Regular16,
+            placeholderStyle = BongBaekTheme.typography.body2Regular16,
             interactionSource = interactionSource,
             cursorColor = BongBaekTheme.colors.transparent,
             keyboardOptions = KeyboardOptions(

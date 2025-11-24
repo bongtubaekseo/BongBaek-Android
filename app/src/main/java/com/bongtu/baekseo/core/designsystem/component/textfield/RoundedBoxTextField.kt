@@ -112,6 +112,7 @@ fun RoundedBoxTextField(
                 textStyle = BongBaekTheme.typography.body1Medium16,
                 placeholder = placeholder,
                 placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
+                placeholderStyle = BongBaekTheme.typography.body2Regular16,
                 isReadOnly = !isEditable,
                 isEnabled = isEditable,
                 interactionSource = interactionSource,

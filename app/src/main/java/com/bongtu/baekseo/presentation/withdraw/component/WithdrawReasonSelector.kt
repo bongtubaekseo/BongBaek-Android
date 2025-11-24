@@ -180,6 +180,7 @@ private fun WithdrawSelectorItem(
                         textStyle = BongBaekTheme.typography.body1Medium16,
                         placeholder = stringResource(id = input_text_field_placeholder),
                         placeholderColor = bongBaekColors.txtStatusDisabled,
+                        placeholderStyle = BongBaekTheme.typography.body1Medium16,
                         modifier = Modifier
                             .weight(1f)
                             .onFocusChanged { onFocusChange(it.isFocused) },
