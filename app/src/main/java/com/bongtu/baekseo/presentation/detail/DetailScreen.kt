@@ -321,7 +321,7 @@ private fun RecordDetailCostCard(
                 },
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(horizontal = 20.dp, vertical = 15.5.dp),
+            .padding(horizontal = 20.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -332,6 +332,10 @@ private fun RecordDetailCostCard(
                 text = stringResource(record_detail_cost_title),
                 color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold16,
+                modifier = Modifier
+                    .padding(
+                        vertical = 17.dp,
+                    )
             )
 
             Text(
