@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_delete
@@ -49,7 +50,7 @@ fun RecordTopBar(
         leadingIcon = if (isDeleteMode) {
             {
                 TopBarDeleteLeadingIcon(
-                    onExitDeleteModeClick = onExitDeleteModeClick
+                    onExitDeleteModeClick = onExitDeleteModeClick,
                 )
             }
         } else null,
@@ -144,4 +145,20 @@ private fun TopBarDeleteTrailingIcon(
                 }
             },
     )
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun RecordTopBarPreview() {
+    BongBaekTheme {
+        RecordTopBar(
+            isDeleteMode = false,
+            isEnterDeleteButtonVisible = true,
+            isConfirmButtonEnabled = true,
+            navigateToAdd = {},
+            onEnterDeleteModeClick = {},
+            onExitDeleteModeClick = {},
+            onConfirmDeleteClick = {},
+        )
+    }
 }

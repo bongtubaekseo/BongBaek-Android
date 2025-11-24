@@ -4,12 +4,14 @@ import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
@@ -17,17 +19,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_check_secondary_red
+import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
-import com.bongtu.baekseo.core.common.type.ScheduleCardType
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
-import com.bongtu.baekseo.core.designsystem.component.card.BongBaekScheduleCard
-import com.bongtu.baekseo.core.designsystem.component.list.BongBaekScheduleList
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -47,7 +45,8 @@ fun RecordListContent(
     modifier: Modifier = Modifier,
 ) {
     val animBottom by animateDpAsState(
-        targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues().calculateBottomPadding()
+        targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues()
+            .calculateBottomPadding()
         else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
     )
 
@@ -58,7 +57,7 @@ fun RecordListContent(
         bottom = 60.dp + animBottom,
     )
 
-    BongBaekScheduleList(
+    RecordScheduleList(
         items = scheduleEventList,
         getKey = { event -> event.eventId },
         getDate = { event -> event.eventDate },
@@ -103,12 +102,12 @@ private fun RecordCard(
             RecordDeleteToggleButton(
                 isDeleteToggleCheck = isDeleteToggleCheck,
                 onDeleteToggleClick = onDeleteToggleClick,
-                modifier = Modifier.padding(end = deletePadding),
             )
         }
 
-        BongBaekScheduleCard(
-            scheduleCardType = ScheduleCardType.SCHEDULE,
+        Spacer(modifier = Modifier.width(deletePadding))
+
+        RecordScheduleCard(
             hostName = event.hostName,
             hostNickname = event.hostNickname,
             eventCategory = event.eventCategory,
@@ -128,21 +127,21 @@ private fun RecordDeleteToggleButton(
 ) {
     if (isDeleteToggleCheck) {
         Icon(
-            imageVector = ImageVector.vectorResource(id = ic_check_secondary_red),
+            imageVector = ImageVector.vectorResource(id = ic_check),
             contentDescription = null,
             modifier = modifier
-                .size(18.dp)
+                .size(20.dp)
                 .noRippleClickable(onClick = onDeleteToggleClick),
-            tint = Color.Unspecified,
+            tint = BongBaekTheme.colors.statusError,
         )
     } else {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_record_radio_circle),
             contentDescription = null,
             modifier = modifier
-                .size(18.dp)
+                .size(20.dp)
                 .noRippleClickable(onClick = onDeleteToggleClick),
-            tint = Color.Unspecified,
+            tint = BongBaekTheme.colors.borderFieldDefault,
         )
     }
 }

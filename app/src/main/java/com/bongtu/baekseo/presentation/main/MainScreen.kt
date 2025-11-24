@@ -40,7 +40,6 @@ import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendF
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
-import com.bongtu.baekseo.presentation.schedule.navigation.scheduleGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
 import com.bongtu.baekseo.presentation.withdraw.navigation.navigateToWithdraw
@@ -214,13 +213,6 @@ private fun MainNavHost(
                     },
                 )
             },
-            modifier = modifier,
-        )
-
-        scheduleGraph(
-            navigateToUp = navigator::navigateUp,
-            navigateToEdit = navigator.navController::navigateToEdit,
-            navigateToDetail = navigator.navController::navigateToDetail,
             modifier = modifier,
         )
 
