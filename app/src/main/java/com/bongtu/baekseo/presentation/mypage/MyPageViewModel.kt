@@ -10,6 +10,7 @@ import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
+import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
 import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -67,7 +68,7 @@ class MyPageViewModel @Inject constructor(
                 memberIncome = uiState.value.userIncome.label,
             ),
         ).onSuccess {
-            _sideEffect.emit(MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage)
+            _sideEffect.emit(NavigateToMyPage)
             saveUsername(uiState.value.userName)
         }.onFailure {
             // TODO: 실패 처리
@@ -115,6 +116,15 @@ class MyPageViewModel @Inject constructor(
     fun updateMyPageLoadUiState(newUiState: UiState<Unit>) = _uiState.update {
         it.copy(myPageLoadState = newUiState)
     }
+
+    fun updateIncomeButtonState(incomeType: IncomeType): Boolean? =
+        with(uiState.value) {
+            return when (userIncome) {
+                IncomeType.NONE -> null
+                incomeType -> true
+                else -> false
+            }
+        }
 
     private fun saveUsername(name: String) =
         viewModelScope.launch {
