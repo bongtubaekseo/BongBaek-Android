@@ -32,7 +32,7 @@ fun ContentsEmptyView(
     ) {
         Text(
             text = stringResource(contents_empty_title),
-            color = BongBaekTheme.colors.txtDisplayPrimary,
+            color = BongBaekTheme.colors.txtDisplaySecondary,
             style = BongBaekTheme.typography.headBold24,
         )
 
