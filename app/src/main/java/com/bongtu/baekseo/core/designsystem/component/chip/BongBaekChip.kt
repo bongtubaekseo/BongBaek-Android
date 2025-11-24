@@ -36,8 +36,8 @@ fun BongBaekFilterChip(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val (backgroundColor, textColor) = remember(isSelected) {
-        if (isSelected) bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
-        else bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
+        if (isSelected) bongBaekColors.btnInteractiveDisabled to bongBaekColors.statusFocused
+        else bongBaekColors.btnInteractiveSecondary to bongBaekColors.txtStatusDisabled
     }
 
     Box(

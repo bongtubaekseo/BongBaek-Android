@@ -1,10 +1,10 @@
 package com.bongtu.baekseo.presentation.record.component
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -15,7 +15,6 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
@@ -39,38 +38,34 @@ fun AttendTypeTab(
     isEnabled: Boolean,
     modifier: Modifier = Modifier,
 ) {
+    val (color, typography) = BongBaekTheme.colors to BongBaekTheme.typography
+    val selectedTabStyle = TabStyle(
+        textColor = color.txtInteractivePrimary,
+        textStyle = typography.titleSemiBold16,
+        backgroundColor = color.btnInteractiveDisabled,
+        lineColor = color.statusFocused,
+    )
+    val defaultTabStyle = TabStyle(
+        textColor = color.txtStatusDisabled,
+        textStyle = typography.body2Regular16,
+        backgroundColor = color.transparent,
+        lineColor = color.transparent,
+    )
+
     Box(
         modifier = modifier,
     ) {
         HorizontalDivider(
             thickness = 1.dp,
-            color = BongBaekTheme.colors.txtDisplayTertiary,
+            color = BongBaekTheme.colors.borderDividerPrimary,
             modifier = Modifier.align(Alignment.BottomCenter),
         )
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(space = 4.dp),
-        ) {
+
+        Row {
             AttendType.entries.forEach { type ->
                 val isSelected = type == selectedTab
-                val (color, typography) = BongBaekTheme.colors to BongBaekTheme.typography
-                val style = remember(isSelected) {
-                    if (isSelected) {
-                        TabStyle(
-                            textColor = color.txtInteractivePrimary,
-                            textStyle = typography.titleSemiBold16,
-                            backgroundColor = color.btnInteractiveDisabled,
-                            lineColor = color.statusFocused,
-                        )
-                    } else {
-                        TabStyle(
-                            textColor = color.txtStatusDisabled,
-                            textStyle = typography.body2Regular16,
-                            backgroundColor = color.transparent,
-                            lineColor = color.transparent,
-                        )
-                    }
-                }
+                val style =
+                    remember(isSelected) { if (isSelected) selectedTabStyle else defaultTabStyle }
 
                 Column(
                     modifier = Modifier.weight(1f),
@@ -78,14 +73,12 @@ fun AttendTypeTab(
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .clip(
+                            .background(
+                                color = style.backgroundColor,
                                 shape = RoundedCornerShape(
                                     topStart = 8.dp,
                                     topEnd = 8.dp,
                                 ),
-                            )
-                            .background(
-                                color = style.backgroundColor,
                             )
                             .noRippleClickable {
                                 if (isEnabled && selectedTab != type) onTabClick(type)
@@ -102,8 +95,9 @@ fun AttendTypeTab(
                                 ),
                         )
                     }
+
                     HorizontalDivider(
-                        thickness = 1.dp,
+                        thickness = 2.dp,
                         color = style.lineColor,
                     )
                 }
@@ -116,10 +110,14 @@ fun AttendTypeTab(
 @Composable
 private fun AttendTypeTabPreview() {
     BongBaekTheme {
-        AttendTypeTab(
-            selectedTab = AttendType.ATTEND,
-            onTabClick = {},
-            isEnabled = true,
-        )
+        Column(
+            modifier = Modifier.fillMaxSize(),
+        ) {
+            AttendTypeTab(
+                selectedTab = AttendType.ATTEND,
+                onTabClick = {},
+                isEnabled = true,
+            )
+        }
     }
 }

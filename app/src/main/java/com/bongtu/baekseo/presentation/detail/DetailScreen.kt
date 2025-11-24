@@ -29,6 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -40,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
-import com.bongtu.baekseo.R.string.record_card_cost
+import com.bongtu.baekseo.R.string.record_detail_card_cost_kr_won
 import com.bongtu.baekseo.R.string.record_detail_cost_title
 import com.bongtu.baekseo.R.string.record_detail_delete
 import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
@@ -133,7 +134,7 @@ private fun DetailScreen(
                         .padding(14.dp)
                         .size(20.dp)
                         .noRippleClickable(onClick = onEditButtonClick),
-                    tint = BongBaekTheme.colors.iconInteractiveDefault,
+                    tint = Color.Unspecified,
                 )
             },
         )
@@ -168,17 +169,19 @@ private fun DetailContent(
     modifier: Modifier = Modifier,
 ) {
     var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
+    var isDropDownVisible by remember { mutableStateOf(false) }
+
     val (noteText, noteTextColor, noteBackgroundColor) = if (event.note.isNullOrBlank()) {
         Triple(
             stringResource(record_detail_memo_placeholder),
             BongBaekTheme.colors.txtFieldPlaceholder,
-            BongBaekTheme.colors.bgFieldPrimary
+            BongBaekTheme.colors.bgFieldPrimary,
         )
     } else {
         Triple(
             event.note,
             BongBaekTheme.colors.txtFieldValue,
-            BongBaekTheme.colors.bgFieldSecondary
+            BongBaekTheme.colors.bgFieldSecondary,
         )
     }
 
@@ -202,6 +205,8 @@ private fun DetailContent(
         )
 
         DetailDropDown(
+            isDropDownVisible = isDropDownVisible,
+            onDropDownVisibleChange = { isDropDownVisible = !isDropDownVisible },
             event = event,
             modifier = Modifier.padding(vertical = 20.dp),
         )
@@ -243,7 +248,10 @@ private fun DetailContent(
             onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
             buttonType = ButtonType.DELETE,
             modifier = Modifier
-                .padding(top = 80.dp, bottom = 40.dp)
+                .padding(
+                    top = if (isDropDownVisible) 60.dp else 85.dp,
+                    bottom = 36.dp,
+                )
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
@@ -280,6 +288,7 @@ private fun RecordDetailTitleCard(
             color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.titleSemiBold18,
         )
+
         Row(
             modifier = Modifier.padding(top = 2.dp),
         ) {
@@ -303,16 +312,16 @@ private fun RecordDetailCostCard(
             .fillMaxWidth()
             .background(
                 brush = remember {
-                    Brush.verticalGradient(
+                    Brush.linearGradient(
                         colorStops = arrayOf(
-                            0.16f to bongBaekColors.recordStart,
+                            0f to bongBaekColors.recordStart,
                             1f to bongBaekColors.recordEnd,
                         ),
                     )
                 },
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(horizontal = 20.dp, vertical = 16.dp),
+            .padding(horizontal = 20.dp),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -323,9 +332,14 @@ private fun RecordDetailCostCard(
                 text = stringResource(record_detail_cost_title),
                 color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold16,
+                modifier = Modifier
+                    .padding(
+                        vertical = 17.dp,
+                    )
             )
+
             Text(
-                text = stringResource(record_card_cost, cost),
+                text = stringResource(record_detail_card_cost_kr_won, cost),
                 color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )
