@@ -107,7 +107,7 @@ private fun RecordCard(
 
         Spacer(modifier = Modifier.width(deletePadding))
 
-        BongBaekScheduleCard(
+        RecordScheduleCard(
             hostName = event.hostName,
             hostNickname = event.hostNickname,
             eventCategory = event.eventCategory,

@@ -32,8 +32,8 @@ import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.Na
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
-import com.bongtu.baekseo.presentation.record.component.BongBaekScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
+import com.bongtu.baekseo.presentation.record.component.RecordScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import kotlinx.collections.immutable.persistentListOf
 
@@ -151,7 +151,7 @@ private fun RecordScreen(
             when (loadState) {
                 is UiState.Empty -> {
                     isEnterDeleteButtonVisible = false
-                    BongBaekScheduleEmptyContent(
+                    RecordScheduleEmptyContent(
                         eventType = category.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier

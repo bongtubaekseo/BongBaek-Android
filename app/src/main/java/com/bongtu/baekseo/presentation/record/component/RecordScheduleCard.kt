@@ -23,7 +23,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun BongBaekScheduleCard(
+fun RecordScheduleCard(
     hostName: String,
     hostNickname: String,
     eventCategory: String,
@@ -104,7 +104,7 @@ private fun BongBaekScheduleCardPreview() {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-            BongBaekScheduleCard(
+            RecordScheduleCard(
                 hostName = "헤헤",
                 hostNickname = "초록승준",
                 eventCategory = "생일",
@@ -113,7 +113,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventDate = "2025년 02월 11일",
                 onCardClick = {},
             )
-            BongBaekScheduleCard(
+            RecordScheduleCard(
                 hostName = "헤헤",
                 hostNickname = "초록승준",
                 eventCategory = "생일",

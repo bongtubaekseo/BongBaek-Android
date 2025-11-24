@@ -29,7 +29,7 @@ private const val POSTPOSITION_GA = "가"
 private const val POSTPOSITION_E = "이"
 
 @Composable
-fun BongBaekScheduleEmptyContent(
+fun RecordScheduleEmptyContent(
     eventType: String,
     onButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
@@ -100,7 +100,7 @@ fun BongBaekScheduleEmptyContent(
 @Composable
 private fun ScheduleEmptyContentPreview() {
     BongBaekTheme {
-        BongBaekScheduleEmptyContent(
+        RecordScheduleEmptyContent(
             eventType = EventCategoryType.ALL.label,
             onButtonClick = {},
             modifier = Modifier,
