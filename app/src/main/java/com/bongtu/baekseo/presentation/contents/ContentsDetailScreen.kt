@@ -87,7 +87,6 @@ fun ContentsDetailScreen(
 
         items(
             items = imageUrls,
-            key = { it },
         ) {
             HorizontalDivider(
                 thickness = 10.dp,
