@@ -135,9 +135,9 @@ private fun WithdrawReasonScreen(
                 AnimatedVisibility(
                     visible = !(uiState.reasonType == WithdrawType.OTHER && etcFocused),
                 ) {
-                    Column {
-                        Spacer(modifier = Modifier.height(20.dp))
-
+                    Column(
+                        modifier = Modifier.padding(vertical = 20.dp)
+                    ) {
                         Text(
                             text = stringResource(id = withdraw_title),
                             style = BongBaekTheme.typography.headBold24,
@@ -151,8 +151,6 @@ private fun WithdrawReasonScreen(
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.txtDisplayTertiary,
                         )
-
-                        Spacer(modifier = Modifier.height(20.dp))
                     }
                 }
 
