@@ -41,7 +41,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_edit
-import com.bongtu.baekseo.R.string.record_card_cost
+import com.bongtu.baekseo.R.string.record_detail_card_cost_kr_won
 import com.bongtu.baekseo.R.string.record_detail_cost_title
 import com.bongtu.baekseo.R.string.record_detail_delete
 import com.bongtu.baekseo.R.string.record_detail_memo_placeholder
@@ -339,7 +339,7 @@ private fun RecordDetailCostCard(
             )
 
             Text(
-                text = stringResource(record_card_cost, cost),
+                text = stringResource(record_detail_card_cost_kr_won, cost),
                 color = BongBaekTheme.colors.txtInteractiveInverse,
                 style = BongBaekTheme.typography.titleSemiBold18,
             )

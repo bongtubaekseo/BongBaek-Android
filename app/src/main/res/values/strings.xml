@@ -97,6 +97,7 @@
     <string name="record_top_bar_delete_button">삭제</string>
     <string name="record_detail_title">경조사 상세 조회</string>
     <string name="record_detail_title_card_title">%1$s의 %2$s</string>
+    <string name="record_detail_card_cost_kr_won">%1$,d원</string>
     <string name="record_detail_dropdown_title">상세 정보</string>
     <string name="record_detail_memo_title">메모</string>
     <string name="record_detail_memo_placeholder">메모를 작성해주세요</string>
