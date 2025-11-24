@@ -27,7 +27,7 @@ private const val CARD_RATIO = 320 / 240f
 @Composable
 fun ContentsArticleCard(
     imageUrl: String,
-    onClick: () -> Unit = { },
+    onCardClick: () -> Unit,
     eventType: EventType,
     title: String,
     date: String,
@@ -44,7 +44,7 @@ fun ContentsArticleCard(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .background(backgroundGradient)
-            .noRippleClickable(onClick),
+            .noRippleClickable(onCardClick),
         contentAlignment = Alignment.BottomCenter,
     ) {
         AsyncImage(
@@ -102,6 +102,7 @@ private fun ContentsArticleCardPreview() {
     BongBaekTheme {
         ContentsArticleCard(
             imageUrl = "",
+            onCardClick = { },
             eventType = EventType.WEDDING,
             title = "제목이 오는 위치제목이 오는 위치제목이 오는 위치제목이 오는 위치",
             date = "날짜가 오는 위치"

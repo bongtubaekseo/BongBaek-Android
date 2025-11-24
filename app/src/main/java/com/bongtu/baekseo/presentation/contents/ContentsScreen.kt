@@ -125,6 +125,7 @@ private fun ContentsScreen(
                 items(articles.size) { index ->
                     ContentsArticleCard(
                         imageUrl = "",
+                        onCardClick = { },
                         eventType = if (index % 2 == 0) EventType.WEDDING else EventType.FUNERAL,
                         title = "경조사 정보 제목 테스트 ${index + 1} 번째 글입니다.",
                         date = "2025.11.${index + 1}",
