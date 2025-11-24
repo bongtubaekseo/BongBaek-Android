@@ -84,7 +84,6 @@ fun OnBoardingButton(
 @Composable
 private fun OnBoardingButtonPreview() {
     var isSelected by remember { mutableStateOf(true) }
-    var isDimmed by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         Column(
