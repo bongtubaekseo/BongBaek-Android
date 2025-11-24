@@ -250,7 +250,7 @@ private fun DetailContent(
             modifier = Modifier
                 .padding(
                     top = if (isDropDownVisible) 60.dp else 85.dp,
-                    bottom = 36.dp
+                    bottom = 36.dp,
                 )
                 .fillMaxWidth()
                 .border(
