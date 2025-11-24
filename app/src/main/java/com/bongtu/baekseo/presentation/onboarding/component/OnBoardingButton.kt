@@ -31,22 +31,19 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 fun OnBoardingButton(
     title: String,
     isSelected: Boolean,
+    isDimmed: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val (backgroundColor, borderColor, textColor) =
-        if (isSelected)
-            Triple(
-                BongBaekTheme.colors.btnInteractiveDisabled,
-                BongBaekTheme.colors.statusFocused,
-                BongBaekTheme.colors.statusFocused,
-            )
-        else
-            Triple(
-                BongBaekTheme.colors.btnInteractiveTertiary,
-                BongBaekTheme.colors.borderFieldDefault,
-                BongBaekTheme.colors.txtStatusDisabled,
-            )
+    val (backgroundColor, borderColor) =
+        if (isSelected) BongBaekTheme.colors.btnInteractiveDisabled to BongBaekTheme.colors.statusFocused
+        else BongBaekTheme.colors.btnInteractiveTertiary to BongBaekTheme.colors.borderFieldDefault
+
+    val textColor = when {
+        isDimmed -> BongBaekTheme.colors.txtStatusDisabled
+        isSelected -> BongBaekTheme.colors.statusFocused
+        else -> BongBaekTheme.colors.txtInteractivePrimary
+    }
 
     Row(
         modifier = modifier
@@ -88,6 +85,7 @@ fun OnBoardingButton(
 @Composable
 private fun OnBoardingButtonPreview() {
     var isSelected by remember { mutableStateOf(true) }
+    var isDimmed by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         Column(
@@ -96,6 +94,7 @@ private fun OnBoardingButtonPreview() {
             OnBoardingButton(
                 title = "월 200만원 미만",
                 isSelected = isSelected,
+                isDimmed = isDimmed,
                 onClick = {
                     if (!isSelected) isSelected = true
                 },
@@ -104,6 +103,7 @@ private fun OnBoardingButtonPreview() {
             OnBoardingButton(
                 title = "월 200만원 이상",
                 isSelected = !isSelected,
+                isDimmed = isDimmed,
                 onClick = {
                     if (isSelected) isSelected = false
                 },
