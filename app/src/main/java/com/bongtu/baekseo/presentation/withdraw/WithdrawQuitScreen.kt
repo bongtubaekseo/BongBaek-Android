@@ -21,7 +21,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bongtu.baekseo.R.drawable.img_withdraw_gift
+import com.bongtu.baekseo.R.drawable.img_withdraw_quit
 import com.bongtu.baekseo.R.string.withdraw_quit_button
 import com.bongtu.baekseo.R.string.withdraw_quit_information
 import com.bongtu.baekseo.R.string.withdraw_quit_title
@@ -49,9 +49,9 @@ fun WithdrawQuitScreen(
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
-            Spacer(modifier = Modifier.height(74.dp))
-
+        Column(
+            modifier = Modifier.padding(top = 40.dp),
+        ) {
             Text(
                 text = stringResource(id = withdraw_quit_title),
                 style = BongBaekTheme.typography.headBold24,
@@ -68,7 +68,7 @@ fun WithdrawQuitScreen(
         }
 
         Image(
-            painter = painterResource(id = img_withdraw_gift),
+            painter = painterResource(id = img_withdraw_quit),
             contentDescription = null,
         )
 
