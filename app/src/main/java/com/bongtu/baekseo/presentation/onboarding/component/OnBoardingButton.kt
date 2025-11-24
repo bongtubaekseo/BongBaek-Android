@@ -30,14 +30,23 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 @Composable
 fun OnBoardingButton(
     title: String,
-    selected: Boolean,
+    isSelected: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor =
-        if (selected) BongBaekTheme.colors.btnInteractiveDisabled else BongBaekTheme.colors.btnInteractiveTertiary
-    val borderColor =
-        if (selected) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.borderFieldDefault
+    val (backgroundColor, borderColor, textColor) =
+        if (isSelected)
+            Triple(
+                BongBaekTheme.colors.btnInteractiveDisabled,
+                BongBaekTheme.colors.statusFocused,
+                BongBaekTheme.colors.statusFocused,
+            )
+        else
+            Triple(
+                BongBaekTheme.colors.btnInteractiveTertiary,
+                BongBaekTheme.colors.borderFieldDefault,
+                BongBaekTheme.colors.txtStatusDisabled,
+            )
 
     Row(
         modifier = modifier
@@ -60,12 +69,12 @@ fun OnBoardingButton(
         Text(
             text = title,
             style = BongBaekTheme.typography.body2Regular14,
-            color = BongBaekTheme.colors.txtInteractivePrimary,
+            color = textColor,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (selected) {
+        if (isSelected) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_select),
                 contentDescription = null,
@@ -78,7 +87,7 @@ fun OnBoardingButton(
 @Preview
 @Composable
 private fun OnBoardingButtonPreview() {
-    var selected by remember { mutableStateOf(true) }
+    var isSelected by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         Column(
@@ -86,17 +95,17 @@ private fun OnBoardingButtonPreview() {
         ) {
             OnBoardingButton(
                 title = "월 200만원 미만",
-                selected = selected,
+                isSelected = isSelected,
                 onClick = {
-                    if (!selected) selected = true
+                    if (!isSelected) isSelected = true
                 },
             )
 
             OnBoardingButton(
                 title = "월 200만원 이상",
-                selected = !selected,
+                isSelected = !isSelected,
                 onClick = {
-                    if (selected) selected = false
+                    if (isSelected) isSelected = false
                 },
             )
         }

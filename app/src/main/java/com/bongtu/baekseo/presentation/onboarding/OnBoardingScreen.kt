@@ -240,14 +240,14 @@ fun OnBoardingScreen(
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = uiState.income == IncomeType.UNDER_200,
+                            isSelected = uiState.income == IncomeType.UNDER_200,
                             onClick = { onIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
                         OnBoardingButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = uiState.income == IncomeType.OVER_200,
+                            isSelected = uiState.income == IncomeType.OVER_200,
                             onClick = { onIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
