@@ -96,7 +96,7 @@ fun LabelTextField(
     val dividerColor = when {
         isError -> bongBaekColors.statusError
         isFocused -> bongBaekColors.statusFocused
-        isFilled -> bongBaekColors.txtFieldValue
+        isFilled -> bongBaekColors.borderFieldFilled
         else -> bongBaekColors.borderFieldDefault
     }
 
