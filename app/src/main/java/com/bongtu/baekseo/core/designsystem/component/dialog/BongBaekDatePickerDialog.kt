@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
@@ -24,6 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
@@ -72,9 +72,12 @@ fun BongBaekDatePickerDialog(
         type = datePickerDialogType,
     )
     val isValid = dateError.isEmpty()
+
     val bongBaekColors = BongBaekTheme.colors
-    val confirmTextColor = remember(isValid) {
-        if (isValid) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplayTertiary
+
+    val (cancelTextColor, confirmTextColor) = remember(isValid) {
+        if (isValid) bongBaekColors.txtInteractiveSecondary to bongBaekColors.txtDisplayPrimary
+        else bongBaekColors.txtStatusDisabled to bongBaekColors.txtStatusDisabled
     }
 
     Dialog(
@@ -95,7 +98,7 @@ fun BongBaekDatePickerDialog(
                 modifier = modifier
                     .fillMaxWidth()
                     .clip(RoundedCornerShape(10.dp))
-                    .background(color = BongBaekTheme.colors.txtDisplayTertiary)
+                    .background(color = BongBaekTheme.colors.bgDisplayCard)
                     .padding(
                         start = 20.dp,
                         top = 20.dp,
@@ -114,7 +117,7 @@ fun BongBaekDatePickerDialog(
                 Text(
                     text = stringResource(id = date_picker_title),
                     style = BongBaekTheme.typography.titleSemiBold20,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    color = BongBaekTheme.colors.txtDisplayPrimary,
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
@@ -123,11 +126,12 @@ fun BongBaekDatePickerDialog(
                     value = value,
                     onValueChange = onValueChange,
                     isError = value.isNotEmpty() && !isValid,
+                    isValid = isValid,
                 )
 
                 AnimatedVisibility(
                     visible = value.isNotEmpty() && !isValid,
-                    modifier = Modifier.padding(top = 6.dp),
+                    modifier = Modifier.padding(top = 4.dp),
                 ) {
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
@@ -135,8 +139,7 @@ fun BongBaekDatePickerDialog(
                         Icon(
                             imageVector = ImageVector.vectorResource(id = ic_caution),
                             contentDescription = null,
-                            modifier = Modifier.size(14.dp),
-                            tint = BongBaekTheme.colors.txtDisplayTertiary,
+                            tint = Color.Unspecified,
                         )
 
                         Spacer(modifier = Modifier.width(4.dp))
@@ -144,7 +147,7 @@ fun BongBaekDatePickerDialog(
                         Text(
                             text = dateError,
                             style = BongBaekTheme.typography.captionRegular12,
-                            color = BongBaekTheme.colors.txtDisplayTertiary,
+                            color = BongBaekTheme.colors.statusError,
                         )
                     }
                 }
@@ -161,7 +164,7 @@ fun BongBaekDatePickerDialog(
                             .padding(8.dp)
                             .noRippleClickable(onDismissRequest),
                         style = BongBaekTheme.typography.body2Regular16,
-                        color = BongBaekTheme.colors.txtDisplayTertiary,
+                        color = cancelTextColor,
                     )
 
                     Text(
@@ -191,14 +194,22 @@ private fun BongBaekDatePickerTextField(
     value: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
+    isValid: Boolean,
     modifier: Modifier = Modifier,
 ) {
     val bongBaekColors = BongBaekTheme.colors
 
-    val borderColor = remember(isError) {
+    val borderColor = remember(isError, isValid) {
         when {
-            isError -> bongBaekColors.txtDisplayTertiary
-            else -> bongBaekColors.txtDisplayTertiary
+            isError -> bongBaekColors.statusError
+            isValid -> bongBaekColors.statusFocused
+            else -> bongBaekColors.borderFieldDefault
+        }
+    }
+    val textColor = remember(isError) {
+        when {
+            isError -> bongBaekColors.statusError
+            else -> bongBaekColors.txtFieldValue
         }
     }
 
@@ -209,10 +220,11 @@ private fun BongBaekDatePickerTextField(
                 onValueChange(it)
             }
         },
-        textColor = BongBaekTheme.colors.txtDisplayTertiary,
+        textColor = textColor,
         textStyle = BongBaekTheme.typography.body1Medium16,
         placeholder = stringResource(id = date_picker_placeholder),
-        placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
+        placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
+        placeholderStyle = BongBaekTheme.typography.body2Regular16,
         modifier = modifier
             .fillMaxWidth()
             .border(
@@ -221,12 +233,12 @@ private fun BongBaekDatePickerTextField(
                 shape = RoundedCornerShape(10.dp),
             )
             .background(
-                color = BongBaekTheme.colors.txtDisplayTertiary,
+                color = BongBaekTheme.colors.bgFieldPrimary,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(
-                horizontal = 14.dp,
-                vertical = 10.dp,
+                horizontal = 16.dp,
+                vertical = 12.dp,
             ),
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         visualTransformation = DatePickerFormat(),
@@ -240,6 +252,7 @@ private fun BongBaekDatePickerTextFieldPreview() {
         value = "",
         onValueChange = {},
         isError = false,
+        isValid = false,
     )
 }
 
