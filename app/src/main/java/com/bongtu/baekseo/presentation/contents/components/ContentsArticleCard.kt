@@ -13,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -32,10 +33,17 @@ fun ContentsArticleCard(
     date: String,
     modifier: Modifier = Modifier,
 ) {
+    val backgroundGradient = Brush.verticalGradient(
+        colors = listOf(
+            BongBaekTheme.colors.cardStart,
+            BongBaekTheme.colors.cardEnd,
+        )
+    )
+
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(8.dp))
-            .background(BongBaekTheme.colors.txtStatusDisabled) // TODO: 지우기
+            .background(backgroundGradient)
             .noRippleClickable(onClick),
         contentAlignment = Alignment.BottomCenter,
     ) {
@@ -43,7 +51,6 @@ fun ContentsArticleCard(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
-                .background(BongBaekTheme.colors.txtStatusDisabled) // TODO: API 연결 후 지우기
                 .aspectRatio(CARD_RATIO),
         )
 
