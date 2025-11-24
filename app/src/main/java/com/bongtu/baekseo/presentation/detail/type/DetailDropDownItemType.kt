@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import androidx.compose.runtime.Immutable
 
+@Immutable
 data class DetailDropDownItemType(
     @DrawableRes val iconRes: Int,
     @StringRes val labelRes: Int,
