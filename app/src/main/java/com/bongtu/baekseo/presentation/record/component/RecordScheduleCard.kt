@@ -113,6 +113,7 @@ private fun BongBaekScheduleCardPreview() {
                 eventDate = "2025년 02월 11일",
                 onCardClick = {},
             )
+
             RecordScheduleCard(
                 hostName = "헤헤",
                 hostNickname = "초록승준",
