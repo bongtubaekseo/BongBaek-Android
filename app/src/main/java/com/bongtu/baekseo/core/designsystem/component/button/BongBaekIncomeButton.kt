@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.onboarding.component
+package com.bongtu.baekseo.core.designsystem.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,7 +28,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun OnBoardingButton(
+fun BongBaekIncomeButton(
     title: String,
     isSelected: Boolean?,
     onClick: () -> Unit,
@@ -82,14 +82,14 @@ fun OnBoardingButton(
 
 @Preview
 @Composable
-private fun OnBoardingButtonPreview() {
+private fun BongBaekIncomeButtonPreview() {
     var isSelected by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            OnBoardingButton(
+            BongBaekIncomeButton(
                 title = "월 200만원 미만",
                 isSelected = isSelected,
                 onClick = {
@@ -97,7 +97,7 @@ private fun OnBoardingButtonPreview() {
                 },
             )
 
-            OnBoardingButton(
+            BongBaekIncomeButton(
                 title = "월 200만원 이상",
                 isSelected = !isSelected,
                 onClick = {

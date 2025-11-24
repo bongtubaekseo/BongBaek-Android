@@ -54,6 +54,7 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekIncomeButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
@@ -66,7 +67,6 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
-import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
 fun OnBoardingRoute(
@@ -241,14 +241,14 @@ fun OnBoardingScreen(
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
-                        OnBoardingButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_down),
                             isSelected = onIncomeButtonChange(IncomeType.UNDER_200),
                             onClick = { onIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
-                        OnBoardingButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_up),
                             isSelected = onIncomeButtonChange(IncomeType.OVER_200),
                             onClick = { onIncomeChange(IncomeType.OVER_200) },
