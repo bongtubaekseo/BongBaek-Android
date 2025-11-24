@@ -19,10 +19,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -67,10 +64,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun DetailDropDown(
+    isDropDownVisible: Boolean,
+    onDropDownVisibleChange: () -> Unit,
     event: DetailEvent,
     modifier: Modifier = Modifier,
 ) {
-    var isDetailVisible by remember { mutableStateOf(false) }
     val attendType = remember(event.isEventParticipated) {
         if (event.isEventParticipated)
             AttendType.ATTEND
@@ -151,18 +149,18 @@ fun DetailDropDown(
 
             Icon(
                 imageVector = ImageVector.vectorResource(
-                    if (isDetailVisible) ic_arrow_up else ic_arrow_down
+                    if (isDropDownVisible) ic_arrow_up else ic_arrow_down
                 ),
                 contentDescription = null,
                 modifier = Modifier
                     .size(24.dp)
-                    .noRippleClickable { isDetailVisible = !isDetailVisible },
+                    .noRippleClickable(onDropDownVisibleChange),
                 tint = BongBaekTheme.colors.iconInteractiveDefault,
             )
         }
 
         AnimatedVisibility(
-            visible = isDetailVisible,
+            visible = isDropDownVisible,
             enter = expandVertically() + fadeIn(),
             exit = shrinkVertically() + fadeOut(),
         ) {
@@ -294,6 +292,8 @@ private fun DetailDropDownItem(
 private fun DetailDropDownPreview() {
     BongBaekTheme {
         DetailDropDown(
+            isDropDownVisible = true,
+            onDropDownVisibleChange = {},
             event = DetailEvent(
                 eventId = "eventId",
                 hostName = "김봉백",

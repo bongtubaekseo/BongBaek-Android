@@ -169,6 +169,8 @@ private fun DetailContent(
     modifier: Modifier = Modifier,
 ) {
     var isDeleteAlertDialogVisible by remember { mutableStateOf(false) }
+    var isDropDownVisible by remember { mutableStateOf(false) }
+
     val (noteText, noteTextColor, noteBackgroundColor) = if (event.note.isNullOrBlank()) {
         Triple(
             stringResource(record_detail_memo_placeholder),
@@ -203,6 +205,8 @@ private fun DetailContent(
         )
 
         DetailDropDown(
+            isDropDownVisible = isDropDownVisible,
+            onDropDownVisibleChange = { isDropDownVisible = !isDropDownVisible },
             event = event,
             modifier = Modifier.padding(vertical = 20.dp),
         )
@@ -244,7 +248,10 @@ private fun DetailContent(
             onClick = { isDeleteAlertDialogVisible = !isDeleteAlertDialogVisible },
             buttonType = ButtonType.DELETE,
             modifier = Modifier
-                .padding(top = 85.dp, bottom = 36.dp)
+                .padding(
+                    top = if (isDropDownVisible) 60.dp else 85.dp,
+                    bottom = 36.dp
+                )
                 .fillMaxWidth()
                 .border(
                     width = 1.dp,
