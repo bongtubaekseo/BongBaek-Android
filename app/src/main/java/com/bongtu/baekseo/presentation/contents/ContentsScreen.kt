@@ -23,10 +23,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -34,6 +32,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.string.contents_article
 import com.bongtu.baekseo.R.string.contents_article_count
+import com.bongtu.baekseo.R.string.contents_title
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -64,9 +63,8 @@ private fun ContentsScreen(
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
-    var thresholdHeight by remember { mutableIntStateOf(0) }
     val showFab by remember {
-        derivedStateOf { listState.firstVisibleItemScrollOffset > thresholdHeight }
+        derivedStateOf { listState.firstVisibleItemIndex > 0 }
     }
     val coroutineScope = rememberCoroutineScope()
 
@@ -78,7 +76,7 @@ private fun ContentsScreen(
     ) {
         Column {
             BongBaekTopBar(
-                title = "경조사 컨텐츠",
+                title = stringResource(contents_title),
                 topBarType = TopBarType.TEXT_ONLY_START,
             )
 
@@ -100,11 +98,15 @@ private fun ContentsScreen(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(contents_article)
+                    text = stringResource(contents_article),
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    style = BongBaekTheme.typography.body2Regular16,
                 )
 
                 Text(
-                    text = stringResource(contents_article_count, articles.size)
+                    text = stringResource(contents_article_count, articles.size),
+                    color = BongBaekTheme.colors.txtDisplaySecondary,
+                    style = BongBaekTheme.typography.body2Regular16,
                 )
             }
 

@@ -183,6 +183,7 @@
     <string name="edit_location_button">위치 저장하기</string>
     <!--Contents    -->
     <string name="contents">콘텐츠</string>
+    <string name="contents_title">경조사 콘텐츠</string>
     <string name="contents_article">아티클 수</string>
     <string name="contents_article_count">%d개</string>
     <string name="contents_empty_title">아직 올라온 아티클이 없어요!</string>
