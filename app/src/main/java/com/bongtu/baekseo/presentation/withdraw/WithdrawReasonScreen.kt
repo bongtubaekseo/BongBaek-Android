@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -39,7 +39,6 @@ import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.common.type.WithdrawType
-import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
@@ -107,12 +106,13 @@ private fun WithdrawReasonScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
             title = stringResource(withdraw_topbar),
             topBarType = TopBarType.LEADING_ICON,
+            modifier = Modifier
+                .statusBarsPadding(),
             leadingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_back),

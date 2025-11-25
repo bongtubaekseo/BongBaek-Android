@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -14,6 +15,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -64,11 +66,13 @@ import com.bongtu.baekseo.R.string.setting_withdrawal
 import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
+import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.UrlConstant
+import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect
@@ -129,11 +133,13 @@ private fun SettingScreen(
 
     Column(
         modifier = modifier
-            .background(color = BongBaekTheme.colors.bgDisplayPrimary),
+            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
+            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar.excludeTop()),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
+                .statusBarsPadding()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.SpaceBetween,
         ) {
@@ -193,6 +199,7 @@ private fun SettingScreen(
                 )
             }
         }
+
         if (isLogoutDialogVisible) {
             BongBaekDialog(
                 dialogType = DialogType.LOGOUT,
@@ -226,6 +233,9 @@ private fun ProfileSection(
             model = imageUrl,
             contentDescription = null,
             modifier = Modifier
+                .padding(
+                    top = 20.dp,
+                )
                 .size(80.dp)
                 .clip(RoundedCornerShape(20.dp)),
             error = painterResource(img_setting_profile),
@@ -234,7 +244,10 @@ private fun ProfileSection(
 
         Text(
             text = userName,
-            modifier = Modifier.padding(vertical = 12.dp),
+            modifier = Modifier
+                .padding(
+                    vertical = 12.dp,
+                ),
             color = BongBaekTheme.colors.txtDisplayPrimary,
             style = BongBaekTheme.typography.headBold24,
             maxLines = 1,
