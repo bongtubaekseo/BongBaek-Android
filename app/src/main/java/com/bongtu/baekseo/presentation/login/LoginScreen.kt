@@ -197,15 +197,16 @@ fun LoginScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.bgDisplayPrimary)
+            .background(color = BongBaekTheme.colors.bgDisplaySecondary)
             .padding(horizontal = 20.dp)
             .systemBarsPadding(),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
         Column(
-            modifier = Modifier.padding(
-                top = 120.dp,
-            ),
+            modifier = Modifier
+                .padding(
+                    top = 120.dp,
+                ),
         ) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_login_logo),
@@ -231,9 +232,10 @@ fun LoginScreen(
         }
 
         Column(
-            modifier = Modifier.padding(
-                bottom = 80.dp,
-            ),
+            modifier = Modifier
+                .padding(
+                    bottom = 80.dp,
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             BongBaekButton(
@@ -291,15 +293,16 @@ fun LoginScreen(
             )
 
             Row(
-                modifier = Modifier.padding(
-                    top = 4.dp,
-                ),
+                modifier = Modifier
+                    .padding(
+                        top = 4.dp,
+                    ),
             ) {
                 Text(
                     text = stringResource(id = login_personal_privacy),
                     textDecoration = TextDecoration.Underline,
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.txtInteractiveInverse,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     modifier = Modifier.noRippleClickable(onClick = onPrivacyClick),
                 )
 
@@ -309,7 +312,7 @@ fun LoginScreen(
                     text = stringResource(id = login_term_of_use),
                     textDecoration = TextDecoration.Underline,
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.txtInteractiveInverse,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
                     modifier = Modifier.noRippleClickable(onClick = onTermsClick),
                 )
             }
