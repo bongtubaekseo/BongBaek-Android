@@ -65,7 +65,7 @@ import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToMyPage
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToSetting
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import kotlinx.coroutines.flow.filterIsInstance
 
@@ -83,7 +83,7 @@ fun ProfileEditRoute(
             .filterIsInstance<ProfileEditSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    NavigateToMyPage -> navigateToUp()
+                    NavigateToSetting -> navigateToUp()
                 }
             }
     }

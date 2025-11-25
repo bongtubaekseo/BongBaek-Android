@@ -44,23 +44,23 @@ import androidx.lifecycle.flowWithLifecycle
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.BuildConfig
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
-import com.bongtu.baekseo.R.drawable.ic_mypage_ask
-import com.bongtu.baekseo.R.drawable.ic_mypage_lock
-import com.bongtu.baekseo.R.drawable.ic_mypage_terms
-import com.bongtu.baekseo.R.drawable.ic_mypage_version
-import com.bongtu.baekseo.R.drawable.img_mypage_profile
-import com.bongtu.baekseo.R.string.mypage_app_version
-import com.bongtu.baekseo.R.string.mypage_inquiry
-import com.bongtu.baekseo.R.string.mypage_logout
-import com.bongtu.baekseo.R.string.mypage_personal_privacy
-import com.bongtu.baekseo.R.string.mypage_profile_edit_button
-import com.bongtu.baekseo.R.string.mypage_service_terms
-import com.bongtu.baekseo.R.string.mypage_service_title
-import com.bongtu.baekseo.R.string.mypage_user_birth
-import com.bongtu.baekseo.R.string.mypage_user_income
-import com.bongtu.baekseo.R.string.mypage_version_format
-import com.bongtu.baekseo.R.string.mypage_withdrawal
+import com.bongtu.baekseo.R.drawable.ic_setting_ask
+import com.bongtu.baekseo.R.drawable.ic_setting_lock
+import com.bongtu.baekseo.R.drawable.ic_setting_terms
+import com.bongtu.baekseo.R.drawable.ic_setting_version
+import com.bongtu.baekseo.R.drawable.img_setting_profile
 import com.bongtu.baekseo.R.string.setting
+import com.bongtu.baekseo.R.string.setting_app_version
+import com.bongtu.baekseo.R.string.setting_inquiry
+import com.bongtu.baekseo.R.string.setting_logout
+import com.bongtu.baekseo.R.string.setting_personal_privacy
+import com.bongtu.baekseo.R.string.setting_profile_edit_button
+import com.bongtu.baekseo.R.string.setting_service_terms
+import com.bongtu.baekseo.R.string.setting_service_title
+import com.bongtu.baekseo.R.string.setting_user_birth
+import com.bongtu.baekseo.R.string.setting_user_income
+import com.bongtu.baekseo.R.string.setting_version_format
+import com.bongtu.baekseo.R.string.setting_withdrawal
 import com.bongtu.baekseo.core.common.type.DialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
@@ -171,7 +171,7 @@ private fun SettingScreen(
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(
-                    text = stringResource(mypage_logout),
+                    text = stringResource(setting_logout),
                     modifier = Modifier
                         .weight(1f)
                         .noRippleClickable {
@@ -183,7 +183,7 @@ private fun SettingScreen(
                 )
 
                 Text(
-                    text = stringResource(mypage_withdrawal),
+                    text = stringResource(setting_withdrawal),
                     modifier = Modifier
                         .weight(1f)
                         .noRippleClickable(onClick = navigateToWithdraw),
@@ -228,7 +228,7 @@ private fun ProfileSection(
             modifier = Modifier
                 .size(80.dp)
                 .clip(RoundedCornerShape(20.dp)),
-            error = painterResource(img_mypage_profile),
+            error = painterResource(img_setting_profile),
             contentScale = ContentScale.Crop,
         )
 
@@ -241,7 +241,7 @@ private fun ProfileSection(
         )
 
         Text(
-            text = stringResource(mypage_profile_edit_button),
+            text = stringResource(setting_profile_edit_button),
             modifier = Modifier
                 .background(
                     color = BongBaekTheme.colors.statusFocused,
@@ -281,7 +281,7 @@ private fun ProfileSection(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(mypage_user_birth),
+                    text = stringResource(setting_user_birth),
                     color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
@@ -301,7 +301,7 @@ private fun ProfileSection(
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
                 Text(
-                    text = stringResource(mypage_user_income),
+                    text = stringResource(setting_user_income),
                     color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium14,
                 )
@@ -328,7 +328,7 @@ private fun ServiceSection(
             .padding(horizontal = 20.dp),
     ) {
         Text(
-            text = stringResource(mypage_service_title),
+            text = stringResource(setting_service_title),
             modifier = Modifier
                 .padding(
                     vertical = 12.dp,
@@ -338,11 +338,11 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_version,
-            titleRes = mypage_app_version,
+            iconRes = ic_setting_version,
+            titleRes = setting_app_version,
             trailingIcon = {
                 Text(
-                    text = stringResource(mypage_version_format, BuildConfig.VERSION_NAME),
+                    text = stringResource(setting_version_format, BuildConfig.VERSION_NAME),
                     color = BongBaekTheme.colors.txtDisplayTertiary,
                     style = BongBaekTheme.typography.body1Medium16,
                 )
@@ -350,8 +350,8 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_ask,
-            titleRes = mypage_inquiry,
+            iconRes = ic_setting_ask,
+            titleRes = setting_inquiry,
             trailingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_right),
@@ -364,8 +364,8 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_terms,
-            titleRes = mypage_service_terms,
+            iconRes = ic_setting_terms,
+            titleRes = setting_service_terms,
             trailingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_right),
@@ -378,8 +378,8 @@ private fun ServiceSection(
         )
 
         ServiceItem(
-            iconRes = ic_mypage_lock,
-            titleRes = mypage_personal_privacy,
+            iconRes = ic_setting_lock,
+            titleRes = setting_personal_privacy,
             trailingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_right),
@@ -430,7 +430,7 @@ private fun ServiceItem(
 
 @Preview
 @Composable
-private fun MyPageScreenPreview() {
+private fun SettingScreenPreview() {
     BongBaekTheme {
         SettingScreen(
             uiState = SettingUiState(

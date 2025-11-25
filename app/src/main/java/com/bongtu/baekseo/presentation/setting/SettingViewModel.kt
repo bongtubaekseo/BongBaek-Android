@@ -11,7 +11,7 @@ import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.MainSideEffect.RestartApp
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToMyPage
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToSetting
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -69,7 +69,7 @@ class SettingViewModel @Inject constructor(
                 memberIncome = uiState.value.userIncome.label,
             ),
         ).onSuccess {
-            _sideEffect.emit(NavigateToMyPage)
+            _sideEffect.emit(NavigateToSetting)
             saveUsername(uiState.value.userName)
         }.onFailure {
             // TODO: 실패 처리

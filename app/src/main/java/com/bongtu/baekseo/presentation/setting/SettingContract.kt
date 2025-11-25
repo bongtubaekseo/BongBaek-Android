@@ -35,7 +35,7 @@ class SettingContract {
         }
 
         sealed class ProfileEditSideEffect : SettingSideEffect {
-            data object NavigateToMyPage : ProfileEditSideEffect()
+            data object NavigateToSetting : ProfileEditSideEffect()
         }
     }
 }
