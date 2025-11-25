@@ -161,7 +161,7 @@ private fun EditMainScreen(
     onSubmitEventButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var text by remember { mutableStateOf("") }
+    var dialogText by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
@@ -333,7 +333,8 @@ private fun EditMainScreen(
                     modifier = Modifier
                         .noRippleClickable {
                             if (!isFromResult) {
-                                text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
+                                dialogText =
+                                    DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                                 isDatePickerDialogVisible = true
                             }
                         }
@@ -410,11 +411,11 @@ private fun EditMainScreen(
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.DATE,
-                value = text,
-                onValueChange = { text = it },
+                value = dialogText,
+                onValueChange = { dialogText = it },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
-                    text = ""
+                    dialogText = ""
                 },
                 onConfirmClick = onDateChange,
             )
