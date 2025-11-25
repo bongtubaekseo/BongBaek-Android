@@ -22,9 +22,9 @@ import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.contents.navigation.Contents
 import com.bongtu.baekseo.presentation.home.navigation.Home
-import com.bongtu.baekseo.presentation.mypage.navigation.Setting
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import com.bongtu.baekseo.presentation.record.navigation.Record
+import com.bongtu.baekseo.presentation.setting.navigation.Setting
 
 enum class MainTab(
     @DrawableRes val selectedIconRes: Int,

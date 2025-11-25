@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.mypage
+package com.bongtu.baekseo.presentation.setting
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,9 +9,10 @@ import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
 import com.bongtu.baekseo.data.model.member.ProfileInfo
 import com.bongtu.baekseo.data.repository.member.MemberRepository
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.MainSideEffect.RestartApp
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToMyPage
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,19 +24,19 @@ import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
-class MyPageViewModel @Inject constructor(
+class SettingViewModel @Inject constructor(
     private val memberRepository: MemberRepository,
     private val tokenDataStore: TokenDataStore,
     private val usernameDataStore: UsernameDataStore,
 ) : ViewModel() {
-    private val _uiState = MutableStateFlow(MyPageUiState())
+    private val _uiState = MutableStateFlow(SettingUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableSharedFlow<MyPageSideEffect>()
+    private val _sideEffect = MutableSharedFlow<SettingSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     fun fetchUserProfile() = viewModelScope.launch {
-        updateMyPageLoadUiState(UiState.Loading)
+        updateSettingLoadUiState(UiState.Loading)
 
         memberRepository.getProfileInfo()
             .onSuccess { response ->
@@ -51,15 +52,15 @@ class MyPageViewModel @Inject constructor(
                     newBirth = uiState.value.userBirth,
                     newIncome = uiState.value.userIncome,
                 )
-                updateMyPageLoadUiState(UiState.Success(Unit))
+                updateSettingLoadUiState(UiState.Success(Unit))
             }
             .onFailure {
-                updateMyPageLoadUiState(UiState.Failure(it.message ?: "Unknown Error"))
+                updateSettingLoadUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
     }
 
     fun patchUserProfile() = viewModelScope.launch {
-        updateMyPageLoadUiState(UiState.Loading)
+        updateSettingLoadUiState(UiState.Loading)
 
         memberRepository.putProfileInfo(
             profileInfo = ProfileInfo(
@@ -80,7 +81,7 @@ class MyPageViewModel @Inject constructor(
         viewModelScope.launch {
             memberRepository.postLogout()
                 .onSuccess {
-                    _sideEffect.emit(MyPageSideEffect.MainSideEffect.RestartApp)
+                    _sideEffect.emit(RestartApp)
                     tokenDataStore.clearInfo()
                 }
                 .onFailure {
@@ -113,8 +114,8 @@ class MyPageViewModel @Inject constructor(
         it.copy(userIncome = newIncome)
     }
 
-    fun updateMyPageLoadUiState(newUiState: UiState<Unit>) = _uiState.update {
-        it.copy(myPageLoadState = newUiState)
+    fun updateSettingLoadUiState(newUiState: UiState<Unit>) = _uiState.update {
+        it.copy(loadState = newUiState)
     }
 
     fun updateIncomeButtonState(incomeType: IncomeType): Boolean? =

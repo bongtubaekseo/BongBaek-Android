@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.mypage
+package com.bongtu.baekseo.presentation.setting
 
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
@@ -71,17 +71,17 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.MainSideEffect.RestartApp
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.MainSideEffect.RestartApp
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
-fun MyPageRoute(
+fun SettingRoute(
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onRestartApp: (Boolean) -> Unit,
-    viewModel: MyPageViewModel,
+    viewModel: SettingViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -94,7 +94,7 @@ fun MyPageRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<MyPageSideEffect.MainSideEffect>()
+            .filterIsInstance<SettingSideEffect.MainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     RestartApp -> onRestartApp(false)
@@ -102,7 +102,7 @@ fun MyPageRoute(
             }
     }
 
-    MyPageScreen(
+    SettingScreen(
         uiState = uiState,
         navigateToEditProfile = navigateToEditProfile,
         navigateToWithdraw = navigateToWithdraw,
@@ -115,8 +115,8 @@ fun MyPageRoute(
 }
 
 @Composable
-private fun MyPageScreen(
-    uiState: MyPageUiState,
+private fun SettingScreen(
+    uiState: SettingUiState,
     navigateToEditProfile: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onLogoutClick: () -> Unit,
@@ -432,8 +432,8 @@ private fun ServiceItem(
 @Composable
 private fun MyPageScreenPreview() {
     BongBaekTheme {
-        MyPageScreen(
-            uiState = MyPageUiState(
+        SettingScreen(
+            uiState = SettingUiState(
                 userName = "봉투백서의겸손한야수",
                 userBirth = "1999-10-14",
                 userIncome = IncomeType.OVER_200,

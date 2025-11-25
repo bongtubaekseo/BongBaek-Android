@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.mypage
+package com.bongtu.baekseo.presentation.setting
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -64,15 +64,15 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToMyPage
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ProfileEditRoute(
     navigateToUp: () -> Unit,
-    viewModel: MyPageViewModel,
+    viewModel: SettingViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -80,7 +80,7 @@ fun ProfileEditRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<MyPageSideEffect.ProfileEditSideEffect>()
+            .filterIsInstance<ProfileEditSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     NavigateToMyPage -> navigateToUp()
@@ -114,7 +114,7 @@ fun ProfileEditRoute(
 
 @Composable
 private fun ProfileEditScreen(
-    uiState: MyPageUiState,
+    uiState: SettingUiState,
     isEditButtonEnabled: Boolean,
     navigateToUp: () -> Unit,
     onUserNameChange: (String) -> Unit,
@@ -267,7 +267,7 @@ private fun ProfileEditScreen(
             BongBaekButton(
                 title = stringResource(id = profile_edit_button),
                 onClick = {
-                    if (uiState.myPageLoadState !is UiState.Loading)
+                    if (uiState.loadState !is UiState.Loading)
                         onEditClick()
                 },
                 buttonType = ButtonType.PRIMARY,
@@ -300,7 +300,7 @@ private fun ProfileEditScreen(
 private fun ProfileEditScreenPreview() {
     BongBaekTheme {
         ProfileEditScreen(
-            uiState = MyPageUiState(),
+            uiState = SettingUiState(),
             isEditButtonEnabled = false,
             navigateToUp = {},
             onUserNameChange = {},

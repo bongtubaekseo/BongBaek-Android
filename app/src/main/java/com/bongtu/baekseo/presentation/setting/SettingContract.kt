@@ -1,13 +1,13 @@
-package com.bongtu.baekseo.presentation.mypage
+package com.bongtu.baekseo.presentation.setting
 
 import androidx.compose.runtime.Immutable
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.IncomeType
 
-class MyPageContract {
+class SettingContract {
     @Immutable
-    data class MyPageUiState(
-        val myPageLoadState: UiState<Unit> = UiState.Empty,
+    data class SettingUiState(
+        val loadState: UiState<Unit> = UiState.Empty,
         val userName: String = "",
         val nameError: String = "",
         val userBirth: String = "",
@@ -26,15 +26,15 @@ class MyPageContract {
                     userIncome != originalIncome
 
         val isEditButtonEnabled: Boolean
-            get() = isFormValid && isProfileChanged && myPageLoadState !is UiState.Loading
+            get() = isFormValid && isProfileChanged && loadState !is UiState.Loading
     }
 
-    sealed interface MyPageSideEffect {
-        sealed class MainSideEffect: MyPageSideEffect {
+    sealed interface SettingSideEffect {
+        sealed class MainSideEffect : SettingSideEffect {
             data object RestartApp : MainSideEffect()
         }
 
-        sealed class ProfileEditSideEffect: MyPageSideEffect {
+        sealed class ProfileEditSideEffect : SettingSideEffect {
             data object NavigateToMyPage : ProfileEditSideEffect()
         }
     }
