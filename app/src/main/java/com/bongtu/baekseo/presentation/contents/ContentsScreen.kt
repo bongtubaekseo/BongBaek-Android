@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
@@ -68,7 +67,7 @@ private fun ContentsScreen(
 ) {
     val listState = rememberLazyListState()
     val showFab by remember {
-        derivedStateOf { listState.firstVisibleItemIndex > 0 }
+        derivedStateOf { listState.firstVisibleItemIndex > 1 }
     }
     val coroutineScope = rememberCoroutineScope()
 
@@ -92,40 +91,39 @@ private fun ContentsScreen(
                     .padding(vertical = 12.dp),
             )
 
-            Row(
+            LazyColumn(
+                state = listState,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = 20.dp,
-                        vertical = 12.dp,
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                    .padding(horizontal = 20.dp),
             ) {
-                Text(
-                    text = stringResource(contents_article),
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
-                    style = BongBaekTheme.typography.body2Regular16,
-                )
+                item {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(
+                                vertical = 12.dp,
+                            ),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                    ) {
+                        Text(
+                            text = stringResource(contents_article),
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
+                            style = BongBaekTheme.typography.body2Regular16,
+                        )
 
-                Text(
-                    text = stringResource(contents_article_count, articles.size),
-                    color = BongBaekTheme.colors.txtDisplaySecondary,
-                    style = BongBaekTheme.typography.body2Regular16,
-                )
-            }
+                        Text(
+                            text = stringResource(contents_article_count, articles.size),
+                            color = BongBaekTheme.colors.txtDisplaySecondary,
+                            style = BongBaekTheme.typography.body2Regular16,
+                        )
+                    }
+                }
 
-            if (articles.isEmpty()) ContentsEmptyView()
-            else {
-                LazyColumn(
-                    state = listState,
-                    modifier = Modifier
-                        .padding(horizontal = 20.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
-                    contentPadding = PaddingValues(
-                        top = 20.dp,
-                        bottom = 28.dp,
-                    ),
-                ) {
+                if (articles.isEmpty()) {
+                    item {
+                        ContentsEmptyView()
+                    }
+                } else {
                     items(articles.size) { index ->
                         ContentsArticleCard(
                             imageUrl = "",
@@ -133,6 +131,10 @@ private fun ContentsScreen(
                             eventType = if (index % 2 == 0) EventType.WEDDING else EventType.FUNERAL,
                             title = "경조사 정보 제목 테스트 ${index + 1} 번째 글입니다.",
                             date = "2025.11.${index + 1}",
+                            modifier = Modifier
+                                .padding(
+                                    top = if (index == 0) 20.dp else 12.dp,
+                                ),
                         )
 
                         if (index == articles.lastIndex)
@@ -168,7 +170,7 @@ private fun ContentsScreen(
 private fun ContentsScreenPreview() {
     BongBaekTheme {
         ContentsScreen(
-            articles = persistentListOf(),
+            articles = persistentListOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
             selectedEvent = EventCategoryType.ALL,
         )
     }
