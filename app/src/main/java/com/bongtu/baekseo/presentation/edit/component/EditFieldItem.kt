@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -28,11 +27,11 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 fun EditFieldItem(
     @DrawableRes iconRes: Int,
     @StringRes labelRes: Int,
-    content: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     isRequired: Boolean = true,
     isDimmed: Boolean = false,
     trailing: (@Composable () -> Unit)? = null,
+    content: (@Composable () -> Unit)? = null,
 ) {
     val textColor =
         if (isDimmed) BongBaekTheme.colors.txtDisplayTertiary else BongBaekTheme.colors.txtDisplayTertiary
@@ -41,8 +40,6 @@ fun EditFieldItem(
         modifier = modifier,
     ) {
         Row(
-            modifier = Modifier
-                .padding(bottom = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
             Icon(
@@ -74,7 +71,11 @@ fun EditFieldItem(
 
             trailing?.invoke()
         }
-        content()
+
+        content?.let {
+            Spacer(modifier = Modifier.height(12.dp))
+            it.invoke()
+        }
     }
 }
 

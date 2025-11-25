@@ -63,7 +63,6 @@ import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
-import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
@@ -214,14 +213,17 @@ private fun EditMainScreen(
                         color = BongBaekTheme.colors.bgDisplaySecondary,
                         shape = RoundedCornerShape(10.dp),
                     )
-                    .padding(vertical = 24.dp, horizontal = 20.dp),
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 24.dp,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
                     labelImage = ic_person,
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
-                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
@@ -234,7 +236,6 @@ private fun EditMainScreen(
                     labelImage = ic_nickname,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
@@ -256,7 +257,6 @@ private fun EditMainScreen(
                             isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 EditFieldItem(
@@ -273,7 +273,6 @@ private fun EditMainScreen(
                             isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 Row(
@@ -293,7 +292,6 @@ private fun EditMainScreen(
                         isRequired = true,
                         keyboardType = KeyboardType.NumberPassword,
                         visualTransformation = CostTextFieldFormat(),
-                        bottomSpacer = 32.dp,
                     )
 
                     Text(
@@ -322,7 +320,6 @@ private fun EditMainScreen(
                             isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 LabelTextField(
@@ -337,8 +334,7 @@ private fun EditMainScreen(
                                     DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
                                 isDatePickerDialogVisible = true
                             }
-                        }
-                        .padding(bottom = 32.dp),
+                        },
                     isRequired = true,
                     isEditable = false,
                     isDimmed = isFromResult,
@@ -350,36 +346,26 @@ private fun EditMainScreen(
                     iconRes = ic_location,
                     labelRes = edit_location_title,
                     isDimmed = isFromResult,
-                    content = {
-                        if (isFromResult) {
-                            Text(
-                                text = stringResource(id = location_empty_text),
-                                style = BongBaekTheme.typography.body1Medium14,
-                                color = BongBaekTheme.colors.txtDisplayTertiary,
+                    content = uiState.selectedPlace?.let { place ->
+                        {
+                            EditLocationContent(
+                                place = place,
                             )
-                        } else {
-                            uiState.selectedPlace?.let { place ->
-                                EditLocationContent(
-                                    place = place,
-                                )
-                            }
                         }
                     },
                     isRequired = false,
                     trailing = {
-                        if (!isFromResult) {
-                            Text(
-                                text = stringResource(
-                                    uiState.selectedPlace?.let {
-                                        edit_location_edit_text
-                                    } ?: edit_location_add_text
-                                ),
-                                style = BongBaekTheme.typography.body2Regular14,
-                                color = BongBaekTheme.colors.txtDisplayTertiary,
-                                modifier = Modifier
-                                    .noRippleClickable(navigateToLocation),
-                            )
-                        }
+                        Text(
+                            text = stringResource(
+                                uiState.selectedPlace?.let {
+                                    edit_location_edit_text
+                                } ?: edit_location_add_text
+                            ),
+                            style = BongBaekTheme.typography.body2Regular14,
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
+                            modifier = Modifier
+                                .noRippleClickable(navigateToLocation),
+                        )
                     },
                 )
             }
