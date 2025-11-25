@@ -66,7 +66,7 @@ fun SplashScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.txtInteractivePrimary),
+            .background(color = BongBaekTheme.colors.splashBg),
         contentAlignment = Alignment.Center,
     ) {
         Row(
@@ -84,7 +84,7 @@ fun SplashScreen(
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_splash_name),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.splashStart,
+                tint = BongBaekTheme.colors.splashTitle,
             )
         }
     }
