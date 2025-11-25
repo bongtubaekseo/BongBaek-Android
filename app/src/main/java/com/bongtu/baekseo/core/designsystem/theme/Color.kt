@@ -64,7 +64,6 @@ val kakaoYellow = Color(0xFFFEE500)
 val googleBlack = Color(0xFF1F1F1F)
 val googleGray = Color(0xFF747775)
 val transparent = Color(0x00000000)
-val splashTitle = Color(0xFFCDC9FF)
 
 @Immutable
 data class BongBaekColors(
@@ -122,6 +121,7 @@ data class BongBaekColors(
     val black: Color,
     val transparent: Color,
     val splashTitle: Color,
+    val splashBg: Color,
     val isLight: Boolean,
 )
 
@@ -179,7 +179,8 @@ val lightBongBaekColors = BongBaekColors(
     googleGray = googleGray,
     black = black,
     transparent = transparent,
-    splashTitle = splashTitle,
+    splashTitle = white,
+    splashBg = dark800,
     isLight = true,
 )
 
@@ -237,7 +238,8 @@ val darkBongBaekColors = BongBaekColors(
     googleGray = googleGray,
     black = black,
     transparent = transparent,
-    splashTitle = splashTitle,
+    splashTitle = white,
+    splashBg = dark800,
     isLight = false,
 )
 
@@ -287,7 +289,6 @@ private fun BongBaekColorsPreview() {
                 recordEnd,
                 kakaoYellow,
                 transparent,
-                splashTitle,
             ).chunked(6).forEach { color ->
                 Row(
                     modifier = Modifier.padding(vertical = 4.dp),
