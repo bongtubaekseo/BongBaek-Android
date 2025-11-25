@@ -130,6 +130,7 @@ fun EditMainRoute(
     EditMainScreen(
         editEntryType = editEntryType,
         uiState = uiState,
+        isFromResult = editEntryType == EditEntryType.FROM_RESULT,
         navigateUp = navigateUp,
         navigateToLocation = viewModel::navigateToLocation,
         onNameChange = viewModel::updateName,
@@ -150,6 +151,7 @@ fun EditMainRoute(
 private fun EditMainScreen(
     editEntryType: EditEntryType,
     uiState: EditUiState,
+    isFromResult: Boolean,
     navigateUp: () -> Unit,
     navigateToLocation: () -> Unit,
     onNameChange: (String) -> Unit,
@@ -169,10 +171,6 @@ private fun EditMainScreen(
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
     val attendOptions = AttendType.entries.map { it.label }.toImmutableList()
-
-    val isFromResult = remember(editEntryType) {
-        editEntryType == EditEntryType.FROM_RESULT
-    }
 
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
@@ -436,6 +434,7 @@ private fun EditMainScreenPreview() {
         EditMainScreen(
             editEntryType = EditEntryType.FROM_DETAIL,
             uiState = EditUiState(),
+            isFromResult = false,
             navigateUp = {},
             navigateToLocation = {},
             onNameChange = {},

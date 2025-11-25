@@ -87,7 +87,7 @@
     <string name="record_top_bar_title">경조사 전체 기록</string>
     <string name="record_card_list_year">%1$d년</string>
     <string name="record_card_list_month">%1$d월</string>
-    <string name="record_card_cost">%1$,d원</string>
+    <string name="record_card_cost">%1$,d</string>
     <string name="record_card_weekday">(%1$s)</string>
     <string name="record_empty_title">기록한 경조사가 없어요!</string>
     <string name="record_empty_item_title">기록한 %1$s%2$s 없어요!</string>
@@ -97,6 +97,7 @@
     <string name="record_top_bar_delete_button">삭제</string>
     <string name="record_detail_title">경조사 상세 조회</string>
     <string name="record_detail_title_card_title">%1$s의 %2$s</string>
+    <string name="record_detail_card_cost_kr_won">%1$,d원</string>
     <string name="record_detail_dropdown_title">상세 정보</string>
     <string name="record_detail_memo_title">메모</string>
     <string name="record_detail_memo_placeholder">메모를 작성해주세요</string>
@@ -180,6 +181,12 @@
     <string name="edit_location_button">위치 저장하기</string>
     <!--Contents    -->
     <string name="contents">콘텐츠</string>
+    <string name="contents_title">경조사 콘텐츠</string>
+    <string name="contents_article">아티클 수</string>
+    <string name="contents_article_count">%d개</string>
+    <string name="contents_empty_title">아직 올라온 아티클이 없어요!</string>
+    <string name="contents_empty_desc">빠른 시일 내로 아티클을 제공해드릴게요</string>
+    <string name="contents_footer">더 이상 아티클이 없어요!</string>
 
     <!--Setting    -->
     <string name="setting">설정</string>

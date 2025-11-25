@@ -30,6 +30,7 @@ import com.bongtu.baekseo.presentation.login.navigation.Login
 import com.bongtu.baekseo.presentation.login.navigation.loginGraph
 import com.bongtu.baekseo.presentation.login.navigation.navigateToLogin
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
+import com.bongtu.baekseo.presentation.mypage.navigation.myPageGraph
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend

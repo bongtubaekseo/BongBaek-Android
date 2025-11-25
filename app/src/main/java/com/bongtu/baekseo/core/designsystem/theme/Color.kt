@@ -58,6 +58,7 @@ val envelopeStart = Color(0xFFA6BEF3)
 val envelopeEnd = Color(0xFFD3D9FF)
 val recommendResultStart = Color(0xFF4E62FF)
 val recordEnd = Color(0xFF6F53FF)
+val cardStart = Color(0x001B1C1D)
 
 // Others
 val kakaoYellow = Color(0xFFFEE500)
@@ -114,6 +115,8 @@ data class BongBaekColors(
     val recommendResultEnd: Color,
     val recordStart: Color,
     val recordEnd: Color,
+    val cardStart: Color,
+    val cardEnd: Color,
     val kakaoYellow: Color,
     val googleWhite: Color,
     val googleBlack: Color,
@@ -173,6 +176,8 @@ val lightBongBaekColors = BongBaekColors(
     recommendResultEnd = primaryStrong,
     recordStart = primaryNormal,
     recordEnd = recordEnd,
+    cardStart = cardStart,
+    cardEnd = dark800,
     kakaoYellow = kakaoYellow,
     googleWhite = white,
     googleBlack = googleBlack,
@@ -232,6 +237,8 @@ val darkBongBaekColors = BongBaekColors(
     recommendResultEnd = primaryStrong,
     recordStart = primaryNormal,
     recordEnd = recordEnd,
+    cardStart = cardStart,
+    cardEnd = dark800,
     kakaoYellow = kakaoYellow,
     googleWhite = white,
     googleBlack = googleBlack,

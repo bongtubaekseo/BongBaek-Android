@@ -36,8 +36,8 @@ fun BongBaekFilterChip(
 ) {
     val bongBaekColors = BongBaekTheme.colors
     val (backgroundColor, textColor) = remember(isSelected) {
-        if (isSelected) bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
-        else bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
+        if (isSelected) bongBaekColors.btnInteractiveDisabled to bongBaekColors.statusFocused
+        else bongBaekColors.btnInteractiveSecondary to bongBaekColors.txtStatusDisabled
     }
 
     Box(
@@ -76,12 +76,7 @@ fun BongBaekLabelChip(
     Box(
         modifier = modifier
             .background(
-                color = BongBaekTheme.colors.txtDisplayTertiary,
-                shape = RoundedCornerShape(6.dp),
-            )
-            .border(
-                width = 1.dp,
-                color = BongBaekTheme.colors.txtDisplayTertiary,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(6.dp),
             )
             .padding(
@@ -93,7 +88,7 @@ fun BongBaekLabelChip(
         Text(
             text = event.label,
             style = BongBaekTheme.typography.body1Medium16,
-            color = BongBaekTheme.colors.txtDisplayTertiary,
+            color = BongBaekTheme.colors.statusFocused,
         )
     }
 }

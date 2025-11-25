@@ -4,18 +4,18 @@
     android:viewportWidth="20"
     android:viewportHeight="20">
   <path
-      android:pathData="M4.167,3.333L15.833,3.333A1.667,1.667 0,0 1,17.5 5L17.5,15.833A1.667,1.667 0,0 1,15.833 17.5L4.167,17.5A1.667,1.667 0,0 1,2.5 15.833L2.5,5A1.667,1.667 0,0 1,4.167 3.333z"
-      android:fillColor="?attr/iconDisabledPrimary"/>
+      android:pathData="M4.167,3.333L15.833,3.333A1.667,1.667 0,0 1,17.5 5L17.5,15.834A1.667,1.667 0,0 1,15.833 17.5L4.167,17.5A1.667,1.667 0,0 1,2.5 15.834L2.5,5A1.667,1.667 0,0 1,4.167 3.333z"
+      android:fillColor="#ABACAF"/>
   <path
       android:pathData="M5.625,2.5L5.625,2.5A0.625,0.625 0,0 1,6.25 3.125L6.25,4.375A0.625,0.625 0,0 1,5.625 5L5.625,5A0.625,0.625 0,0 1,5 4.375L5,3.125A0.625,0.625 0,0 1,5.625 2.5z"
-      android:fillColor="?attr/iconDisabledSecondary"/>
+      android:fillColor="#C4C5C8"/>
   <path
       android:pathData="M14.375,2.5L14.375,2.5A0.625,0.625 0,0 1,15 3.125L15,4.375A0.625,0.625 0,0 1,14.375 5L14.375,5A0.625,0.625 0,0 1,13.75 4.375L13.75,3.125A0.625,0.625 0,0 1,14.375 2.5z"
-      android:fillColor="?attr/iconDisabledSecondary"/>
+      android:fillColor="#C4C5C8"/>
   <path
       android:pathData="M3.958,6.667L16.041,6.667A0.625,0.625 0,0 1,16.666 7.292L16.666,7.292A0.625,0.625 0,0 1,16.041 7.917L3.958,7.917A0.625,0.625 0,0 1,3.333 7.292L3.333,7.292A0.625,0.625 0,0 1,3.958 6.667z"
-      android:fillColor="?attr/iconDisabledSecondary"/>
+      android:fillColor="#C4C5C8"/>
   <path
       android:pathData="M5.416,9.583m-1.25,0a1.25,1.25 0,1 1,2.5 0a1.25,1.25 0,1 1,-2.5 0"
-      android:fillColor="?attr/iconDisabledSecondary"/>
+      android:fillColor="#C4C5C8"/>
 </vector>

@@ -6,6 +6,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
+import com.bongtu.baekseo.presentation.contents.ContentsRoute
 import kotlinx.serialization.Serializable
 
 fun NavController.navigateToContents(navOptions: NavOptions? = null) =
