@@ -132,8 +132,8 @@ private fun LoginBottomSheetAgreeContent(
 
         HorizontalDivider(
             modifier = Modifier
-                .width(1.dp)
                 .padding(vertical = 16.dp),
+            thickness = 1.dp,
             color = BongBaekTheme.colors.borderFieldDefault,
         )
 
