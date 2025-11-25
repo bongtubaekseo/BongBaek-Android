@@ -15,7 +15,7 @@ import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
 import com.bongtu.baekseo.presentation.edit.navigation.EditNavType
@@ -223,15 +223,15 @@ class EditViewModel @Inject constructor(
     }
 
     fun navigateToLocation() = viewModelScope.launch {
-        _sideEffect.emit(EditMainSideEffect.NavigateToLocation)
+        _sideEffect.emit(EditSideEffect.NavigateToLocation)
     }
 
     fun navigateToComplete() = viewModelScope.launch {
         val destination = when (_entryType.value) {
-            EditEntryType.FROM_RECORD -> EditMainSideEffect.NavigateToRecord
-            EditEntryType.FROM_SCHEDULE -> EditMainSideEffect.NavigateToSchedule
-            EditEntryType.FROM_DETAIL -> EditMainSideEffect.NavigateToDetail
-            EditEntryType.FROM_RESULT -> EditMainSideEffect.NavigateToFinal
+            EditEntryType.FROM_RECORD -> EditSideEffect.NavigateToRecord
+            EditEntryType.FROM_SCHEDULE -> EditSideEffect.NavigateToSchedule
+            EditEntryType.FROM_DETAIL -> EditSideEffect.NavigateToDetail
+            EditEntryType.FROM_RESULT -> EditSideEffect.NavigateToFinal
             null -> null
         }
         destination?.let { _sideEffect.emit(it) }

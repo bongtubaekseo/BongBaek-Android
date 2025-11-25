@@ -82,12 +82,11 @@ import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToDetail
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToFinal
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToLocation
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToRecord
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToFinal
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToLocation
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToRecord
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditDropdownMenu
 import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
@@ -95,7 +94,6 @@ import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun EditMainRoute(
@@ -111,7 +109,6 @@ fun EditMainRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<EditSideEffect.EditMainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToRecord -> navigateUp()
