@@ -21,10 +21,9 @@ class MainActivity : ComponentActivity() {
 
         val isStartLogin = intent.getBooleanExtra(IS_START_LOGIN, false)
 
-        enableEdgeToEdge(
-            statusBarStyle = SystemBarStyle.dark(Color.TRANSPARENT),
-        )
+        enableEdgeToEdge()
         window.isNavigationBarContrastEnforced = false
+        
         setContent {
             BongBaekTheme {
                 MainScreen(
