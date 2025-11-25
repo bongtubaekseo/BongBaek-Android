@@ -30,6 +30,8 @@ import coil3.compose.AsyncImage
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
+private const val IMG_RATIO = 220 / 160f
+
 @Composable
 fun HomeContentCard(
     contentTitle: String,
@@ -54,7 +56,7 @@ fun HomeContentCard(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(220f / 160f),
+                .aspectRatio(IMG_RATIO),
             contentScale = ContentScale.Crop,
         )
 
