@@ -86,7 +86,6 @@ import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.Navigate
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToFinal
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToLocation
 import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToRecord
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToSchedule
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditDropdownMenu
 import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
@@ -113,7 +112,6 @@ fun EditMainRoute(
                 when (sideEffect) {
                     is NavigateToRecord -> navigateUp()
                     is NavigateToDetail -> navigateUp()
-                    is NavigateToSchedule -> navigateUp()
                     is NavigateToFinal -> navigateToFinal()
                     is NavigateToLocation -> navigateToEditLocation()
                 }

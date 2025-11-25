@@ -32,7 +32,6 @@ class EditContract {
         data object NavigateToRecord : EditSideEffect
         data object NavigateToDetail : EditSideEffect
         data object NavigateToFinal : EditSideEffect
-        data object NavigateToSchedule : EditSideEffect
         data object NavigateToLocation : EditSideEffect
     }
 }

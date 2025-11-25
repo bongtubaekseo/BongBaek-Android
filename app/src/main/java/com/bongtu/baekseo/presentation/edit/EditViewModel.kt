@@ -51,7 +51,7 @@ class EditViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EditUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableSharedFlow<EditContract.EditSideEffect>()
+    private val _sideEffect = MutableSharedFlow<EditSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     private val _searchTerm = MutableStateFlow("")
@@ -167,7 +167,7 @@ class EditViewModel @Inject constructor(
 
     fun submitEventInformation(entryType: EditEntryType) {
         when (entryType) {
-            EditEntryType.FROM_RECORD, EditEntryType.FROM_SCHEDULE, EditEntryType.FROM_RESULT -> saveEventInformation()
+            EditEntryType.FROM_RECORD, EditEntryType.FROM_RESULT -> saveEventInformation()
             EditEntryType.FROM_DETAIL -> patchEventInformation()
         }
     }
@@ -229,7 +229,6 @@ class EditViewModel @Inject constructor(
     fun navigateToComplete() = viewModelScope.launch {
         val destination = when (_entryType.value) {
             EditEntryType.FROM_RECORD -> EditSideEffect.NavigateToRecord
-            EditEntryType.FROM_SCHEDULE -> EditSideEffect.NavigateToSchedule
             EditEntryType.FROM_DETAIL -> EditSideEffect.NavigateToDetail
             EditEntryType.FROM_RESULT -> EditSideEffect.NavigateToFinal
             null -> null
