@@ -55,10 +55,10 @@ fun NavGraphBuilder.settingGraph(
 }
 
 @Serializable
-data object Setting : MainTabRoute
+data object Setting : Route
 
 @Serializable
-data object SettingMain : Route
+data object SettingMain : MainTabRoute
 
 @Serializable
 data object ProfileEdit : Route

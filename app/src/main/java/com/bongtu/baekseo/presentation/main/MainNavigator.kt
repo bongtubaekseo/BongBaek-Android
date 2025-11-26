@@ -66,9 +66,7 @@ class MainNavigator(
 
         val tab = MainTab.find { currentDestination?.hasRoute(it::class) == true }
 
-        val isSettingRoute = currentDestination?.hasRoute(SettingMain::class) == true
-
-        return (isMainTabRoute && isBottomBarVisible) && tab != MainTab.RECOMMEND || isSettingRoute
+        return (isMainTabRoute && isBottomBarVisible) && tab != MainTab.RECOMMEND
     }
 
     fun updateBottomBarVisible(isVisible: Boolean) {
