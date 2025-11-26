@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -124,7 +125,7 @@ fun LabelTextField(
             Icon(
                 imageVector = ImageVector.vectorResource(id = labelImage),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.iconFocusedPrimary,
+                tint = Color.Unspecified,
                 modifier = Modifier
                     .size(20.dp)
                     .padding(end = 4.dp),
@@ -132,7 +133,7 @@ fun LabelTextField(
 
             Text(
                 text = labelName,
-                style = BongBaekTheme.typography.body1Medium16,
+                style = BongBaekTheme.typography.body1Medium14,
                 color = labelTextColor,
             )
 

@@ -203,7 +203,7 @@ fun OnBoardingScreen(
                         .background(color = BongBaekTheme.colors.bgDisplayCard)
                         .padding(
                             horizontal = 20.dp,
-                            vertical = 18.dp,
+                            vertical = 16.dp,
                         ),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically,
