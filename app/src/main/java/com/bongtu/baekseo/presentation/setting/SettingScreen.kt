@@ -262,7 +262,7 @@ private fun ProfileSection(
                 )
                 .noRippleClickable(onProfileEditButtonClick)
                 .padding(
-                    horizontal = 12.dp,
+                    horizontal = 20.dp,
                     vertical = 4.dp,
                 ),
             color = BongBaekTheme.colors.txtInteractiveInverse,
