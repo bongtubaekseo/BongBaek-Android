@@ -48,19 +48,16 @@ fun EditMemoContent(
     isEditable: Boolean = true,
 ) {
     var isFocused by remember { mutableStateOf(false) }
+    val isFilled = text.isNotEmpty()
     val focusManager = LocalFocusManager.current
 
     val coroutineScope = rememberCoroutineScope()
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
-    val bongBaekColors = BongBaekTheme.colors
-    val (borderColor, backgroundColor) = remember(isFocused) {
-        if (isFocused) {
-            bongBaekColors.statusFocused to bongBaekColors.bgFieldSecondary
-        } else {
-            bongBaekColors.transparent to bongBaekColors.bgFieldSecondary
-        }
-    }
+    val colors = BongBaekTheme.colors
+    val borderColor = if (isFocused) colors.statusFocused else colors.transparent
+    val backgroundColor = if (isFilled || isFocused) colors.bgFieldSecondary else colors.bgFieldPrimary
+    val textCountColor = if (isFilled || isFocused) colors.txtDisplaySecondary else colors.txtDisplayTertiary
 
     Column(
         modifier = modifier
@@ -134,7 +131,7 @@ fun EditMemoContent(
                     .padding(top = 10.dp)
                     .align(Alignment.End),
                 style = BongBaekTheme.typography.captionRegular12,
-                color = bongBaekColors.txtDisplayTertiary,
+                color = textCountColor,
             )
         }
         Spacer(modifier = Modifier.height(20.dp))
