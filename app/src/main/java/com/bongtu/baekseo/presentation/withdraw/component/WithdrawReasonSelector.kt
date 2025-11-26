@@ -117,6 +117,7 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
+    val bongBaekStyle = BongBaekTheme.typography
     val (iconRes, titleColor) = remember(isSelected) {
         when (isSelected) {
             true -> ic_withdraw_check_primary to bongBaekColors.txtInteractivePrimary
@@ -132,6 +133,18 @@ private fun WithdrawSelectorItem(
             WithdrawType.BUG_OR_ERROR -> withdraw_reason_error
             WithdrawType.NEW_ACCOUNT -> withdraw_reason_account
             WithdrawType.OTHER -> withdraw_reason_etc
+        }
+    }
+    val titleStyle = remember(isSelected) {
+        when (isSelected) {
+            false -> bongBaekStyle.body2Regular16
+            else -> bongBaekStyle.body1Medium16
+        }
+    }
+    val backgroundColor = remember(isSelected) {
+        when (isSelected) {
+            true -> bongBaekColors.btnInteractiveInput
+            else -> bongBaekColors.btnInteractiveTertiary
         }
     }
 
@@ -150,7 +163,7 @@ private fun WithdrawSelectorItem(
                 else Modifier
             )
             .background(
-                color = bongBaekColors.btnInteractiveInput,
+                color = backgroundColor,
                 shape = RoundedCornerShape(10.dp),
             )
             .padding(12.dp),
@@ -192,7 +205,7 @@ private fun WithdrawSelectorItem(
             } else {
                 Text(
                     text = stringResource(id = titleRes),
-                    style = BongBaekTheme.typography.body2Regular16,
+                    style = titleStyle,
                     color = titleColor,
                 )
             }
