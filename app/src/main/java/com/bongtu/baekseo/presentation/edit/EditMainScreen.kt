@@ -274,8 +274,7 @@ private fun EditMainScreen(
                 )
 
                 Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.Bottom,
                     horizontalArrangement = Arrangement.SpaceBetween,
                 ) {
@@ -296,11 +295,10 @@ private fun EditMainScreen(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body2Regular16,
                         color = BongBaekTheme.colors.txtDisplayPrimary,
-                        modifier = Modifier
-                            .padding(
-                                start = 16.dp,
-                                top = 33.dp,
-                            ),
+                        modifier = Modifier.padding(
+                            start = 16.dp,
+                            top = 33.dp,
+                        ),
                     )
                 }
 
@@ -324,14 +322,13 @@ private fun EditMainScreen(
                     labelName = stringResource(id = edit_date_title),
                     text = uiState.eventDate,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
-                    modifier = Modifier
-                        .noRippleClickable {
-                            if (!isFromResult) {
-                                dialogText =
-                                    DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
-                                isDatePickerDialogVisible = true
-                            }
-                        },
+                    modifier = Modifier.noRippleClickable {
+                        if (!isFromResult) {
+                            dialogText =
+                                DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
+                            isDatePickerDialogVisible = true
+                        }
+                    },
                     isRequired = true,
                     isEditable = false,
                     isDimmed = isFromResult,
@@ -353,15 +350,16 @@ private fun EditMainScreen(
                     isRequired = false,
                     trailing = {
                         Text(
-                            text = stringResource(
-                                uiState.selectedPlace?.let {
-                                    edit_location_edit_text
-                                } ?: edit_location_add_text
-                            ),
+                            text = stringResource(uiState.selectedPlace?.let {
+                                edit_location_edit_text
+                            } ?: edit_location_add_text),
                             style = BongBaekTheme.typography.body2Regular14,
                             color = BongBaekTheme.colors.txtDisplayTertiary,
-                            modifier = Modifier
-                                .noRippleClickable(navigateToLocation),
+                            modifier = Modifier.noRippleClickable {
+                                if (!isFromResult) {
+                                    navigateToLocation()
+                                }
+                            },
                         )
                     },
                 )
@@ -371,10 +369,9 @@ private fun EditMainScreen(
                 EditMemoContent(
                     text = uiState.note,
                     onTextChange = onNoteChange,
-                    modifier = Modifier
-                        .padding(
-                            top = 20.dp,
-                        ),
+                    modifier = Modifier.padding(
+                        top = 20.dp,
+                    ),
                 )
             }
 
