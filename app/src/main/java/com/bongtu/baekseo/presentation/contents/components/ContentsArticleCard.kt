@@ -14,6 +14,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -37,7 +38,7 @@ fun ContentsArticleCard(
         colors = listOf(
             BongBaekTheme.colors.cardStart,
             BongBaekTheme.colors.cardEnd,
-        )
+        ),
     )
 
     Box(
@@ -52,6 +53,7 @@ fun ContentsArticleCard(
             contentDescription = null,
             modifier = Modifier
                 .aspectRatio(CARD_RATIO),
+            contentScale = ContentScale.Fit,
         )
 
         Column(
