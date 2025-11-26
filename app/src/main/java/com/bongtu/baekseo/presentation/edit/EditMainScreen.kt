@@ -254,7 +254,6 @@ private fun EditMainScreen(
                             selectedItem = uiState.relationship,
                             onItemSelected = onRelationSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
                 )
@@ -270,7 +269,6 @@ private fun EditMainScreen(
                             selectedItem = uiState.eventCategory,
                             onItemSelected = onEventSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
                 )
@@ -317,7 +315,6 @@ private fun EditMainScreen(
                             selectedItem = uiState.attendLabel,
                             onItemSelected = onAttendSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
                 )
