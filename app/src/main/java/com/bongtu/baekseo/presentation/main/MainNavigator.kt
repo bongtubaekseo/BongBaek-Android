@@ -15,7 +15,6 @@ import com.bongtu.baekseo.presentation.contents.navigation.navigateToContents
 import com.bongtu.baekseo.presentation.home.navigation.navigateToHome
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
-import com.bongtu.baekseo.presentation.setting.navigation.SettingMain
 import com.bongtu.baekseo.presentation.setting.navigation.navigateToSetting
 
 class MainNavigator(
@@ -64,9 +63,7 @@ class MainNavigator(
             currentDestination?.hasRoute(it::class) == true
         }
 
-        val tab = MainTab.find { currentDestination?.hasRoute(it::class) == true }
-
-        return (isMainTabRoute && isBottomBarVisible) && tab != MainTab.RECOMMEND
+        return isMainTabRoute && isBottomBarVisible
     }
 
     fun updateBottomBarVisible(isVisible: Boolean) {

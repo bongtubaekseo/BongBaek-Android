@@ -23,9 +23,7 @@ import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.presentation.contents.navigation.Contents
 import com.bongtu.baekseo.presentation.home.navigation.Home
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
-import com.bongtu.baekseo.presentation.recommend.navigation.RecommendIntro
 import com.bongtu.baekseo.presentation.record.navigation.Record
-import com.bongtu.baekseo.presentation.setting.navigation.Setting
 import com.bongtu.baekseo.presentation.setting.navigation.SettingMain
 
 enum class MainTab(
@@ -44,7 +42,7 @@ enum class MainTab(
         selectedIconRes = ic_recommend_selected,
         unselectedIconRes = ic_recommend_unselected,
         title = recommendation,
-        route = RecommendIntro,
+        route = Recommend,
     ),
     RECORD(
         selectedIconRes = ic_record_selected,

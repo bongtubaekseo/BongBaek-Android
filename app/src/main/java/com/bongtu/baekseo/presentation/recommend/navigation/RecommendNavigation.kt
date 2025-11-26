@@ -100,10 +100,10 @@ fun NavGraphBuilder.recommendGraph(
 }
 
 @Serializable
-data object Recommend : Route
+data object Recommend : MainTabRoute
 
 @Serializable
-data object RecommendIntro : MainTabRoute
+data object RecommendIntro : Route
 
 @Serializable
 data object RecommendMain : Route
