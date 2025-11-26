@@ -1,9 +1,9 @@
 package com.bongtu.baekseo.data.model.content
 
-data class HomeContent(
+data class ContentsDetail(
     val contentId: String,
     val contentTitle: String,
     val contentCategory: String,
-    val thumbnailUrl: String,
-    val createdAt: String? = null,
+    val imageUrls: List<String>,
+    val createdAt: String,
 )

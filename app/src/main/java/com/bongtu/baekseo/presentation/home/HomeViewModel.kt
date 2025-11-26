@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.data.model.content.HomeContent
 import com.bongtu.baekseo.data.model.event.HomeEvent
-import com.bongtu.baekseo.data.repository.content.ContentRepository
+import com.bongtu.baekseo.data.repository.content.ContentsRepository
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
@@ -22,7 +22,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val eventRepository: EventRepository,
-    private val contentRepository: ContentRepository,
+    private val contentsRepository: ContentsRepository,
     private val getUpdateFlagUseCase: GetUpdateFlagUseCase,
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
@@ -48,7 +48,7 @@ class HomeViewModel @Inject constructor(
     }
 
     fun fetchHomeContent() = viewModelScope.launch {
-        contentRepository.getHomeContents()
+        contentsRepository.getHomeContents()
             .onSuccess { response ->
                 updateHomeContents(
                     value = response,
