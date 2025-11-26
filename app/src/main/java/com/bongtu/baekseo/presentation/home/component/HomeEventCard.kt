@@ -180,6 +180,11 @@ fun HomeEventCardInfo(
         HomeScheduleInfoType.NICKNAME -> ic_record_nickname_off
     }
 
+    val contentText = if (infoType == HomeScheduleInfoType.LOCATION && content.isBlank())
+        stringResource(location_empty_text)
+    else
+        content
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -194,7 +199,7 @@ fun HomeEventCardInfo(
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = content.ifBlank { stringResource(location_empty_text) },
+            text = contentText,
             style = BongBaekTheme.typography.captionRegular12,
             color = BongBaekTheme.colors.txtDisplayTertiary,
         )
