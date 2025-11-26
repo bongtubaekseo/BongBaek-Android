@@ -95,7 +95,7 @@ fun RoundedBoxTextField(
         Box(
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.bgFieldSecondary,
+                    color = BongBaekTheme.colors.bgFieldPrimary,
                     shape = roundedCornerShape,
                 )
                 .border(

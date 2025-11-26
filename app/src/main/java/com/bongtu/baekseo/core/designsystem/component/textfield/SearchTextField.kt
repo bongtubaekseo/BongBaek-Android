@@ -1,6 +1,7 @@
 package com.bongtu.baekseo.core.designsystem.component.textfield
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsFocusedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -19,6 +20,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusManager
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.bongtu.baekseo.R.drawable.ic_cancel
 import com.bongtu.baekseo.R.drawable.ic_search
 import com.bongtu.baekseo.R.string.search_text_field_placeholder
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
@@ -51,8 +54,19 @@ fun SearchTextField(
     roundedCornerShape: RoundedCornerShape = RoundedCornerShape(size = 10.dp),
     focusManager: FocusManager = LocalFocusManager.current,
 ) {
+    val bongbaekColors = BongBaekTheme.colors
     val interactionSource = remember { MutableInteractionSource() }
     val isFocused by interactionSource.collectIsFocusedAsState()
+    val isFilled = text.isNotEmpty()
+
+    val borderColor = remember(isFocused) {
+        if (isFocused) bongbaekColors.statusFocused
+        else bongbaekColors.borderFieldDefault
+    }
+    val textColor = remember(isFocused, isFilled) {
+        if (!isFocused && isFilled) bongbaekColors.statusFocused
+        else bongbaekColors.txtFieldValue
+    }
 
     LaunchedEffect(isFocused) {
         onFocusChange(isFocused)
@@ -65,18 +79,19 @@ fun SearchTextField(
         }
     }
 
-    val bongBaekColors = BongBaekTheme.colors
-    val textColor = remember(isFocused) {
-        if (isFocused) bongBaekColors.txtFieldValue else bongBaekColors.txtFieldPlaceholder
-    }
-
     Row(
         modifier = modifier
             .background(
                 color = BongBaekTheme.colors.bgFieldSecondary,
                 shape = roundedCornerShape,
             )
+            .border(
+                width = 1.dp,
+                color = borderColor,
+                shape = roundedCornerShape
+            )
             .padding(horizontal = 16.dp, vertical = 12.dp),
+        verticalAlignment = Alignment.CenterVertically,
     ) {
         Icon(
             imageVector = ImageVector.vectorResource(id = ic_search),
@@ -103,6 +118,16 @@ fun SearchTextField(
                     focusManager.clearFocus()
                 },
             ),
+            suffix = {
+                if (isFocused && isFilled) {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(id = ic_cancel),
+                        contentDescription = null,
+                        tint = BongBaekTheme.colors.iconDisabledPrimary,
+                        modifier = Modifier.noRippleClickable { onTextChange("") },
+                    )
+                }
+            },
         )
     }
 }
