@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.edit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -273,32 +271,23 @@ private fun EditMainScreen(
                     },
                 )
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.Bottom,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                LabelTextField(
+                    labelName = stringResource(id = edit_cost_title),
+                    labelImage = ic_coin,
+                    text = uiState.cost,
+                    placeholder = stringResource(id = edit_cost_text_field_placeholder),
+                    errorText = uiState.costError,
+                    onTextChange = onCostChange,
+                    isRequired = true,
+                    keyboardType = KeyboardType.NumberPassword,
+                    visualTransformation = CostTextFieldFormat(),
+                    extraBottomPadding = 24.dp,
                 ) {
-                    LabelTextField(
-                        labelName = stringResource(id = edit_cost_title),
-                        labelImage = ic_coin,
-                        text = uiState.cost,
-                        modifier = Modifier.weight(1f),
-                        placeholder = stringResource(id = edit_cost_text_field_placeholder),
-                        errorText = uiState.costError,
-                        onTextChange = onCostChange,
-                        isRequired = true,
-                        keyboardType = KeyboardType.NumberPassword,
-                        visualTransformation = CostTextFieldFormat(),
-                    )
-
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body2Regular16,
                         color = BongBaekTheme.colors.txtDisplayPrimary,
-                        modifier = Modifier.padding(
-                            start = 16.dp,
-                            top = 33.dp,
-                        ),
+                        modifier = Modifier.padding(start = 16.dp),
                     )
                 }
 
@@ -382,7 +371,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        top = 40.dp,
+                        top = 60.dp,
                         bottom = 36.dp,
                     ),
                 enabled = checkIsFormFilled(),

@@ -6,14 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.HorizontalDivider
@@ -23,7 +20,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,7 +40,7 @@ import com.bongtu.baekseo.R.drawable.ic_nickname
 import com.bongtu.baekseo.R.string.label_text_field_required_text
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.TextFieldValidator.validateName
-import com.bongtu.baekseo.core.util.bringIntoView
+import com.bongtu.baekseo.core.util.bringIntoViewOnFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 /**
@@ -80,16 +76,14 @@ fun LabelTextField(
     keyboardType: KeyboardType = KeyboardType.Unspecified,
     isClearButtonEnabled: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
-    bottomSpacer: Dp? = null,
+    extraBottomPadding: Dp? = null,
+    suffix: @Composable (() -> Unit)? = null,
 ) {
     var isFocused by remember { mutableStateOf(false) }
     val focusManager = LocalFocusManager.current
 
     val isFilled = text.isNotEmpty()
     val isError = errorText.isNotEmpty()
-
-    val coroutineScope = rememberCoroutineScope()
-    val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
     val dividerColor = when {
@@ -104,12 +98,12 @@ fun LabelTextField(
         isDimmed -> bongBaekColors.txtDisplayTertiary
         else -> bongBaekColors.txtDisplayTertiary
     }
-    
-    val labelTextColor = if(isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplayTertiary
+
+    val labelTextColor =
+        if (isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplayTertiary
 
     Column(
-        modifier = modifier
-            .bringIntoViewRequester(bringIntoViewRequester),
+        modifier = modifier,
     ) {
         Row(
             modifier = Modifier.padding(bottom = 12.dp),
@@ -140,80 +134,92 @@ fun LabelTextField(
             }
         }
 
-        BongBaekInnerTextField(
-            text = text,
-            onTextChange = onTextChange,
-            textColor = textColor,
-            placeholder = placeholder,
-            placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
-            modifier = Modifier
-                .onFocusEvent { focusState ->
-                    isFocused = focusState.isFocused
-                    bringIntoViewRequester.bringIntoView(coroutineScope, isFocused)
-                },
-            isReadOnly = !isEditable,
-            isEnabled = isEditable,
-            textStyle = BongBaekTheme.typography.body2Regular16,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = keyboardType,
-                imeAction = ImeAction.Done,
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    focusManager.clearFocus()
-                    onInputDone?.invoke()
-                },
-            ),
-            suffix = {
-                if (isFilled && isFocused && isClearButtonEnabled) {
-                    Icon(
-                        imageVector = ImageVector.vectorResource(id = ic_cancel),
-                        contentDescription = null,
-                        tint = BongBaekTheme.colors.txtDisplayTertiary,
-                        modifier = Modifier.noRippleClickable { onTextChange("") },
-                    )
-                }
-            },
-            visualTransformation = visualTransformation,
-        )
-
-        HorizontalDivider(
-            modifier = Modifier
-                .padding(top = 12.dp),
-            thickness = 1.dp,
-            color = dividerColor,
-        )
-
-        AnimatedVisibility(
-            visible = isError,
+        Row(
+            verticalAlignment = Alignment.Top,
+            horizontalArrangement = Arrangement.SpaceBetween,
         ) {
-            Row(
+            Column(
                 modifier = Modifier
-                    .padding(top = 6.dp)
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
+                    .weight(1f)
+                    .bringIntoViewOnFocus(
+                        isFocused = isFocused,
+                        extraBottom = if (isError) 0.dp else (extraBottomPadding ?: 0.dp),
+                    ),
             ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(id = ic_caution),
-                    contentDescription = null,
-                    tint = BongBaekTheme.colors.txtDisplayTertiary,
+                BongBaekInnerTextField(
+                    text = text,
+                    onTextChange = onTextChange,
+                    textColor = textColor,
+                    placeholder = placeholder,
+                    placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
                     modifier = Modifier
-                        .size(14.dp),
+                        .onFocusEvent { focusState ->
+                            isFocused = focusState.isFocused
+                        },
+                    isReadOnly = !isEditable,
+                    isEnabled = isEditable,
+                    textStyle = BongBaekTheme.typography.body2Regular16,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = keyboardType,
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            onInputDone?.invoke()
+                        },
+                    ),
+                    suffix = {
+                        if (isFilled && isFocused && isClearButtonEnabled) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = ic_cancel),
+                                contentDescription = null,
+                                tint = BongBaekTheme.colors.txtDisplayTertiary,
+                                modifier = Modifier.noRippleClickable { onTextChange("") },
+                            )
+                        }
+                    },
+                    visualTransformation = visualTransformation,
                 )
-                Text(
-                    text = errorText,
-                    modifier = Modifier
-                        .padding(start = 4.dp),
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
-                )
-            }
-        }
 
-        bottomSpacer?.let { Spacer(Modifier.height(it)) }
+                HorizontalDivider(
+                    modifier = Modifier
+                        .padding(top = 12.dp),
+                    thickness = 1.dp,
+                    color = dividerColor,
+                )
+
+                AnimatedVisibility(
+                    visible = isError,
+                ) {
+                    Row(
+                        modifier = Modifier
+                            .padding(top = 6.dp)
+                            .fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically,
+                    ) {
+                        Icon(
+                            imageVector = ImageVector.vectorResource(id = ic_caution),
+                            contentDescription = null,
+                            tint = BongBaekTheme.colors.txtDisplayTertiary,
+                            modifier = Modifier
+                                .size(14.dp),
+                        )
+                        Text(
+                            text = errorText,
+                            modifier = Modifier
+                                .padding(start = 4.dp),
+                            style = BongBaekTheme.typography.captionRegular12,
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
+                        )
+                    }
+                }
+            }
+
+            suffix?.invoke()
+        }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable
