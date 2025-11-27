@@ -36,6 +36,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.verticalScrollbar
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -90,6 +91,18 @@ fun <T> BongBaekDropdownMenu(
                 .exposedDropdownSize()
                 .heightIn(
                     max = maxHeight,
+                )
+                .then(
+                    if (items.isNotEmpty()) {
+                        Modifier.verticalScrollbar(
+                            scrollState = scrollState,
+                            topPadding = 12.dp,
+                            bottomPadding = 12.dp,
+                            endPadding = 6.dp,
+                        )
+                    } else {
+                        Modifier
+                    }
                 ),
             offset = offset,
             scrollState = scrollState,
@@ -103,10 +116,13 @@ fun <T> BongBaekDropdownMenu(
                 EmptyDropDown()
             } else {
                 Column(
-                    modifier = Modifier.padding(
-                        horizontal = 12.dp,
-                        vertical = 4.dp,
-                    ),
+                    modifier = Modifier
+                        .padding(
+                            start = 12.dp,
+                            end = 18.dp,
+                            top = 4.dp,
+                            bottom = 4.dp,
+                        ),
                     verticalArrangement = Arrangement.spacedBy(4.dp),
                 ) {
                     items.forEachIndexed { index, item ->
