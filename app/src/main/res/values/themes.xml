@@ -6,6 +6,9 @@
 
         <item name="iconDisabledPrimary">@color/icon_disabled_primary</item>
         <item name="iconDisabledSecondary">@color/icon_disabled_secondary</item>
+        <item name="iconInteractiveDefault">@color/icon_interactive_default</item>
+        <item name="borderFieldDefault">@color/border_field_default</item>
+        <item name="btnInteractiveTierary">@color/btn_interactive_tierary</item>
     </style>
 
 </resources>

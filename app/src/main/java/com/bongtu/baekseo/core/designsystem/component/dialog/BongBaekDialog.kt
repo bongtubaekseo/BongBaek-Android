@@ -88,26 +88,27 @@ private fun BongBaekDialogContent(
         DialogType.FEATURE_UPDATE -> dialog_feature_update_title to dialog_feature_update_description
     }
     val confirmRes = when (dialogType) {
-            DialogType.DELETE -> dialog_delete_confirm
-            DialogType.LOGOUT -> dialog_logout_confirm
-            DialogType.WITHDRAW -> dialog_withdraw_confirm
-            else -> dialog_update_confirm
-        }
-    val (confirmColor, confirmStyle, confirmPadding) = when (dialogType) {
+        DialogType.DELETE -> dialog_delete_confirm
+        DialogType.LOGOUT -> dialog_logout_confirm
+        DialogType.WITHDRAW -> dialog_withdraw_confirm
+        else -> dialog_update_confirm
+    }
+    val (confirmColor, confirmStyle, confirmPadding) =
+        when (dialogType) {
             DialogType.DELETE, DialogType.WITHDRAW -> Triple(
-                bongBaekColors.txtDisplayTertiary,
+                bongBaekColors.statusError,
                 bongBeakTypo.body2Regular16,
                 16.dp,
             )
 
             DialogType.LOGOUT -> Triple(
-                bongBaekColors.txtDisplayTertiary,
+                bongBaekColors.statusError,
                 bongBeakTypo.body1Medium16,
                 3.dp,
             )
 
             DialogType.ERROR_UPDATE, DialogType.FEATURE_UPDATE -> Triple(
-                bongBaekColors.txtDisplayTertiary,
+                bongBaekColors.txtInteractivePrimary,
                 bongBeakTypo.body1Medium16,
                 3.dp,
             )
@@ -117,7 +118,7 @@ private fun BongBaekDialogContent(
         modifier = modifier
             .fillMaxWidth()
             .clip(RoundedCornerShape(10.dp))
-            .background(color = bongBaekColors.txtDisplayTertiary)
+            .background(color = bongBaekColors.bgDisplayCard)
             .padding(
                 start = 20.dp,
                 top = 20.dp,
@@ -128,7 +129,7 @@ private fun BongBaekDialogContent(
         Text(
             text = stringResource(id = titleRes),
             style = bongBeakTypo.titleSemiBold20,
-            color = bongBaekColors.txtDisplayTertiary,
+            color = bongBaekColors.txtDisplayPrimary,
         )
 
         Spacer(modifier = Modifier.size(6.dp))
@@ -155,7 +156,7 @@ private fun BongBaekDialogContent(
                         )
                         .noRippleClickable(onDismissRequest),
                     style = bongBeakTypo.body2Regular16,
-                    color = bongBaekColors.txtDisplayTertiary,
+                    color = bongBaekColors.txtInteractiveSecondary,
                 )
             }
 

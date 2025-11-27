@@ -76,12 +76,12 @@ fun RoundedBoxTextField(
         when {
             isError -> bongBaekColors.statusError
             isFocused -> bongBaekColors.statusFocused
-            else -> bongBaekColors.transparent
+            else -> bongBaekColors.borderFieldDefault
         }
     }
 
     val textColor = remember(isError) {
-        if (isError) bongBaekColors.statusError else bongBaekColors.txtDisplayPrimary
+        if (isError) bongBaekColors.statusError else bongBaekColors.txtFieldValue
     }
 
     LaunchedEffect(isFocused) {
@@ -95,7 +95,7 @@ fun RoundedBoxTextField(
         Box(
             modifier = Modifier
                 .background(
-                    color = BongBaekTheme.colors.bgFieldSecondary,
+                    color = BongBaekTheme.colors.bgFieldPrimary,
                     shape = roundedCornerShape,
                 )
                 .border(
@@ -112,6 +112,7 @@ fun RoundedBoxTextField(
                 textStyle = BongBaekTheme.typography.body1Medium16,
                 placeholder = placeholder,
                 placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
+                placeholderStyle = BongBaekTheme.typography.body2Regular16,
                 isReadOnly = !isEditable,
                 isEnabled = isEditable,
                 interactionSource = interactionSource,

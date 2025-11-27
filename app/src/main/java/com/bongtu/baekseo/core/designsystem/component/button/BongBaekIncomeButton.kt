@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.onboarding.component
+package com.bongtu.baekseo.core.designsystem.component.button
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -28,16 +28,21 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 @Composable
-fun OnBoardingButton(
+fun BongBaekIncomeButton(
     title: String,
-    selected: Boolean,
+    isSelected: Boolean?,
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    val backgroundColor =
-        if (selected) BongBaekTheme.colors.btnInteractiveDisabled else BongBaekTheme.colors.btnInteractiveTertiary
-    val borderColor =
-        if (selected) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.borderFieldDefault
+    val (backgroundColor, borderColor) =
+        if (isSelected == true) BongBaekTheme.colors.btnInteractiveDisabled to BongBaekTheme.colors.statusFocused
+        else BongBaekTheme.colors.btnInteractiveTertiary to BongBaekTheme.colors.borderFieldDefault
+
+    val textColor = when (isSelected) {
+        true -> BongBaekTheme.colors.statusFocused
+        false -> BongBaekTheme.colors.txtStatusDisabled
+        else -> BongBaekTheme.colors.txtInteractivePrimary
+    }
 
     Row(
         modifier = modifier
@@ -60,12 +65,12 @@ fun OnBoardingButton(
         Text(
             text = title,
             style = BongBaekTheme.typography.body2Regular14,
-            color = BongBaekTheme.colors.txtInteractivePrimary,
+            color = textColor,
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        if (selected) {
+        if (isSelected == true) {
             Icon(
                 imageVector = ImageVector.vectorResource(id = ic_select),
                 contentDescription = null,
@@ -77,26 +82,26 @@ fun OnBoardingButton(
 
 @Preview
 @Composable
-private fun OnBoardingButtonPreview() {
-    var selected by remember { mutableStateOf(true) }
+private fun BongBaekIncomeButtonPreview() {
+    var isSelected by remember { mutableStateOf(true) }
 
     BongBaekTheme {
         Column(
             verticalArrangement = Arrangement.spacedBy(4.dp),
         ) {
-            OnBoardingButton(
+            BongBaekIncomeButton(
                 title = "월 200만원 미만",
-                selected = selected,
+                isSelected = isSelected,
                 onClick = {
-                    if (!selected) selected = true
+                    if (!isSelected) isSelected = true
                 },
             )
 
-            OnBoardingButton(
+            BongBaekIncomeButton(
                 title = "월 200만원 이상",
-                selected = !selected,
+                isSelected = !isSelected,
                 onClick = {
-                    if (selected) selected = false
+                    if (isSelected) isSelected = false
                 },
             )
         }

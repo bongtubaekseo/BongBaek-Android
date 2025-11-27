@@ -54,6 +54,7 @@ import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekIncomeButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
@@ -66,7 +67,6 @@ import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToHome
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingSideEffect.NavigateToLogin
 import com.bongtu.baekseo.presentation.onboarding.OnBoardingContract.OnBoardingUiState
-import com.bongtu.baekseo.presentation.onboarding.component.OnBoardingButton
 
 @Composable
 fun OnBoardingRoute(
@@ -94,6 +94,7 @@ fun OnBoardingRoute(
         onBirthChange = viewModel::updateBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
         onIncomeChange = viewModel::updateIncome,
+        onIncomeButtonChange = viewModel::updateIncomeButtonState,
         onBackClick = viewModel::navigateToLogin,
         onStartClick = viewModel::postSignUp,
         checkButtonEnabled = viewModel::updateButtonState,
@@ -108,6 +109,7 @@ fun OnBoardingScreen(
     onBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
     onIncomeChange: (IncomeType) -> Unit,
+    onIncomeButtonChange: (IncomeType) -> Boolean?,
     onBackClick: () -> Unit,
     onStartClick: () -> Unit,
     checkButtonEnabled: () -> Boolean,
@@ -126,6 +128,7 @@ fun OnBoardingScreen(
 
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     var switchChecked by remember { mutableStateOf(false) }
+
     val isIncomeSelectionInvalid = uiState.income == IncomeType.NONE && switchChecked
 
     Column(
@@ -166,7 +169,7 @@ fun OnBoardingScreen(
                     errorText = uiState.nameError,
                     isRequired = true,
                     onTextChange = onNameChange,
-                    isClearButtonEnabled = false,
+                    isClearButtonEnabled = true,
                 )
 
                 LabelTextField(
@@ -210,6 +213,7 @@ fun OnBoardingScreen(
                         style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.txtDisplaySecondary,
                     )
+
                     BongBaekSwitch(
                         checked = switchChecked,
                         onCheckedChange = {
@@ -233,20 +237,20 @@ fun OnBoardingScreen(
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
-                            style = BongBaekTheme.typography.body1Medium16,
+                            style = BongBaekTheme.typography.titleSemiBold18,
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
-                        OnBoardingButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = uiState.income == IncomeType.UNDER_200,
+                            isSelected = onIncomeButtonChange(IncomeType.UNDER_200),
                             onClick = { onIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
-                        OnBoardingButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = uiState.income == IncomeType.OVER_200,
+                            isSelected = onIncomeButtonChange(IncomeType.OVER_200),
                             onClick = { onIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -264,7 +268,7 @@ fun OnBoardingScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        bottom = 38.dp,
+                        bottom = 36.dp,
                     ),
                 enabled = checkButtonEnabled() && !isIncomeSelectionInvalid,
             )
@@ -295,6 +299,7 @@ private fun OnBoardingSettingScreenPreview() {
             onBirthChange = {},
             onDialogBirthChange = {},
             onIncomeChange = {},
+            onIncomeButtonChange = { true },
             onBackClick = {},
             onStartClick = {},
             checkButtonEnabled = { true },

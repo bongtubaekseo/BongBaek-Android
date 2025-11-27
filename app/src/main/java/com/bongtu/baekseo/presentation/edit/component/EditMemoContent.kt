@@ -99,9 +99,10 @@ fun EditMemoContent(
                         }
                     },
                     textColor = BongBaekTheme.colors.txtFieldValue,
+                    textStyle = BongBaekTheme.typography.body2Regular16,
                     placeholder = stringResource(edit_memo_text_field_placeholder),
                     placeholderColor = BongBaekTheme.colors.txtFieldPlaceholder,
-                    textStyle = BongBaekTheme.typography.body2Regular16,
+                    placeholderStyle = BongBaekTheme.typography.body2Regular16,
                     keyboardOptions = KeyboardOptions(
                         imeAction = ImeAction.Done,
                     ),

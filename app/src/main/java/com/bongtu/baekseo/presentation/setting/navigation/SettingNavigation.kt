@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.mypage.navigation
+package com.bongtu.baekseo.presentation.setting.navigation
 
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
@@ -10,32 +10,30 @@ import androidx.navigation.compose.navigation
 import com.bongtu.baekseo.core.common.navigation.MainTabRoute
 import com.bongtu.baekseo.core.common.navigation.Route
 import com.bongtu.baekseo.core.util.sharedViewModel
-import com.bongtu.baekseo.presentation.mypage.MyPageRoute
-import com.bongtu.baekseo.presentation.mypage.MyPageViewModel
-import com.bongtu.baekseo.presentation.mypage.ProfileEditRoute
+import com.bongtu.baekseo.presentation.setting.ProfileEditRoute
+import com.bongtu.baekseo.presentation.setting.SettingRoute
+import com.bongtu.baekseo.presentation.setting.SettingViewModel
 import kotlinx.serialization.Serializable
 
-fun NavController.navigateToMyPage(navOptions: NavOptions? = null) =
-    navigate(MyPage, navOptions)
+fun NavController.navigateToSetting(navOptions: NavOptions? = null) =
+    navigate(Setting, navOptions)
 
 fun NavController.navigateToProfileEdit(navOptions: NavOptions? = null) =
     navigate(ProfileEdit, navOptions)
 
-fun NavGraphBuilder.myPageGraph(
+fun NavGraphBuilder.settingGraph(
     navController: NavHostController,
-    navigateUp: () -> Unit,
     navigateToWithdraw: () -> Unit,
     onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    navigation<MyPage>(
-        startDestination = MyPageMain,
+    navigation<Setting>(
+        startDestination = SettingMain,
     ) {
-        composable<MyPageMain> {  backStackEntry ->
-            val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
+        composable<SettingMain> { backStackEntry ->
+            val viewModel = backStackEntry.sharedViewModel<SettingViewModel>(navController)
 
-            MyPageRoute(
-                navigateUp = navigateUp,
+            SettingRoute(
                 navigateToEditProfile = navController::navigateToProfileEdit,
                 navigateToWithdraw = navigateToWithdraw,
                 onRestartApp = onRestartApp,
@@ -45,10 +43,10 @@ fun NavGraphBuilder.myPageGraph(
         }
 
         composable<ProfileEdit> { backStackEntry ->
-            val viewModel = backStackEntry.sharedViewModel<MyPageViewModel>(navController)
+            val viewModel = backStackEntry.sharedViewModel<SettingViewModel>(navController)
 
             ProfileEditRoute(
-                navigateUp = navController::navigateUp,
+                navigateToUp = navController::navigateUp,
                 viewModel = viewModel,
                 modifier = modifier,
             )
@@ -57,13 +55,10 @@ fun NavGraphBuilder.myPageGraph(
 }
 
 @Serializable
-data object Setting : MainTabRoute
+data object Setting : Route
 
 @Serializable
-data object MyPage : Route
-
-@Serializable
-data object MyPageMain : Route
+data object SettingMain : MainTabRoute
 
 @Serializable
 data object ProfileEdit : Route

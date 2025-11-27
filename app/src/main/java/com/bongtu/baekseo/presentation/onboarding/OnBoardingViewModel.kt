@@ -120,6 +120,15 @@ class OnBoardingViewModel @Inject constructor(
             return name.isNotEmpty() && birth.isNotEmpty() && nameError.isEmpty()
         }
 
+    fun updateIncomeButtonState(incomeType: IncomeType): Boolean? =
+        with(uiState.value) {
+            return when (income) {
+                IncomeType.NONE -> null
+                incomeType -> true
+                else -> false
+            }
+        }
+
     private fun saveUsername(name: String) =
         viewModelScope.launch {
             usernameDataStore.setUsername(name)

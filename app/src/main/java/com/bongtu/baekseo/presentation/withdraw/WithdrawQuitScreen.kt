@@ -6,13 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -21,12 +19,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.bongtu.baekseo.R.drawable.img_withdraw_gift
+import com.bongtu.baekseo.R.drawable.img_withdraw_quit
 import com.bongtu.baekseo.R.string.withdraw_quit_button
 import com.bongtu.baekseo.R.string.withdraw_quit_information
 import com.bongtu.baekseo.R.string.withdraw_quit_title
 import com.bongtu.baekseo.core.common.type.ButtonType
-import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -45,13 +42,12 @@ fun WithdrawQuitScreen(
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .statusBarsPadding()
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
             .padding(horizontal = 20.dp),
         verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Column {
-            Spacer(modifier = Modifier.height(74.dp))
-
+        Column(
+            modifier = Modifier.padding(top = 40.dp),
+        ) {
             Text(
                 text = stringResource(id = withdraw_quit_title),
                 style = BongBaekTheme.typography.headBold24,
@@ -68,7 +64,7 @@ fun WithdrawQuitScreen(
         }
 
         Image(
-            painter = painterResource(id = img_withdraw_gift),
+            painter = painterResource(id = img_withdraw_quit),
             contentDescription = null,
         )
 
