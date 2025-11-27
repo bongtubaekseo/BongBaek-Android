@@ -8,11 +8,15 @@ import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.data.repository.content.ContentsRepository
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.domain.usecase.config.GetUpdateFlagUseCase
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToContentsDetail
 import com.bongtu.baekseo.presentation.home.HomeContract.HomeState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.ImmutableList
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -27,6 +31,9 @@ class HomeViewModel @Inject constructor(
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(HomeState())
     val uiState = _uiState.asStateFlow()
+
+    private val _sideEffect = MutableSharedFlow<HomeSideEffect>()
+    val sideEffect = _sideEffect.asSharedFlow()
 
     val isUpdateDialogVisible = getUpdateFlagUseCase()
         .stateIn(
@@ -55,6 +62,18 @@ class HomeViewModel @Inject constructor(
                 )
             }
             .onFailure {
+                updateHomeUiState(UiState.Failure(it.message ?: "Unknown Error"))
+            }
+    }
+
+    fun fetchContentsDetail(contentId: String) = viewModelScope.launch {
+        contentsRepository.getContentsDetail(contentId)
+            .onSuccess {
+                _uiState.update { currentState ->
+                    currentState.copy(contentsDetail = it)
+                }
+                _sideEffect.emit(NavigateToContentsDetail(it))
+            }.onFailure {
                 updateHomeUiState(UiState.Failure(it.message ?: "Unknown Error"))
             }
     }

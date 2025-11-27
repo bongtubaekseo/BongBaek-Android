@@ -150,6 +150,7 @@ private fun MainNavHost(
         )
 
         homeGraph(
+            navController = navigator.navController,
             navigateToRecord = navigator.navController::navigateToRecord,
             navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToContents = navigator.navController::navigateToContents,
