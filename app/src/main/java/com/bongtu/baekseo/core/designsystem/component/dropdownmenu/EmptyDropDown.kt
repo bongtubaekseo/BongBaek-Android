@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_info_primary
+import com.bongtu.baekseo.R.drawable.ic_caution
 import com.bongtu.baekseo.R.string.search_result_empty
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
@@ -29,22 +29,22 @@ fun EmptyDropDown(
         modifier = modifier
             .fillMaxWidth()
             .background(
-                color = BongBaekTheme.colors.txtDisplayTertiary,
+                color = BongBaekTheme.colors.bgDisplayCard,
                 shape = RoundedCornerShape(10.dp),
             )
-            .padding(vertical = 49.dp),
+            .padding(vertical = 60.dp),
         verticalArrangement = Arrangement.spacedBy(6.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Icon(
-            imageVector = ImageVector.vectorResource(ic_info_primary),
+            imageVector = ImageVector.vectorResource(ic_caution),
             contentDescription = null,
             tint = Color.Unspecified,
         )
 
         Text(
             text = stringResource(search_result_empty),
-            color = BongBaekTheme.colors.txtDisplayTertiary,
+            color = BongBaekTheme.colors.txtDisplaySecondary,
             style = BongBaekTheme.typography.body1Medium16,
         )
     }
