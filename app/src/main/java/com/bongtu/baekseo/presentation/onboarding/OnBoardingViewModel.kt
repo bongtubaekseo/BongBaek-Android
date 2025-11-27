@@ -63,9 +63,14 @@ class OnBoardingViewModel @Inject constructor(
         viewModelScope.launch {
             updateOnBoardingUiState(UiState.Loading)
 
+            if (oauthId == null || oauthProvider == null) {
+                updateOnBoardingUiState(UiState.Failure("Unknown Error"))
+                return@launch
+            }
+
             authRepository.postSignUp(
-                oauthId = oauthId.orEmpty(),
-                oauthProvider = oauthProvider.orEmpty(),
+                oauthId = oauthId,
+                oauthProvider = oauthProvider,
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth,
                 memberIncome = uiState.value.income.label,
