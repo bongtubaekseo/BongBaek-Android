@@ -151,10 +151,14 @@ fun LabelTextField(
             Column(
                 modifier = Modifier
                     .weight(1f)
-                    .bringIntoViewOnFocus(
-                        isFocused = isFocused,
-                        extraBottom = if (isError) 0.dp else (extraBottomPadding ?: 0.dp),
-                    ),
+                    .then(
+                        extraBottomPadding?.let { padding ->
+                            Modifier.bringIntoViewOnFocus(
+                                isFocused = isFocused,
+                                extraBottom = if (isError) 0.dp else padding
+                            )
+                        } ?: Modifier
+                    )
             ) {
                 BongBaekInnerTextField(
                     text = text,
