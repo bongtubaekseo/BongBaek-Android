@@ -129,27 +129,33 @@ fun Modifier.verticalScrollbar(
         val trackRadius = trackCornerRadius.toPx()
         val thumbRadius = thumbCornerRadius.toPx()
 
+        val thumbWidthPx = thumbWidth.toPx()
+        val trackPaddingPx = trackPadding.toPx()
+        val topPaddingPx = topPadding.toPx()
+        val bottomPaddingPx = bottomPadding.toPx()
+        val endPaddingPx = endPadding.toPx()
+
         val viewportHeight = this.size.height
         val viewportWidth = this.size.width
 
         val totalContentHeight = scrollState.maxValue.toFloat() + viewportHeight
         val scrollValue = scrollState.value.toFloat()
 
-        val trackWidth = thumbWidth.toPx() + (trackPadding.toPx() * 2)
+        val trackWidth = thumbWidthPx + (trackPaddingPx * 2)
 
-        val trackHeight = viewportHeight - topPadding.toPx() - bottomPadding.toPx()
+        val trackHeight = viewportHeight - topPaddingPx - bottomPaddingPx
 
-        val thumbSpace = trackHeight - (trackPadding.toPx() * 2)
+        val thumbSpace = trackHeight - (trackPaddingPx * 2)
 
         val thumbHeight =
             (viewportHeight / totalContentHeight) * thumbSpace
 
-        val trackStartX = viewportWidth - endPadding.toPx() - trackWidth
-        val trackStartY = topPadding.toPx()
+        val trackStartX = viewportWidth - endPaddingPx - trackWidth
+        val trackStartY = topPaddingPx
 
-        val thumbStartX = trackStartX + trackPadding.toPx()
+        val thumbStartX = trackStartX + trackPaddingPx
         val thumbStartY =
-            (scrollValue / totalContentHeight) * thumbSpace + topPadding.toPx() + trackPadding.toPx()
+            (scrollValue / totalContentHeight) * thumbSpace + topPaddingPx + trackPaddingPx
 
         // Track
         if (showScrollBarTrack) {
@@ -176,7 +182,7 @@ fun Modifier.verticalScrollbar(
                 y = thumbStartY,
             ),
             size = Size(
-                width = thumbWidth.toPx(),
+                width = thumbWidthPx,
                 height = thumbHeight,
             )
         )
