@@ -99,7 +99,10 @@ fun HomeContentCard(
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_right),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.Top),
+                    modifier = Modifier
+                        .padding(vertical = 3.dp)
+                        .size(20.dp)
+                        .align(Alignment.Top),
                     tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
@@ -111,10 +114,21 @@ fun HomeContentCard(
 @Composable
 private fun HomeContentsCardPreview() {
     BongBaekTheme {
-        HomeContentCard(
-            contentTitle = "MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁",
-            contentCategory = "결혼식",
-            thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            HomeContentCard(
+                contentTitle = "MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁",
+                contentCategory = "결혼식",
+                thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
+                modifier = Modifier.weight(1f),
+            )
+            HomeContentCard(
+                contentTitle = "MZ의 돌잔치 꿀팁",
+                contentCategory = "결혼식",
+                thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }
