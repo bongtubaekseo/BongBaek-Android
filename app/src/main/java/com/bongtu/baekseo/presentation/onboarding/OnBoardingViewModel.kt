@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.IncomeType
-import com.bongtu.baekseo.core.common.type.LoginType
 import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.local.datastore.UsernameDataStore
@@ -33,6 +32,8 @@ class OnBoardingViewModel @Inject constructor(
     private val authRepository: AuthRepository,
 ) : ViewModel() {
     private val oauthId: String? = savedStateHandle.get<String>(OAUTH_ID_KEY)
+    private val oauthProvider: String? = savedStateHandle.get<String>(OAUTH_PROVIDER_KEY)
+
     private val _uiState = MutableStateFlow(OnBoardingUiState())
     val uiState = _uiState.asStateFlow()
 
@@ -64,7 +65,7 @@ class OnBoardingViewModel @Inject constructor(
 
             authRepository.postSignUp(
                 oauthId = oauthId.orEmpty(),
-                oauthProvider = LoginType.KAKAO.label,
+                oauthProvider = oauthProvider.orEmpty(),
                 memberName = uiState.value.name,
                 memberBirthday = uiState.value.birth,
                 memberIncome = uiState.value.income.label,
@@ -141,5 +142,6 @@ class OnBoardingViewModel @Inject constructor(
 
     companion object {
         private const val OAUTH_ID_KEY = "oauthId"
+        private const val OAUTH_PROVIDER_KEY = "oauthProvider"
     }
 }

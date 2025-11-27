@@ -48,7 +48,11 @@ class LoginViewModel @Inject constructor(
             oauthProvider = oauthProvider,
             idToken = idToken,
         ).onSuccess { response ->
-            updateOAuthId(response.oauthId)
+            updateOAuth(
+                newOAuthId = response.oauthId,
+                newOauthProvider = response.oauthProvider
+            )
+
             if (response.isCompletedSignUp) {
                 _sideEffect.emit(NavigateToHome)
                 updateLoginUiState(UiState.Empty)
@@ -68,8 +72,13 @@ class LoginViewModel @Inject constructor(
             )
         }
 
-    private fun updateOAuthId(newOAuthId: String) =
-        _uiState.update {
-            it.copy(oauthId = newOAuthId)
-        }
+    private fun updateOAuth(
+        newOAuthId: String,
+        newOauthProvider: String
+    ) = _uiState.update {
+        it.copy(
+            oauthId = newOAuthId,
+            oauthProvider = newOauthProvider,
+        )
+    }
 }
