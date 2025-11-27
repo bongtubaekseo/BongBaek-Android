@@ -160,6 +160,7 @@ fun LabelTextField(
                     textStyle = textStyle,
                     placeholder = placeholder,
                     placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
+                    placeholderStyle = textStyle,
                     modifier = Modifier
                         .onFocusEvent { focusState ->
                             isFocused = focusState.isFocused
