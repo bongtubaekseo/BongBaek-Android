@@ -20,6 +20,6 @@ interface ContentService {
 
     @GET("/api/v1/content/{contentId}")
     suspend fun getContentsDetail(
-        @Path("contentId") contentId: Int,
+        @Path("contentId") contentId: String,
     ): BaseResponse<GetContentsDetailResponse>
 }

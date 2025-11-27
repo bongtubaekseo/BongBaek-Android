@@ -18,6 +18,6 @@ class ContentDataSourceImpl @Inject constructor(
     )
 
     override suspend fun getContentsDetail(
-        contentId: Int,
+        contentId: String,
     ) = contentService.getContentsDetail(contentId)
 }

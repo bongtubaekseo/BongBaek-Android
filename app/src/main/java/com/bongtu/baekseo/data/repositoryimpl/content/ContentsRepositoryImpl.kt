@@ -41,7 +41,7 @@ class ContentsRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getContentsDetail(
-        contentId: Int,
+        contentId: String,
     ): Result<ContentsDetail> = runCatching {
         contentDataSource.getContentsDetail(contentId)
     }.mapCatching { response ->

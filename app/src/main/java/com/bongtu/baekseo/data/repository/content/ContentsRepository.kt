@@ -13,6 +13,6 @@ interface ContentsRepository {
     ): Result<ImmutableList<HomeContent>>
 
     suspend fun getContentsDetail(
-        contentId: Int,
+        contentId: String,
     ): Result<ContentsDetail>
 }

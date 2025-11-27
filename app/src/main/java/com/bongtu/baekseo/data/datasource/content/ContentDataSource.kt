@@ -14,6 +14,6 @@ interface ContentDataSource {
     ): BaseResponse<GetContentsByPage>
 
     suspend fun getContentsDetail(
-        contentId: Int,
+        contentId: String,
     ): BaseResponse<GetContentsDetailResponse>
 }
