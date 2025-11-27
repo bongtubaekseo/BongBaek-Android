@@ -8,7 +8,10 @@ data class Contents(
     val contentCategory: String,
     val thumbnailUrl: String,
     val createdAt: String? = null,
-)
+) {
+    val displayDate: String
+        get() = createdAt.orEmpty()
+}
 
 data class PagedContents(
     val contents: ImmutableList<Contents>,
