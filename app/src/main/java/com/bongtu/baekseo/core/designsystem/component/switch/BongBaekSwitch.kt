@@ -4,6 +4,7 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -76,7 +77,14 @@ fun BongBaekSwitch(
             Box(
                 modifier = Modifier
                     .size(switchSize)
-                    .clip(shape = CircleShape)
+                    .border(
+                        width = 1.dp,
+                        color = BongBaekTheme.colors.borderInteractiveSwitch,
+                        shape = CircleShape,
+                    )
+                    .clip(
+                        shape = CircleShape,
+                    )
                     .background(color = BongBaekTheme.colors.iconInteractiveInverse),
             )
         }

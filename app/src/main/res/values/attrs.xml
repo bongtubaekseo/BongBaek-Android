@@ -2,4 +2,7 @@
 <resources>
     <attr name="iconDisabledPrimary" format="color" />
     <attr name="iconDisabledSecondary" format="color" />
+    <attr name="iconInteractiveDefault" format="color" />
+    <attr name="borderFieldDefault" format="color" />
+    <attr name="btnInteractiveTierary" format="color" />
 </resources>

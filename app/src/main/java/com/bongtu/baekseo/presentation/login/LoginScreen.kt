@@ -1,16 +1,16 @@
 package com.bongtu.baekseo.presentation.login
 
 import android.app.Activity
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
@@ -31,26 +31,19 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_google
 import com.bongtu.baekseo.R.drawable.ic_kakao
-import com.bongtu.baekseo.R.drawable.img_onboarding
+import com.bongtu.baekseo.R.drawable.ic_login_logo
 import com.bongtu.baekseo.R.string.button_google
 import com.bongtu.baekseo.R.string.button_kakao
 import com.bongtu.baekseo.R.string.login_bottom_sheet_check_age
@@ -60,9 +53,7 @@ import com.bongtu.baekseo.R.string.login_description
 import com.bongtu.baekseo.R.string.login_login_information
 import com.bongtu.baekseo.R.string.login_personal_privacy
 import com.bongtu.baekseo.R.string.login_term_of_use
-import com.bongtu.baekseo.R.string.login_title_prefix
-import com.bongtu.baekseo.R.string.login_title_primary
-import com.bongtu.baekseo.R.string.login_title_suffix
+import com.bongtu.baekseo.R.string.login_title
 import com.bongtu.baekseo.R.string.market_url
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -71,7 +62,6 @@ import com.bongtu.baekseo.core.common.type.LoginType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDialog
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
-import com.bongtu.baekseo.core.designsystem.theme.PretendardBlack
 import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
@@ -131,7 +121,7 @@ fun LoginRoute(
                     )
                 },
                 onError = {
-                    // TODO 추후 구현
+                    // TODO: 에러 추후 구현
                 }
             ).startKakaoLogin()
         },
@@ -204,132 +194,127 @@ fun LoginScreen(
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val scope = rememberCoroutineScope()
 
-    Box(
-        modifier = modifier,
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(color = BongBaekTheme.colors.bgDisplaySecondary)
+            .padding(horizontal = 20.dp)
+            .systemBarsPadding(),
+        verticalArrangement = Arrangement.SpaceBetween,
     ) {
-        Image(
-            painter = painterResource(id = img_onboarding),
-            contentDescription = null,
-            modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop,
-        )
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-                .systemBarsPadding(),
-            verticalArrangement = Arrangement.SpaceBetween,
+                .padding(
+                    top = 120.dp,
+                ),
         ) {
-            Column(
-                modifier = Modifier.padding(top = 120.dp),
+            Icon(
+                imageVector = ImageVector.vectorResource(id = ic_login_logo),
+                contentDescription = null,
+                tint = Color.Unspecified,
+            )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            Text(
+                text = stringResource(id = login_title),
+                style = BongBaekTheme.typography.headBold24,
+                color = BongBaekTheme.colors.txtDisplayPrimary,
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            Text(
+                text = stringResource(id = login_description),
+                style = BongBaekTheme.typography.body2Regular14,
+                color = BongBaekTheme.colors.txtDisplaySecondary,
+            )
+        }
+
+        Column(
+            modifier = Modifier
+                .padding(
+                    bottom = 80.dp,
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            BongBaekButton(
+                title = stringResource(id = button_google),
+                onClick = onGoogleLoginClick,
+                buttonType = ButtonType.GOOGLE,
+                modifier = Modifier
+                    .padding(
+                        bottom = 12.dp,
+                    )
+                    .fillMaxWidth()
+                    .border(
+                        width = 1.dp,
+                        color = BongBaekTheme.colors.googleGray,
+                        shape = RoundedCornerShape(10.dp),
+                    ),
+                enabled = uiState.loadState !is UiState.Loading,
+                textStyle = BongBaekTheme.typography.robotoMedium14,
+                paddingValues = PaddingValues(vertical = 15.dp),
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_google),
+                        contentDescription = null,
+                        tint = Color.Unspecified,
+                        modifier = Modifier
+                            .padding(end = 15.dp),
+                    )
+                },
+            )
+
+            BongBaekButton(
+                title = stringResource(id = button_kakao),
+                onClick = onKakaoLoginClick,
+                buttonType = ButtonType.KAKAO,
+                modifier = Modifier.fillMaxWidth(),
+                enabled = uiState.loadState !is UiState.Loading,
+                textStyle = BongBaekTheme.typography.titleSemiBold18,
+                leadingIcon = {
+                    Icon(
+                        imageVector = ImageVector.vectorResource(ic_kakao),
+                        contentDescription = null,
+                        tint = BongBaekTheme.colors.black,
+                        modifier = Modifier
+                            .padding(end = 10.dp),
+                    )
+                },
+            )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Text(
+                text = stringResource(id = login_login_information),
+                style = BongBaekTheme.typography.captionRegular12,
+                color = BongBaekTheme.colors.txtDisplayTertiary,
+            )
+
+            Row(
+                modifier = Modifier
+                    .padding(
+                        top = 4.dp,
+                    ),
             ) {
                 Text(
-                    text = buildAnnotatedString {
-                        append(stringResource(id = login_title_prefix))
-                        withStyle(
-                            style = SpanStyle(
-                                color = BongBaekTheme.colors.txtInteractiveInverse,
-                                fontFamily = PretendardBlack,
-                                fontSize = 26.sp,
-                                letterSpacing = (-0.03).em,
-                            ),
-                        ) {
-                            append(stringResource(id = login_title_primary))
-                        }
-                        append(stringResource(id = login_title_suffix))
-                    },
-                    style = BongBaekTheme.typography.headBold26,
-                    color = BongBaekTheme.colors.splashTitle,
-                )
-
-                Text(
-                    text = stringResource(id = login_description),
-                    modifier = Modifier.padding(top = 30.dp),
-                    style = BongBaekTheme.typography.body2Regular16,
-                    color = BongBaekTheme.colors.txtDisplaySecondary,
-                )
-            }
-
-            Column(
-                horizontalAlignment = Alignment.CenterHorizontally,
-            ) {
-                BongBaekButton(
-                    title = stringResource(id = button_google),
-                    onClick = onGoogleLoginClick,
-                    buttonType = ButtonType.GOOGLE,
-                    modifier = Modifier
-                        .padding(
-                            bottom = 12.dp,
-                        )
-                        .fillMaxWidth()
-                        .border(
-                            width = 1.dp,
-                            color = BongBaekTheme.colors.googleGray,
-                            shape = RoundedCornerShape(10.dp),
-                        ),
-                    enabled = uiState.loadState !is UiState.Loading,
-                    textStyle = BongBaekTheme.typography.robotoMedium14,
-                    paddingValues = PaddingValues(vertical = 15.dp),
-                    leadingIcon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_google),
-                            contentDescription = null,
-                            tint = Color.Unspecified,
-                            modifier = Modifier
-                                .padding(end = 15.dp),
-                        )
-                    },
-                )
-
-                BongBaekButton(
-                    title = stringResource(id = button_kakao),
-                    onClick = onKakaoLoginClick,
-                    buttonType = ButtonType.KAKAO,
-                    modifier = Modifier.fillMaxWidth(),
-                    enabled = uiState.loadState !is UiState.Loading,
-                    textStyle = BongBaekTheme.typography.titleSemiBold18,
-                    leadingIcon = {
-                        Icon(
-                            imageVector = ImageVector.vectorResource(ic_kakao),
-                            contentDescription = null,
-                            tint = BongBaekTheme.colors.black,
-                            modifier = Modifier
-                                .padding(end = 10.dp),
-                        )
-                    },
-                )
-
-                Text(
-                    text = stringResource(id = login_login_information),
-                    modifier = Modifier.padding(top = 20.dp),
+                    text = stringResource(id = login_personal_privacy),
+                    textDecoration = TextDecoration.Underline,
                     style = BongBaekTheme.typography.captionRegular12,
                     color = BongBaekTheme.colors.txtDisplayTertiary,
+                    modifier = Modifier.noRippleClickable(onClick = onPrivacyClick),
                 )
 
-                Row(
-                    modifier = Modifier.padding(
-                        top = 4.dp,
-                        bottom = 26.dp,
-                    ),
-                ) {
-                    Text(
-                        text = stringResource(id = login_personal_privacy),
-                        textDecoration = TextDecoration.Underline,
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.txtInteractiveInverse,
-                        modifier = Modifier.noRippleClickable(onClick = onPrivacyClick),
-                    )
+                Spacer(modifier = Modifier.width(30.dp))
 
-                    Spacer(modifier = Modifier.width(30.dp))
-
-                    Text(
-                        text = stringResource(id = login_term_of_use),
-                        textDecoration = TextDecoration.Underline,
-                        style = BongBaekTheme.typography.captionRegular12,
-                        color = BongBaekTheme.colors.txtInteractiveInverse,
-                        modifier = Modifier.noRippleClickable(onClick = onTermsClick),
-                    )
-                }
+                Text(
+                    text = stringResource(id = login_term_of_use),
+                    textDecoration = TextDecoration.Underline,
+                    style = BongBaekTheme.typography.captionRegular12,
+                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    modifier = Modifier.noRippleClickable(onClick = onTermsClick),
+                )
             }
         }
     }
@@ -364,7 +349,7 @@ fun LoginScreen(
 
 @Preview
 @Composable
-private fun OnBoardingScreenLoginPreview() {
+private fun LoginScreenPreview() {
     BongBaekTheme {
         LoginScreen(
             uiState = LoginUiState(),

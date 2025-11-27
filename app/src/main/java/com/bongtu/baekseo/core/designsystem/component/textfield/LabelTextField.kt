@@ -28,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusEvent
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
@@ -92,20 +93,26 @@ fun LabelTextField(
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
 
     val bongBaekColors = BongBaekTheme.colors
+
     val dividerColor = when {
         isError -> bongBaekColors.statusError
-        isFocused -> bongBaekColors.txtDisplayTertiary
-        isFilled -> bongBaekColors.txtDisplayTertiary
-        else -> bongBaekColors.txtDisplayTertiary
+        isFocused -> bongBaekColors.statusFocused
+        isFilled -> bongBaekColors.borderFieldFilled
+        else -> bongBaekColors.borderFieldDefault
     }
 
     val textColor = when {
-        isError -> bongBaekColors.txtDisplayTertiary
+        isError -> bongBaekColors.statusError
         isDimmed -> bongBaekColors.txtDisplayTertiary
-        else -> bongBaekColors.txtDisplayTertiary
+        else -> bongBaekColors.txtFieldValue
     }
-    
-    val labelTextColor = if(isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplayTertiary
+
+    val textStyle =
+        if (isFocused) BongBaekTheme.typography.body2Regular16
+        else BongBaekTheme.typography.body1Medium16
+
+    val labelTextColor =
+        if (isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplaySecondary
 
     Column(
         modifier = modifier
@@ -118,11 +125,12 @@ fun LabelTextField(
             Icon(
                 imageVector = ImageVector.vectorResource(id = labelImage),
                 contentDescription = null,
-                tint = BongBaekTheme.colors.txtDisplayTertiary,
+                tint = Color.Unspecified,
                 modifier = Modifier
-                    .height(16.dp)
-                    .padding(end = 6.dp),
+                    .size(20.dp)
+                    .padding(end = 4.dp),
             )
+
             Text(
                 text = labelName,
                 style = BongBaekTheme.typography.body1Medium14,
@@ -133,7 +141,7 @@ fun LabelTextField(
                 Text(
                     text = stringResource(label_text_field_required_text),
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    color = BongBaekTheme.colors.statusFocused,
                     modifier = Modifier
                         .padding(start = 2.dp),
                 )
@@ -144,8 +152,10 @@ fun LabelTextField(
             text = text,
             onTextChange = onTextChange,
             textColor = textColor,
+            textStyle = textStyle,
             placeholder = placeholder,
             placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
+            placeholderStyle = textStyle,
             modifier = Modifier
                 .onFocusEvent { focusState ->
                     isFocused = focusState.isFocused
@@ -153,7 +163,6 @@ fun LabelTextField(
                 },
             isReadOnly = !isEditable,
             isEnabled = isEditable,
-            textStyle = BongBaekTheme.typography.body2Regular16,
             keyboardOptions = KeyboardOptions(
                 keyboardType = keyboardType,
                 imeAction = ImeAction.Done,
@@ -169,7 +178,7 @@ fun LabelTextField(
                     Icon(
                         imageVector = ImageVector.vectorResource(id = ic_cancel),
                         contentDescription = null,
-                        tint = BongBaekTheme.colors.txtDisplayTertiary,
+                        tint = BongBaekTheme.colors.iconDisabledPrimary,
                         modifier = Modifier.noRippleClickable { onTextChange("") },
                     )
                 }
@@ -196,16 +205,17 @@ fun LabelTextField(
                 Icon(
                     imageVector = ImageVector.vectorResource(id = ic_caution),
                     contentDescription = null,
-                    tint = BongBaekTheme.colors.txtDisplayTertiary,
+                    tint = BongBaekTheme.colors.statusError,
                     modifier = Modifier
                         .size(14.dp),
                 )
+
                 Text(
                     text = errorText,
                     modifier = Modifier
                         .padding(start = 4.dp),
                     style = BongBaekTheme.typography.captionRegular12,
-                    color = BongBaekTheme.colors.txtDisplayTertiary,
+                    color = BongBaekTheme.colors.statusError,
                 )
             }
         }

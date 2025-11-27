@@ -31,9 +31,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check
 import com.bongtu.baekseo.R.drawable.ic_withdraw_check_gray
+import com.bongtu.baekseo.R.drawable.ic_withdraw_check_primary
 import com.bongtu.baekseo.R.string.input_text_field_placeholder
 import com.bongtu.baekseo.R.string.withdraw_reason_account
 import com.bongtu.baekseo.R.string.withdraw_reason_error
@@ -117,11 +117,12 @@ private fun WithdrawSelectorItem(
     onFocusChange: (Boolean) -> Unit = {},
 ) {
     val bongBaekColors = BongBaekTheme.colors
+    val bongBaekStyle = BongBaekTheme.typography
     val (iconRes, titleColor) = remember(isSelected) {
         when (isSelected) {
-            true -> ic_check to bongBaekColors.txtInteractivePrimary
-            false -> ic_withdraw_check_gray to bongBaekColors.txtInteractivePrimary
-            else -> ic_withdraw_check to bongBaekColors.txtDisplayTertiary
+            true -> ic_withdraw_check_primary to bongBaekColors.txtInteractivePrimary
+            false -> ic_withdraw_check_gray to bongBaekColors.txtDisplayTertiary
+            else -> ic_withdraw_check to bongBaekColors.txtInteractivePrimary
         }
     }
     val titleRes = remember(reason) {
@@ -134,81 +135,90 @@ private fun WithdrawSelectorItem(
             WithdrawType.OTHER -> withdraw_reason_etc
         }
     }
+    val titleStyle = remember(isSelected) {
+        when (isSelected) {
+            false -> bongBaekStyle.body2Regular16
+            else -> bongBaekStyle.body1Medium16
+        }
+    }
+    val backgroundColor = remember(isSelected) {
+        when (isSelected) {
+            true -> bongBaekColors.btnInteractiveInput
+            else -> bongBaekColors.btnInteractiveTertiary
+        }
+    }
 
     val focusManager = LocalFocusManager.current
 
     Column(
-        modifier = modifier,
+        modifier = modifier
+            .fillMaxWidth()
+            .then(
+                if (isSelected == true)
+                    Modifier.border(
+                        width = 1.dp,
+                        color = bongBaekColors.statusFocused,
+                        shape = RoundedCornerShape(10.dp),
+                    )
+                else Modifier
+            )
+            .background(
+                color = backgroundColor,
+                shape = RoundedCornerShape(10.dp),
+            )
+            .padding(12.dp),
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .then(
-                    if (isSelected == true)
-                        Modifier.border(
-                            width = 1.dp,
-                            color = bongBaekColors.statusFocused,
-                            shape = RoundedCornerShape(10.dp),
-                        )
-                    else Modifier
-                )
-                .background(
-                    color = bongBaekColors.btnInteractiveInput,
-                    shape = RoundedCornerShape(10.dp),
-                )
-                .padding(12.dp),
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically,
         ) {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(8.dp),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                Icon(
-                    imageVector = ImageVector.vectorResource(iconRes),
-                    contentDescription = null,
-                    modifier = Modifier.align(Alignment.Top),
-                    tint = Color.Unspecified,
+            Icon(
+                imageVector = ImageVector.vectorResource(iconRes),
+                contentDescription = null,
+                modifier = Modifier.align(Alignment.Top),
+                tint = Color.Unspecified,
+            )
+
+            if (reason == WithdrawType.OTHER && isSelected == true) {
+                BongBaekInnerTextField(
+                    text = value,
+                    onTextChange = {
+                        if (it.checkLength() <= ETC_INPUT_MAX_LENGTH)
+                            onValueChange(it)
+                    },
+                    textColor = BongBaekTheme.colors.txtInteractivePrimary,
+                    textStyle = BongBaekTheme.typography.body1Medium16,
+                    placeholder = stringResource(id = input_text_field_placeholder),
+                    placeholderColor = bongBaekColors.txtStatusDisabled,
+                    placeholderStyle = BongBaekTheme.typography.body1Medium16,
+                    modifier = Modifier
+                        .weight(1f)
+                        .onFocusChanged { onFocusChange(it.isFocused) },
+                    keyboardOptions = KeyboardOptions(
+                        imeAction = ImeAction.Done,
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = { focusManager.clearFocus() },
+                    ),
+                    isSingleLine = false,
                 )
-
-                if (reason == WithdrawType.OTHER && isSelected == true) {
-                    BongBaekInnerTextField(
-                        text = value,
-                        onTextChange = {
-                            if (it.checkLength() <= ETC_INPUT_MAX_LENGTH)
-                                onValueChange(it)
-                        },
-                        textColor = BongBaekTheme.colors.txtInteractivePrimary,
-                        textStyle = BongBaekTheme.typography.body1Medium16,
-                        placeholder = stringResource(id = input_text_field_placeholder),
-                        placeholderColor = bongBaekColors.txtStatusDisabled,
-                        modifier = Modifier
-                            .weight(1f)
-                            .onFocusChanged { onFocusChange(it.isFocused) },
-                        keyboardOptions = KeyboardOptions(
-                            imeAction = ImeAction.Done,
-                        ),
-                        keyboardActions = KeyboardActions(
-                            onDone = { focusManager.clearFocus() },
-                        ),
-                        isSingleLine = false,
-                    )
-                } else {
-                    Text(
-                        text = stringResource(id = titleRes),
-                        style = BongBaekTheme.typography.body2Regular16,
-                        color = titleColor,
-                    )
-                }
-            }
-            if (etcFocused) {
-                Spacer(modifier = Modifier.size(4.dp))
-
+            } else {
                 Text(
-                    text = stringResource(id = withdraw_reason_etc_length, value.checkLength()),
-                    modifier = Modifier.align(Alignment.End),
-                    style = BongBaekTheme.typography.captionRegular12,
-                    color = bongBaekColors.txtDisplaySecondary,
+                    text = stringResource(id = titleRes),
+                    style = titleStyle,
+                    color = titleColor,
                 )
             }
+        }
+        if (etcFocused) {
+            Spacer(modifier = Modifier.size(4.dp))
+
+            Text(
+                text = stringResource(id = withdraw_reason_etc_length, value.checkLength()),
+                modifier = Modifier.align(Alignment.End),
+                style = BongBaekTheme.typography.captionRegular12,
+                color = bongBaekColors.txtDisplaySecondary,
+            )
         }
     }
 }

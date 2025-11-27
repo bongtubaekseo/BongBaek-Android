@@ -2,4 +2,7 @@
 <resources>
     <color name="icon_disabled_primary">#FFABACAF</color>
     <color name="icon_disabled_secondary">#FFC4C5C8</color>
+    <color name="icon_interactive_default">#FFC4C5C8</color>
+    <color name="border_field_default">#FFDCDEE1</color>
+    <color name="btn_interactive_tierary">#FFEBEDF0</color>
 </resources>
