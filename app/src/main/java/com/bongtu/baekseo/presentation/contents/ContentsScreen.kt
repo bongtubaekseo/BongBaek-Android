@@ -17,9 +17,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -29,31 +31,51 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.string.contents_article
 import com.bongtu.baekseo.R.string.contents_article_count
 import com.bongtu.baekseo.R.string.contents_title
 import com.bongtu.baekseo.core.common.type.EventCategoryType
-import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.fab.BongBaekFAB
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.OnBottomReached
+import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsSideEffect.NavigateToContentsDetail
+import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsUiState
 import com.bongtu.baekseo.presentation.contents.components.ContentsArticleCard
 import com.bongtu.baekseo.presentation.contents.components.ContentsEmptyView
 import com.bongtu.baekseo.presentation.contents.components.ContentsFooter
-import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.launch
 
 @Composable
 fun ContentsRoute(
+    navigateToContentsDetail: () -> Unit,
     modifier: Modifier = Modifier,
+    viewModel: ContentsViewModel = hiltViewModel(),
 ) {
+    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToContentsDetail -> navigateToContentsDetail()
+                }
+            }
+    }
+
     ContentsScreen(
-        articles = persistentListOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
-        selectedEvent = EventCategoryType.ALL,
+        uiState = uiState,
+        onLoadMore = viewModel::fetchContents,
+        onCategoryClick = viewModel::updateCategory,
+        onArticleClick = viewModel::fetchContentsDetail,
         modifier = modifier,
     )
 }
@@ -61,11 +83,18 @@ fun ContentsRoute(
 @OptIn(ExperimentalSharedTransitionApi::class)
 @Composable
 private fun ContentsScreen(
-    articles: ImmutableList<String>,
-    selectedEvent: EventCategoryType,
+    uiState: ContentsUiState,
+    onLoadMore: () -> Unit,
+    onCategoryClick: (EventCategoryType) -> Unit,
+    onArticleClick: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val listState = rememberLazyListState()
+
+    listState.OnBottomReached(buffer = 1) {
+        onLoadMore()
+    }
+
     val showFab by remember {
         derivedStateOf { listState.firstVisibleItemIndex > 1 }
     }
@@ -84,8 +113,8 @@ private fun ContentsScreen(
             )
 
             BongBaekCategoryBar(
-                selectedCategory = selectedEvent,
-                onCategoryClick = { },
+                selectedCategory = uiState.selectedEvent,
+                onCategoryClick = onCategoryClick,
                 isEnabled = true,
                 modifier = Modifier
                     .padding(vertical = 12.dp),
@@ -112,39 +141,47 @@ private fun ContentsScreen(
                         )
 
                         Text(
-                            text = stringResource(contents_article_count, articles.size),
+                            text = stringResource(
+                                contents_article_count,
+                                uiState.articles.size
+                            ),
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                             style = BongBaekTheme.typography.body2Regular16,
                         )
                     }
                 }
 
-                if (articles.isEmpty()) {
+                if (uiState.articles.isEmpty()) {
                     item {
                         ContentsEmptyView()
                     }
                 } else {
-                    items(articles.size) { index ->
+                    itemsIndexed(
+                        items = uiState.articles,
+                        key = { _, article -> article.contentId },
+                    ) { index, article ->
                         ContentsArticleCard(
-                            imageUrl = "",
-                            onCardClick = { },
-                            eventType = if (index % 2 == 0) EventType.WEDDING else EventType.FUNERAL,
-                            title = "경조사 정보 제목 테스트 ${index + 1} 번째 글입니다.",
-                            date = "2025.11.${index + 1}",
+                            imageUrl = article.thumbnailUrl,
+                            onCardClick = {
+                                onArticleClick(article.contentId)
+                            },
+                            eventType = article.contentCategory,
+                            title = article.contentTitle,
+                            date = article.displayDate,
                             modifier = Modifier
                                 .padding(
                                     top = if (index == 0) 20.dp else 12.dp,
                                 ),
                         )
 
-                        if (index == articles.lastIndex)
+                        if (index == uiState.articles.lastIndex) {
                             ContentsFooter(
-                                modifier = Modifier
-                                    .padding(
-                                        top = 12.dp,
-                                        bottom = 28.dp,
-                                    ),
+                                modifier = Modifier.padding(
+                                    top = 12.dp,
+                                    bottom = 28.dp,
+                                ),
                             )
+                        }
                     }
                 }
             }
@@ -174,8 +211,10 @@ private fun ContentsScreen(
 private fun ContentsScreenPreview() {
     BongBaekTheme {
         ContentsScreen(
-            articles = persistentListOf("1", "2", "3", "4", "5", "5", "5", "5", "5", "5", "5"),
-            selectedEvent = EventCategoryType.ALL,
+            uiState = ContentsUiState(),
+            onLoadMore = {},
+            onCategoryClick = {},
+            onArticleClick = {},
         )
     }
 }
