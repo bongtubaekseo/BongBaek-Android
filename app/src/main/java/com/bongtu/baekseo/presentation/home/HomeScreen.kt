@@ -51,7 +51,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.data.model.content.HomeContent
+import com.bongtu.baekseo.data.model.content.Contents
 import com.bongtu.baekseo.data.model.event.HomeEvent
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmCard
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmEmptyCard
@@ -83,7 +83,7 @@ fun HomeRoute(
 
     HomeScreen(
         eventList = uiState.homeEventList,
-        contentsList = uiState.homeContentList,
+        contentsList = uiState.contentList,
         navigateToRecommend = navigateToRecommend,
         navigateToRecord = navigateToRecord,
         navigateToContents = navigateToContents,
@@ -102,7 +102,7 @@ fun HomeRoute(
 @Composable
 fun HomeScreen(
     eventList: ImmutableList<HomeEvent>,
-    contentsList: ImmutableList<HomeContent>,
+    contentsList: ImmutableList<Contents>,
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToContents: () -> Unit,
@@ -361,19 +361,19 @@ private fun HomeScreenPreview() {
     )
 
     val contentsList = persistentListOf(
-        HomeContent(
+        Contents(
             contentId = "contentId1",
             contentTitle = "contentTitle1",
             contentCategory = "contentCategory1",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContent(
+        Contents(
             contentId = "contentId2",
             contentTitle = "contentTitle2",
             contentCategory = "contentCategory2",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContent(
+        Contents(
             contentId = "contentId3",
             contentTitle = "contentTitle3",
             contentCategory = "contentCategory3",
