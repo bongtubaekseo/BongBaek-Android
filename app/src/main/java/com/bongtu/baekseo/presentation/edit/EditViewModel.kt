@@ -15,7 +15,11 @@ import com.bongtu.baekseo.data.model.event.Location
 import com.bongtu.baekseo.data.model.map.Place
 import com.bongtu.baekseo.data.repository.event.EventRepository
 import com.bongtu.baekseo.data.repository.map.KakaoMapRepository
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToFinal
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToLocation
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.navigation.Edit
 import com.bongtu.baekseo.presentation.edit.navigation.EditNavType
@@ -51,7 +55,7 @@ class EditViewModel @Inject constructor(
     private val _uiState = MutableStateFlow(EditUiState())
     val uiState = _uiState.asStateFlow()
 
-    private val _sideEffect = MutableSharedFlow<EditContract.EditSideEffect>()
+    private val _sideEffect = MutableSharedFlow<EditSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
     private val _searchTerm = MutableStateFlow("")
@@ -167,7 +171,7 @@ class EditViewModel @Inject constructor(
 
     fun submitEventInformation(entryType: EditEntryType) {
         when (entryType) {
-            EditEntryType.FROM_RECORD, EditEntryType.FROM_SCHEDULE, EditEntryType.FROM_RESULT -> saveEventInformation()
+            EditEntryType.FROM_RECORD, EditEntryType.FROM_RESULT -> saveEventInformation()
             EditEntryType.FROM_DETAIL -> patchEventInformation()
         }
     }
@@ -223,15 +227,14 @@ class EditViewModel @Inject constructor(
     }
 
     fun navigateToLocation() = viewModelScope.launch {
-        _sideEffect.emit(EditMainSideEffect.NavigateToLocation)
+        _sideEffect.emit(NavigateToLocation)
     }
 
     fun navigateToComplete() = viewModelScope.launch {
         val destination = when (_entryType.value) {
-            EditEntryType.FROM_RECORD -> EditMainSideEffect.NavigateToRecord
-            EditEntryType.FROM_SCHEDULE -> EditMainSideEffect.NavigateToSchedule
-            EditEntryType.FROM_DETAIL -> EditMainSideEffect.NavigateToDetail
-            EditEntryType.FROM_RESULT -> EditMainSideEffect.NavigateToFinal
+            EditEntryType.FROM_RECORD -> NavigateToRecord
+            EditEntryType.FROM_DETAIL -> NavigateToDetail
+            EditEntryType.FROM_RESULT -> NavigateToFinal
             null -> null
         }
         destination?.let { _sideEffect.emit(it) }

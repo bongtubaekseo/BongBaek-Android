@@ -3,7 +3,6 @@ package com.bongtu.baekseo.presentation.edit
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -22,7 +21,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalDensity
@@ -36,14 +34,21 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
-import com.bongtu.baekseo.R.drawable.ic_calendar
-import com.bongtu.baekseo.R.drawable.ic_check_gray
-import com.bongtu.baekseo.R.drawable.ic_coin
-import com.bongtu.baekseo.R.drawable.ic_event
-import com.bongtu.baekseo.R.drawable.ic_location
-import com.bongtu.baekseo.R.drawable.ic_nickname
-import com.bongtu.baekseo.R.drawable.ic_person
-import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.drawable.ic_record_calendar_off
+import com.bongtu.baekseo.R.drawable.ic_record_calendar_on
+import com.bongtu.baekseo.R.drawable.ic_record_check_off
+import com.bongtu.baekseo.R.drawable.ic_record_check_on
+import com.bongtu.baekseo.R.drawable.ic_record_event_off
+import com.bongtu.baekseo.R.drawable.ic_record_event_on
+import com.bongtu.baekseo.R.drawable.ic_record_location_off
+import com.bongtu.baekseo.R.drawable.ic_record_location_on
+import com.bongtu.baekseo.R.drawable.ic_record_money_on
+import com.bongtu.baekseo.R.drawable.ic_record_nickname_off
+import com.bongtu.baekseo.R.drawable.ic_record_nickname_on
+import com.bongtu.baekseo.R.drawable.ic_record_person_off
+import com.bongtu.baekseo.R.drawable.ic_record_person_on
+import com.bongtu.baekseo.R.drawable.ic_record_relation_off
+import com.bongtu.baekseo.R.drawable.ic_record_relation_on
 import com.bongtu.baekseo.R.string.edit_cost_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_cost_title
 import com.bongtu.baekseo.R.string.edit_date_text_field_placeholder
@@ -63,7 +68,6 @@ import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
 import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
-import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
@@ -82,12 +86,10 @@ import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToDetail
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToFinal
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToLocation
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToRecord
-import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.EditMainSideEffect.NavigateToSchedule
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToDetail
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToFinal
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToLocation
+import com.bongtu.baekseo.presentation.edit.EditContract.EditSideEffect.NavigateToRecord
 import com.bongtu.baekseo.presentation.edit.EditContract.EditUiState
 import com.bongtu.baekseo.presentation.edit.component.EditDropdownMenu
 import com.bongtu.baekseo.presentation.edit.component.EditFieldItem
@@ -95,7 +97,6 @@ import com.bongtu.baekseo.presentation.edit.component.EditLocationContent
 import com.bongtu.baekseo.presentation.edit.component.EditMemoContent
 import com.bongtu.baekseo.presentation.edit.type.EditEntryType
 import kotlinx.collections.immutable.toImmutableList
-import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun EditMainRoute(
@@ -111,12 +112,10 @@ fun EditMainRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<EditSideEffect.EditMainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     is NavigateToRecord -> navigateUp()
                     is NavigateToDetail -> navigateUp()
-                    is NavigateToSchedule -> navigateUp()
                     is NavigateToFinal -> navigateToFinal()
                     is NavigateToLocation -> navigateToEditLocation()
                 }
@@ -166,7 +165,7 @@ private fun EditMainScreen(
     onSubmitEventButtonClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
-    var text by remember { mutableStateOf("") }
+    var dialogText by remember { mutableStateOf("") }
     var isDatePickerDialogVisible by remember { mutableStateOf(false) }
     val relations = RelationType.entries.map { it.label }.toImmutableList()
     val events = EventType.entries.map { it.label }.toImmutableList()
@@ -219,14 +218,17 @@ private fun EditMainScreen(
                         color = BongBaekTheme.colors.bgDisplaySecondary,
                         shape = RoundedCornerShape(10.dp),
                     )
-                    .padding(vertical = 24.dp, horizontal = 20.dp),
+                    .padding(
+                        horizontal = 20.dp,
+                        vertical = 24.dp,
+                    ),
+                verticalArrangement = Arrangement.spacedBy(32.dp),
             ) {
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
-                    labelImage = ic_person,
+                    labelImage = if (isFromResult) ic_record_person_off else ic_record_person_on,
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
-                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nameError,
                     onTextChange = onNameChange,
                     isRequired = true,
@@ -236,10 +238,9 @@ private fun EditMainScreen(
 
                 LabelTextField(
                     labelName = stringResource(id = edit_nickname_title),
-                    labelImage = ic_nickname,
+                    labelImage = if (isFromResult) ic_record_nickname_off else ic_record_nickname_on,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
-                    modifier = Modifier.padding(bottom = 32.dp),
                     errorText = uiState.nicknameError,
                     onTextChange = onNicknameChange,
                     isRequired = true,
@@ -248,7 +249,7 @@ private fun EditMainScreen(
                 )
 
                 EditFieldItem(
-                    iconRes = ic_relation,
+                    iconRes = if (isFromResult) ic_record_relation_off else ic_record_relation_on,
                     labelRes = edit_relation_title,
                     isDimmed = isFromResult,
                     content = {
@@ -258,14 +259,12 @@ private fun EditMainScreen(
                             selectedItem = uiState.relationship,
                             onItemSelected = onRelationSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 EditFieldItem(
-                    iconRes = ic_event,
+                    iconRes = if (isFromResult) ic_record_event_off else ic_record_event_on,
                     labelRes = edit_event_title,
                     isDimmed = isFromResult,
                     content = {
@@ -275,46 +274,32 @@ private fun EditMainScreen(
                             selectedItem = uiState.eventCategory,
                             onItemSelected = onEventSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth(),
-                    verticalAlignment = Alignment.Top,
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                LabelTextField(
+                    labelName = stringResource(id = edit_cost_title),
+                    labelImage = ic_record_money_on,
+                    text = uiState.cost,
+                    placeholder = stringResource(id = edit_cost_text_field_placeholder),
+                    errorText = uiState.costError,
+                    onTextChange = onCostChange,
+                    isRequired = true,
+                    keyboardType = KeyboardType.NumberPassword,
+                    visualTransformation = CostTextFieldFormat(),
+                    extraBottomPadding = 24.dp,
                 ) {
-                    LabelTextField(
-                        labelName = stringResource(id = edit_cost_title),
-                        labelImage = ic_coin,
-                        text = uiState.cost,
-                        modifier = Modifier.weight(1f),
-                        placeholder = stringResource(id = edit_cost_text_field_placeholder),
-                        errorText = uiState.costError,
-                        onTextChange = onCostChange,
-                        isRequired = true,
-                        keyboardType = KeyboardType.NumberPassword,
-                        visualTransformation = CostTextFieldFormat(),
-                        bottomSpacer = 32.dp,
-                    )
-
                     Text(
                         text = stringResource(kr_won),
                         style = BongBaekTheme.typography.body2Regular16,
                         color = BongBaekTheme.colors.txtDisplayPrimary,
-                        modifier = Modifier
-                            .padding(
-                                start = 16.dp,
-                                top = 33.dp,
-                            ),
+                        modifier = Modifier.padding(start = 16.dp),
                     )
                 }
 
                 EditFieldItem(
-                    iconRes = ic_check_gray,
+                    iconRes = if (isFromResult) ic_record_check_off else ic_record_check_on,
                     labelRes = edit_is_attend_title,
                     isDimmed = isFromResult,
                     content = {
@@ -324,25 +309,22 @@ private fun EditMainScreen(
                             selectedItem = uiState.attendLabel,
                             onItemSelected = onAttendSelect,
                             isEditable = !isFromResult,
-                            isDimmed = isFromResult,
                         )
                     },
-                    modifier = Modifier.padding(bottom = 32.dp),
                 )
 
                 LabelTextField(
-                    labelImage = ic_calendar,
+                    labelImage = if (isFromResult) ic_record_calendar_off else ic_record_calendar_on,
                     labelName = stringResource(id = edit_date_title),
                     text = uiState.eventDate,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
-                    modifier = Modifier
-                        .noRippleClickable {
-                            if (!isFromResult) {
-                                text = DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
-                                isDatePickerDialogVisible = true
-                            }
+                    modifier = Modifier.noRippleClickable {
+                        if (!isFromResult) {
+                            dialogText =
+                                DateFormatter.formatLocalDateToNumeric(uiState.eventDate)
+                            isDatePickerDialogVisible = true
                         }
-                        .padding(bottom = 32.dp),
+                    },
                     isRequired = true,
                     isEditable = false,
                     isDimmed = isFromResult,
@@ -351,39 +333,30 @@ private fun EditMainScreen(
                 )
 
                 EditFieldItem(
-                    iconRes = ic_location,
+                    iconRes = if (isFromResult) ic_record_location_off else ic_record_location_on,
                     labelRes = edit_location_title,
                     isDimmed = isFromResult,
-                    content = {
-                        if (isFromResult) {
-                            Text(
-                                text = stringResource(id = location_empty_text),
-                                style = BongBaekTheme.typography.body1Medium14,
-                                color = BongBaekTheme.colors.txtDisplayTertiary,
+                    content = uiState.selectedPlace?.let { place ->
+                        {
+                            EditLocationContent(
+                                place = place,
                             )
-                        } else {
-                            uiState.selectedPlace?.let { place ->
-                                EditLocationContent(
-                                    place = place,
-                                )
-                            }
                         }
                     },
                     isRequired = false,
                     trailing = {
-                        if (!isFromResult) {
-                            Text(
-                                text = stringResource(
-                                    uiState.selectedPlace?.let {
-                                        edit_location_edit_text
-                                    } ?: edit_location_add_text
-                                ),
-                                style = BongBaekTheme.typography.body2Regular14,
-                                color = BongBaekTheme.colors.txtDisplayTertiary,
-                                modifier = Modifier
-                                    .noRippleClickable(navigateToLocation),
-                            )
-                        }
+                        Text(
+                            text = stringResource(uiState.selectedPlace?.let {
+                                edit_location_edit_text
+                            } ?: edit_location_add_text),
+                            style = BongBaekTheme.typography.body2Regular14,
+                            color = BongBaekTheme.colors.txtDisplayTertiary,
+                            modifier = Modifier.noRippleClickable {
+                                if (!isFromResult) {
+                                    navigateToLocation()
+                                }
+                            },
+                        )
                     },
                 )
             }
@@ -392,10 +365,9 @@ private fun EditMainScreen(
                 EditMemoContent(
                     text = uiState.note,
                     onTextChange = onNoteChange,
-                    modifier = Modifier
-                        .padding(
-                            top = 20.dp,
-                        ),
+                    modifier = Modifier.padding(
+                        top = 20.dp,
+                    ),
                 )
             }
 
@@ -406,7 +378,7 @@ private fun EditMainScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        top = 40.dp,
+                        top = 60.dp,
                         bottom = 36.dp,
                     ),
                 enabled = checkIsFormFilled(),
@@ -415,11 +387,11 @@ private fun EditMainScreen(
         if (isDatePickerDialogVisible) {
             BongBaekDatePickerDialog(
                 datePickerDialogType = DatePickerDialogType.DATE,
-                value = text,
-                onValueChange = { text = it },
+                value = dialogText,
+                onValueChange = { dialogText = it },
                 onDismissRequest = {
                     isDatePickerDialogVisible = false
-                    text = ""
+                    dialogText = ""
                 },
                 onConfirmClick = onDateChange,
             )

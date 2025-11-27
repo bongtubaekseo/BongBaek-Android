@@ -29,14 +29,9 @@ class EditContract {
     )
 
     sealed interface EditSideEffect {
-
-        sealed class EditMainSideEffect : EditSideEffect {
-            data object NavigateToRecord : EditMainSideEffect()
-            data object NavigateToDetail : EditMainSideEffect()
-
-            data object NavigateToFinal : EditMainSideEffect()
-            data object NavigateToSchedule : EditMainSideEffect()
-            data object NavigateToLocation : EditMainSideEffect()
-        }
+        data object NavigateToRecord : EditSideEffect
+        data object NavigateToDetail : EditSideEffect
+        data object NavigateToFinal : EditSideEffect
+        data object NavigateToLocation : EditSideEffect
     }
 }
