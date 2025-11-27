@@ -123,8 +123,8 @@ fun LabelTextField(
                 contentDescription = null,
                 tint = Color.Unspecified,
                 modifier = Modifier
-                    .size(20.dp)
-                    .padding(end = 4.dp),
+                    .padding(end = 4.dp)
+                    .size(20.dp),
             )
 
             Text(
