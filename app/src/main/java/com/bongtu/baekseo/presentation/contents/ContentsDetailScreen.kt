@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -27,11 +28,11 @@ import kotlinx.collections.immutable.persistentListOf
 
 @Composable
 fun ContentsDetailScreen(
-    onBackClick: () -> Unit = { },
-    eventType: EventType = EventType.WEDDING,
-    title: String = "이제는 알아야 하는 결혼식 식사 예절",
-    date: String = "2025.01.01",
-    imageUrls: ImmutableList<String> = persistentListOf("", "2", "3", "4", "5", "6", "7", "8"),
+    onBackClick: () -> Unit,
+    eventType: String,
+    title: String,
+    date: String,
+    imageUrls: ImmutableList<String>,
     modifier: Modifier = Modifier,
 ) {
     LazyColumn(
@@ -64,7 +65,7 @@ fun ContentsDetailScreen(
                     )
             ) {
                 Text(
-                    text = eventType.label,
+                    text = eventType,
                     color = BongBaekTheme.colors.statusFocused,
                     style = BongBaekTheme.typography.captionRegular12,
                 )
@@ -99,7 +100,8 @@ fun ContentsDetailScreen(
                 model = it,
                 contentDescription = null,
                 modifier = Modifier
-                    .height(450.dp), // TODO: 이후 지우기
+                    .fillMaxWidth(),
+                contentScale = ContentScale.FillWidth,
             )
         }
     }
@@ -109,6 +111,12 @@ fun ContentsDetailScreen(
 @Composable
 private fun ContentsDetailScreenPreview() {
     BongBaekTheme {
-        ContentsDetailScreen()
+        ContentsDetailScreen(
+            onBackClick = {},
+            eventType = EventType.WEDDING.label,
+            title = "제목이 오는 위치제목이 오는 위치제목이 오는 위치제목이 오는 위치",
+            date = "날짜가 오는 위치",
+            imageUrls = persistentListOf(),
+        )
     }
 }
