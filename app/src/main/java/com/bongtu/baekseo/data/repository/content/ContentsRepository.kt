@@ -9,7 +9,7 @@ interface ContentsRepository {
 
     suspend fun getContentsByPage(
         page: Int,
-        category: String,
+        category: String? = null,
     ): Result<ImmutableList<HomeContent>>
 
     suspend fun getContentsDetail(

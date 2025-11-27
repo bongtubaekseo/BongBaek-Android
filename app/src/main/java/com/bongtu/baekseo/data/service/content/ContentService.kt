@@ -12,10 +12,10 @@ interface ContentService {
     @GET("/api/v1/content/home")
     suspend fun getHomeContents(): BaseResponse<GetHomeContentsResponse>
 
-    @GET("/api/v1/content/{page}")
+    @GET("/api/v1/content/list/{page}")
     suspend fun getContentsByPage(
         @Path("page") page: Int,
-        @Query("category") category: String,
+        @Query("category") category: String?,
     ): BaseResponse<GetContentsByPage>
 
     @GET("/api/v1/content/{contentId}")

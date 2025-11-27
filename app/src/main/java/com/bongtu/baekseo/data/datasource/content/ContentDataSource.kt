@@ -10,7 +10,7 @@ interface ContentDataSource {
 
     suspend fun getContentsByPage(
         page: Int,
-        category: String,
+        category: String?,
     ): BaseResponse<GetContentsByPage>
 
     suspend fun getContentsDetail(

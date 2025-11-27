@@ -21,14 +21,14 @@ class ContentsRepositoryImpl @Inject constructor(
             it.toModel()
         }.toImmutableList()
     }.recoverCatching {
-        Timber.e(it.message)
+        Timber.e(it)
         persistentListOf()
     }
 
 
     override suspend fun getContentsByPage(
         page: Int,
-        category: String,
+        category: String?,
     ): Result<ImmutableList<HomeContent>> = runCatching {
         contentDataSource.getContentsByPage(page, category)
     }.mapCatching { response ->
@@ -36,7 +36,7 @@ class ContentsRepositoryImpl @Inject constructor(
             it.toModel()
         }.toImmutableList()
     }.recoverCatching {
-        Timber.e(it.message)
+        Timber.e(it)
         persistentListOf()
     }
 

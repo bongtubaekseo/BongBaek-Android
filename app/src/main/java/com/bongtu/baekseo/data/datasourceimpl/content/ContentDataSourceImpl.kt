@@ -11,7 +11,7 @@ class ContentDataSourceImpl @Inject constructor(
 
     override suspend fun getContentsByPage(
         page: Int,
-        category: String,
+        category: String?,
     ) = contentService.getContentsByPage(
         page = page,
         category = category,
