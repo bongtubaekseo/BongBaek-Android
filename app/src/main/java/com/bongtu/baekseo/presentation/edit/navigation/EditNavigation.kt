@@ -56,7 +56,7 @@ fun NavGraphBuilder.editGraph(
                 }
 
                 else -> {
-                    EditEntryType.FROM_SCHEDULE
+                    EditEntryType.FROM_RECORD
                 }
             }
 

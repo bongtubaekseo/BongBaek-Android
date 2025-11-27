@@ -28,10 +28,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.drawable.ic_arrow_up
+import com.bongtu.baekseo.R.drawable.ic_arrow_down
 import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
 import com.bongtu.baekseo.core.designsystem.component.dropdownmenu.BongBaekDropdownMenu
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.presentation.edit.type.EditDropDownType
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
@@ -43,21 +44,20 @@ fun EditDropdownMenu(
     selectedItem: String,
     onItemSelected: (String) -> Unit,
     isEditable: Boolean = true,
-    isDimmed: Boolean = false,
 ) {
     var expanded by remember { mutableStateOf(false) }
-    val isSelected = selectedItem.isNotBlank()
-    val bongBaekColors = BongBaekTheme.colors
-    val text = if (isSelected) selectedItem else placeholder
-    val textColor = when {
-        isDimmed -> bongBaekColors.txtFieldValue
-        isSelected && expanded -> bongBaekColors.txtFieldValue
-        isSelected || expanded -> bongBaekColors.txtFieldValue
-        else -> bongBaekColors.txtFieldValue
-    }
-    val borderColor = if (expanded) bongBaekColors.statusFocused else bongBaekColors.transparent
+    val hasValue = selectedItem.isNotBlank()
+
+    val text = if (hasValue) selectedItem else placeholder
+    val dropDownType = EditDropDownType.from(
+        hasValue = hasValue,
+        expanded = expanded,
+    )
+
+    val colorState = dropDownType.getColorState(isEditable = isEditable)
+
     val rotation by animateFloatAsState(
-        targetValue = if (expanded) 180f else 0f,
+        targetValue = if (expanded) -180f else 0f,
         animationSpec = tween(durationMillis = 200, easing = FastOutSlowInEasing),
     )
 
@@ -84,7 +84,7 @@ fun EditDropdownMenu(
                 )
                 .border(
                     width = 1.dp,
-                    color = borderColor,
+                    color = colorState.borderColor,
                     shape = RoundedCornerShape(10.dp),
                 )
                 .padding(
@@ -96,16 +96,16 @@ fun EditDropdownMenu(
             Text(
                 text = text,
                 style = BongBaekTheme.typography.body1Medium16,
-                color = textColor,
+                color = colorState.textColor,
             )
 
             Spacer(modifier = Modifier.weight(1f))
 
             Icon(
-                imageVector = ImageVector.vectorResource(ic_arrow_up),
+                imageVector = ImageVector.vectorResource(ic_arrow_down),
                 contentDescription = null,
                 modifier = Modifier.rotate(rotation),
-                tint = textColor,
+                tint = colorState.iconColor,
             )
         }
     }
