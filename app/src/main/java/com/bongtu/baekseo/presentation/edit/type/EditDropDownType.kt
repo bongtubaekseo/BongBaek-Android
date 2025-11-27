@@ -12,8 +12,7 @@ data class EditDropdownColorState(
     val iconColor: Color,
 )
 
-enum class EditDropDownType(
-) {
+enum class EditDropDownType {
     COLLAPSED_EMPTY,
     EXPANDED_EMPTY,
     EXPANDED_FILLED,
