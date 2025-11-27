@@ -108,6 +108,9 @@ fun LabelTextField(
     val labelTextColor =
         if (isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.txtDisplaySecondary
 
+    val requiredTextColor =
+        if (isDimmed) bongBaekColors.txtDisplayTertiary else bongBaekColors.statusFocused
+
     Column(
         modifier = modifier,
     ) {
@@ -134,7 +137,7 @@ fun LabelTextField(
                 Text(
                     text = stringResource(label_text_field_required_text),
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.statusFocused,
+                    color = requiredTextColor,
                     modifier = Modifier
                         .padding(start = 2.dp),
                 )

@@ -33,8 +33,9 @@ fun EditFieldItem(
     trailing: (@Composable () -> Unit)? = null,
     content: (@Composable () -> Unit)? = null,
 ) {
-    val textColor =
-        if (isDimmed) BongBaekTheme.colors.txtDisplayTertiary else BongBaekTheme.colors.txtDisplayTertiary
+    val (textColor, requiredTextColor) =
+        if (isDimmed) BongBaekTheme.colors.txtDisplayTertiary to BongBaekTheme.colors.txtDisplayTertiary
+        else BongBaekTheme.colors.txtDisplaySecondary to BongBaekTheme.colors.statusFocused
 
     Column(
         modifier = modifier,
@@ -63,7 +64,7 @@ fun EditFieldItem(
                 Text(
                     text = stringResource(id = edit_required_text),
                     style = BongBaekTheme.typography.body1Medium14,
-                    color = BongBaekTheme.colors.statusFocused,
+                    color = requiredTextColor,
                 )
             }
 

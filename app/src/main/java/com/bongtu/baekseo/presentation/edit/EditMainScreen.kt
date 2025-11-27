@@ -34,14 +34,21 @@ import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
-import com.bongtu.baekseo.R.drawable.ic_calendar
-import com.bongtu.baekseo.R.drawable.ic_check_gray
-import com.bongtu.baekseo.R.drawable.ic_coin
-import com.bongtu.baekseo.R.drawable.ic_event
-import com.bongtu.baekseo.R.drawable.ic_location
-import com.bongtu.baekseo.R.drawable.ic_nickname
-import com.bongtu.baekseo.R.drawable.ic_person
-import com.bongtu.baekseo.R.drawable.ic_relation
+import com.bongtu.baekseo.R.drawable.ic_record_calendar_off
+import com.bongtu.baekseo.R.drawable.ic_record_calendar_on
+import com.bongtu.baekseo.R.drawable.ic_record_check_off
+import com.bongtu.baekseo.R.drawable.ic_record_check_on
+import com.bongtu.baekseo.R.drawable.ic_record_event_off
+import com.bongtu.baekseo.R.drawable.ic_record_event_on
+import com.bongtu.baekseo.R.drawable.ic_record_location_off
+import com.bongtu.baekseo.R.drawable.ic_record_location_on
+import com.bongtu.baekseo.R.drawable.ic_record_money_on
+import com.bongtu.baekseo.R.drawable.ic_record_nickname_off
+import com.bongtu.baekseo.R.drawable.ic_record_nickname_on
+import com.bongtu.baekseo.R.drawable.ic_record_person_off
+import com.bongtu.baekseo.R.drawable.ic_record_person_on
+import com.bongtu.baekseo.R.drawable.ic_record_relation_off
+import com.bongtu.baekseo.R.drawable.ic_record_relation_on
 import com.bongtu.baekseo.R.string.edit_cost_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_cost_title
 import com.bongtu.baekseo.R.string.edit_date_text_field_placeholder
@@ -219,7 +226,7 @@ private fun EditMainScreen(
             ) {
                 LabelTextField(
                     labelName = stringResource(id = edit_name_title),
-                    labelImage = ic_person,
+                    labelImage = if (isFromResult) ic_record_person_off else ic_record_person_on,
                     text = uiState.name,
                     placeholder = stringResource(id = edit_name_text_field_placeholder),
                     errorText = uiState.nameError,
@@ -231,7 +238,7 @@ private fun EditMainScreen(
 
                 LabelTextField(
                     labelName = stringResource(id = edit_nickname_title),
-                    labelImage = ic_nickname,
+                    labelImage = if (isFromResult) ic_record_nickname_off else ic_record_nickname_on,
                     text = uiState.nickname,
                     placeholder = stringResource(id = edit_nickname_text_field_placeholder),
                     errorText = uiState.nicknameError,
@@ -242,7 +249,7 @@ private fun EditMainScreen(
                 )
 
                 EditFieldItem(
-                    iconRes = ic_relation,
+                    iconRes = if (isFromResult) ic_record_relation_off else ic_record_relation_on,
                     labelRes = edit_relation_title,
                     isDimmed = isFromResult,
                     content = {
@@ -257,7 +264,7 @@ private fun EditMainScreen(
                 )
 
                 EditFieldItem(
-                    iconRes = ic_event,
+                    iconRes = if (isFromResult) ic_record_event_off else ic_record_event_on,
                     labelRes = edit_event_title,
                     isDimmed = isFromResult,
                     content = {
@@ -273,7 +280,7 @@ private fun EditMainScreen(
 
                 LabelTextField(
                     labelName = stringResource(id = edit_cost_title),
-                    labelImage = ic_coin,
+                    labelImage = ic_record_money_on,
                     text = uiState.cost,
                     placeholder = stringResource(id = edit_cost_text_field_placeholder),
                     errorText = uiState.costError,
@@ -292,7 +299,7 @@ private fun EditMainScreen(
                 }
 
                 EditFieldItem(
-                    iconRes = ic_check_gray,
+                    iconRes = if (isFromResult) ic_record_check_off else ic_record_check_on,
                     labelRes = edit_is_attend_title,
                     isDimmed = isFromResult,
                     content = {
@@ -307,7 +314,7 @@ private fun EditMainScreen(
                 )
 
                 LabelTextField(
-                    labelImage = ic_calendar,
+                    labelImage = if (isFromResult) ic_record_calendar_off else ic_record_calendar_on,
                     labelName = stringResource(id = edit_date_title),
                     text = uiState.eventDate,
                     placeholder = stringResource(id = edit_date_text_field_placeholder),
@@ -326,7 +333,7 @@ private fun EditMainScreen(
                 )
 
                 EditFieldItem(
-                    iconRes = ic_location,
+                    iconRes = if (isFromResult) ic_record_location_off else ic_record_location_on,
                     labelRes = edit_location_title,
                     isDimmed = isFromResult,
                     content = uiState.selectedPlace?.let { place ->
