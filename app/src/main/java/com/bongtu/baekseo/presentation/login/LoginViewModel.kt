@@ -50,7 +50,7 @@ class LoginViewModel @Inject constructor(
         ).onSuccess { response ->
             updateOAuth(
                 newOAuthId = response.oauthId,
-                newOauthProvider = response.oauthProvider
+                newOauthProvider = response.oauthProvider,
             )
 
             if (response.isCompletedSignUp) {
