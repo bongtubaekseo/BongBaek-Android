@@ -130,6 +130,7 @@ fun Modifier.verticalScrollbar(
         val thumbRadius = thumbCornerRadius.toPx()
 
         val thumbWidthPx = thumbWidth.toPx()
+
         val trackPaddingPx = trackPadding.toPx()
         val topPaddingPx = topPadding.toPx()
         val bottomPaddingPx = bottomPadding.toPx()
