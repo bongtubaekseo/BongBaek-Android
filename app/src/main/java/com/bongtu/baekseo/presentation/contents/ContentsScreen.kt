@@ -122,9 +122,9 @@ private fun ContentsScreen(
             )
 
             LazyColumn(
-                state = listState,
                 modifier = Modifier
                     .padding(horizontal = 20.dp),
+                state = listState,
             ) {
                 item {
                     Row(
