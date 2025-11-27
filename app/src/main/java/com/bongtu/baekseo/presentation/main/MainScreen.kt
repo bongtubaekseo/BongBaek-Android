@@ -192,6 +192,8 @@ private fun MainNavHost(
         )
 
         contentsGraph(
+            navController = navigator.navController,
+            navigateToUp = navigator::navigateUp,
             modifier = modifier,
         )
 

@@ -46,6 +46,7 @@ import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekTopBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.OnBottomReached
+import com.bongtu.baekseo.data.model.content.ContentsDetail
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsSideEffect.NavigateToContentsDetail
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsUiState
 import com.bongtu.baekseo.presentation.contents.components.ContentsArticleCard
@@ -55,7 +56,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun ContentsRoute(
-    navigateToContentsDetail: () -> Unit,
+    navigateToContentsDetail: (ContentsDetail) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: ContentsViewModel = hiltViewModel(),
 ) {
@@ -66,7 +67,7 @@ fun ContentsRoute(
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
             .collect { sideEffect ->
                 when (sideEffect) {
-                    is NavigateToContentsDetail -> navigateToContentsDetail()
+                    is NavigateToContentsDetail -> navigateToContentsDetail(sideEffect.contentsDetail)
                 }
             }
     }

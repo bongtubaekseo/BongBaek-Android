@@ -18,6 +18,6 @@ class ContentsContract {
     )
 
     sealed class ContentsSideEffect {
-        data object NavigateToContentsDetail: ContentsSideEffect()
+        data class NavigateToContentsDetail(val contentsDetail: ContentsDetail) : ContentsSideEffect()
     }
 }

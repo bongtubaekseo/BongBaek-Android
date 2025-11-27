@@ -68,7 +68,7 @@ class ContentsViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(contentsDetail = it)
                 }
-                _sideEffect.emit(NavigateToContentsDetail)
+                _sideEffect.emit(NavigateToContentsDetail(it))
             }.onFailure {
                 updateLoadState(UiState.Failure(it.message.orEmpty()))
             }
