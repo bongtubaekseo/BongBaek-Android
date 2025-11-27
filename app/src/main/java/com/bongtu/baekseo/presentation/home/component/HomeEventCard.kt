@@ -30,6 +30,7 @@ import com.bongtu.baekseo.R.drawable.ic_record_relation_off
 import com.bongtu.baekseo.R.string.home_schedule_card_cost
 import com.bongtu.baekseo.R.string.home_schedule_card_title
 import com.bongtu.baekseo.R.string.kr_won
+import com.bongtu.baekseo.R.string.location_empty_text
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.presentation.home.type.HomeScheduleInfoType
@@ -179,6 +180,11 @@ fun HomeEventCardInfo(
         HomeScheduleInfoType.NICKNAME -> ic_record_nickname_off
     }
 
+    val contentText = if (infoType == HomeScheduleInfoType.LOCATION && content.isBlank())
+        stringResource(location_empty_text)
+    else
+        content
+
     Row(
         modifier = modifier,
         verticalAlignment = Alignment.CenterVertically,
@@ -193,7 +199,7 @@ fun HomeEventCardInfo(
         Spacer(modifier = Modifier.width(4.dp))
 
         Text(
-            text = content,
+            text = contentText,
             style = BongBaekTheme.typography.captionRegular12,
             color = BongBaekTheme.colors.txtDisplayTertiary,
         )

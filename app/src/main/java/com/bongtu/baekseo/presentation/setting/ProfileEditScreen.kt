@@ -1,18 +1,16 @@
-package com.bongtu.baekseo.presentation.mypage
+package com.bongtu.baekseo.presentation.setting
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -39,7 +37,6 @@ import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_back
 import com.bongtu.baekseo.R.drawable.ic_calendar
 import com.bongtu.baekseo.R.drawable.ic_person
-import com.bongtu.baekseo.R.drawable.ic_select
 import com.bongtu.baekseo.R.string.birth_text_field_label
 import com.bongtu.baekseo.R.string.birth_text_field_placeholder
 import com.bongtu.baekseo.R.string.name_text_field_label
@@ -50,12 +47,13 @@ import com.bongtu.baekseo.R.string.onboarding_income
 import com.bongtu.baekseo.R.string.onboarding_income_question
 import com.bongtu.baekseo.R.string.profile_edit_button
 import com.bongtu.baekseo.R.string.topbar_profile_edit
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
-import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
+import com.bongtu.baekseo.core.designsystem.component.button.BongBaekIncomeButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
 import com.bongtu.baekseo.core.designsystem.component.switch.BongBaekSwitch
 import com.bongtu.baekseo.core.designsystem.component.textfield.LabelTextField
@@ -65,15 +63,15 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageSideEffect.ProfileEditSideEffect.NavigateToMyPage
-import com.bongtu.baekseo.presentation.mypage.MyPageContract.MyPageUiState
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToSetting
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
 import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun ProfileEditRoute(
-    navigateUp: () -> Unit,
-    viewModel: MyPageViewModel,
+    navigateToUp: () -> Unit,
+    viewModel: SettingViewModel,
     modifier: Modifier = Modifier,
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
@@ -81,10 +79,10 @@ fun ProfileEditRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<MyPageSideEffect.ProfileEditSideEffect>()
+            .filterIsInstance<ProfileEditSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
-                    NavigateToMyPage -> navigateUp()
+                    NavigateToSetting -> navigateToUp()
                 }
             }
     }
@@ -102,11 +100,12 @@ fun ProfileEditRoute(
     ProfileEditScreen(
         uiState = uiState,
         isEditButtonEnabled = uiState.isEditButtonEnabled,
-        navigateUp = navigateUp,
+        navigateToUp = navigateToUp,
         onUserNameChange = viewModel::updateUserName,
         onUserBirthChange = viewModel::updateUserBirth,
         onDialogBirthChange = viewModel::updateDialogBirth,
         onUserIncomeChange = viewModel::updateUserIncome,
+        onIncomeButtonChange = viewModel::updateIncomeButtonState,
         onEditClick = viewModel::patchUserProfile,
         modifier = modifier,
     )
@@ -114,13 +113,14 @@ fun ProfileEditRoute(
 
 @Composable
 private fun ProfileEditScreen(
-    uiState: MyPageUiState,
+    uiState: SettingUiState,
     isEditButtonEnabled: Boolean,
-    navigateUp: () -> Unit,
+    navigateToUp: () -> Unit,
     onUserNameChange: (String) -> Unit,
     onUserBirthChange: (String) -> Unit,
     onDialogBirthChange: (String) -> Unit,
     onUserIncomeChange: (IncomeType) -> Unit,
+    onIncomeButtonChange: (IncomeType) -> Boolean?,
     onEditClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -142,7 +142,7 @@ private fun ProfileEditScreen(
         modifier = modifier
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .fillMaxSize()
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
+            .statusBarsPadding()
             .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
@@ -154,7 +154,7 @@ private fun ProfileEditScreen(
                     contentDescription = null,
                     modifier = Modifier
                         .padding(12.dp)
-                        .noRippleClickable(onClick = navigateUp),
+                        .noRippleClickable(onClick = navigateToUp),
                     tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             },
@@ -175,7 +175,7 @@ private fun ProfileEditScreen(
                     errorText = uiState.nameError,
                     isRequired = true,
                     onTextChange = onUserNameChange,
-                    isClearButtonEnabled = false,
+                    isClearButtonEnabled = true,
                 )
 
                 LabelTextField(
@@ -186,7 +186,11 @@ private fun ProfileEditScreen(
                     modifier = Modifier
                         .padding(top = 30.dp)
                         .noRippleClickable {
-                            onDialogBirthChange(DateFormatter.formatLocalDateToNumeric(uiState.userBirth))
+                            onDialogBirthChange(
+                                DateFormatter.formatLocalDateToNumeric(
+                                    uiState.userBirth,
+                                )
+                            )
                             isDatePickerDialogVisible = true
                             focusManager.clearFocus()
                         },
@@ -238,20 +242,20 @@ private fun ProfileEditScreen(
                     ) {
                         Text(
                             text = stringResource(id = onboarding_income_question),
-                            style = BongBaekTheme.typography.body1Medium16,
+                            style = BongBaekTheme.typography.titleSemiBold18,
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                         )
 
-                        ProfileEditButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_down),
-                            selected = uiState.userIncome == IncomeType.UNDER_200,
+                            isSelected = onIncomeButtonChange(IncomeType.UNDER_200),
                             onClick = { onUserIncomeChange(IncomeType.UNDER_200) },
                             modifier = Modifier.padding(top = 16.dp),
                         )
 
-                        ProfileEditButton(
+                        BongBaekIncomeButton(
                             title = stringResource(id = onboarding_button_income_up),
-                            selected = uiState.userIncome == IncomeType.OVER_200,
+                            isSelected = onIncomeButtonChange(IncomeType.OVER_200),
                             onClick = { onUserIncomeChange(IncomeType.OVER_200) },
                             modifier = Modifier.padding(top = 8.dp),
                         )
@@ -261,7 +265,10 @@ private fun ProfileEditScreen(
 
             BongBaekButton(
                 title = stringResource(id = profile_edit_button),
-                onClick = onEditClick,
+                onClick = {
+                    if (uiState.loadState !is UiState.Loading)
+                        onEditClick()
+                },
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -287,66 +294,19 @@ private fun ProfileEditScreen(
     }
 }
 
-@Composable
-private fun ProfileEditButton(
-    title: String,
-    selected: Boolean,
-    onClick: () -> Unit,
-    modifier: Modifier = Modifier,
-) {
-    val backgroundColor =
-        if (selected) BongBaekTheme.colors.btnInteractiveDisabled else BongBaekTheme.colors.btnInteractiveTertiary
-    val borderColor =
-        if (selected) BongBaekTheme.colors.statusFocused else BongBaekTheme.colors.borderFieldDefault
-
-    Row(
-        modifier = modifier
-            .fillMaxWidth()
-            .clip(shape = RoundedCornerShape(10.dp))
-            .background(color = backgroundColor)
-            .noRippleClickable(onClick)
-            .border(
-                width = 1.dp,
-                color = borderColor,
-                shape = RoundedCornerShape(10.dp),
-            )
-            .padding(
-                start = 18.dp,
-                end = 12.dp,
-            )
-            .padding(vertical = 12.dp),
-        verticalAlignment = Alignment.CenterVertically,
-    ) {
-        Text(
-            text = title,
-            style = BongBaekTheme.typography.body2Regular14,
-            color = BongBaekTheme.colors.statusFocused,
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        if (selected) {
-            Icon(
-                imageVector = ImageVector.vectorResource(id = ic_select),
-                contentDescription = null,
-                tint = BongBaekTheme.colors.statusFocused,
-            )
-        }
-    }
-}
-
 @Preview
 @Composable
 private fun ProfileEditScreenPreview() {
     BongBaekTheme {
         ProfileEditScreen(
-            uiState = MyPageUiState(),
+            uiState = SettingUiState(),
             isEditButtonEnabled = false,
-            navigateUp = {},
+            navigateToUp = {},
             onUserNameChange = {},
             onUserBirthChange = {},
             onDialogBirthChange = {},
             onUserIncomeChange = {},
+            onIncomeButtonChange = { true },
             onEditClick = {},
         )
     }

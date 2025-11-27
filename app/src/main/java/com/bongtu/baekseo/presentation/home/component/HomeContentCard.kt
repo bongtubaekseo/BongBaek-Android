@@ -30,6 +30,8 @@ import coil3.compose.AsyncImage
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 
+private const val IMG_RATIO = 220 / 160f
+
 @Composable
 fun HomeContentCard(
     contentTitle: String,
@@ -54,7 +56,7 @@ fun HomeContentCard(
             contentDescription = null,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(220f / 160f),
+                .aspectRatio(IMG_RATIO),
             contentScale = ContentScale.Crop,
         )
 
@@ -97,7 +99,10 @@ fun HomeContentCard(
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_right),
                     contentDescription = null,
-                    modifier = Modifier.align(Alignment.Top),
+                    modifier = Modifier
+                        .padding(vertical = 3.dp)
+                        .size(20.dp)
+                        .align(Alignment.Top),
                     tint = BongBaekTheme.colors.iconInteractiveDefault,
                 )
             }
@@ -109,10 +114,21 @@ fun HomeContentCard(
 @Composable
 private fun HomeContentsCardPreview() {
     BongBaekTheme {
-        HomeContentCard(
-            contentTitle = "MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁",
-            contentCategory = "결혼식",
-            thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
-        )
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+        ) {
+            HomeContentCard(
+                contentTitle = "MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁MZ의 돌잔치 꿀팁",
+                contentCategory = "결혼식",
+                thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
+                modifier = Modifier.weight(1f),
+            )
+            HomeContentCard(
+                contentTitle = "MZ의 돌잔치 꿀팁",
+                contentCategory = "결혼식",
+                thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }

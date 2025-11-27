@@ -30,6 +30,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
  * @param textStyle 입력 텍스트 스타일
  * @param placeholder 입력 텍스트가 비어 있을 때 표시되는 힌트 텍스트
  * @param placeholderColor 힌트 텍스트 색상
+ * @param placeholderStyle 힌트 텍스트 스타일
  * @param isSingleLine single / multi line
  * @param maxLines 최대 줄 수
  * @param isReadOnly 읽기 전용 여부
@@ -44,6 +45,7 @@ fun BongBaekInnerTextField(
     textStyle: TextStyle,
     placeholder: String,
     placeholderColor: Color,
+    placeholderStyle: TextStyle,
     modifier: Modifier = Modifier,
     isEnabled: Boolean = true,
     isReadOnly: Boolean = false,
@@ -84,7 +86,7 @@ fun BongBaekInnerTextField(
                     if (text.isEmpty()) {
                         Text(
                             text = placeholder,
-                            style = textStyle,
+                            style = placeholderStyle,
                             color = placeholderColor,
                         )
                     }
@@ -107,6 +109,7 @@ private fun BongBaekInnerTextFieldPreview() {
             textColor = BongBaekTheme.colors.txtDisplayTertiary,
             textStyle = BongBaekTheme.typography.body1Medium16,
             placeholder = "placeholder",
+            placeholderStyle = BongBaekTheme.typography.body2Regular16,
             placeholderColor = BongBaekTheme.colors.txtDisplayTertiary,
         )
     }

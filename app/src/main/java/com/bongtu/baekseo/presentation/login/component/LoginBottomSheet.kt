@@ -118,7 +118,7 @@ private fun LoginBottomSheetAgreeContent(
             color = BongBaekTheme.colors.txtDisplayPrimary,
         )
 
-        Spacer(modifier = Modifier.size(30.dp))
+        Spacer(modifier = Modifier.size(32.dp))
 
         LoginAgreeItem(
             item = LoginAgree(
@@ -132,9 +132,8 @@ private fun LoginBottomSheetAgreeContent(
 
         HorizontalDivider(
             modifier = Modifier
-                .fillMaxWidth()
-                .width(1.dp)
-                .padding(vertical = 18.dp),
+                .padding(vertical = 16.dp),
+            thickness = 1.dp,
             color = BongBaekTheme.colors.borderFieldDefault,
         )
 
@@ -159,7 +158,8 @@ private fun LoginBottomSheetAgreeContent(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    vertical = 40.dp,
+                    top = 32.dp,
+                    bottom = 60.dp,
                 ),
             enabled = isAllChecked,
         )
@@ -175,11 +175,10 @@ private fun LoginAgreeItem(
     modifier: Modifier = Modifier,
     onIconClick: () -> Unit = {},
 ) {
-    val (textStyle, textColor) = if (item.isDescription) {
+    val (textStyle, textColor) = if (item.isDescription)
         BongBaekTheme.typography.titleSemiBold16 to BongBaekTheme.colors.txtDisplaySecondary
-    } else {
+    else
         BongBaekTheme.typography.body2Regular16 to BongBaekTheme.colors.txtDisplayTertiary
-    }
 
     Row(
         modifier = modifier

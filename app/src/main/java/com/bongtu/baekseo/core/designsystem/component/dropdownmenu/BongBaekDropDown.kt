@@ -145,15 +145,13 @@ private fun <T> DropDownMenuItem(
 
     val (backgroundColor, textColor) = remember(isSelected, isPressed) {
         when {
-            isPressed -> bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
-            isSelected == true -> bongBaekColors.txtDisplayTertiary to bongBaekColors.txtDisplayTertiary
-            else -> bongBaekColors.transparent to bongBaekColors.txtDisplayTertiary
+            isPressed || isSelected == true -> bongBaekColors.btnInteractiveDisabled to bongBaekColors.statusFocused
+            else -> bongBaekColors.transparent to bongBaekColors.txtInteractivePrimary
         }
     }
     val textStyle = remember(isSelected, isPressed) {
         when {
-            isPressed -> bongBaekTypography.body1Medium16
-            isSelected == true -> bongBaekTypography.body1Medium16
+            isPressed || isSelected == true -> bongBaekTypography.body1Medium16
             else -> bongBaekTypography.body2Regular16
         }
     }

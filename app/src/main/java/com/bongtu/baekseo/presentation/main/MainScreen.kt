@@ -30,7 +30,6 @@ import com.bongtu.baekseo.presentation.login.navigation.Login
 import com.bongtu.baekseo.presentation.login.navigation.loginGraph
 import com.bongtu.baekseo.presentation.login.navigation.navigateToLogin
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
-import com.bongtu.baekseo.presentation.mypage.navigation.myPageGraph
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
@@ -40,6 +39,7 @@ import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommendF
 import com.bongtu.baekseo.presentation.recommend.navigation.recommendGraph
 import com.bongtu.baekseo.presentation.record.navigation.navigateToRecord
 import com.bongtu.baekseo.presentation.record.navigation.recordGraph
+import com.bongtu.baekseo.presentation.setting.navigation.settingGraph
 import com.bongtu.baekseo.presentation.splash.navigation.Splash
 import com.bongtu.baekseo.presentation.splash.navigation.splashGraph
 import com.bongtu.baekseo.presentation.withdraw.navigation.navigateToWithdraw
@@ -216,9 +216,8 @@ private fun MainNavHost(
             modifier = modifier,
         )
 
-        myPageGraph(
+        settingGraph(
             navController = navigator.navController,
-            navigateUp = navigator::navigateUp,
             navigateToWithdraw = navigator.navController::navigateToWithdraw,
             onRestartApp = onRestartApp,
             modifier = modifier,

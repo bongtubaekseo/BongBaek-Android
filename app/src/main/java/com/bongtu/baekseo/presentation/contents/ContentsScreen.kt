@@ -139,7 +139,11 @@ private fun ContentsScreen(
 
                         if (index == articles.lastIndex)
                             ContentsFooter(
-                                modifier = Modifier.padding(top = 12.dp),
+                                modifier = Modifier
+                                    .padding(
+                                        top = 12.dp,
+                                        bottom = 28.dp,
+                                    ),
                             )
                     }
                 }
