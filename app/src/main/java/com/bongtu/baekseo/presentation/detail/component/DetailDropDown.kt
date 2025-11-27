@@ -224,8 +224,8 @@ private fun DetailDropDownItem(
                 contentDescription = null,
                 modifier = Modifier
                     .padding(vertical = 8.dp)
-                    .size(20.dp)
-                    .padding(end = 4.dp),
+                    .padding(end = 4.dp)
+                    .size(20.dp),
                 tint = Color.Unspecified,
             )
 
