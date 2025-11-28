@@ -144,7 +144,7 @@ private fun ContentsScreen(
                         Text(
                             text = stringResource(
                                 contents_article_count,
-                                uiState.articles.size
+                                uiState.articles.size,
                             ),
                             color = BongBaekTheme.colors.txtDisplaySecondary,
                             style = BongBaekTheme.typography.body2Regular16,

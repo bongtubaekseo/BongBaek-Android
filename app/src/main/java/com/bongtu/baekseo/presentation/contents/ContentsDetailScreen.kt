@@ -63,8 +63,7 @@ fun ContentsDetailScreen(
     Box(
         modifier = modifier
             .fillMaxSize()
-            .background(BongBaekTheme.colors.bgDisplayPrimary)
-        ,
+            .background(BongBaekTheme.colors.bgDisplayPrimary),
     ) {
         LazyColumn(
             state = listState,
@@ -142,7 +141,7 @@ fun ContentsDetailScreen(
                 .align(Alignment.BottomEnd)
                 .padding(
                     end = 20.dp,
-                    bottom = 54.dp
+                    bottom = 54.dp,
                 ),
             enter = slideInVertically(initialOffsetY = { it }) + fadeIn(),
             exit = slideOutVertically(targetOffsetY = { it }) + fadeOut(),

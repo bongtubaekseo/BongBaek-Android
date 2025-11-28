@@ -29,7 +29,6 @@ class ContentsViewModel @Inject constructor(
     private val _sideEffect = MutableSharedFlow<ContentsSideEffect>()
     val sideEffect = _sideEffect.asSharedFlow()
 
-
     private var currentPage = 0
     private var isLastPage = false
 
@@ -38,7 +37,7 @@ class ContentsViewModel @Inject constructor(
     }
 
     fun fetchContents() = viewModelScope.launch {
-        if (isLastPage) return@launch
+        if (isLastPage || uiState.value.loadState is UiState.Loading) return@launch
 
         val pageToLoad = currentPage
         val currentCategory = uiState.value.selectedEvent
