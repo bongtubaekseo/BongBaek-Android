@@ -34,7 +34,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.lifecycle.flowWithLifecycle
 import com.bongtu.baekseo.R.drawable.ic_arrow_right
 import com.bongtu.baekseo.R.drawable.ic_home_logo
 import com.bongtu.baekseo.R.drawable.ic_home_name
@@ -51,8 +53,10 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.data.model.content.HomeContent
+import com.bongtu.baekseo.data.model.content.Contents
+import com.bongtu.baekseo.data.model.content.ContentsDetail
 import com.bongtu.baekseo.data.model.event.HomeEvent
+import com.bongtu.baekseo.presentation.home.HomeContract.HomeSideEffect.NavigateToContentsDetail
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmCard
 import com.bongtu.baekseo.presentation.home.component.HomeAlarmEmptyCard
 import com.bongtu.baekseo.presentation.home.component.HomeContentCard
@@ -67,6 +71,7 @@ fun HomeRoute(
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToContents: () -> Unit,
+    navigateToContentsDetail: (ContentsDetail) -> Unit,
     modifier: Modifier = Modifier,
     viewModel: HomeViewModel = hiltViewModel(),
 ) {
@@ -75,6 +80,16 @@ fun HomeRoute(
     val context = LocalContext.current
     val packageName = context.packageName
     val marketUrl = stringResource(market_url, packageName)
+    val lifecycleOwner = LocalLifecycleOwner.current
+
+    LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
+        viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
+            .collect { sideEffect ->
+                when (sideEffect) {
+                    is NavigateToContentsDetail -> navigateToContentsDetail(sideEffect.contentsDetail)
+                }
+            }
+    }
 
     LaunchedEffect(Unit) {
         viewModel.fetchHomeEvent()
@@ -83,10 +98,11 @@ fun HomeRoute(
 
     HomeScreen(
         eventList = uiState.homeEventList,
-        contentsList = uiState.homeContentList,
+        contentsList = uiState.contentList,
         navigateToRecommend = navigateToRecommend,
         navigateToRecord = navigateToRecord,
         navigateToContents = navigateToContents,
+        navigateToContentsDetail = viewModel::fetchContentsDetail,
         modifier = modifier,
     )
 
@@ -100,12 +116,13 @@ fun HomeRoute(
 }
 
 @Composable
-fun HomeScreen(
+private fun HomeScreen(
     eventList: ImmutableList<HomeEvent>,
-    contentsList: ImmutableList<HomeContent>,
+    contentsList: ImmutableList<Contents>,
     navigateToRecord: () -> Unit,
     navigateToRecommend: () -> Unit,
     navigateToContents: () -> Unit,
+    navigateToContentsDetail: (String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -314,7 +331,11 @@ fun HomeScreen(
                     contentTitle = item.contentTitle,
                     contentCategory = item.contentCategory,
                     thumbnailUrl = item.thumbnailUrl,
-                    modifier = Modifier.width(220.dp),
+                    modifier = Modifier
+                        .width(220.dp)
+                        .noRippleClickable {
+                            navigateToContentsDetail(item.contentId)
+                        },
                 )
             }
         }
@@ -361,19 +382,19 @@ private fun HomeScreenPreview() {
     )
 
     val contentsList = persistentListOf(
-        HomeContent(
+        Contents(
             contentId = "contentId1",
             contentTitle = "contentTitle1",
             contentCategory = "contentCategory1",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContent(
+        Contents(
             contentId = "contentId2",
             contentTitle = "contentTitle2",
             contentCategory = "contentCategory2",
             thumbnailUrl = "https://i.ifh.cc/TX21OR.jpg",
         ),
-        HomeContent(
+        Contents(
             contentId = "contentId3",
             contentTitle = "contentTitle3",
             contentCategory = "contentCategory3",
@@ -388,6 +409,7 @@ private fun HomeScreenPreview() {
             navigateToRecord = {},
             navigateToRecommend = {},
             navigateToContents = {},
+            navigateToContentsDetail = {},
         )
     }
 }

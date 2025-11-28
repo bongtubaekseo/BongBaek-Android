@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.di.content
 
-import com.bongtu.baekseo.data.repository.content.ContentRepository
-import com.bongtu.baekseo.data.repositoryimpl.content.ContentRepositoryImpl
+import com.bongtu.baekseo.data.repository.content.ContentsRepository
+import com.bongtu.baekseo.data.repositoryimpl.content.ContentsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,6 +14,6 @@ abstract class ContentRepositoryModule {
     @Binds
     @Singleton
     abstract fun bindContentRepository(
-        repositoryImpl: ContentRepositoryImpl,
-    ): ContentRepository
+        repositoryImpl: ContentsRepositoryImpl,
+    ): ContentsRepository
 }

@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -142,7 +143,7 @@ private fun ProfileEditScreen(
         modifier = modifier
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
             .fillMaxSize()
-            .statusBarsPadding()
+            .systemBarsPadding()
             .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
