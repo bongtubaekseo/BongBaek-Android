@@ -9,6 +9,8 @@ import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsSideEff
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsSideEffect.NavigateToContentsDetail
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsUiState
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -50,7 +52,9 @@ class ContentsViewModel @Inject constructor(
             category = categoryParam,
         ).onSuccess {
             _uiState.update { currentState ->
-                currentState.copy(articles = it.contents)
+                currentState.copy(
+                    articles = (currentState.articles + it.contents).toImmutableList(),
+                )
             }
 
             currentPage = it.currentPage
@@ -83,7 +87,10 @@ class ContentsViewModel @Inject constructor(
         isLastPage = false
 
         _uiState.update { currentState ->
-            currentState.copy(selectedEvent = category)
+            currentState.copy(
+                selectedEvent = category,
+                articles = persistentListOf(),
+            )
         }
 
         fetchContents()
