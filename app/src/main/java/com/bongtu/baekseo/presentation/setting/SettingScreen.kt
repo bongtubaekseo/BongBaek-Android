@@ -147,8 +147,6 @@ private fun SettingScreen(
                 BongBaekTopBar(
                     title = stringResource(setting),
                     topBarType = TopBarType.TEXT_ONLY_START,
-                    modifier = Modifier
-                        .statusBarsPadding(),
                 )
 
                 ProfileSection(
@@ -156,14 +154,12 @@ private fun SettingScreen(
                     userBirth = DateFormatter.formatToKorean(uiState.userBirth),
                     userIncome = uiState.userIncome.uiLabel,
                     onProfileEditButtonClick = navigateToEditProfile,
-                    modifier = Modifier,
                 )
 
                 ServiceSection(
                     onInquiryClick = onInquiryClick,
                     onTermsClick = onTermsClick,
                     onPrivacyClick = onPrivacyClick,
-                    modifier = Modifier,
                 )
             }
 
