@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -106,13 +106,12 @@ private fun WithdrawReasonScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
-            .clearFocus(focusManager),
+            .clearFocus(focusManager)
+            .systemBarsPadding(),
     ) {
         BongBaekTopBar(
             title = stringResource(withdraw_topbar),
             topBarType = TopBarType.LEADING_ICON,
-            modifier = Modifier
-                .statusBarsPadding(),
             leadingIcon = {
                 Icon(
                     imageVector = ImageVector.vectorResource(ic_arrow_back),
