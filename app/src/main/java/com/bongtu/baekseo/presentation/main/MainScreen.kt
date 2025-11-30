@@ -150,6 +150,7 @@ private fun MainNavHost(
         )
 
         homeGraph(
+            navController = navigator.navController,
             navigateToRecord = navigator.navController::navigateToRecord,
             navigateToRecommend = navigator.navController::navigateToRecommend,
             navigateToContents = navigator.navController::navigateToContents,
@@ -192,6 +193,8 @@ private fun MainNavHost(
         )
 
         contentsGraph(
+            navController = navigator.navController,
+            navigateToUp = navigator::navigateUp,
             modifier = modifier,
         )
 

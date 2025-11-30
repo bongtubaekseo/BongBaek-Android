@@ -14,11 +14,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
-import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
 
@@ -28,7 +28,7 @@ private const val CARD_RATIO = 320 / 240f
 fun ContentsArticleCard(
     imageUrl: String,
     onCardClick: () -> Unit,
-    eventType: EventType,
+    eventType: String,
     title: String,
     date: String,
     modifier: Modifier = Modifier,
@@ -37,7 +37,7 @@ fun ContentsArticleCard(
         colors = listOf(
             BongBaekTheme.colors.cardStart,
             BongBaekTheme.colors.cardEnd,
-        )
+        ),
     )
 
     Box(
@@ -52,6 +52,7 @@ fun ContentsArticleCard(
             contentDescription = null,
             modifier = Modifier
                 .aspectRatio(CARD_RATIO),
+            contentScale = ContentScale.Fit,
         )
 
         Column(
@@ -65,7 +66,7 @@ fun ContentsArticleCard(
         ) {
             // TODO: 금액추천 카드 디자인 픽스되면 컴포넌트로 뺄지 생각 필요
             Text(
-                text = eventType.label,
+                text = eventType,
                 modifier = Modifier
                     .background(
                         color = BongBaekTheme.colors.bgDisplayCard,
@@ -103,7 +104,7 @@ private fun ContentsArticleCardPreview() {
         ContentsArticleCard(
             imageUrl = "",
             onCardClick = { },
-            eventType = EventType.WEDDING,
+            eventType = "결혼식",
             title = "제목이 오는 위치제목이 오는 위치제목이 오는 위치제목이 오는 위치",
             date = "날짜가 오는 위치"
         )

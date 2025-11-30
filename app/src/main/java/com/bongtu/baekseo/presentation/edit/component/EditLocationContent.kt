@@ -33,12 +33,12 @@ fun EditLocationContent(
             .background(
                 color = BongBaekTheme.colors.btnInteractiveSecondary,
                 shape = RoundedCornerShape(10.dp),
-            ),
+            )
+            .clip(RoundedCornerShape(10.dp)),
     ) {
         KakaoMapView(
             position = defaultPosition,
             modifier = Modifier
-                .clip(RoundedCornerShape(10.dp))
                 .aspectRatio(MAP_RATIO),
             isGesturesDisabled = true,
         )

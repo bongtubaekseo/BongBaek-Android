@@ -8,6 +8,7 @@ class LoginContract {
     data class LoginUiState(
         val loadState: UiState<Unit> = UiState.Empty,
         val oauthId: String = "",
+        val oauthProvider: String = "",
     )
 
     sealed class LoginSideEffect {

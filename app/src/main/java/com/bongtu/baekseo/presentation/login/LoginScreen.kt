@@ -74,7 +74,7 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun LoginRoute(
-    navigateToOnBoarding: (String) -> Unit,
+    navigateToOnBoarding: (String, String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
     viewModel: LoginViewModel = hiltViewModel(),
@@ -167,7 +167,7 @@ fun LoginScreen(
     onBottomSheetVisibleChange: (Boolean) -> Unit,
     onPrivacyClick: () -> Unit,
     onTermsClick: () -> Unit,
-    onNextClick: (String) -> Unit,
+    onNextClick: (String, String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val checkedStates = remember { mutableStateListOf(false, false, false) }
@@ -335,7 +335,7 @@ fun LoginScreen(
                 scope.launch { sheetState.hide() }.invokeOnCompletion {
                     if (!sheetState.isVisible) {
                         onBottomSheetVisibleChange(false)
-                        onNextClick(uiState.oauthId)
+                        onNextClick(uiState.oauthId, uiState.oauthProvider)
                     }
                 }
             },
@@ -356,7 +356,7 @@ private fun LoginScreenPreview() {
             onKakaoLoginClick = {},
             isBottomSheetVisible = false,
             onBottomSheetVisibleChange = {},
-            onNextClick = {},
+            onNextClick = { _, _ -> },
             onPrivacyClick = {},
             onTermsClick = {},
             onGoogleLoginClick = {},

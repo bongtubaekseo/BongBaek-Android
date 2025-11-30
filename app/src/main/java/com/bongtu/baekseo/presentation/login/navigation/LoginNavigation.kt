@@ -13,7 +13,7 @@ fun NavController.navigateToLogin(navOptions: NavOptions? = null) =
     navigate(Login, navOptions)
 
 fun NavGraphBuilder.loginGraph(
-    navigateToOnBoarding: (String) -> Unit,
+    navigateToOnBoarding: (String, String) -> Unit,
     navigateToHome: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
