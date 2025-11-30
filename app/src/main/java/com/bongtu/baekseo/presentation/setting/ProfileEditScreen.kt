@@ -89,11 +89,7 @@ fun ProfileEditRoute(
 
     DisposableEffect(Unit) {
         onDispose {
-            viewModel.updateOriginProfileState(
-                newName = "",
-                newBirth = "",
-                newIncome = IncomeType.NONE,
-            )
+            viewModel.clearProfileEditState()
         }
     }
 

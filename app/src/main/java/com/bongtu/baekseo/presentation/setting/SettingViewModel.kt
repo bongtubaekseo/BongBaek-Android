@@ -98,6 +98,15 @@ class SettingViewModel @Inject constructor(
             )
         }
 
+    fun clearProfileEditState() = _uiState.update {
+        it.copy(
+            originalName = "",
+            originalBirth = "",
+            originalIncome = IncomeType.NONE,
+            nameError = "",
+        )
+    }
+
     fun updateUserName(newName: String) = _uiState.update {
         it.copy(userName = newName, nameError = validateName(newName))
     }
