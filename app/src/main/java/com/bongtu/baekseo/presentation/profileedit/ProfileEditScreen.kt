@@ -1,4 +1,4 @@
-package com.bongtu.baekseo.presentation.setting
+package com.bongtu.baekseo.presentation.profileedit
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +30,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -64,34 +63,25 @@ import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.DateTextFieldFormat
 import com.bongtu.baekseo.core.util.clearFocus
 import com.bongtu.baekseo.core.util.noRippleClickable
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.ProfileEditSideEffect.NavigateToSetting
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
-import kotlinx.coroutines.flow.filterIsInstance
+import com.bongtu.baekseo.presentation.profileedit.ProfileEditContract.ProfileEditSideEffect.NavigateToSetting
+import com.bongtu.baekseo.presentation.profileedit.ProfileEditContract.ProfileEditUiState
 
 @Composable
 fun ProfileEditRoute(
     navigateToUp: () -> Unit,
-    viewModel: SettingViewModel,
     modifier: Modifier = Modifier,
+    viewModel: ProfileEditViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<ProfileEditSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     NavigateToSetting -> navigateToUp()
                 }
             }
-    }
-
-    DisposableEffect(Unit) {
-        onDispose {
-            viewModel.clearProfileEditState()
-        }
     }
 
     ProfileEditScreen(
@@ -110,7 +100,7 @@ fun ProfileEditRoute(
 
 @Composable
 private fun ProfileEditScreen(
-    uiState: SettingUiState,
+    uiState: ProfileEditUiState,
     isEditButtonEnabled: Boolean,
     navigateToUp: () -> Unit,
     onUserNameChange: (String) -> Unit,
@@ -296,7 +286,7 @@ private fun ProfileEditScreen(
 private fun ProfileEditScreenPreview() {
     BongBaekTheme {
         ProfileEditScreen(
-            uiState = SettingUiState(),
+            uiState = ProfileEditUiState(),
             isEditButtonEnabled = false,
             navigateToUp = {},
             onUserNameChange = {},
