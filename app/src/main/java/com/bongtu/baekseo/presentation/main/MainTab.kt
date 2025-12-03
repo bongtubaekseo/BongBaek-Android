@@ -24,7 +24,7 @@ import com.bongtu.baekseo.presentation.contents.navigation.Contents
 import com.bongtu.baekseo.presentation.home.navigation.Home
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import com.bongtu.baekseo.presentation.record.navigation.Record
-import com.bongtu.baekseo.presentation.setting.navigation.SettingMain
+import com.bongtu.baekseo.presentation.setting.navigation.Setting
 
 enum class MainTab(
     @DrawableRes val selectedIconRes: Int,
@@ -60,7 +60,7 @@ enum class MainTab(
         selectedIconRes = ic_setting_selected,
         unselectedIconRes = ic_setting_unselected,
         title = setting,
-        route = SettingMain,
+        route = Setting,
     );
 
     companion object {
