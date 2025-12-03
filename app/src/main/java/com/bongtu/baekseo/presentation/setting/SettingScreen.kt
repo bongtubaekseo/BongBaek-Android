@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.statusBarsPadding
@@ -40,6 +39,7 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
@@ -75,18 +75,16 @@ import com.bongtu.baekseo.core.util.UrlConstant
 import com.bongtu.baekseo.core.util.excludeTop
 import com.bongtu.baekseo.core.util.noRippleClickable
 import com.bongtu.baekseo.core.util.openUrl
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect
-import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.MainSideEffect.RestartApp
+import com.bongtu.baekseo.presentation.setting.SettingContract.SettingSideEffect.RestartApp
 import com.bongtu.baekseo.presentation.setting.SettingContract.SettingUiState
-import kotlinx.coroutines.flow.filterIsInstance
 
 @Composable
 fun SettingRoute(
-    navigateToEditProfile: () -> Unit,
+    navigateToEditProfile: (String, String, IncomeType) -> Unit,
     navigateToWithdraw: () -> Unit,
     onRestartApp: (Boolean) -> Unit,
-    viewModel: SettingViewModel,
     modifier: Modifier = Modifier,
+    viewModel: SettingViewModel = hiltViewModel(),
 ) {
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val lifecycleOwner = LocalLifecycleOwner.current
@@ -98,7 +96,6 @@ fun SettingRoute(
 
     LaunchedEffect(viewModel.sideEffect, lifecycleOwner) {
         viewModel.sideEffect.flowWithLifecycle(lifecycle = lifecycleOwner.lifecycle)
-            .filterIsInstance<SettingSideEffect.MainSideEffect>()
             .collect { sideEffect ->
                 when (sideEffect) {
                     RestartApp -> onRestartApp(false)
@@ -108,7 +105,13 @@ fun SettingRoute(
 
     SettingScreen(
         uiState = uiState,
-        navigateToEditProfile = navigateToEditProfile,
+        navigateToEditProfile = {
+            navigateToEditProfile(
+                uiState.userName,
+                uiState.userBirth,
+                uiState.userIncome,
+            )
+        },
         navigateToWithdraw = navigateToWithdraw,
         onLogoutClick = viewModel::logout,
         onInquiryClick = { context.openUrl(UrlConstant.INQUIRY_URL) },
@@ -147,8 +150,6 @@ private fun SettingScreen(
                 BongBaekTopBar(
                     title = stringResource(setting),
                     topBarType = TopBarType.TEXT_ONLY_START,
-                    modifier = Modifier
-                        .statusBarsPadding(),
                 )
 
                 ProfileSection(
@@ -156,14 +157,12 @@ private fun SettingScreen(
                     userBirth = DateFormatter.formatToKorean(uiState.userBirth),
                     userIncome = uiState.userIncome.uiLabel,
                     onProfileEditButtonClick = navigateToEditProfile,
-                    modifier = Modifier,
                 )
 
                 ServiceSection(
                     onInquiryClick = onInquiryClick,
                     onTermsClick = onTermsClick,
                     onPrivacyClick = onPrivacyClick,
-                    modifier = Modifier,
                 )
             }
 
@@ -172,8 +171,7 @@ private fun SettingScreen(
                     .fillMaxWidth()
                     .padding(
                         vertical = 16.dp,
-                    )
-                    .navigationBarsPadding(),
+                    ),
                 horizontalArrangement = Arrangement.spacedBy(8.dp),
             ) {
                 Text(

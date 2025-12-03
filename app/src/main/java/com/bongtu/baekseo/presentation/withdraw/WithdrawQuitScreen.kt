@@ -18,7 +18,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import com.bongtu.baekseo.R.drawable.img_withdraw_quit
 import com.bongtu.baekseo.R.string.withdraw_quit_button
 import com.bongtu.baekseo.R.string.withdraw_quit_information
@@ -31,7 +30,6 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 fun WithdrawQuitScreen(
     onRestartApp: (Boolean) -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: WithdrawViewModel = hiltViewModel(),
 ) {
     BackHandler {
         // 뒤로 가기 방지

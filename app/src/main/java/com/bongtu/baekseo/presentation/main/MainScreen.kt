@@ -32,6 +32,8 @@ import com.bongtu.baekseo.presentation.login.navigation.navigateToLogin
 import com.bongtu.baekseo.presentation.main.component.MainBottomBar
 import com.bongtu.baekseo.presentation.onboarding.navigation.navigateToOnBoarding
 import com.bongtu.baekseo.presentation.onboarding.navigation.onBoardingGraph
+import com.bongtu.baekseo.presentation.profileedit.navigation.navigateToProfileEdit
+import com.bongtu.baekseo.presentation.profileedit.navigation.profileEditGraph
 import com.bongtu.baekseo.presentation.recommend.navigation.Recommend
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateBackToRecommendMain
 import com.bongtu.baekseo.presentation.recommend.navigation.navigateToRecommend
@@ -220,7 +222,7 @@ private fun MainNavHost(
         )
 
         settingGraph(
-            navController = navigator.navController,
+            navigateToProfileEdit = navigator.navController::navigateToProfileEdit,
             navigateToWithdraw = navigator.navController::navigateToWithdraw,
             onRestartApp = onRestartApp,
             modifier = modifier,
@@ -229,6 +231,11 @@ private fun MainNavHost(
         withdrawGraph(
             navigateToUp = navigator::navigateUp,
             onRestartApp = onRestartApp,
+            modifier = modifier,
+        )
+
+        profileEditGraph(
+            navigateToUp = navigator::navigateUp,
             modifier = modifier,
         )
     }
