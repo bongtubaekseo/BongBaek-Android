@@ -7,6 +7,7 @@ import com.bongtu.baekseo.core.local.datastore.ApiKeyDataStore
 import com.bongtu.baekseo.core.local.datastore.TokenDataStore
 import com.bongtu.baekseo.core.network.HeaderInterceptor
 import com.bongtu.baekseo.core.network.KakaoHeaderInterceptor
+import com.bongtu.baekseo.core.network.TokenAuthenticator
 import com.bongtu.baekseo.core.network.isJsonArray
 import com.bongtu.baekseo.core.network.isJsonObject
 import com.bongtu.baekseo.core.network.qualifier.JWT
@@ -86,9 +87,11 @@ object NetworkModule {
     fun provideOkHttpClient(
         loggingInterceptor: Interceptor,
         @JWT headerInterceptor: Interceptor,
+        tokenAuthenticator: TokenAuthenticator,
     ): OkHttpClient = OkHttpClient.Builder()
         .addInterceptor(loggingInterceptor)
         .addInterceptor(headerInterceptor)
+        .authenticator(tokenAuthenticator)
         .build()
 
     @Provides
