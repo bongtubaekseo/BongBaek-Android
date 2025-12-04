@@ -17,8 +17,6 @@ class TokenAuthenticator @Inject constructor(
 ) : Authenticator {
 
     override fun authenticate(route: Route?, response: Response): Request? {
-        val previousToken = response.request.header(AUTHORIZATION_HEADER)
-
         if (responseCount(response) >= MAX_RESPONSE_COUNT) return null
 
         synchronized(this) {
