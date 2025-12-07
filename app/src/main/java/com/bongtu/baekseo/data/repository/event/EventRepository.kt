@@ -45,8 +45,10 @@ interface EventRepository {
 
     suspend fun getRecordEvents(
         page: Int,
-        attended: Boolean = true,
-        category: String? = null,
+        year: Int,
+        month: Int,
+        attended: Boolean,
+        category: String?,
     ): Result<PageScheduleEvent>
 
     suspend fun getEventDetail(

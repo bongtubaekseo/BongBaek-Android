@@ -2,21 +2,26 @@ package com.bongtu.baekseo.presentation.record.component
 
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -28,7 +33,9 @@ import com.bongtu.baekseo.R.drawable.ic_record_radio_circle
 import com.bongtu.baekseo.core.compositionlocal.LocalBottomNavigationBarsPadding
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
+import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.plus
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -37,6 +44,7 @@ import kotlinx.collections.immutable.persistentListOf
 fun RecordListContent(
     scheduleEventList: ImmutableList<ScheduleEvent>,
     lazyListState: LazyListState,
+    contentPadding: PaddingValues,
     updatePage: () -> Unit,
     onCardClick: (String) -> Unit,
     isDeleteMode: Boolean,
@@ -49,36 +57,49 @@ fun RecordListContent(
             .calculateBottomPadding()
         else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
     )
-
-    val contentPadding = PaddingValues(
+    val mergedPadding = PaddingValues(
         start = 20.dp,
         end = 20.dp,
         top = 20.dp,
-        bottom = 60.dp + animBottom,
-    )
+        bottom = 20.dp + animBottom,
+    ) + contentPadding
 
-    RecordScheduleList(
-        items = scheduleEventList,
-        getKey = { event -> event.eventId },
-        getDate = { event -> event.eventDate },
-        card = { event, padding ->
+    val hasUserScrolled = remember(lazyListState) {
+        derivedStateOf {
+            lazyListState.firstVisibleItemIndex > 0 || lazyListState.isScrollInProgress
+        }
+    }
+
+    LazyColumn(
+        modifier = modifier
+            .fillMaxSize(),
+        state = lazyListState,
+        contentPadding = mergedPadding,
+        verticalArrangement = Arrangement.spacedBy(16.dp),
+    ) {
+        itemsIndexed(
+            items = scheduleEventList,
+            key = { _, item -> item.eventId },
+        ) { index, item ->
             RecordCard(
-                event = event,
+                event = item,
                 onCardClick = {
-                    if (!isDeleteMode) onCardClick(event.eventId)
-                    else onDeleteSelectedButtonClick(event.eventId)
+                    if (!isDeleteMode) onCardClick(item.eventId)
+                    else onDeleteSelectedButtonClick(item.eventId)
                 },
                 isDeleteMode = isDeleteMode,
-                isDeleteToggleCheck = selectedDeleteEventIds.contains(event.eventId),
-                onDeleteToggleClick = { onDeleteSelectedButtonClick(event.eventId) },
-                modifier = Modifier.padding(padding),
+                isDeleteToggleCheck = selectedDeleteEventIds.contains(item.eventId),
+                onDeleteToggleClick = { onDeleteSelectedButtonClick(item.eventId) },
             )
-        },
-        lazyListState = lazyListState,
-        updatePage = updatePage,
-        modifier = modifier,
-        contentPadding = contentPadding,
-    )
+        }
+    }
+
+    if (hasUserScrolled.value) {
+        lazyListState.OnBottomReached(
+            buffer = 3,
+            onLoadMore = updatePage,
+        )
+    }
 }
 
 @Composable
@@ -208,6 +229,7 @@ private fun RecordContentPreview() {
                     eventDate = "2025-05-11",
                 ),
             ),
+            contentPadding = PaddingValues(),
             onCardClick = {},
             onDeleteSelectedButtonClick = {},
             isDeleteMode = true,

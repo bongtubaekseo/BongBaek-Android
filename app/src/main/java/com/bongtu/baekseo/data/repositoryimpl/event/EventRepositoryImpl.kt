@@ -106,11 +106,15 @@ class EventRepositoryImpl @Inject constructor(
 
     override suspend fun getRecordEvents(
         page: Int,
+        year: Int,
+        month: Int,
         attended: Boolean,
         category: String?,
     ): Result<PageScheduleEvent> = runCatching {
         eventDataSource.getRecordEvents(
             page = page,
+            year = year,
+            month = month,
             attended = attended,
             category = category,
         )

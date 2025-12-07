@@ -30,10 +30,14 @@ class EventDataSourceImpl @Inject constructor(
 
     override suspend fun getRecordEvents(
         page: Int,
+        year: Int,
+        month: Int,
         attended: Boolean,
         category: String?,
     ) = eventService.getRecordEvents(
         page = page,
+        year = year,
+        month = month,
         attended = attended,
         category = category,
     )

@@ -45,8 +45,10 @@ class RecordViewModel @Inject constructor(
 
             eventRepository.getRecordEvents(
                 page = page,
+                year = uiState.value.selectedDate.year,
+                month = uiState.value.selectedDate.monthValue,
                 attended = uiState.value.attendType.isAttended,
-                category = uiState.value.eventCategoryType.label,
+                category = uiState.value.eventCategoryType.paramLabel,
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =
@@ -101,6 +103,7 @@ class RecordViewModel @Inject constructor(
                 scheduleList = persistentListOf(),
             )
         }
+
         fetchRecordEvent()
     }
 
@@ -118,6 +121,7 @@ class RecordViewModel @Inject constructor(
 
     fun initRecordUiState() {
         clearPage()
+
         _uiState.update {
             it.copy(
                 attendType = AttendType.ATTEND,
@@ -143,6 +147,20 @@ class RecordViewModel @Inject constructor(
                 selectedDeleteEventIds = newSelectedDeleteEventIds,
             )
         }
+
+    fun updateSelectedDate(amount: Long) {
+        clearPage()
+
+        _uiState.update { currentState ->
+            val newDate = currentState.selectedDate.plusMonths(amount)
+
+            currentState.copy(
+                selectedDate = newDate,
+            )
+        }
+
+        fetchRecordEvent()
+    }
 
     fun updateNextPage() {
         if (!_isLast.value) {

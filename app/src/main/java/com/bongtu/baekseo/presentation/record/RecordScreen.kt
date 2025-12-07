@@ -3,11 +3,16 @@ package com.bongtu.baekseo.presentation.record
 import androidx.activity.compose.BackHandler
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -15,27 +20,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.bongtu.baekseo.R.string.record_year_month
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
-import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
+import com.bongtu.baekseo.presentation.record.component.RecordCollapsingHeader
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
 import kotlinx.collections.immutable.persistentListOf
+import kotlin.math.roundToInt
 
 @Composable
 fun RecordRoute(
@@ -86,6 +100,7 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
+        onDateChange = viewModel::updateSelectedDate,
         onCategoryClick = viewModel::selectEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
@@ -97,12 +112,14 @@ fun RecordRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecordScreen(
     uiState: RecordUiState,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
     onTabClick: (AttendType) -> Unit,
+    onDateChange: (Long) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
     onEnterDeleteModeClick: () -> Unit,
     onExitDeleteModeClick: () -> Unit,
@@ -116,47 +133,33 @@ private fun RecordScreen(
         uiState.selectedDeleteEventIds.isNotEmpty()
     }
     var isEnterDeleteButtonVisible by remember { mutableStateOf(false) }
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+    val density = LocalDensity.current
+    var fixedHeightDp by remember { mutableStateOf(0.dp) }
+    var collapsingHeightDp by remember { mutableStateOf(0.dp) }
+    val headerOffsetDp = with(density) {
+        scrollBehavior.state.heightOffset.toDp()
+    }
+    val totalTopPadding = fixedHeightDp + collapsingHeightDp + headerOffsetDp
 
-    Column(
+    Box(
         modifier = modifier
             .fillMaxSize()
-            .background(color = BongBaekTheme.colors.bgDisplayPrimary),
+            .background(BongBaekTheme.colors.bgDisplayPrimary)
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
-        RecordTopBar(
-            isDeleteMode = uiState.isDeleteMode,
-            isEnterDeleteButtonVisible = isEnterDeleteButtonVisible,
-            isConfirmButtonEnabled = isDeleteButtonEnabled,
-            navigateToAdd = navigateToAdd,
-            onEnterDeleteModeClick = onEnterDeleteModeClick,
-            onExitDeleteModeClick = onExitDeleteModeClick,
-            onConfirmDeleteClick = onDeleteClick,
-        )
-
-        AttendTypeTab(
-            selectedTab = uiState.attendType,
-            onTabClick = onTabClick,
-            isEnabled = !uiState.isDeleteMode,
-        )
-
-        BongBaekCategoryBar(
-            selectedCategory = uiState.eventCategoryType,
-            onCategoryClick = onCategoryClick,
-            isEnabled = !uiState.isDeleteMode,
-            modifier = Modifier.padding(vertical = 20.dp),
-        )
-
         Crossfade(
-            targetState = uiState.recordLoadState to uiState.eventCategoryType,
-        ) { (loadState, category) ->
+            targetState = uiState.recordLoadState,
+        ) { loadState ->
             when (loadState) {
                 is UiState.Empty -> {
                     isEnterDeleteButtonVisible = false
                     RecordScheduleEmptyContent(
-                        eventType = category.label,
+                        eventType = uiState.eventCategoryType.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(
-                                top = 60.dp,
+                                top = totalTopPadding,
                             ),
                     )
                 }
@@ -174,15 +177,70 @@ private fun RecordScreen(
                     isEnterDeleteButtonVisible = true
                     RecordListContent(
                         scheduleEventList = uiState.scheduleList,
+                        lazyListState = lazyListState,
+                        contentPadding = PaddingValues(top = totalTopPadding),
                         isDeleteMode = uiState.isDeleteMode,
                         selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                         onCardClick = navigateToDetail,
                         onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
-                        lazyListState = lazyListState,
                         updatePage = updatePage,
                     )
                 }
             }
+        }
+
+        Column(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .zIndex(2f)
+                .background(BongBaekTheme.colors.bgDisplayPrimary)
+                .onGloballyPositioned { coordinates ->
+                    fixedHeightDp = with(density) { coordinates.size.height.toDp() }
+                },
+        ) {
+            RecordTopBar(
+                isDeleteMode = uiState.isDeleteMode,
+                isEnterDeleteButtonVisible = isEnterDeleteButtonVisible,
+                isConfirmButtonEnabled = isDeleteButtonEnabled,
+                navigateToAdd = navigateToAdd,
+                onEnterDeleteModeClick = onEnterDeleteModeClick,
+                onExitDeleteModeClick = onExitDeleteModeClick,
+                onConfirmDeleteClick = onDeleteClick,
+            )
+
+            AttendTypeTab(
+                selectedTab = uiState.attendType,
+                onTabClick = onTabClick,
+                isEnabled = !uiState.isDeleteMode,
+            )
+        }
+
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopCenter)
+                .zIndex(1f)
+                .padding(top = fixedHeightDp)
+                .offset {
+                    IntOffset(x = 0, y = scrollBehavior.state.heightOffset.roundToInt())
+                }
+                .background(BongBaekTheme.colors.bgDisplayPrimary)
+                .onGloballyPositioned { coordinates ->
+                    val height = coordinates.size.height.toFloat()
+                    scrollBehavior.state.heightOffsetLimit = -height
+                },
+        ) {
+            RecordCollapsingHeader(
+                date = stringResource(
+                    record_year_month,
+                    uiState.selectedDate.year,
+                    uiState.selectedDate.monthValue,
+                ),
+                onLeftClick = { onDateChange(-1) },
+                onRightClick = { onDateChange(1) },
+                selectedEvent = uiState.eventCategoryType,
+                onCategoryClick = onCategoryClick,
+                isEnabled = !uiState.isDeleteMode,
+            )
         }
     }
 }
@@ -255,6 +313,7 @@ private fun RecordDefaultScreenPreview() {
                 recordLoadState = UiState.Success(Unit),
             ),
             onTabClick = {},
+            onDateChange = {},
             onCategoryClick = {},
             onEnterDeleteModeClick = {},
             onExitDeleteModeClick = {},
