@@ -50,11 +50,13 @@ interface EventService {
         @Body request: DeleteEventsRequest,
     ): BaseResponseWithoutData
 
-    @GET("/api/v1/events/history/{page}")
+    @GET("/api/v1/events/monthly/{page}")
     suspend fun getRecordEvents(
         @Path("page") page: Int,
-        @Query("attended") attended: Boolean = true,
-        @Query("category") category: String? = null,
+        @Query("year") year: Int,
+        @Query("month") month: Int,
+        @Query("attended") attended: Boolean,
+        @Query("category") category: String?,
     ): BaseResponse<GetScheduleEventsResponse>
 
     @GET("/api/v1/events/{eventId}")

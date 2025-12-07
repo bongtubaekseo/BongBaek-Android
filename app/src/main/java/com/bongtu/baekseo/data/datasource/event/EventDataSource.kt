@@ -42,6 +42,8 @@ interface EventDataSource {
 
     suspend fun getRecordEvents(
         page: Int,
+        year: Int,
+        month: Int,
         attended: Boolean,
         category: String?,
     ): BaseResponse<GetScheduleEventsResponse>
