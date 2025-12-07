@@ -8,4 +8,7 @@ enum class EventCategoryType(
     FUNERAL(label = EventType.FUNERAL.label),
     FIRST_BD(label = EventType.FIRST_BD.label),
     BIRTHDAY(label = EventType.BIRTHDAY.label);
+
+    val paramLabel: String?
+        get() = if (this == ALL) null else this.label
 }

@@ -45,8 +45,10 @@ class RecordViewModel @Inject constructor(
 
             eventRepository.getRecordEvents(
                 page = page,
+                year = uiState.value.selectedDate.year,
+                month = uiState.value.selectedDate.monthValue,
                 attended = uiState.value.attendType.isAttended,
-                category = uiState.value.eventCategoryType.label,
+                category = uiState.value.eventCategoryType.paramLabel,
             ).onSuccess { response ->
                 val newEvents = response.events
                 val updatedList =

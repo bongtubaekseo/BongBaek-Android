@@ -40,9 +40,7 @@ class ContentsViewModel @Inject constructor(
         if (isLastPage || uiState.value.loadState is UiState.Loading) return@launch
 
         val pageToLoad = currentPage
-        val currentCategory = uiState.value.selectedEvent
-        val categoryParam =
-            if (currentCategory == EventCategoryType.ALL) null else currentCategory.label
+        val categoryParam = uiState.value.selectedEvent.paramLabel
 
         updateLoadState(UiState.Loading)
 
