@@ -60,7 +60,10 @@ fun RecordScheduleEmptyContent(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 16.dp),
+                .padding(
+                    top = 20.dp,
+                    bottom = 16.dp,
+                ),
         )
 
         Text(
@@ -83,10 +86,7 @@ fun RecordScheduleEmptyContent(
             onClick = onButtonClick,
             buttonType = ButtonType.PRIMARY,
             modifier = Modifier
-                .padding(
-                    top = 32.dp,
-                    bottom = 55.dp,
-                ),
+                .padding(top = 32.dp),
             textStyle = BongBaekTheme.typography.titleSemiBold16,
             paddingValues = PaddingValues(
                 horizontal = 16.dp,

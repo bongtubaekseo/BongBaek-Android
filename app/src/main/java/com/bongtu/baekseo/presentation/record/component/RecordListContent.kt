@@ -61,7 +61,7 @@ fun RecordListContent(
         start = 20.dp,
         end = 20.dp,
         top = 20.dp,
-        bottom = 20.dp + animBottom
+        bottom = 20.dp + animBottom,
     ) + contentPadding
 
     val hasUserScrolled = remember(lazyListState) {

@@ -78,6 +78,7 @@ private fun DateSection(
             modifier = Modifier
                 .padding(12.dp)
                 .noRippleClickable(onLeftClick),
+            tint = BongBaekTheme.colors.iconInteractiveDefault,
         )
 
         Icon(
@@ -86,6 +87,7 @@ private fun DateSection(
             modifier = Modifier
                 .padding(12.dp)
                 .noRippleClickable(onRightClick),
+            tint = BongBaekTheme.colors.iconInteractiveDefault,
         )
     }
 }

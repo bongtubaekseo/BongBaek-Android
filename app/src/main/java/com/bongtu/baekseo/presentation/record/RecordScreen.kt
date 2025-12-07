@@ -146,7 +146,7 @@ private fun RecordScreen(
         modifier = modifier
             .fillMaxSize()
             .background(BongBaekTheme.colors.bgDisplayPrimary)
-            .nestedScroll(scrollBehavior.nestedScrollConnection)
+            .nestedScroll(scrollBehavior.nestedScrollConnection),
     ) {
         Crossfade(
             targetState = uiState.recordLoadState,
@@ -196,7 +196,7 @@ private fun RecordScreen(
                 .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .onGloballyPositioned { coordinates ->
                     fixedHeightDp = with(density) { coordinates.size.height.toDp() }
-                }
+                },
         ) {
             RecordTopBar(
                 isDeleteMode = uiState.isDeleteMode,
@@ -226,9 +226,8 @@ private fun RecordScreen(
                 .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .onGloballyPositioned { coordinates ->
                     val height = coordinates.size.height.toFloat()
-                    collapsingHeightDp = with(density) { height.toDp() }
                     scrollBehavior.state.heightOffsetLimit = -height
-                }
+                },
         ) {
             RecordCollapsingHeader(
                 date = stringResource(
