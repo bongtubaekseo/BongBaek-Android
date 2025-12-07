@@ -146,6 +146,18 @@ class RecordViewModel @Inject constructor(
             )
         }
 
+    fun updateSelectedDate(amount: Long) {
+        _uiState.update { currentState ->
+            val newDate = currentState.selectedDate.plusMonths(amount)
+
+            currentState.copy(
+                selectedDate = newDate,
+            )
+        }
+
+        fetchRecordEvent()
+    }
+
     fun updateNextPage() {
         if (!_isLast.value) {
             val next = _page.value + 1

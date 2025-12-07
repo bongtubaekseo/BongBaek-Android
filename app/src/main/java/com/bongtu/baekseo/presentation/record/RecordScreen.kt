@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -16,22 +17,24 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
+import com.bongtu.baekseo.R.string.record_year_month
 import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.EventCategoryType
-import com.bongtu.baekseo.core.designsystem.component.topbar.BongBaekCategoryBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToAdd
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordSideEffect.NavigateToDetail
 import com.bongtu.baekseo.presentation.record.RecordContract.RecordUiState
 import com.bongtu.baekseo.presentation.record.component.AttendTypeTab
+import com.bongtu.baekseo.presentation.record.component.RecordCollapsingHeader
 import com.bongtu.baekseo.presentation.record.component.RecordListContent
 import com.bongtu.baekseo.presentation.record.component.RecordScheduleEmptyContent
 import com.bongtu.baekseo.presentation.record.component.RecordTopBar
@@ -86,6 +89,7 @@ fun RecordRoute(
         navigateToDetail = viewModel::navigateToDetail,
         navigateToAdd = viewModel::navigateToAdd,
         onTabClick = viewModel::selectAttendType,
+        onDateChange = viewModel::updateSelectedDate,
         onCategoryClick = viewModel::selectEventType,
         onEnterDeleteModeClick = viewModel::updateDeleteMode,
         onExitDeleteModeClick = viewModel::updateDeleteModeCancel,
@@ -97,12 +101,14 @@ fun RecordRoute(
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun RecordScreen(
     uiState: RecordUiState,
     navigateToDetail: (String) -> Unit,
     navigateToAdd: () -> Unit,
     onTabClick: (AttendType) -> Unit,
+    onDateChange: (Long) -> Unit,
     onCategoryClick: (EventCategoryType) -> Unit,
     onEnterDeleteModeClick: () -> Unit,
     onExitDeleteModeClick: () -> Unit,
@@ -138,11 +144,17 @@ private fun RecordScreen(
             isEnabled = !uiState.isDeleteMode,
         )
 
-        BongBaekCategoryBar(
-            selectedCategory = uiState.eventCategoryType,
+        RecordCollapsingHeader(
+            date = stringResource(
+                record_year_month,
+                uiState.selectedDate.year,
+                uiState.selectedDate.monthValue
+            ),
+            onLeftClick = { onDateChange(-1) },
+            onRightClick = { onDateChange(1) },
+            selectedEvent = uiState.eventCategoryType,
             onCategoryClick = onCategoryClick,
             isEnabled = !uiState.isDeleteMode,
-            modifier = Modifier.padding(vertical = 20.dp),
         )
 
         Crossfade(
@@ -255,6 +267,7 @@ private fun RecordDefaultScreenPreview() {
                 recordLoadState = UiState.Success(Unit),
             ),
             onTabClick = {},
+            onDateChange = {},
             onCategoryClick = {},
             onEnterDeleteModeClick = {},
             onExitDeleteModeClick = {},
