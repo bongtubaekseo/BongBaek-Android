@@ -59,8 +59,9 @@ fun SearchTextField(
     val isFocused by interactionSource.collectIsFocusedAsState()
     val isFilled = text.isNotEmpty()
 
-    val borderColor = remember(isFocused) {
+    val borderColor = remember(isFocused, isFilled) {
         if (isFocused) bongbaekColors.statusFocused
+        else if (isFilled) bongbaekColors.transparent
         else bongbaekColors.borderFieldDefault
     }
     val textColor = remember(isFocused, isFilled) {
