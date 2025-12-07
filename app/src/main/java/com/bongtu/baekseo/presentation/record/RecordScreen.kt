@@ -148,7 +148,7 @@ private fun RecordScreen(
             date = stringResource(
                 record_year_month,
                 uiState.selectedDate.year,
-                uiState.selectedDate.monthValue
+                uiState.selectedDate.monthValue,
             ),
             onLeftClick = { onDateChange(-1) },
             onRightClick = { onDateChange(1) },
@@ -158,13 +158,13 @@ private fun RecordScreen(
         )
 
         Crossfade(
-            targetState = uiState.recordLoadState to uiState.eventCategoryType,
-        ) { (loadState, category) ->
+            targetState = uiState.recordLoadState,
+        ) { loadState ->
             when (loadState) {
                 is UiState.Empty -> {
                     isEnterDeleteButtonVisible = false
                     RecordScheduleEmptyContent(
-                        eventType = category.label,
+                        eventType = uiState.eventCategoryType.label,
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(
