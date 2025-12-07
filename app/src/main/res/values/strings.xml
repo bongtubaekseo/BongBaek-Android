@@ -22,9 +22,6 @@
     <string name="home_contents_title">경조사 콘텐츠</string>
     <string name="home_contents_description">경조사 가기 전 꼭 확인해야 할 정보</string>
     <!--Schedule   -->
-    <string name="schedule_title">%s님의 다가올 일정</string>
-    <string name="schedule_empty_title">다가올 경조사가 없어요!</string>
-    <string name="schedule_empty_item_title">다가올 %1$s%2$s 없어요!</string>
     <!--Recommendation    -->
     <string name="recommendation">금액 추천</string>
     <string name="recommendation_intro_topbar">금액 추천 가이드</string>
@@ -88,7 +85,6 @@
     <string name="record_card_list_year">%1$d년</string>
     <string name="record_card_list_month">%1$d월</string>
     <string name="record_card_cost">%1$,d</string>
-    <string name="record_card_weekday">(%1$s)</string>
     <string name="record_empty_title">기록한 경조사가 없어요!</string>
     <string name="record_empty_item_title">기록한 %1$s%2$s 없어요!</string>
     <string name="record_empty_description">지금 경조사를 기록하고\n상황에 어울리는 경조사비까지 추천받으세요</string>
@@ -190,7 +186,6 @@
 
     <!--Setting    -->
     <string name="setting">설정</string>
-    <string name="setting_topbar_title">마이페이지</string>
     <string name="setting_profile_edit_button">내 정보 수정</string>
     <string name="setting_user_birth">생년월일</string>
     <string name="setting_user_income">수입</string>
@@ -210,7 +205,6 @@
     <string name="withdraw_reason_error">오류나 문제가 있었어요</string>
     <string name="withdraw_reason_account">새로운 계정으로 사용하고 싶어요</string>
     <string name="withdraw_reason_etc">기타</string>
-    <string name="withdraw_reason_etc_error">50자 이내로 작성해주세요</string>
     <string name="withdraw_reason_etc_length">%d/50</string>
     <string name="withdraw_topbar">서비스 탈퇴</string>
     <string name="withdraw_title">탈퇴를 도와드릴게요</string>
