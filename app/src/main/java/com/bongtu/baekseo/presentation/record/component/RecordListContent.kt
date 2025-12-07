@@ -8,8 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
-import androidx.compose.foundation.layout.calculateEndPadding
-import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -27,7 +25,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,6 +35,7 @@ import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.OnBottomReached
 import com.bongtu.baekseo.core.util.noRippleClickable
+import com.bongtu.baekseo.core.util.plus
 import com.bongtu.baekseo.data.model.event.ScheduleEvent
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -46,26 +44,25 @@ import kotlinx.collections.immutable.persistentListOf
 fun RecordListContent(
     scheduleEventList: ImmutableList<ScheduleEvent>,
     lazyListState: LazyListState,
+    contentPadding: PaddingValues,
     updatePage: () -> Unit,
     onCardClick: (String) -> Unit,
     isDeleteMode: Boolean,
     selectedDeleteEventIds: Set<String>,
     onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
-    contentPadding: PaddingValues = PaddingValues(),
 ) {
     val animBottom by animateDpAsState(
         targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
         else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
     )
-    val layoutDirection = LocalLayoutDirection.current
-    val contentPadding = PaddingValues(
-        start = contentPadding.calculateStartPadding(layoutDirection) + 20.dp,
-        end = contentPadding.calculateEndPadding(layoutDirection) + 20.dp,
-        top = contentPadding.calculateTopPadding() + 20.dp,
-        bottom = contentPadding.calculateBottomPadding() + 20.dp + animBottom
-    )
+    val mergedPadding = PaddingValues(
+        start = 20.dp,
+        end = 20.dp,
+        top = 20.dp,
+        bottom = 20.dp + animBottom
+    ) + contentPadding
 
     val hasUserScrolled = remember(lazyListState) {
         derivedStateOf {
@@ -77,7 +74,7 @@ fun RecordListContent(
         modifier = modifier
             .fillMaxSize(),
         state = lazyListState,
-        contentPadding = contentPadding,
+        contentPadding = mergedPadding,
         verticalArrangement = Arrangement.spacedBy(16.dp),
     ) {
         itemsIndexed(
@@ -232,6 +229,7 @@ private fun RecordContentPreview() {
                     eventDate = "2025-05-11",
                 ),
             ),
+            contentPadding = PaddingValues(),
             onCardClick = {},
             onDeleteSelectedButtonClick = {},
             isDeleteMode = true,

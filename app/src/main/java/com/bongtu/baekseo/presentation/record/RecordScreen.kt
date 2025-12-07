@@ -137,6 +137,10 @@ private fun RecordScreen(
     val density = LocalDensity.current
     var fixedHeightDp by remember { mutableStateOf(0.dp) }
     var collapsingHeightDp by remember { mutableStateOf(0.dp) }
+    val headerOffsetDp = with(density) {
+        scrollBehavior.state.heightOffset.toDp()
+    }
+    val totalTopPadding = fixedHeightDp + collapsingHeightDp + headerOffsetDp
 
     Box(
         modifier = modifier
@@ -155,7 +159,7 @@ private fun RecordScreen(
                         onButtonClick = navigateToAdd,
                         modifier = Modifier
                             .padding(
-                                top = 60.dp,
+                                top = totalTopPadding,
                             ),
                     )
                 }
@@ -173,15 +177,13 @@ private fun RecordScreen(
                     isEnterDeleteButtonVisible = true
                     RecordListContent(
                         scheduleEventList = uiState.scheduleList,
+                        lazyListState = lazyListState,
+                        contentPadding = PaddingValues(top = totalTopPadding),
                         isDeleteMode = uiState.isDeleteMode,
                         selectedDeleteEventIds = uiState.selectedDeleteEventIds,
                         onCardClick = navigateToDetail,
                         onDeleteSelectedButtonClick = onDeleteSelectedButtonClick,
-                        lazyListState = lazyListState,
                         updatePage = updatePage,
-                        contentPadding = PaddingValues(
-                            top = fixedHeightDp + collapsingHeightDp,
-                        )
                     )
                 }
             }
