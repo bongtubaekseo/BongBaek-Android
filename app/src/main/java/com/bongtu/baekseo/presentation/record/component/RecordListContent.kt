@@ -8,6 +8,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.calculateEndPadding
+import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.navigationBars
@@ -25,6 +27,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalLayoutDirection
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -49,18 +52,19 @@ fun RecordListContent(
     selectedDeleteEventIds: Set<String>,
     onDeleteSelectedButtonClick: (String) -> Unit,
     modifier: Modifier = Modifier,
+    contentPadding: PaddingValues = PaddingValues(),
 ) {
     val animBottom by animateDpAsState(
         targetValue = if (isDeleteMode) WindowInsets.navigationBars.asPaddingValues()
             .calculateBottomPadding()
         else LocalBottomNavigationBarsPadding.current.calculateBottomPadding(),
     )
-
+    val layoutDirection = LocalLayoutDirection.current
     val contentPadding = PaddingValues(
-        start = 20.dp,
-        end = 20.dp,
-        top = 20.dp,
-        bottom = 20.dp + animBottom,
+        start = contentPadding.calculateStartPadding(layoutDirection) + 20.dp,
+        end = contentPadding.calculateEndPadding(layoutDirection) + 20.dp,
+        top = contentPadding.calculateTopPadding() + 20.dp,
+        bottom = contentPadding.calculateBottomPadding() + 20.dp + animBottom
     )
 
     val hasUserScrolled = remember(lazyListState) {
