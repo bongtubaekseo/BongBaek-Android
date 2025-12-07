@@ -103,6 +103,7 @@ class RecordViewModel @Inject constructor(
                 scheduleList = persistentListOf(),
             )
         }
+
         fetchRecordEvent()
     }
 
@@ -120,6 +121,7 @@ class RecordViewModel @Inject constructor(
 
     fun initRecordUiState() {
         clearPage()
+
         _uiState.update {
             it.copy(
                 attendType = AttendType.ATTEND,
@@ -147,6 +149,8 @@ class RecordViewModel @Inject constructor(
         }
 
     fun updateSelectedDate(amount: Long) {
+        clearPage()
+
         _uiState.update { currentState ->
             val newDate = currentState.selectedDate.plusMonths(amount)
 
