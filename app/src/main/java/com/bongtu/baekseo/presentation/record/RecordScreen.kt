@@ -226,6 +226,7 @@ private fun RecordScreen(
                 .background(BongBaekTheme.colors.bgDisplayPrimary)
                 .onGloballyPositioned { coordinates ->
                     val height = coordinates.size.height.toFloat()
+                    collapsingHeightDp = with(density) { height.toDp() }
                     scrollBehavior.state.heightOffsetLimit = -height
                 },
         ) {

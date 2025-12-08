@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.bongtu.baekseo.R.string.record_card_cost
+import com.bongtu.baekseo.R.string.record_card_cost_unit
 import com.bongtu.baekseo.core.designsystem.component.badge.BongBaekSmallBadge
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
 import com.bongtu.baekseo.core.util.noRippleClickable
@@ -64,7 +64,7 @@ fun RecordScheduleCard(
             )
 
             Text(
-                text = stringResource(record_card_cost, cost),
+                text = stringResource(record_card_cost_unit, cost),
                 style = BongBaekTheme.typography.titleSemiBold18,
                 color = BongBaekTheme.colors.txtDisplayPrimary,
             )

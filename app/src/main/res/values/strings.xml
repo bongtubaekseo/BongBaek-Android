@@ -84,7 +84,8 @@
     <string name="record_card_list_year">%1$d년</string>
     <string name="record_card_list_month">%1$d월</string>
     <string name="record_year_month">%d년 %d월</string>
-    <string name="record_card_cost">%1$,d원</string>
+    <string name="record_card_cost">%1$,d</string>
+    <string name="record_card_cost_unit">%1$,d원</string>
     <string name="record_empty_title">기록한 경조사가 없어요!</string>
     <string name="record_empty_item_title">기록한 %1$s%2$s 없어요!</string>
     <string name="record_empty_description">지금 경조사를 기록하고\n상황에 어울리는 경조사비까지 추천받으세요</string>
