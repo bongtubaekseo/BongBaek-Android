@@ -148,6 +148,7 @@ fun EditLocationScreen(
                     focusManager.clearFocus()
                 },
                 label = { it.name },
+                showScrollbar = true,
             ) {
                 SearchTextField(
                     text = searchValue,
