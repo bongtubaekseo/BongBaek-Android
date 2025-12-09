@@ -24,7 +24,7 @@ fun BongBaekFAB(
     @DrawableRes iconRes: Int = R.drawable.ic_arrow_up,
     shape: Shape = CircleShape,
     containerColor: Color = BongBaekTheme.colors.btnInteractiveSecondary.copy(alpha = 0.7f),
-    borderColor: Color = BongBaekTheme.colors.borderFieldDefault,
+    borderColor: Color = BongBaekTheme.colors.borderFieldDefault.copy(alpha = 0.7f),
     contentColor: Color = BongBaekTheme.colors.iconInteractiveDefault,
 ) {
     FloatingActionButton(
