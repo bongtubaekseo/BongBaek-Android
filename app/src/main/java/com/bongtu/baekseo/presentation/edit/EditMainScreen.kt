@@ -66,7 +66,6 @@ import com.bongtu.baekseo.R.string.edit_nickname_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_nickname_title
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
-import com.bongtu.baekseo.R.string.edit_save_button
 import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -372,7 +371,7 @@ private fun EditMainScreen(
             }
 
             BongBaekButton(
-                title = stringResource(id = edit_save_button),
+                title = stringResource(id = edit_location_edit_text),
                 onClick = onSubmitEventButtonClick,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier
