@@ -125,7 +125,9 @@ fun SearchTextField(
                         imageVector = ImageVector.vectorResource(id = ic_cancel),
                         contentDescription = null,
                         tint = BongBaekTheme.colors.iconDisabledPrimary,
-                        modifier = Modifier.noRippleClickable { onTextChange("") },
+                        modifier = Modifier
+                            .noRippleClickable { onTextChange("") }
+                            .align(Alignment.CenterVertically),
                     )
                 }
             },
