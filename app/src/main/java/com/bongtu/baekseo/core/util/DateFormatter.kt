@@ -11,6 +11,7 @@ object DateFormatter {
     private val KOREAN_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy년 MM월 dd일")
     private val NUMERIC_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyyMMdd")
     private val DAY_ONLY_FORMATTER = DateTimeFormatter.ofPattern("dd")
+    private val DOT_DATE_FORMATTER = DateTimeFormatter.ofPattern("yyyy. MM. dd")
 
     fun formatToKorean(dateString: String): String = try {
         val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
@@ -38,6 +39,13 @@ object DateFormatter {
         date.format(NUMERIC_DATE_FORMATTER)
     } catch (_: Exception) {
         ""
+    }
+
+    fun formatToDot(dateString: String): String = try {
+        val date = LocalDate.parse(dateString, LOCAL_DATE_FORMATTER)
+        date.format(DOT_DATE_FORMATTER)
+    } catch (_: Exception) {
+        "-"
     }
 
     fun getDayOfMonth(dateString: String): String = try {
