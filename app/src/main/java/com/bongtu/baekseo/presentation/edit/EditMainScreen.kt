@@ -292,7 +292,7 @@ private fun EditMainScreen(
                 ) {
                     Text(
                         text = stringResource(kr_won),
-                        style = BongBaekTheme.typography.body2Regular16,
+                        style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.txtDisplayPrimary,
                         modifier = Modifier.padding(start = 16.dp),
                     )
