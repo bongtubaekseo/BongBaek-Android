@@ -54,6 +54,7 @@ import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.progressbar.BongBaekProgressBar
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.innerShadow
 import com.bongtu.baekseo.core.util.noRippleClickable
 import java.text.DecimalFormat
 
@@ -207,9 +208,18 @@ private fun RecommendAmountCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
+
         BongBaekProgressBar(
             progress = animatedProgress,
-            modifier = Modifier,
+            modifier = Modifier
+                .innerShadow(
+                    shape = RoundedCornerShape(1000.dp),
+                    color = BongBaekTheme.colors.black.copy(0.5f),
+                    blur = 2.75.dp,
+                    offsetY = 2.75.dp,
+                    offsetX = 0.dp,
+                    spread = 0.dp,
+                ),
             backgroundColor = BongBaekTheme.colors.bgDisplayRange,
             progressColor = progressGradient,
             height = 12.dp,

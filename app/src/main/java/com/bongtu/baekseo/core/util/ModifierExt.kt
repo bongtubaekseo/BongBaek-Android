@@ -1,6 +1,9 @@
 package com.bongtu.baekseo.core.util
 
 import android.annotation.SuppressLint
+import android.graphics.BlurMaskFilter
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.clickable
@@ -25,7 +28,12 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.geometry.Size
+import androidx.compose.ui.geometry.toRect
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Paint
+import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.drawOutline
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.LayoutCoordinates
 import androidx.compose.ui.layout.boundsInParent
@@ -237,5 +245,58 @@ fun Modifier.verticalScrollbar(
                 height = thumbHeight,
             )
         )
+    }
+}
+
+@Composable
+fun Modifier.innerShadow(
+    shape: Shape,
+    color: Color,
+    blur: Dp,
+    offsetY: Dp,
+    offsetX: Dp,
+    spread: Dp,
+) = composed {
+    val paint = remember(color) {
+        Paint().apply {
+            this.color = color
+            isAntiAlias = true
+        }
+    }
+
+    drawWithContent {
+        drawContent()
+        val spreadPx = spread.toPx()
+        val offsetXPx = offsetX.toPx()
+        val offsetYPx = offsetY.toPx()
+        val blurPx = blur.toPx()
+        val rect = size.toRect()
+
+        val shadowOutline = shape.createOutline(size, layoutDirection, this)
+
+        drawIntoCanvas { canvas ->
+            canvas.saveLayer(rect, paint)
+            canvas.drawOutline(shadowOutline, paint)
+
+            val frameworkPaint = paint.asFrameworkPaint()
+
+            frameworkPaint.apply {
+                xfermode = PorterDuffXfermode(PorterDuff.Mode.DST_OUT)
+                if (blurPx > 0f) {
+                    maskFilter = BlurMaskFilter(blurPx, BlurMaskFilter.Blur.NORMAL)
+                }
+            }
+            paint.color = Color.Black
+
+            val spreadOffsetX = offsetXPx + if (offsetXPx < 0f) -spreadPx else spreadPx
+            val spreadOffsetY = offsetYPx + if (offsetYPx < 0f) -spreadPx else spreadPx
+
+            canvas.translate(spreadOffsetX, spreadOffsetY)
+            canvas.drawOutline(shadowOutline, paint)
+            canvas.restore()
+            paint.color = color
+            frameworkPaint.xfermode = null
+            frameworkPaint.maskFilter = null
+        }
     }
 }
