@@ -74,7 +74,7 @@ fun ContentsRoute(
 
     ContentsScreen(
         uiState = uiState,
-        onLoadMore = viewModel::fetchContents,
+        onLoadMore = viewModel::fetchNextContents,
         onCategoryClick = viewModel::updateCategory,
         onArticleClick = viewModel::fetchContentsDetail,
         modifier = modifier,
