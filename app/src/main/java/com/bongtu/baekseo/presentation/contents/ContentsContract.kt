@@ -13,6 +13,7 @@ class ContentsContract {
     data class ContentsUiState(
         val loadState: UiState<Unit> = UiState.Empty,
         val articles: ImmutableList<Contents> = persistentListOf(),
+        val articleCount: Int = 0,
         val contentsDetail: ContentsDetail? = null,
         val selectedEvent: EventCategoryType = EventCategoryType.ALL,
     )

@@ -18,6 +18,7 @@ fun ContentsDto.toModel() = Contents(
 
 fun GetContentsByPageResponse.toModel() = PagedContents(
     contents = contents.map { it.toModel() }.toImmutableList(),
+    totalContentsCount = totalElements,
     currentPage = currentPage,
     isLast = isLast,
 )

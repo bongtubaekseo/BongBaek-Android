@@ -26,7 +26,6 @@ class ContentsRepositoryImpl @Inject constructor(
         persistentListOf()
     }
 
-
     override suspend fun getContentsByPage(
         page: Int,
         category: String?,

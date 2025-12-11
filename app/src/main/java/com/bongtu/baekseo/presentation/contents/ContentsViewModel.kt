@@ -33,13 +33,14 @@ class ContentsViewModel @Inject constructor(
     private var isLastPage = false
 
     init {
-        fetchContents()
+        fetchContents(currentPage)
     }
 
-    private fun fetchContents(requestedPage: Int? = null) = viewModelScope.launch {
+    private fun fetchContents(requestedPage: Int) = viewModelScope.launch {
         if (isLastPage || uiState.value.loadState is UiState.Loading) return@launch
 
-        val pageToLoad = requestedPage ?: currentPage
+        val isInitialLoad = currentPage == 0
+        val pageToLoad = requestedPage
         val categoryParam = uiState.value.selectedEvent.paramLabel
 
         updateLoadState(UiState.Loading)
@@ -56,6 +57,7 @@ class ContentsViewModel @Inject constructor(
 
             currentPage = it.currentPage
             isLastPage = it.isLast
+            if (isInitialLoad) updateArticleCount(it.totalContentsCount)
 
             updateLoadState(UiState.Success(Unit))
         }.onFailure {
@@ -69,7 +71,6 @@ class ContentsViewModel @Inject constructor(
             fetchContents(requestedPage = next)
         }
     }
-
 
     fun fetchContentsDetail(contentId: String) = viewModelScope.launch {
         contentsRepository.getContentsDetail(contentId)
@@ -87,6 +88,10 @@ class ContentsViewModel @Inject constructor(
         currentState.copy(loadState = newLoadState)
     }
 
+    private fun updateArticleCount(newArticleCount: Int) = _uiState.update { currentState ->
+        currentState.copy(articleCount = newArticleCount)
+    }
+
     fun updateCategory(category: EventCategoryType) {
         currentPage = 0
         isLastPage = false
@@ -98,6 +103,6 @@ class ContentsViewModel @Inject constructor(
             )
         }
 
-        fetchContents()
+        fetchContents(currentPage)
     }
 }
