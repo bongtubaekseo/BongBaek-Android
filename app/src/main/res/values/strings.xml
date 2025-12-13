@@ -6,7 +6,7 @@
     <string name="market_url">market://details?id=%1$s</string>
     <!--Home    -->
     <string name="home">홈</string>
-    <string name="home_recommend_card_description">경조사비 추천</string>
+    <string name="home_recommend_card_description">금액 추천</string>
     <string name="home_recommend_card_title">내 상황에 어울리는 경조사비는?</string>
     <string name="home_schedule_empty">예정된 일정이 없습니다</string>
     <string name="home_contents_card_title">경조사 알림</string>
