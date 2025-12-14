@@ -169,6 +169,9 @@
     <string name="edit_cost_text_field_placeholder">금액을 입력하세요</string>
     <string name="edit_is_attend_dropdown_placeholder">참석여부를 선택하세요</string>
     <string name="edit_date_text_field_placeholder">날짜를 입력해주세요</string>
+    <string name="edit_record_button_text">기록하기</string>
+    <string name="edit_result_button_text">기록 저장하기</string>
+    <string name="edit_detail_button_text">수정하기</string>
     <string name="edit_location_add_text">추가하기</string>
     <string name="edit_location_edit_text">수정하기</string>
     <string name="edit_memo_text_field_placeholder">메모를 작성해주세요</string>
