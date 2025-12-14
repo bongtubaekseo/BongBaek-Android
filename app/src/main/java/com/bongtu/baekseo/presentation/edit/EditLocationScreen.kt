@@ -53,7 +53,6 @@ import com.kakao.vectormap.LatLng
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 
-private const val MAP_RATIO = 320 / 468f
 private const val DEFAULT_LATITUDE = 37.5665
 private const val DEFAULT_LONGITUDE = 126.9780
 
@@ -165,12 +164,14 @@ fun EditLocationScreen(
 
             Spacer(modifier = Modifier.height(14.dp))
 
-            Box {
+            Box(
+                modifier = Modifier
+                    .weight(1f),
+            ) {
                 KakaoMapView(
                     position = defaultPosition,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(12.dp))
-                        .aspectRatio(MAP_RATIO),
+                        .clip(RoundedCornerShape(12.dp)),
                 )
 
                 tempSelectedPlace?.let { place ->
@@ -181,8 +182,6 @@ fun EditLocationScreen(
                     )
                 }
             }
-
-            Spacer(modifier = Modifier.weight(1f))
 
             BongBaekButton(
                 title = stringResource(edit_location_button),
@@ -195,6 +194,7 @@ fun EditLocationScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
+                        top = 23.dp,
                         bottom = 36.dp,
                     ),
                 enabled = tempSelectedPlace != null,
