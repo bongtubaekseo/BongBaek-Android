@@ -248,6 +248,15 @@ fun Modifier.verticalScrollbar(
     }
 }
 
+/**
+ * innerShadow를 그리는 함수
+ * @param shape shadow 를 그릴 shape
+ * @param color shadow color
+ * @param blur shadow blur
+ * @param offsetY shadow offset y
+ * @param offsetX shadow offset x
+ * @param spread shadow 퍼짐 정도
+ */
 @Composable
 fun Modifier.innerShadow(
     shape: Shape,
