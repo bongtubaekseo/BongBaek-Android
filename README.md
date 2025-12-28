@@ -12,6 +12,36 @@
 ## Download
 <a href='https://play.google.com/store/apps/details?id=com.bongtu.baekseo'><img height="90" alt="play" src="https://github.com/user-attachments/assets/cf1c298a-94f1-491a-945c-8a0cb76eb04a"/></a>
 
+
+## Features
+<details>
+     <summary> <h3>온보딩 홈 추천하기</h3> </summary>
+
+| 온보딩 | 홈 | 금액 추천 | 추천 결과 |
+|:----:|:--:|:-------:|:------:|
+| <img width="200" src="https://github.com/user-attachments/assets/5d15c778-a231-4068-96e9-b5fd19f43142" /> | <img width="200" src="https://github.com/user-attachments/assets/ff5b2c7d-db33-4d7a-a660-9899f511576d" /> | <img width="200" src="https://github.com/user-attachments/assets/09cb3506-2118-4cf3-ae2f-08a69e9814f7" /> | <img width="200" src="https://github.com/user-attachments/assets/4e8ca714-c4b1-4d84-9ba1-6d577ed537d3" /> |
+
+</details>
+
+<details>
+     <summary> <h3> 기록하기 </h3> </summary>
+
+| 전체 기록 | 상세보기 | 기록하기 | 기록 수정하기 |
+|:-------:|:-----:|:------:|:----------:|
+| <img width="200" src="https://github.com/user-attachments/assets/fced02bb-10bc-43f5-980e-8977a4131de9" /> | <img width="200" src="https://github.com/user-attachments/assets/6feab945-486a-4e50-ac08-72029baf888a" /> | <img width="200" src="https://github.com/user-attachments/assets/698ee871-1b6e-40cb-8180-73a1b0d3b2f4" /> | <img width="200" src="https://github.com/user-attachments/assets/27759917-b5a0-45ad-bf48-05e488c9fab4" /> |
+
+</details>
+
+<details>
+     <summary> <h3> 콘텐츠 마이페이지 </h3> </summary>
+
+| 콘텐츠 | 콘텐츠 상세 | 마이페이지 | 탈퇴하기 |
+|:----:|:--------:|:--------:|:-----:|
+| <img width="200" src="https://github.com/user-attachments/assets/277d951c-3db2-483f-8852-bdd99278d6fe" /> | <img width="200" src="https://github.com/user-attachments/assets/1eb8b9f8-a398-4c60-93df-b86bdf44b892" /> |<img width="200" src="https://github.com/user-attachments/assets/23c0fa63-76a8-4d91-b1de-16f79b036270" /> | <img width="200" src="https://github.com/user-attachments/assets/3c03c7fc-8a73-439c-ba19-54691ebb09e4" /> |
+
+</details>
+
+
 ## **✨ Contributors**
 
 |                              김종명 (Lead) <br> [@jm991014](https://github.com/jm991014)                   |                           김혜정 <br> [@mjeong21](https://github.com/mjeong21)                             |                  공승준 <br> [@seungjunGong](https://github.com/seungjunGong)                             |
