@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -135,7 +136,7 @@ fun OnBoardingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
+            .systemBarsPadding()
             .clearFocus(focusManager),
     ) {
         BongBaekTopBar(
