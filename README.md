@@ -1,52 +1,53 @@
-# 봉투백서
+# <img src="https://github.com/user-attachments/assets/e8739f5b-ca09-40e8-b334-1c3f21b2152f" width="46" align="center" /> 봉투백서
 
+**봉투백서 - 경조사가 막막한 2030을 위한 똑똑한 가이드**
 
 <img width="4935" height="1758" alt="img_bongbaek_banner" src="https://github.com/user-attachments/assets/819d999b-3b57-4adc-b91a-44c104cf0a98" />
 
-<br/>
-<br/>
-
-### **💌 “경조사비, 얼마 내야 할지 매번 고민되시나요?”**
-**봉투백서**는 **사회초년생을 위한 맞춤형 경조사비를 추천**하고, 효율적으로 관리할 수 있도록 도와주는 앱 서비스입니다.<br/>
+> **봉투백서**는 **사회초년생을 위한 맞춤형 경조사비를 추천**하고, 효율적으로 관리할 수 있도록 도와주는 앱 서비스입니다.<br/>
 매번 헷갈리던 경조사 금액을 알려드립니다.<br/>
 
 더 이상 포털사이트에서 ‘결혼식 축의금 얼마’를 검색하지 마세요!
 
-## 🌟주요 기능
+## Download
+<a href='https://play.google.com/store/apps/details?id=com.bongtu.baekseo'><img height="90" alt="play" src="https://github.com/user-attachments/assets/cf1c298a-94f1-491a-945c-8a0cb76eb04a"/></a>
 
-### 1️⃣ 온보딩 – 나를 위한 경조사비 기준 설정<br/>
-유저의 상황을 반영한 맞춤형 추천을 위해<br/>
-간단한 온보딩 과정에서 수입 등 기본 정보를 입력받아요.<br/>
 
-이 정보를 바탕으로 더 정교한 경조사비 추천이 이루어집니다.<br/>
+## Features
+<details>
+     <summary> <h3>온보딩 홈 추천하기</h3> </summary>
 
-### 2️⃣ 홈 – 추천 금액과 행사 정보를 한눈에<br/>
-홈 화면에서는 개인별 맞춤 금액과 경조사 세부 정보,<br/>
-그리고 다가오는 일정을 한눈에 확인할 수 있어요.<br/>
+| 온보딩 | 홈 | 금액 추천 | 추천 결과 |
+|:----:|:--:|:-------:|:------:|
+| <img width="200" src="https://github.com/user-attachments/assets/5d15c778-a231-4068-96e9-b5fd19f43142" /> | <img width="200" src="https://github.com/user-attachments/assets/ff5b2c7d-db33-4d7a-a660-9899f511576d" /> | <img width="200" src="https://github.com/user-attachments/assets/09cb3506-2118-4cf3-ae2f-08a69e9814f7" /> | <img width="200" src="https://github.com/user-attachments/assets/4e8ca714-c4b1-4d84-9ba1-6d577ed537d3" /> |
 
-이제 어떤 행사에 얼마를 내야 할지 더 이상 고민하지 않아도 돼요.<br/>
+</details>
 
-### 3️⃣ 금액 추천 - 상황에 맞는 금액, 정확하게<br/>
-사용자의 입력 정보, 연락 빈도, 만남 정도를 바탕으로<br/>
-가장 적절한 경조사비를 추천해줘요.<br/>
+<details>
+     <summary> <h3> 기록하기 </h3> </summary>
 
-최소~최대 범위 제시로 유연하게 선택할 수 있고,<br/>
-합리적인 금액 범위를 안내해요.<br/>
+| 전체 기록 | 상세보기 | 기록하기 | 기록 수정하기 |
+|:-------:|:-----:|:------:|:----------:|
+| <img width="200" src="https://github.com/user-attachments/assets/fced02bb-10bc-43f5-980e-8977a4131de9" /> | <img width="200" src="https://github.com/user-attachments/assets/6feab945-486a-4e50-ac08-72029baf888a" /> | <img width="200" src="https://github.com/user-attachments/assets/698ee871-1b6e-40cb-8180-73a1b0d3b2f4" /> | <img width="200" src="https://github.com/user-attachments/assets/27759917-b5a0-45ad-bf48-05e488c9fab4" /> |
 
-### 4️⃣ 기록하기 – 지난 경조사 내역도 꼼꼼하게<br/>
-지금까지 참석했던 경조사 내역을 체계적으로 정리하여<br/>
-언제, 누구에게, 얼마를 냈는지 관리가 쉬워집니다.<br/>
+</details>
 
-다음 경조사 때 참고하거나 지출을 관리할 때 유용해요.<br/>
+<details>
+     <summary> <h3> 콘텐츠 마이페이지 </h3> </summary>
 
-<br/>
+| 콘텐츠 | 콘텐츠 상세 | 마이페이지 | 탈퇴하기 |
+|:----:|:--------:|:--------:|:-----:|
+| <img width="200" src="https://github.com/user-attachments/assets/277d951c-3db2-483f-8852-bdd99278d6fe" /> | <img width="200" src="https://github.com/user-attachments/assets/1eb8b9f8-a398-4c60-93df-b86bdf44b892" /> |<img width="200" src="https://github.com/user-attachments/assets/23c0fa63-76a8-4d91-b1de-16f79b036270" /> | <img width="200" src="https://github.com/user-attachments/assets/3c03c7fc-8a73-439c-ba19-54691ebb09e4" /> |
+
+</details>
+
 
 ## **✨ Contributors**
 
 |                              김종명 (Lead) <br> [@jm991014](https://github.com/jm991014)                   |                           김혜정 <br> [@mjeong21](https://github.com/mjeong21)                             |                  공승준 <br> [@seungjunGong](https://github.com/seungjunGong)                             |
 |:--------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------------------:|
 | <img width="250" src="https://github.com/user-attachments/assets/5bb885ec-7a6d-4644-a88f-560d2a44ce78"/> | <img width="250" src="https://github.com/user-attachments/assets/23d1d4dc-4ffe-4e8d-8b37-7a3875a6bd21"/> | <img width="250" src="https://github.com/user-attachments/assets/91b7b03d-d8c4-499b-b1fd-1a242df92829"/> |
-|                                              `금액추천`                                                    |                                              `온보딩`<br>`홈`                                               |                           `기록하기`<br>`상세내용`<br>                                                      |
+|                                              `금액추천`, `콘텐츠`                                                    |                                              `온보딩`, `홈`, `탈퇴하기`                                               |                           `기록하기`, `상세내용`                                                    |
 
 <br/>
 
