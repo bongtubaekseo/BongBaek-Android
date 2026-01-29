@@ -23,7 +23,10 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.bongtu.baekseo.R.drawable.ic_record_calendar_off
-import com.bongtu.baekseo.R.drawable.img_home_alarm
+import com.bongtu.baekseo.R.drawable.img_home_birthday
+import com.bongtu.baekseo.R.drawable.img_home_first
+import com.bongtu.baekseo.R.drawable.img_home_funeral
+import com.bongtu.baekseo.R.drawable.img_home_wedding
 import com.bongtu.baekseo.R.string.home_contents_card_empty_date
 import com.bongtu.baekseo.R.string.home_contents_card_empty_description
 import com.bongtu.baekseo.R.string.home_contents_card_title
@@ -55,6 +58,12 @@ fun HomeAlarmCard(
         postposition,
         daysLeft,
     )
+    val cardImg = when (eventType) {
+        "장례식" -> img_home_funeral
+        "돌잔치" -> img_home_first
+        "생일" -> img_home_birthday
+        else -> img_home_wedding
+    }
 
     Row(
         modifier = modifier
@@ -84,7 +93,7 @@ fun HomeAlarmCard(
         Spacer(modifier = Modifier.size(4.dp))
 
         Image(
-            painter = painterResource(img_home_alarm),
+            painter = painterResource(cardImg),
             contentDescription = null,
             modifier = Modifier
                 .size(

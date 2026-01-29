@@ -1,7 +1,7 @@
 package com.bongtu.baekseo.data.repository.content
 
-import com.bongtu.baekseo.data.model.content.ContentsDetail
 import com.bongtu.baekseo.data.model.content.Contents
+import com.bongtu.baekseo.data.model.content.ContentsDetail
 import com.bongtu.baekseo.data.model.content.PagedContents
 import kotlinx.collections.immutable.ImmutableList
 

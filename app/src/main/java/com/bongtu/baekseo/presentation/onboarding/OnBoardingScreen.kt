@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
@@ -52,7 +52,6 @@ import com.bongtu.baekseo.core.common.type.ButtonType
 import com.bongtu.baekseo.core.common.type.DatePickerDialogType
 import com.bongtu.baekseo.core.common.type.IncomeType
 import com.bongtu.baekseo.core.common.type.TopBarType
-import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekButton
 import com.bongtu.baekseo.core.designsystem.component.button.BongBaekIncomeButton
 import com.bongtu.baekseo.core.designsystem.component.dialog.BongBaekDatePickerDialog
@@ -135,7 +134,7 @@ fun OnBoardingScreen(
         modifier = modifier
             .fillMaxSize()
             .background(color = BongBaekTheme.colors.bgDisplayPrimary)
-            .windowInsetsPadding(WindowInsets.safeDrawingWithBottomNavBar)
+            .systemBarsPadding()
             .clearFocus(focusManager),
     ) {
         BongBaekTopBar(

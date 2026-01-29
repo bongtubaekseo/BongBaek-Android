@@ -59,6 +59,7 @@ fun <T> BongBaekDropdownMenu(
     onItemSelect: (T) -> Unit,
     label: (T) -> String,
     modifier: Modifier = Modifier,
+    showScrollbar: Boolean = false,
     onExpandedChange: (Boolean) -> Unit = {},
     onDismissRequest: () -> Unit = {},
     maxItemSize: Int = 3,
@@ -72,6 +73,7 @@ fun <T> BongBaekDropdownMenu(
     val maxHeight =
         if (itemHeightDp > 0.dp) (itemHeightDp + 4.dp) * maxItemSize + 24.dp
         else Dp.Unspecified
+    val itemEndPadding = if (showScrollbar) 18.dp else 12.dp
 
     LaunchedEffect(items) {
         scrollState.scrollTo(0)
@@ -93,7 +95,7 @@ fun <T> BongBaekDropdownMenu(
                     max = maxHeight,
                 )
                 .then(
-                    if (items.isNotEmpty()) {
+                    if (showScrollbar && items.isNotEmpty()) {
                         Modifier.verticalScrollbar(
                             scrollState = scrollState,
                             topPadding = 12.dp,
@@ -119,7 +121,7 @@ fun <T> BongBaekDropdownMenu(
                     modifier = Modifier
                         .padding(
                             start = 12.dp,
-                            end = 18.dp,
+                            end = itemEndPadding,
                             top = 4.dp,
                             bottom = 4.dp,
                         ),

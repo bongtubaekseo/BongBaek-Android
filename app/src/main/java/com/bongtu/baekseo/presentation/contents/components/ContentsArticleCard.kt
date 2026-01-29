@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil3.compose.AsyncImage
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 
 private const val CARD_RATIO = 320 / 240f
@@ -89,7 +90,7 @@ fun ContentsArticleCard(
             )
 
             Text(
-                text = date,
+                text = DateFormatter.formatToKorean(date),
                 color = BongBaekTheme.colors.txtDisplayTertiary,
                 style = BongBaekTheme.typography.captionRegular12,
             )
@@ -106,7 +107,7 @@ private fun ContentsArticleCardPreview() {
             onCardClick = { },
             eventType = "결혼식",
             title = "제목이 오는 위치제목이 오는 위치제목이 오는 위치제목이 오는 위치",
-            date = "날짜가 오는 위치"
+            date = "2025-12-10"
         )
     }
 }

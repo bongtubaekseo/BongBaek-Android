@@ -40,8 +40,8 @@ fun RecordCollapsingHeader(
     ) {
         DateSection(
             date = date,
-            onLeftClick = onLeftClick,
-            onRightClick = onRightClick,
+            onLeftClick = { if (isEnabled) onLeftClick() },
+            onRightClick = { if (isEnabled) onRightClick() },
         )
 
         BongBaekCategoryBar(

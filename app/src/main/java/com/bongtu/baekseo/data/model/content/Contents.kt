@@ -15,6 +15,7 @@ data class Contents(
 
 data class PagedContents(
     val contents: ImmutableList<Contents>,
+    val totalContentsCount: Int,
     val currentPage: Int,
     val isLast: Boolean,
 )

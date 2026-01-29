@@ -1,25 +1,22 @@
 package com.bongtu.baekseo.presentation.contents
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.Crossfade
 import androidx.compose.animation.ExperimentalSharedTransitionApi
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
@@ -35,9 +32,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.flowWithLifecycle
-import com.bongtu.baekseo.R.string.contents_article
-import com.bongtu.baekseo.R.string.contents_article_count
 import com.bongtu.baekseo.R.string.contents_title
+import com.bongtu.baekseo.core.common.state.UiState
 import com.bongtu.baekseo.core.common.type.EventCategoryType
 import com.bongtu.baekseo.core.common.type.TopBarType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
@@ -50,6 +46,7 @@ import com.bongtu.baekseo.data.model.content.ContentsDetail
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsSideEffect.NavigateToContentsDetail
 import com.bongtu.baekseo.presentation.contents.ContentsContract.ContentsUiState
 import com.bongtu.baekseo.presentation.contents.components.ContentsArticleCard
+import com.bongtu.baekseo.presentation.contents.components.ContentsCounter
 import com.bongtu.baekseo.presentation.contents.components.ContentsEmptyView
 import com.bongtu.baekseo.presentation.contents.components.ContentsFooter
 import kotlinx.coroutines.launch
@@ -74,7 +71,7 @@ fun ContentsRoute(
 
     ContentsScreen(
         uiState = uiState,
-        onLoadMore = viewModel::fetchContents,
+        onLoadMore = viewModel::fetchNextContents,
         onCategoryClick = viewModel::updateCategory,
         onArticleClick = viewModel::fetchContentsDetail,
         modifier = modifier,
@@ -121,67 +118,65 @@ private fun ContentsScreen(
                     .padding(vertical = 12.dp),
             )
 
-            LazyColumn(
-                modifier = Modifier
-                    .padding(horizontal = 20.dp),
-                state = listState,
-            ) {
-                item {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(
-                                vertical = 12.dp,
-                            ),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                    ) {
-                        Text(
-                            text = stringResource(contents_article),
-                            color = BongBaekTheme.colors.txtDisplayTertiary,
-                            style = BongBaekTheme.typography.body2Regular16,
+            Crossfade(
+                targetState = uiState.loadState,
+            ) { loadState ->
+                when (loadState) {
+                    is UiState.Empty -> {
+                        ContentsCounter(
+                            articleCount = uiState.articleCount,
                         )
 
-                        Text(
-                            text = stringResource(
-                                contents_article_count,
-                                uiState.articles.size,
-                            ),
-                            color = BongBaekTheme.colors.txtDisplaySecondary,
-                            style = BongBaekTheme.typography.body2Regular16,
-                        )
-                    }
-                }
-
-                if (uiState.articles.isEmpty()) {
-                    item {
                         ContentsEmptyView()
                     }
-                } else {
-                    itemsIndexed(
-                        items = uiState.articles,
-                        key = { _, article -> article.contentId },
-                    ) { index, article ->
-                        ContentsArticleCard(
-                            imageUrl = article.thumbnailUrl,
-                            onCardClick = {
-                                onArticleClick(article.contentId)
-                            },
-                            eventType = article.contentCategory,
-                            title = article.contentTitle,
-                            date = article.displayDate,
-                            modifier = Modifier
-                                .padding(
-                                    top = if (index == 0) 20.dp else 12.dp,
-                                ),
-                        )
 
-                        if (index == uiState.articles.lastIndex) {
-                            ContentsFooter(
-                                modifier = Modifier.padding(
-                                    top = 12.dp,
-                                    bottom = 28.dp,
-                                ),
-                            )
+                    is UiState.Failure -> {
+                        // TODO: 에러 상태
+                    }
+
+                    is UiState.Loading -> {
+                        // TODO: 로딩 상태
+                    }
+
+                    is UiState.Success -> {
+                        LazyColumn(
+                            modifier = Modifier
+                                .padding(horizontal = 20.dp),
+                            state = listState,
+                        ) {
+                            item {
+                                ContentsCounter(
+                                    articleCount = uiState.articleCount,
+                                )
+                            }
+
+                            itemsIndexed(
+                                items = uiState.articles,
+                                key = { _, article -> article.contentId },
+                            ) { index, article ->
+                                ContentsArticleCard(
+                                    imageUrl = article.thumbnailUrl,
+                                    onCardClick = {
+                                        onArticleClick(article.contentId)
+                                    },
+                                    eventType = article.contentCategory,
+                                    title = article.contentTitle,
+                                    date = article.displayDate,
+                                    modifier = Modifier
+                                        .padding(
+                                            top = if (index == 0) 20.dp else 12.dp,
+                                        ),
+                                )
+
+                                if (index == uiState.articles.lastIndex) {
+                                    ContentsFooter(
+                                        modifier = Modifier.padding(
+                                            top = 12.dp,
+                                            bottom = 28.dp,
+                                        ),
+                                    )
+                                }
+                            }
                         }
                     }
                 }

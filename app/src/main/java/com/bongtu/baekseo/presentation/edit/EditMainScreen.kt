@@ -53,6 +53,7 @@ import com.bongtu.baekseo.R.string.edit_cost_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_cost_title
 import com.bongtu.baekseo.R.string.edit_date_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_date_title
+import com.bongtu.baekseo.R.string.edit_detail_button_text
 import com.bongtu.baekseo.R.string.edit_event_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_event_title
 import com.bongtu.baekseo.R.string.edit_is_attend_dropdown_placeholder
@@ -64,9 +65,10 @@ import com.bongtu.baekseo.R.string.edit_name_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_name_title
 import com.bongtu.baekseo.R.string.edit_nickname_text_field_placeholder
 import com.bongtu.baekseo.R.string.edit_nickname_title
+import com.bongtu.baekseo.R.string.edit_record_button_text
 import com.bongtu.baekseo.R.string.edit_relation_dropdown_placeholder
 import com.bongtu.baekseo.R.string.edit_relation_title
-import com.bongtu.baekseo.R.string.edit_save_button
+import com.bongtu.baekseo.R.string.edit_result_button_text
 import com.bongtu.baekseo.R.string.kr_won
 import com.bongtu.baekseo.core.common.type.AttendType
 import com.bongtu.baekseo.core.common.type.ButtonType
@@ -174,6 +176,13 @@ private fun EditMainScreen(
     val focusManager = LocalFocusManager.current
     val density = LocalDensity.current
     val isImeVisible = WindowInsets.ime.getBottom(density) > 0
+    val buttonText = stringResource(
+        id = when (editEntryType) {
+            EditEntryType.FROM_RECORD -> edit_record_button_text
+            EditEntryType.FROM_DETAIL -> edit_detail_button_text
+            EditEntryType.FROM_RESULT -> edit_result_button_text
+        }
+    )
 
     LaunchedEffect(isImeVisible) {
         if (!isImeVisible) {
@@ -292,7 +301,7 @@ private fun EditMainScreen(
                 ) {
                     Text(
                         text = stringResource(kr_won),
-                        style = BongBaekTheme.typography.body2Regular16,
+                        style = BongBaekTheme.typography.body1Medium16,
                         color = BongBaekTheme.colors.txtDisplayPrimary,
                         modifier = Modifier.padding(start = 16.dp),
                     )
@@ -372,7 +381,7 @@ private fun EditMainScreen(
             }
 
             BongBaekButton(
-                title = stringResource(id = edit_save_button),
+                title = buttonText,
                 onClick = onSubmitEventButtonClick,
                 buttonType = ButtonType.PRIMARY,
                 modifier = Modifier

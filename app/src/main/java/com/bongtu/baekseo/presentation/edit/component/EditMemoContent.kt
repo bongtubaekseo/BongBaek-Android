@@ -53,6 +53,10 @@ fun EditMemoContent(
     val textCountColor =
         if (isFilled || isFocused) colors.txtDisplaySecondary else colors.txtDisplayTertiary
 
+    val textLength = text.checkLength()
+    val counterText = if (textLength == 0 || isFocused)
+        stringResource(id = edit_memo_text_length, textLength) else ""
+
     Column(
         modifier = modifier,
     ) {
@@ -123,7 +127,7 @@ fun EditMemoContent(
             }
 
             Text(
-                text = stringResource(id = edit_memo_text_length, text.checkLength()),
+                text = counterText,
                 modifier = Modifier
                     .padding(top = 10.dp)
                     .align(Alignment.End),

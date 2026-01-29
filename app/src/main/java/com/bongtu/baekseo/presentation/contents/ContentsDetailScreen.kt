@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
@@ -40,6 +39,7 @@ import com.bongtu.baekseo.core.common.type.EventType
 import com.bongtu.baekseo.core.compositionlocal.safeDrawingWithBottomNavBar
 import com.bongtu.baekseo.core.designsystem.component.fab.BongBaekFAB
 import com.bongtu.baekseo.core.designsystem.theme.BongBaekTheme
+import com.bongtu.baekseo.core.util.DateFormatter
 import com.bongtu.baekseo.core.util.noRippleClickable
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -110,7 +110,7 @@ fun ContentsDetailScreen(
                     Spacer(modifier = Modifier.height(8.dp))
 
                     Text(
-                        text = date,
+                        text = DateFormatter.formatToDot(date),
                         color = BongBaekTheme.colors.txtDisplayTertiary,
                         style = BongBaekTheme.typography.body2Regular14,
                     )
@@ -165,7 +165,7 @@ private fun ContentsDetailScreenPreview() {
             onBackClick = {},
             eventType = EventType.WEDDING.label,
             title = "제목이 오는 위치제목이 오는 위치제목이 오는 위치제목이 오는 위치",
-            date = "날짜가 오는 위치",
+            date = "2025-12-10",
             imageUrls = persistentListOf(),
         )
     }
